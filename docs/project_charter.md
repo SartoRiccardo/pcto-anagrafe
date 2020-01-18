@@ -1,7 +1,5 @@
 ## Scopo
-L'applicazione finale sarà un sito web in cui un utente potrà visualizzare ogni azienda registrata finora e i relativi dettagli, se presenti, come l'orario, il luogo o il numero di studenti che possono assumere. L'utente finale potrà cercare o filtrare aziende per campi, ad esempio potrebbe visualizzare solo le aziende a Caselle, o solo le aziende che aprono dopo le 14:00. Uno studente potrà effettuare il login per prenotare un'azienda.
-
-Un pannello per gli amministratori permetterà di aggiungere o togliere righe o campi, rendendo la gestione dei dati comoda e flessibile.
+L'applicazione finale sarà un sito web in cui un utente potrà visualizzare ogni azienda registrata finora e i relativi dettagli, se presenti, come l'orario, il luogo o il numero di studenti che possono assumere. L'utente finale potrà cercare o filtrare aziende per campi, ad esempio potrebbe visualizzare solo le aziende a Caselle, o solo le aziende che aprono dopo le 14:00. Uno studente potrà effettuare il login per prenotare un'azienda. Un pannello per gli amministratori permetterà di aggiungere o togliere righe o campi, rendendo la gestione dei dati comoda e flessibile.
 
 ## Obiettivi
 L'applicazione dovrà, come minimo:
