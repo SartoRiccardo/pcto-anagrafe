@@ -1,5 +1,4 @@
-
-const NavLink = window.ReactRouterDOM.NavLink;
+import React from "react";
 
 function AdminNav(props) {
 
@@ -7,10 +6,11 @@ function AdminNav(props) {
 
   return (
     <nav>
-      <NavLink to="/about" />
       <input type="button" onClick={dummy} value="Logout" />
       <input type="button" onClick={dummy} value="Salvati" />
       <input type="button" onClick={dummy} value="Struttura" />
     </nav>
   );
 }
+
+export default AdminNav;

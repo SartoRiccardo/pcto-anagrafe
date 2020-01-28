@@ -1,3 +1,4 @@
+import React, {Component} from "react";
 
 class CompanyEdit extends React.Component {
   constructor(props) {
@@ -54,3 +55,5 @@ class CompanyEdit extends React.Component {
     );
   }
 }
+
+export default CompanyEdit;

@@ -1,3 +1,4 @@
+import React from "react";
 
 function UserNav(props) {
 
@@ -8,3 +9,5 @@ function UserNav(props) {
     </nav>
   );
 }
+
+export default UserNav;

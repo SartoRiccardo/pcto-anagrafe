@@ -1,3 +1,4 @@
+import React, {Component} from "react";
 
 class EditStructure extends React.Component {
   constructor(props) {
@@ -83,3 +84,5 @@ class EditStructure extends React.Component {
     );
   }
 }
+
+export default EditStructure;

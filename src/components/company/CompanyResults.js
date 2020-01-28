@@ -1,3 +1,5 @@
+import React from "react";
+import CompanySummary from "./CompanySummary";
 
 function CompanyResults(props) {
   const {results, search} = props;
@@ -13,3 +15,5 @@ function CompanyResults(props) {
     </table>
   );
 }
+
+export default CompanyResults;

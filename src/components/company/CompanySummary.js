@@ -1,3 +1,4 @@
+import React, {Component} from "react";
 
 class CompanySummary extends React.Component {
   handleClick = evt => {
@@ -30,3 +31,5 @@ class CompanySummary extends React.Component {
     );
   }
 }
+
+export default CompanySummary;

@@ -1,3 +1,4 @@
+import React, {Component} from "react";
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,3 +31,5 @@ class Login extends React.Component {
     )
   }
 }
+
+export default Login;

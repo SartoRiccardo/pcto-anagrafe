@@ -1,3 +1,5 @@
+import React from "react";
+import AdminNav from "./AdminNav";
 
 function App() {
   return(
@@ -7,3 +9,5 @@ function App() {
     </div>
   )
 }
+
+export default App;

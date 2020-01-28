@@ -1,3 +1,4 @@
+import React from "react";
 
 function CompanyDetails(props) {
   const {company} = props
@@ -21,3 +22,5 @@ function CompanyDetails(props) {
     </div>
   )
 }
+
+export default CompanyDetails;
