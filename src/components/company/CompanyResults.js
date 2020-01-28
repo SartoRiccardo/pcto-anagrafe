@@ -18,9 +18,10 @@ function CompanyResults(props) {
 }
 
 function mapStateToProps(state) {
+  console.log(state.search);
   return {
-    search: state.search,
-    results: state.results,
+    search: state.search.search,
+    results: state.search.results,
   };
 }
 

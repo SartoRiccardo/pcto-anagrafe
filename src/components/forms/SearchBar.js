@@ -97,8 +97,8 @@ class SearchBar extends Component {
 
 function mapStateToProps(state) {
   return {
-    options: state.options,
-    search: state.search,
+    options: state.search.options,
+    search: state.search.search,
   };
 }
 
