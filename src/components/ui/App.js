@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import AdminNav from "./AdminNav";
 import SearchCompany from "../forms/SearchCompany";
+import EditStructure from "../forms/EditStructure";
 
 function App() {
   return(
@@ -11,8 +12,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={SearchCompany} />
           <Route path="/search" component={SearchCompany} />
+          <Route path="/structure" component={EditStructure} />
           {/*
-          <Route path="/structure" component={} />
           <Route path="/company/:id" component={} />
           <Route path="/saved" component={} />
           <Route path="/add" component={} />

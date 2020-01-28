@@ -1,6 +1,8 @@
 import React, {Component} from "react";
+import update from "immutability-helper";
+import {connect} from "react-redux";
 
-class EditStructure extends React.Component {
+class EditStructure extends Component {
   constructor(props) {
     super(props);
 
@@ -13,14 +15,14 @@ class EditStructure extends React.Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-    // Commit fields to database
+    this.props.updateStructure(this.state.fields);
   }
 
   changeHandler = (evt, id) => {
     let fields = [...this.state.fields];
     for (let i = 0; i < fields.length; i++) {
-      if(fields[i].id == id) {
-        fields[i][evt.target.name] = evt.target.value;
+      if(fields[i].id === id) {
+        fields = update(fields, {[i]: {[evt.target.name]: {$set: evt.target.value}}});
         break;
       }
     }
@@ -85,4 +87,18 @@ class EditStructure extends React.Component {
   }
 }
 
-export default EditStructure;
+function mapStateToProps(state) {
+  return {
+    fields: state.structure.fields,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateStructure: fields => {
+      dispatch({type:"UPDATE_STRUCTURE", fields});
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditStructure);
