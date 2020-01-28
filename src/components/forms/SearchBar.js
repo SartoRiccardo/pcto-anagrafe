@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SearchField from "./SearchField";
 
-class SearchBar extends React.Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
 
@@ -9,6 +9,21 @@ class SearchBar extends React.Component {
       fields: [],
       lastId: 0,
     };
+  }
+
+  handleChange = evt => {
+    let fields = [...this.state.fields];
+    for (let i = 0; i < fields.length; i++) {
+      if(fields[i].id === evt.id) {
+        fields[i] = {...evt.target.state};
+      }
+    }
+
+    this.setState({
+      fields
+    }, () => {
+      this.notifyChange();
+    });
   }
 
   addSearchField = evt => {
@@ -23,6 +38,8 @@ class SearchBar extends React.Component {
         },
       ],
       lastId: lastId+1,
+    }, () => {
+      this.notifyChange();
     });
   }
 
@@ -31,18 +48,28 @@ class SearchBar extends React.Component {
     const {fields} = this.state;
     this.setState({
       fields: fields.filter(f => f.id !== id),
+    }, () => {
+      this.notifyChange();
     });
+  }
+
+  notifyChange = () => {
+    if(this.props.onChange) {
+      this.props.onChange({
+        target: this,
+      });
+    }
   }
 
   render() {
     const {fields} = this.state;
     const sFields = fields.map(f => {
       return (
-        <SearchField key={f.id} id={f.id} options={this.props.options} onDelete={this.handleDelete} />
+        <SearchField key={f.id} id={f.id} options={this.props.options} onChange={this.handleChange} onDelete={this.handleDelete} />
       );
     })
     return (
-      <form>
+      <form onSubmit={evt => evt.preventDefault()}>
         {sFields}
         <input type="button" value="Aggiungi campo" onClick={this.addSearchField} />
       </form>

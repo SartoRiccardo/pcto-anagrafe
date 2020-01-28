@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-class CompanySummary extends React.Component {
+class CompanySummary extends Component {
   handleClick = evt => {
     // Show company details...
   }
@@ -18,7 +18,7 @@ class CompanySummary extends React.Component {
     const information = uniqueFields.map(id => {
       let value = null;
       for (let i = 0; i < data.fields.length; i++) {
-        if(data.fields[i].id == id) value=data.fields[i].value;
+        if(data.fields[i].id === id) value=data.fields[i].value;
       }
       return <td key={id}>{value}</td>;
     });

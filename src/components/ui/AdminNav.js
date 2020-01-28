@@ -1,14 +1,13 @@
-import React from "react";
+import React, {} from "react";
+import {NavLink} from "react-router-dom";
 
 function AdminNav(props) {
 
-  const dummy = evt => {}
-
   return (
     <nav>
-      <input type="button" onClick={dummy} value="Logout" />
-      <input type="button" onClick={dummy} value="Salvati" />
-      <input type="button" onClick={dummy} value="Struttura" />
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/table">Struttura</NavLink>
+      <NavLink to="/saved">Salvati</NavLink>
     </nav>
   );
 }

@@ -1,25 +1,53 @@
 import React, {Component} from "react";
 
-class SearchField extends React.Component {
+class SearchField extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       id: this.props.id,
-      field: "0",
+      field: this.props.options[0],
       value: "",
     };
+  }
+
+  changeField = evt => {
+    const {options} = this.props;
+    let newField = null;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].id === parseInt(evt.target.value)) {
+        newField = options[i];
+        break;
+      }
+    }
+
+    this.setState({
+      field: newField,
+    }, () => {
+      this.notifyChange();
+    })
   }
 
   changeHandler = evt => {
     this.setState({
       [evt.target.name]: evt.target.value,
+    }, () => {
+      this.notifyChange();
     })
   }
 
   deleteSearchField = evt => {
     if(this.props.onDelete) {
       this.props.onDelete({
+        target: this,
+      });
+    }
+  }
+
+  notifyChange = () => {
+    if(this.props.onChange) {
+      this.props.onChange({
+        id: this.props.id,
         target: this,
       });
     }
@@ -33,7 +61,7 @@ class SearchField extends React.Component {
     })
     return (
       <div>
-        <select name="field" onChange={this.changeHandler} value={field}>
+        <select name="field" onChange={this.changeField} value={field ? field.id : 0}>
           {optionsUi}
         </select>
         <input type="text" name="value" value={value} onChange={this.changeHandler} />
