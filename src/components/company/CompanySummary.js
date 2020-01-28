@@ -20,7 +20,7 @@ class CompanySummary extends Component {
       for (let i = 0; i < data.fields.length; i++) {
         if(data.fields[i].id === id) value=data.fields[i].value;
       }
-      return <td key={id}>{value}</td>;
+      return <td key={id}>{value ? value : "N/A"}</td>;
     });
 
     return(

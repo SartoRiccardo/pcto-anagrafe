@@ -1,17 +1,20 @@
 import React, {Component} from "react";
 import SearchField from "./SearchField";
 import {connect} from "react-redux";
-import {update} from "immutability-helper";
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
 
     const fields = this.props.search;
+    let biggestId = 0;
+    for (let i = 0; i < fields.length; i++) {
+      if(fields[i].id > biggestId) biggestId = fields[i].id;
+    };
 
     this.state = {
       fields,
-      lastId: 0,
+      lastId: biggestId + 1,
     };
   }
 
@@ -97,7 +100,7 @@ class SearchBar extends Component {
 
 function mapStateToProps(state) {
   return {
-    options: state.search.options,
+    options: state.structure.fields,
     search: state.search.search,
   };
 }

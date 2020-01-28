@@ -1,11 +1,6 @@
 import update from "immutability-helper";
 
 const init = {
-  options: [
-    {id: 0, name: "nome", regex: ".+"},
-    {id: 1, name: "telefono", regex: "\\d{3} \\d{3} \\d{4}"},
-    {id: 2, name: "email", regex: "[a-zA-Z0-9.!#$%&’*+\\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*"},
-  ],
   search: [],
   results: [
     {

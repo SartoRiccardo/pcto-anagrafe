@@ -8,8 +8,29 @@ function CompanyResults(props) {
     return <CompanySummary key={res.id} data={res} search={search} />
   });
 
+  let uniqueFields = [];
+  for (let i = 0; i < search.length; i++) {
+    if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+      uniqueFields.push(search[i].field.id);
+    }
+  }
+  
+  const header = uniqueFields.map(id => {
+    let value = null;
+    for (let i = 0; i < search.length; i++) {
+      if(search[i].field.id === id) value = search[i].field.name;
+    }
+    return <th key={id}>{value ? value : "N/A"}</th>;
+  });
+
   return (
     <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          {header}
+        </tr>
+      </thead>
       <tbody>
         {summaries}
       </tbody>
@@ -18,7 +39,6 @@ function CompanyResults(props) {
 }
 
 function mapStateToProps(state) {
-  console.log(state.search);
   return {
     search: state.search.search,
     results: state.search.results,
