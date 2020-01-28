@@ -9,13 +9,17 @@ class CompanySummary extends React.Component {
 
     let uniqueFields = [];
     for (let i = 0; i < search.length; i++) {
-      if(!uniqueFields.includes(search[i].name)) {
-        uniqueFields.push(search[i].name);
+      if(!uniqueFields.includes(search[i].id)) {
+        uniqueFields.push(search[i].id);
       }
     }
 
-    const information = uniqueFields.map(f => {
-      return <td key={f}>{data[f]}</td>;
+    const information = uniqueFields.map(id => {
+      let value = null;
+      for (let i = 0; i < data.fields.length; i++) {
+        if(data.fields[i].id == id) value=data.fields[i].value;
+      }
+      return <td key={id}>{value}</td>;
     });
 
     return(
