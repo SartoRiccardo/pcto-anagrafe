@@ -18,7 +18,7 @@ body {
 }
 
 .company-summary:hover {
-  background-color: #ffecb3;
+  background-color: #ffe0b2;
   cursor: pointer;
   -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
   transition: background-color 0.5s;
@@ -38,6 +38,28 @@ table {
   text-align: left;
   background-color: white;
   border: 1px solid #bdbdbd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+
+/* INPUT */
+.btn {
+  background-color: #c62828;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+}
+
+.btn:hover {
+  cursor: pointer;
 }
 
 
