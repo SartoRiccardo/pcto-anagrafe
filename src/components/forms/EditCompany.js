@@ -1,5 +1,12 @@
 import React, {Component} from "react";
 
+/**
+ * A form to edit a company's attributes.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.company A list of companies.
+ */
 class CompanyEdit extends React.Component {
   constructor(props) {
     super(props);

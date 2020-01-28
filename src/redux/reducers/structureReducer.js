@@ -1,4 +1,13 @@
 
+/**
+ * The initial state of the structureReducer store.
+ *
+ * This store describes the attributes of the virtual table containing company data.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, name:String, regex:String}[]} fields The table structure's fields.
+ */
 const init = {
   fields: [
     {id: 0, name: "Nome", regex: ".+"},

@@ -1,6 +1,11 @@
 import React, {} from "react";
 import {NavLink} from "react-router-dom";
 
+/**
+ * A list of NavLink administrators see.
+ *
+ * @author Riccardo Sartori
+ */
 function AdminNav(props) {
   return (
     <nav>

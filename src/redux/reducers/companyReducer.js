@@ -1,4 +1,13 @@
 
+/**
+ * The initial state of the companyReducer store.
+ *
+ * This store fetches a specific company's data for the /company/:id route.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} match A single company object.
+ */
 const init = {
   match: {
     id: 2,

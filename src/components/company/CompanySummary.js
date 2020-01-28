@@ -1,6 +1,16 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 
+/**
+ * A short table row describing certain company attributes.
+ *
+ * The attributes shown are chosen with the current search terms.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.data   A single company object.
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}               props.search The parameters in the search.
+ */
 class CompanySummary extends Component {
   handleClick = evt => {
     this.props.history.push("/company/" + this.props.data.id);

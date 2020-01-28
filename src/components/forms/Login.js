@@ -1,5 +1,10 @@
 import React, {Component} from "react";
 
+/**
+ * A simple login form.
+ *
+ * @author Riccardo Sartori
+ */
 class Login extends React.Component {
   constructor(props) {
     super(props);

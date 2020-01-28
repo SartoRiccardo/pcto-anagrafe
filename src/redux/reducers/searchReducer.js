@@ -1,5 +1,15 @@
 import update from "immutability-helper";
 
+/**
+ * The initial state of the searchReducer store.
+ *
+ * This store provides access to the data fetched while making searches on the /search route.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search  The current search terms.
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results The companies to show.
+ */
 const init = {
   search: [],
   results: [

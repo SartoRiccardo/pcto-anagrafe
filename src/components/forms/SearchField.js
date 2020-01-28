@@ -1,5 +1,14 @@
 import React, {Component} from "react";
 
+/**
+ * A single field to write a query for an attribute.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, name:String, field:{id:int, name:String, regex:String, value:String}}} props.initState    The state to initialize the component.
+ * @param {int}                                                                            props.id           The component ID, redundant if initState is present.
+ * @param {{id:int, name:String, regex:String}[]}                                          this.props.options A list of searchable fields.
+ */
 class SearchField extends Component {
   constructor(props) {
     super(props);

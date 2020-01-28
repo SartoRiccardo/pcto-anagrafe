@@ -2,6 +2,17 @@ import React, {Component} from "react";
 import SearchField from "./SearchField";
 import {connect} from "react-redux";
 
+/**
+ * A list of SearchField.
+ *
+ * This component coordinates its children and sends all their data to their respective reducers.
+ *
+ * @author Riccardo Sartori
+ * @see SearchField
+ *
+ * @param {{id:int, name:String, regex:String, value:String}[]}                 props.options A list of searchable fields.
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]} props.search  The current search terms.
+ */
 class SearchBar extends Component {
   constructor(props) {
     super(props);

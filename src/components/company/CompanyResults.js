@@ -2,6 +2,15 @@ import React from "react";
 import CompanySummary from "./CompanySummary";
 import {connect} from "react-redux";
 
+/**
+ * A table of CompanySummary.
+ *
+ * @author Riccardo Sartori
+ * @see CompanySummary
+ *
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} props.results A list of companies.
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 props.search  The parameters in the search.
+ */
 function CompanyResults(props) {
   const {results, search} = props;
   const summaries = results.map(res => {
@@ -14,7 +23,7 @@ function CompanyResults(props) {
       uniqueFields.push(search[i].field.id);
     }
   }
-  
+
   const header = uniqueFields.map(id => {
     let value = null;
     for (let i = 0; i < search.length; i++) {

@@ -5,6 +5,11 @@ import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import CompanyDetails from "../company/CompanyDetails";
 
+/**
+ * The application wrapper.
+ *
+ * @author Riccardo Sartori
+ */
 function App() {
   return(
     <BrowserRouter>

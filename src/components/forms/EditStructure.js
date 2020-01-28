@@ -2,6 +2,13 @@ import React, {Component} from "react";
 import update from "immutability-helper";
 import {connect} from "react-redux";
 
+/**
+ * A form to edit the virtual table storing the companies' data.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]} props.fields  The current table structure.
+ */
 class EditStructure extends Component {
   constructor(props) {
     super(props);
