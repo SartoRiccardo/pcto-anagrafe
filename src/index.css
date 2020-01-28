@@ -1,9 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans&display=swap');
+
 body {
   text-align: center;
+  background-color: #eeeeee;
+  font-family: "Fira Sans", serif;
+  margin: 0;
+}
+
+.company-summary td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.company-summary:not(:hover) {
+  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  transition: background-color 0.5s;
 }
 
 .company-summary:hover {
-  background-color: #ddd;
+  background-color: #ffecb3;
   cursor: pointer;
   -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
   transition: background-color 0.5s;
@@ -19,5 +34,50 @@ table {
   margin-left:auto;
   margin-right:auto;
   margin-top: 20px;
+  width: 80%;
   text-align: left;
+  background-color: white;
+  border: 1px solid #bdbdbd;
+}
+
+
+/* NAVBAR */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #e65100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  transition: background-color 0.5s;
+}
+
+li a:hover:not(.active) {
+  background-color: #bf360c;
+  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  transition: background-color 0.5s;
+}
+
+.active {
+  background-color: #c62828;
+}
+
+.content {
+  padding:20px;
+  margin-top:30px;
 }
