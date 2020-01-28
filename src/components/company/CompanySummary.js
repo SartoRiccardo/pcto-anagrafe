@@ -1,8 +1,9 @@
 import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 
 class CompanySummary extends Component {
   handleClick = evt => {
-    // Show company details...
+    this.props.history.push("/company/" + this.props.data.id);
   }
 
   render() {
@@ -32,4 +33,4 @@ class CompanySummary extends Component {
   }
 }
 
-export default CompanySummary;
+export default withRouter(CompanySummary);

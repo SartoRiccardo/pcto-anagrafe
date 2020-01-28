@@ -1,12 +1,21 @@
 import React from "react";
+import {connect} from "react-redux";
 
 function CompanyDetails(props) {
-  const {company} = props
-  const fields = company.fields.map(f => {
+  const {company, fields} = props;
+  const data = fields.map(f => {
+    if(f.id == 0) return null;  // Name field
+    let match = null;
+    for (let i = 0; i < company.fields.length; i++) {
+      if(company.fields[i].id == f.id) {
+        match = company.fields[i];
+        break;
+      }
+    }
     return (
       <tr key={f.id}>
         <td><b>{f.name}</b></td>
-        <td>{f.value}</td>
+        <td>{match ? match.value : null}</td>
       </tr>
     );
   });
@@ -16,11 +25,18 @@ function CompanyDetails(props) {
       <h1>{company.name}</h1>
       <table>
         <tbody>
-          {fields}
+          {data}
         </tbody>
       </table>
     </div>
   )
 }
 
-export default CompanyDetails;
+function mapStateToProps(state) {
+  return {
+    company: state.company.match,
+    fields: state.structure.fields,
+  };
+}
+
+export default connect(mapStateToProps)(CompanyDetails);
