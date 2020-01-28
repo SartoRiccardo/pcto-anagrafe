@@ -1,0 +1,23 @@
+body {
+  text-align: center;
+}
+
+.company-summary:hover {
+  background-color: #ddd;
+  cursor: pointer;
+  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  transition: background-color 0.5s;
+}
+
+.company-summary td {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 20px;
+  text-align: left;
+}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it" dir="ltr">
   <head>
+    <link rel="stylesheet" href="./src/index.css">
     <meta charset="utf-8">
     <title>PCTO</title>
 
@@ -10,8 +11,17 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
     <!-- React components -->
+    <script type="text/babel" src="src/components/company/CompanyResults.js"></script>
+    <script type="text/babel" src="src/components/company/CompanySummary.js"></script>
+    <script type="text/babel" src="src/components/company/CompanyDetails.js"></script>
+
     <script type="text/babel" src="src/components/ui/App.js"></script>
+
     <script type="text/babel" src="src/components/forms/Login.js"></script>
+    <script type="text/babel" src="src/components/forms/SearchBar.js"></script>
+    <script type="text/babel" src="src/components/forms/CompanyEdit.js"></script>
+    <script type="text/babel" src="src/components/forms/EditStructure.js"></script>
+
     <script type="text/babel" src="src/index.js"></script>
   </head>
   <body>
