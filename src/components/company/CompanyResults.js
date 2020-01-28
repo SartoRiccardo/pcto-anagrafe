@@ -1,5 +1,6 @@
 import React from "react";
 import CompanySummary from "./CompanySummary";
+import {connect} from "react-redux";
 
 function CompanyResults(props) {
   const {results, search} = props;
@@ -16,4 +17,11 @@ function CompanyResults(props) {
   );
 }
 
-export default CompanyResults;
+function mapStateToProps(state) {
+  return {
+    search: state.search,
+    results: state.results,
+  };
+}
+
+export default connect(mapStateToProps)(CompanyResults);

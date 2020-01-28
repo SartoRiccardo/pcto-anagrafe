@@ -10,8 +10,8 @@ class CompanySummary extends Component {
 
     let uniqueFields = [];
     for (let i = 0; i < search.length; i++) {
-      if(!uniqueFields.includes(search[i].id)) {
-        uniqueFields.push(search[i].id);
+      if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+        uniqueFields.push(search[i].field.id);
       }
     }
 

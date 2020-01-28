@@ -2,11 +2,6 @@ import React, {Component} from "react";
 import SearchBar from "./SearchBar";
 import CompanyResults from "../company/CompanyResults";
 
-let placeholder1 = [
-  {id:0, name:"nome", regex:"*"},
-  {id:1, name:"telefono", regex:"\\d{3} \\d{3} \\d{4}"}
-];
-
 class SearchCompany extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +21,9 @@ class SearchCompany extends Component {
   render() {
     return (
       <div>
-        <SearchBar options={placeholder1} onChange={this.handleChange} />
+        <SearchBar onChange={this.handleChange} />
+        <hr />
+        <CompanyResults />
       </div>
     )
   }

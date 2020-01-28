@@ -6,11 +6,18 @@ import SearchCompany from "../forms/SearchCompany";
 function App() {
   return(
     <BrowserRouter>
-      <div>
-        <h1>PCTO</h1>
-        <AdminNav />
+      <AdminNav />
+      <div className="content">
         <Switch>
           <Route exact path="/" component={SearchCompany} />
+          <Route path="/search" component={SearchCompany} />
+          {/*
+          <Route path="/structure" component={} />
+          <Route path="/company/:id" component={} />
+          <Route path="/saved" component={} />
+          <Route path="/add" component={} />
+          <Route path="/projects" component={} />
+          */}
         </Switch>
       </div>
     </BrowserRouter>

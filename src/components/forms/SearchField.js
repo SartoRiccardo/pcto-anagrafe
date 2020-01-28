@@ -4,7 +4,9 @@ class SearchField extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = this.props.initState ? {
+      ...this.props.initState
+    } : {
       id: this.props.id,
       field: this.props.options[0],
       value: "",
@@ -47,7 +49,7 @@ class SearchField extends Component {
   notifyChange = () => {
     if(this.props.onChange) {
       this.props.onChange({
-        id: this.props.id,
+        id: this.state.id,
         target: this,
       });
     }
