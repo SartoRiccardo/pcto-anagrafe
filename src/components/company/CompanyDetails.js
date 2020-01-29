@@ -15,10 +15,10 @@ import {connect} from "react-redux";
 function CompanyDetails(props) {
   const {company, fields} = props;
   const data = fields.map(f => {
-    if(f.id == 0) return null;  // Name field
+    if(f.id === 0) return null;  // Name field
     let match = null;
     for (let i = 0; i < company.fields.length; i++) {
-      if(company.fields[i].id == f.id) {
+      if(company.fields[i].id === f.id) {
         match = company.fields[i];
         break;
       }
@@ -43,11 +43,4 @@ function CompanyDetails(props) {
   )
 }
 
-function mapStateToProps(state) {
-  return {
-    company: state.company.match,
-    fields: state.structure.fields,
-  };
-}
-
-export default connect(mapStateToProps)(CompanyDetails);
+export default CompanyDetails;
