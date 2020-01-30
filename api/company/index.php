@@ -3,6 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
 include "./get.php";
+include "./post.php";
 include "./delete.php";
 
 switch ($_POST["REQUEST_METHOD"]) {
@@ -20,7 +21,14 @@ switch ($_POST["REQUEST_METHOD"]) {
     break;
 
   case "POST":
-    // code...
+    if(isset($_POST["name"]) && strlen($_POST["name"]) > 0 && isset($_POST["fields"])) {
+      echo json_encode(
+        insertCompany(
+          $_POST["name"],
+          json_decode($_POST["fields"], true)
+        )
+      );
+    }
     break;
 
   case "PUT":
