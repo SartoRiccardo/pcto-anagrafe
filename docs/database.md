@@ -1,21 +1,26 @@
-# Database
-
-## Modello Entità-Relazione
+# Modello Entità-Relazione
 
 ![Modello ER](img/er_model.png)
 
 Il database è stato progettato in modo di essere il più possibile flessibile e di poter cambiare ogni singolo campo a proprio piacimento, mantenendo però l'integrità semantica dei dati.
 
-## Modello Logico
+# Modello Logico
 
-### Company
+## Company
 
 | Campo  | Descrizione |
 | ------ | ----------- |
 | `id`   | Un ID associato ad ogni azienda. Servirà da chiave primaria e sarà un intero. Le aziende vengono identificate da questo ID e non dal loro nome per essere coerenti con il resto delle entità. |
-| `name` | Il nome dell'azienda. È inserito nella tabella `Company` e non nella tabella `CompanyFields` perché è l'unico campo obbligatorio e che non può essere nullo. |
+| `name` | Il nome dell'azienda. È inserito nella tabella `Company` e non nella tabella `CompanyField` perché è l'unico campo obbligatorio e che non può essere nullo. |
 
-### Fields
+## Activity
+
+|   Campo   | Descrizione |
+| --------- | ----------- |
+| `id`      | Un ID associato ad ogni attività. |
+| `company` | L'ID dell'azienda che ha svolto questa attività. |
+
+## Field
 
 |  Campo   | Descrizione |
 | -------- | ----------- |
@@ -26,31 +31,25 @@ Il database è stato progettato in modo di essere il più possibile flessibile e
 
 Questa tabella è necessaria per garantire un'integrità semantica non presente in un database SQL. Si possono inserire nuovi campi a proprio piacimento, con una sintassi inventata, senza modificare la struttura del database. Tutti i controlli verranno fatti a livello applicativo.
 
-### CompanyFields
+## CompanyField
 
 |   Campo   | Descrizione |
 | --------- | ----------- |
 | `company` | L'ID dell'azienda a cui appartiene il campo. Chiave esterna a `Company(id)`. |
-|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Fields(id)`.
+|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
 |  `value`  | Il valore del campo. |
 
-### Activity
-
-|   Campo   | Descrizione |
-| --------- | ----------- |
-| `id`      | Un ID associato ad ogni attività. |
-| `company` | L'ID dell'azienda che ha svolto questa attività. |
-
-### ActivityFields
+## ActivityField
 
 |   Campo   | Descrizione |
 | --------- | ----------- |
 | `activity` | L'ID dell'attività a cui appartiene il campo. Chiave esterna a `Activity(id)`. |
-|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Fields(id)`.
+|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
 |  `value`  | Il valore del campo. |
 
-## Modello Fisico
+# Modello Fisico
 
+## Company
 ```SQL
 CREATE TABLE Company (
   id INT AUTO_INCREMENT,
@@ -58,25 +57,8 @@ CREATE TABLE Company (
   PRIMARY KEY(id)
 )
 ```
-```SQL
-CREATE TABLE Fields (
-  id INT AUTO_INCREMENT,
-  target VARCHAR(128),
-  name VARCHAR(128),
-  regex VARCHAR(256),
-  PRIMARY KEY(id)
-)
-```
-```SQL
-CREATE TABLE CompanyFields (
-  company INT,
-  field INT,
-  value VARCHAR(128),
-  PRIMARY KEY(company, field),
-  FOREIGN KEY (company) REFERENCES Company(id),
-  FOREIGN KEY (field) REFERENCES Fields(id)
-)
-```
+
+## Activity
 ```SQL
 CREATE TABLE Activity (
   id INT AUTO_INCREMENT,
@@ -86,13 +68,38 @@ CREATE TABLE Activity (
   FOREIGN KEY (company) REFERENCES Company(id)
 )
 ```
+
+## Field
 ```SQL
-CREATE TABLE ActivityFields (
+CREATE TABLE Field (
+  id INT AUTO_INCREMENT,
+  target VARCHAR(128),
+  name VARCHAR(128),
+  regex VARCHAR(256),
+  PRIMARY KEY(id)
+)
+```
+
+## CompanyField
+```SQL
+CREATE TABLE CompanyField (
+  company INT,
+  field INT,
+  value VARCHAR(128),
+  PRIMARY KEY(company, field),
+  FOREIGN KEY (company) REFERENCES Company(id),
+  FOREIGN KEY (field) REFERENCES Field(id)
+)
+```
+
+## ActivityField
+```SQL
+CREATE TABLE ActivityField (
   activity INT,
   field INT,
   value VARCHAR(128),
   PRIMARY KEY(activity, field),
   FOREIGN KEY (activity) REFERENCES Activity(id),
-  FOREIGN KEY (field) REFERENCES Fields(id)
+  FOREIGN KEY (field) REFERENCES Field(id)
 )
 ```
