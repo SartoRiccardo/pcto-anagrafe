@@ -3,16 +3,17 @@ header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
 include "./get.php";
+include "./delete.php";
 
-switch ($_SERVER["REQUEST_METHOD"]) {
+switch ($_POST["REQUEST_METHOD"]) {
   case "GET":
-    if(isset($_GET["id"])) {
-      echo json_encode(getCompanyById($_GET["id"]));
+    if(isset($_POST["id"])) {
+      echo json_encode(getCompanyById($_POST["id"]));
     }
-    else if(isset($_GET["search"]) && count($_GET["search"]) > 0) {
+    else if(isset($_POST["search"]) && count($_POST["search"]) > 0) {
       echo json_encode(
         getCompaniesBySearch(
-          json_decode($_GET["search"], true)
+          json_decode($_POST["search"], true)
         )
       );
     }
@@ -27,7 +28,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     break;
 
   case "DELETE":
-    // code...
+    if(isset($_POST["id"])) {
+      deleteCompanyById($_POST["id"]);
+    }
     break;
 
   default:
