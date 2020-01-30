@@ -3,9 +3,6 @@ header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
 
 include "./get.php";
-include "./post.php";
-include "./put.php";
-include "./delete.php";
 
 switch ($_SERVER["REQUEST_METHOD"]) {
   case "GET":
