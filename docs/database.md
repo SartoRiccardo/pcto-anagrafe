@@ -48,3 +48,51 @@ Questa tabella è necessaria per garantire un'integrità semantica non presente 
 | `activity` | L'ID dell'attività a cui appartiene il campo. Chiave esterna a `Activity(id)`. |
 |  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Fields(id)`.
 |  `value`  | Il valore del campo. |
+
+## Modello Fisico
+
+```SQL
+CREATE TABLE Company (
+  id INT AUTO_INCREMENT,
+  name VARCHAR(128),
+  PRIMARY KEY(id)
+)
+```
+```SQL
+CREATE TABLE Fields (
+  id INT AUTO_INCREMENT,
+  target VARCHAR(128),
+  name VARCHAR(128),
+  regex VARCHAR(256),
+  PRIMARY KEY(id)
+)
+```
+```SQL
+CREATE TABLE CompanyFields (
+  company INT,
+  field INT,
+  value VARCHAR(128),
+  PRIMARY KEY(company, field),
+  FOREIGN KEY (company) REFERENCES Company(id),
+  FOREIGN KEY (field) REFERENCES Fields(id)
+)
+```
+```SQL
+CREATE TABLE Activity (
+  id INT AUTO_INCREMENT,
+  company INT,
+  value VARCHAR(128),
+  PRIMARY KEY(id),
+  FOREIGN KEY (company) REFERENCES Company(id)
+)
+```
+```SQL
+CREATE TABLE ActivityFields (
+  activity INT,
+  field INT,
+  value VARCHAR(128),
+  PRIMARY KEY(activity, field),
+  FOREIGN KEY (activity) REFERENCES Activity(id),
+  FOREIGN KEY (field) REFERENCES Fields(id)
+)
+```
