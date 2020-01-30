@@ -1,6 +1,4 @@
 <?php
-include "../database/database.php";
-
 function insertCompany($name, $fields) {
   global $dbc;
 
