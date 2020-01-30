@@ -1,4 +1,4 @@
-site_name: sartori-pcto
+site_name: pcto-anagrafe
 
 nav:
     - 'Project Summary': 'customer_requests.md'
