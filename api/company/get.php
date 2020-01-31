@@ -11,7 +11,7 @@ function getCompanyById($id) {
   $name = utf8_encode($res["name"]);
 
   $q = "SELECT ft.id, ft.name, ft.regex, cf.value
-          FROM CompanyField cf JOIN FieldType ft
+          FROM CompanyField cf JOIN Field ft
             ON cf.type = ft.id
           WHERE cf.company = ?";
   $stmt = $dbc->prepare($q);

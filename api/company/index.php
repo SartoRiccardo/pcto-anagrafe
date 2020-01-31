@@ -12,12 +12,15 @@ switch ($_POST["REQUEST_METHOD"]) {
     if(isset($_POST["id"])) {
       echo json_encode(getCompanyById($_POST["id"]));
     }
-    else if(isset($_POST["search"]) && count($_POST["search"]) > 0) {
-      echo json_encode(
-        getCompaniesBySearch(
-          json_decode($_POST["search"], true)
-        )
-      );
+    else if(isset($_POST["search"])) {
+      if(count(json_decode($_POST["search"], true)) > 0) {
+        echo json_encode(
+          getCompaniesBySearch(
+            json_decode($_POST["search"], true)
+          )
+        );
+      }
+      else echo "[]";
     }
     break;
 

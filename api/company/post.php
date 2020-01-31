@@ -52,7 +52,7 @@ function companyIsValid($name, $fields) {
     }
 
     $q = "SELECT regex
-            FROM FieldType
+            FROM Field
             WHERE id = :id";
     $stmt = $dbc->prepare($q);
     $stmt->bindParam(":id", $f["id"]);
