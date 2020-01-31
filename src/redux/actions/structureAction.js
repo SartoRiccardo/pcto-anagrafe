@@ -1,3 +1,4 @@
+import axios from "axios";
 
 export function updateStructure(fields) {
   return (dispatch, getState) => {
@@ -7,16 +8,20 @@ export function updateStructure(fields) {
 
 export function initStructure() {
   return (dispatch, getState) => {
-    // GET /api/structure
-    const fields = [
-      {id: 0, name: "Nome", regex: ".+"},
-      {id: 1, name: "Telefono", regex: "\\d{3} \\d{3} \\d{4}"},
-      {id: 2, name: "E-Mail", regex: "[a-zA-Z0-9.]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*"},
-    ];
+    let payload = new FormData();
+    payload.set("user", "");
+    payload.set("target", "COMPANY");
+    payload.set("REQUEST_METHOD", "GET");
 
-    dispatch({
-      type: "UPDATE_STRUCTURE",
-      fields,
-    });
+    axios.post("http://localhost/INI/pcto-anagrafe/api/structure/", payload)
+      .then(res => {
+        if(res.status === 200) {
+          const fields = res.data;
+          dispatch({
+            type: "UPDATE_STRUCTURE",
+            fields,
+          });
+        }
+      });
   }
 }

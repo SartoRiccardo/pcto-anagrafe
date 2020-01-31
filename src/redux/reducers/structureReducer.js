@@ -20,7 +20,7 @@ function structureReducer(state=init, action) {
       return {
         ...state,
         fields
-      }
+      };
 
     default:
       return state;
