@@ -4,23 +4,71 @@
 
 Il database è stato progettato in modo di essere il più possibile flessibile e di poter cambiare ogni singolo campo a proprio piacimento, mantenendo però l'integrità semantica dei dati.
 
-# Modello Logico
+# Struttura
+
+## Privilege
+
+### Modello Logico
+
+| Campo  | Descrizione |
+| ------ | ----------- |
+| `id`   | L'ID dell'utente. corrisponde con l'ID utente di Spaggiari. |
+| `type` | Il tipo di permesso dato all'utente. |
+
+### Modello Fisico
+
+```SQL
+CREATE TABLE Privilege (
+  id INT NOT NULL,
+  type VARCHAR(16) NOT NULL,
+  PRIMARY KEY(id, type)
+)
+```
 
 ## Company
+
+### Modello Logico
 
 | Campo  | Descrizione |
 | ------ | ----------- |
 | `id`   | Un ID associato ad ogni azienda. Servirà da chiave primaria e sarà un intero. Le aziende vengono identificate da questo ID e non dal loro nome per essere coerenti con il resto delle entità. |
 | `name` | Il nome dell'azienda. È inserito nella tabella `Company` e non nella tabella `CompanyField` perché è l'unico campo obbligatorio e che non può essere nullo. |
 
+### Modello Fisico
+
+```SQL
+CREATE TABLE Company (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(128) NOT NULL,
+  PRIMARY KEY(id)
+)
+```
+
 ## Activity
+
+### Modello Logico
 
 |   Campo   | Descrizione |
 | --------- | ----------- |
 | `id`      | Un ID associato ad ogni attività. |
 | `company` | L'ID dell'azienda che ha svolto questa attività. |
 
+### Modello Fisico
+
+```SQL
+CREATE TABLE Activity (
+  id INT NOT NULL AUTO_INCREMENT,
+  company INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY (company) REFERENCES Company(id)
+)
+```
+
 ## Field
+
+Questa tabella è necessaria per garantire un'integrità semantica non presente in un database SQL. Si possono inserire nuovi campi a proprio piacimento, con una sintassi inventata, senza modificare la struttura del database. Tutti i controlli verranno fatti a livello applicativo.
+
+### Modello Logico
 
 |  Campo   | Descrizione |
 | -------- | ----------- |
@@ -29,9 +77,21 @@ Il database è stato progettato in modo di essere il più possibile flessibile e
 | `name`   | Il nome del campo. |
 | `regex`  | La sintassi che un valore di questo campo deve seguire per essere considerato valido. |
 
-Questa tabella è necessaria per garantire un'integrità semantica non presente in un database SQL. Si possono inserire nuovi campi a proprio piacimento, con una sintassi inventata, senza modificare la struttura del database. Tutti i controlli verranno fatti a livello applicativo.
+### Modello Fisico
+
+```SQL
+CREATE TABLE Field (
+  id INT NOT NULL AUTO_INCREMENT,
+  target VARCHAR(128) NOT NULL,
+  name VARCHAR(128) NOT NULL,
+  regex TEXT NOT NULL,
+  PRIMARY KEY(id)
+)
+```
 
 ## CompanyField
+
+### Modello Logico
 
 |   Campo   | Descrizione |
 | --------- | ----------- |
@@ -39,53 +99,13 @@ Questa tabella è necessaria per garantire un'integrità semantica non presente 
 |  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
 |  `value`  | Il valore del campo. |
 
-## ActivityField
+### Modello Fisico
 
-|   Campo   | Descrizione |
-| --------- | ----------- |
-| `activity` | L'ID dell'attività a cui appartiene il campo. Chiave esterna a `Activity(id)`. |
-|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
-|  `value`  | Il valore del campo. |
-
-# Modello Fisico
-
-## Company
-```SQL
-CREATE TABLE Company (
-  id INT AUTO_INCREMENT,
-  name VARCHAR(128),
-  PRIMARY KEY(id)
-)
-```
-
-## Activity
-```SQL
-CREATE TABLE Activity (
-  id INT AUTO_INCREMENT,
-  company INT,
-  value VARCHAR(128),
-  PRIMARY KEY(id),
-  FOREIGN KEY (company) REFERENCES Company(id)
-)
-```
-
-## Field
-```SQL
-CREATE TABLE Field (
-  id INT AUTO_INCREMENT,
-  target VARCHAR(128),
-  name VARCHAR(128),
-  regex VARCHAR(256),
-  PRIMARY KEY(id)
-)
-```
-
-## CompanyField
 ```SQL
 CREATE TABLE CompanyField (
-  company INT,
-  field INT,
-  value VARCHAR(128),
+  company INT NOT NULL,
+  field INT NOT NULL,
+  value TEXT NOT NULL,
   PRIMARY KEY(company, field),
   FOREIGN KEY (company) REFERENCES Company(id),
   FOREIGN KEY (field) REFERENCES Field(id)
@@ -93,13 +113,62 @@ CREATE TABLE CompanyField (
 ```
 
 ## ActivityField
+
+### Modello Logico
+
+|   Campo   | Descrizione |
+| --------- | ----------- |
+| `activity` | L'ID dell'attività a cui appartiene il campo. Chiave esterna a `Activity(id)`. |
+|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
+|  `value`  | Il valore del campo. |
+
+### Modello Fisico
+
 ```SQL
 CREATE TABLE ActivityField (
-  activity INT,
-  field INT,
-  value VARCHAR(128),
+  activity INT NOT NULL,
+  field INT NOT NULL,
+  value TEXT NOT NULL,
   PRIMARY KEY(activity, field),
   FOREIGN KEY (activity) REFERENCES Activity(id),
   FOREIGN KEY (field) REFERENCES Field(id)
+)
+```
+
+## Saved
+
+### Modello Logico
+
+|   Campo   | Descrizione |
+| --------- | ----------- |
+| `student` | Lo studente che si è salvato l'azienda. Corrisponde con l'ID utente di Spaggiari. |
+| `company` | L'azienda salvata. |
+
+### Modello Fisico
+
+```SQL
+CREATE TABLE Saved (
+  student INT NOT NULL,
+  company INT NOT NULL,
+  FOREIGN KEY (company) REFERENCES Company(id)
+)
+```
+
+## Internship
+
+### Modello Logico
+
+|   Campo    | Descrizione |
+| ---------- | ----------- |
+| `student`  | Lo studente che si è salvato l'azienda. Corrisponde con l'ID utente di Spaggiari. |
+| `activity` | L'attività svolta dall'utente. |
+
+### Modello Fisico
+
+```SQL
+CREATE TABLE Internship (
+  student INT NOT NULL,
+  activity INT NOT NULL,
+  FOREIGN KEY (activity) REFERENCES Activity(id)
 )
 ```

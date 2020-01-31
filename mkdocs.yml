@@ -1,9 +1,9 @@
-site_name: pcto-anagrafe
+site_name: 'Sartori Riccardo Anagrafe'
 
 nav:
     - 'Project Summary': 'customer_requests.md'
     - 'Project Charter': 'project_charter.md'
     - 'Database': 'database.md'
-    
+
 theme:
     name: readthedocs
