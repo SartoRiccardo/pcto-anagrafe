@@ -7,7 +7,7 @@ import React, {Component} from "react";
  *
  * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.company A list of companies.
  */
-class CompanyEdit extends React.Component {
+class CompanyEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -18,7 +18,7 @@ class CompanyEdit extends React.Component {
   handleChangeField = evt => {
     let fields = [...this.state.fields];
     for (let i = 0; i < fields.length; i++) {
-      if(fields[i].id == evt.target.name) {
+      if(fields[i].id === parseInt(evt.target.name)) {
         fields[i].value = evt.target.value;
       }
     }

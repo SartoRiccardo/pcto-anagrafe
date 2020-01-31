@@ -1,5 +1,4 @@
 import React from "react";
-import {connect} from "react-redux";
 
 /**
  * A table showing all of a company's information.
