@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import SearchField from "./SearchField";
-import resultAction from "../../redux/actions/resultAction";
+import {resultAction} from "../../redux/actions/resultAction";
 import {connect} from "react-redux";
 
 /**

@@ -15,7 +15,7 @@ import EditCompany from "../forms/EditCompany";
  * @param {{id:int, name:String, regex:String, value:String}[]}                               props.fields      The fields to show.
  * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.company     The company we're showing (optional).
  * @param {boolean}                                                                           props.newCompany  If we're creating a new company.
- * @param {boolean}                                                                           props.admin       Whether the user has administrator privileges.
+ * @param @deprecated {boolean}                                                               props.admin       Whether the user has administrator privileges.
  */
 class ShowCompany extends Component {
   render() {
@@ -25,20 +25,28 @@ class ShowCompany extends Component {
     const editing = true; // check link
 
     let component;
-    if(admin && editing) {
+    if(company == null) {
+      component = (
+        <div>
+        </div>
+      );
+    }
+    else if(admin && editing) {
       component = (
         <div>
           <EditCompany />
         </div>
       );
-    } else if (admin) {
+    }
+    else if (admin) {
       component = (
         <div>
           <CompanyDetails company={company} fields={fields} />
           <input type="button" value="Modifica" />
         </div>
       );
-    } else {
+    }
+    else {
       component = (
         <div>
           <CompanyDetails company={company} fields={fields} />

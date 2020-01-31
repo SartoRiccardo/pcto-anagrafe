@@ -1,7 +1,7 @@
 import axios from "axios";
 import {getToken} from "../../session/tokenManager";
 
-function resultAction(search) {
+export function resultAction(search) {
   return (dispatch, getState) => {
     const searchReq = search.map(s => {
       return {
@@ -9,6 +9,7 @@ function resultAction(search) {
         value: s.value
       };
     });
+
     if(getToken() == null) {
       // Logout
       return;
@@ -35,4 +36,34 @@ function resultAction(search) {
   }
 }
 
-export default resultAction;
+export function selectCompany(id) {
+  return (dispatch, getState) => {
+    if(getToken() == null) {
+      // Logout
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "GET");
+    payload.set("user", getToken());
+    payload.set("id", id);
+
+    axios.post("http://localhost/INI/pcto-anagrafe/api/company/", payload)
+      .then(res => {
+        if(res.status === 200 && !res.data.error) {
+          const match = res.data;
+          dispatch({
+            type: "SET_MATCH",
+            match,
+          });
+        }
+        else if(res.data.error) {
+          // Handle error...
+        }
+      });
+  }
+}
+
+export function resetCompany() {
+  return {type:"RESET"};
+}
