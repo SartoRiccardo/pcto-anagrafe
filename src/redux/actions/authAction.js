@@ -10,7 +10,6 @@ export function loginAction(user, pswd) {
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const {token, privileges} = res.data;
-          console.log(res);
           dispatch({
             type: "LOGIN",
             token,

@@ -23,7 +23,6 @@ function resultAction(search) {
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const results = res.data;
-          console.log(results);
           dispatch({
             type: "UPDATE_RESULTS",
             results,

@@ -11,12 +11,13 @@
 const init = {
   fields: []
 }
+const nameField = {id:0, name:"Nome", regex:".+"};
 
 function structureReducer(state=init, action) {
   let fields;
   switch(action.type) {
     case "UPDATE_STRUCTURE":
-      fields = action.fields;
+      fields = [nameField, ...action.fields];
       return {
         ...state,
         fields

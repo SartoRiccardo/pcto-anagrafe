@@ -10,7 +10,6 @@ export function updateStructure(fields) {
 export function initStructure() {
   return (dispatch, getState) => {
     let payload = new FormData();
-    console.log(getToken());
     payload.set("user", getToken());
     payload.set("target", "COMPANY");
     payload.set("REQUEST_METHOD", "GET");
