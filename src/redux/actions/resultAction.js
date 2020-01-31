@@ -8,8 +8,6 @@ function resultAction(search) {
       };
     });
 
-    console.log(searchReq);
-
     // GET /api/company
     let results = [
       {

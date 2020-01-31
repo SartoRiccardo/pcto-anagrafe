@@ -9,11 +9,7 @@
  * @param {{id:int, name:String, regex:String}[]} fields The table structure's fields.
  */
 const init = {
-  fields: [
-    {id: 0, name: "Nome", regex: ".+"},
-    {id: 1, name: "Telefono", regex: "\\d{3} \\d{3} \\d{4}"},
-    {id: 2, name: "E-Mail", regex: "[a-zA-Z0-9.!#$%&’*+\\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*"},
-  ],
+  fields: []
 }
 
 function structureReducer(state=init, action) {

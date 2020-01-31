@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {connect} from "react-redux";
+import {initStructure} from "../../redux/actions/structureAction";
 import Login from "../forms/Login";
 import AdminNav from "./AdminNav";
 import SearchCompany from "../forms/SearchCompany";
@@ -13,6 +14,12 @@ import ShowCompany from "../company/ShowCompany";
  * @author Riccardo Sartori
  */
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.props.initStructure();
+  }
+
   render() {
     const {admin, token} = this.props;
     let links;
@@ -68,4 +75,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+  return {
+    initStructure: () => {
+      dispatch(initStructure());
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
