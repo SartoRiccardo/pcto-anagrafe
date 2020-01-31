@@ -1,2 +1,0 @@
-# Documentazione
-+ [Database](database.md)
