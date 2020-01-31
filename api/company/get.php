@@ -20,7 +20,7 @@ function getCompanyById($id) {
   $fields = array();
   while($res = $stmt->fetch()) {
     $f = array(
-      "id"=>$res["id"],
+      "id"=>intval($res["id"]),
       "name"=>utf8_encode($res["name"]),
       "regex"=>utf8_encode($res["regex"]),
       "value"=>utf8_encode($res["value"]),
