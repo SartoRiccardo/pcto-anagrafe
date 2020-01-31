@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import SearchField from "./SearchField";
+import resultAction from "../../redux/actions/resultAction";
 import {connect} from "react-redux";
 
 /**
@@ -45,6 +46,7 @@ class SearchBar extends Component {
     }, () => {
       this.notifyChange();
       this.props.updateSearchField(changedField);
+      this.props.updateResults(this.state.fields);
     });
   }
 
@@ -126,7 +128,10 @@ function mapDispatchToProps(dispatch) {
     },
     updateSearchField: search => {
       dispatch({type: "UPDATE_SEARCH_FIELD", search});
-    }
+    },
+    updateResults: searches => {
+      dispatch(resultAction(searches));
+    },
   };
 }
 
