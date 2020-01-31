@@ -21,14 +21,14 @@ class App extends Component {
   }
 
   render() {
-    const {admin, token} = this.props;
+    const {privileges, token} = this.props;
     let links;
     if(!token) {
       links = (
         <Login />
       );
     }
-    else if(admin) {
+    else if("ADMIN" in privileges) {
       links = (
         <Switch>
           <Route path="/search" component={SearchCompany} />
@@ -70,7 +70,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    admin: state.auth.admin,
+    privileges: state.auth.privileges,
     token: state.auth.token,
   };
 }

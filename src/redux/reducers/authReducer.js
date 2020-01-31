@@ -1,4 +1,4 @@
-import {saveToken, getToken, deleteToken} from "../../session/saveToken";
+import {saveToken, getToken, deleteToken} from "../../session/tokenManager";
 
 /**
  * The initial state of the authReducer store.
@@ -7,37 +7,29 @@ import {saveToken, getToken, deleteToken} from "../../session/saveToken";
  *
  * @author Riccardo Sartori
  *
- * @param {boolean} admin If the user has admin privileges.
- * @param {int}     token The user's identifier.
- * @param {string}  error If there was an error while logging in.
+ * @param {string[]} privileges The privileges the user has.
+ * @param {int}      token      The user's identifier.
+ * @param {string}   error      If there was an error while logging in.
  */
 const init = {
-  admin: false,
+  privileges: [],
   token: null,
   error: null,
 }
 
 function companyReducer(state=init, action) {
   switch(action.type) {
-    case "LOGIN_USER":
+    case "LOGIN":
       saveToken(action.token);
       return {
-        admin: false,
-        token: action.token,
-        error: null,
-      };
-
-    case "LOGIN_ADMIN":
-      saveToken(action.token);
-      return {
-        admin: true,
+        privileges: action.privileges,
         token: action.token,
         error: null,
       };
 
     case "ERROR":
       return {
-        admin: false,
+        privileges: [],
         token: null,
         error: action.error,
       };
@@ -45,7 +37,7 @@ function companyReducer(state=init, action) {
     case "LOGOUT":
       deleteToken();
       return {
-        admin: false,
+        privileges: [],
         token: null,
         error: null,
       };
