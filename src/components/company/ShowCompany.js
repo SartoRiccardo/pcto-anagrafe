@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import CompanyDetails from "./CompanyDetails";
 import EditCompany from "../forms/EditCompany";
 
@@ -18,6 +20,13 @@ import EditCompany from "../forms/EditCompany";
  * @param @deprecated {boolean}                                                               props.admin       Whether the user has administrator privileges.
  */
 class ShowCompany extends Component {
+  constructor(props) {
+    super(props);
+
+    this.props.resetCompany();
+    this.props.selectCompany(this.props.match.params.id);
+  }
+
   render() {
     const {newCompany, admin, company, fields} = this.props;
     const {id} = this.props.match.params;
@@ -69,4 +78,16 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(ShowCompany);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    selectCompany: id => {
+      dispatch(selectCompany(id));
+    },
+    resetCompany: () => {
+      dispatch(resetCompany());
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ShowCompany));

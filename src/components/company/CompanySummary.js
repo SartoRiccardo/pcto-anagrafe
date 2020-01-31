@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
-import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 
 /**
  * A short table row describing certain company attributes.
@@ -15,8 +13,6 @@ import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
  */
 class CompanySummary extends Component {
   handleClick = evt => {
-    this.props.resetCompany();
-    this.props.selectCompany(this.props.data.id);
     this.props.history.push("/company/" + this.props.data.id);
   }
 
@@ -47,15 +43,4 @@ class CompanySummary extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    selectCompany: id => {
-      dispatch(selectCompany(id));
-    },
-    resetCompany: () => {
-      dispatch(resetCompany());
-    }
-  };
-}
-
-export default connect(null, mapDispatchToProps)(withRouter(CompanySummary));
+export default withRouter(CompanySummary);
