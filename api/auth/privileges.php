@@ -13,4 +13,21 @@ function hasPermission($id, $type) {
 
   return $stmt->fetch() != false;
 }
+
+function getPrivilegesFor($id) {
+  global $dbc;
+
+  $q = "SELECT type
+          FROM Privilege
+          WHERE id = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->execute();
+
+  $ret = array();
+  while($res = $stmt->fetch()) {
+    array_push($ret, $res["type"]);
+  }
+  return $ret;
+}
 ?>
