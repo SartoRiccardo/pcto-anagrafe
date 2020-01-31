@@ -1,5 +1,7 @@
 <?php
 function getStudentId($login, $pswd) {
+  global $url;
+
   $client = new SoapClient($url);
   $result = $client->__soapCall(
     "wsExtAuth..ckAuth",
