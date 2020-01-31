@@ -29,7 +29,7 @@ function getCompanyById($id) {
   }
 
   return array(
-    "id"=>$id,
+    "id"=>intval($id),
     "name"=>$name,
     "fields"=>$fields
   );
