@@ -12,7 +12,7 @@ function getCompanyById($id) {
 
   $q = "SELECT ft.id, ft.name, ft.regex, cf.value
           FROM CompanyField cf JOIN Field ft
-            ON cf.type = ft.id
+            ON cf.field = ft.id
           WHERE cf.company = ?";
   $stmt = $dbc->prepare($q);
   $stmt->execute(array($id));
@@ -57,14 +57,14 @@ function getCompaniesBySearch($search, $page=0) {
       $q = $i == 0 ? ("
         SELECT company
           FROM CompanyField
-          WHERE type = ?
+          WHERE field = ?
             AND value LIKE ?
       ") : ("
         SELECT c.company AS company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
-          WHERE type = ?
-            AND value LIKE ?
+          WHERE c.field = ?
+            AND c.value LIKE ?
       ");
       $newParams = array(
         $search[$i]["id"],

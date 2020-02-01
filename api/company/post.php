@@ -30,10 +30,10 @@ function insertCompany($name, $fields) {
 
   foreach ($fields as $f) {
     $q = "INSERT INTO CompanyField
-            VALUES(:company, :type, :value)";
+            VALUES(:company, :field, :value)";
     $stmt = $dbc->prepare($q);
     $stmt->bindParam(":company", $id);
-    $stmt->bindParam(":type", $f["id"]);
+    $stmt->bindParam(":field", $f["id"]);
     $stmt->bindParam(":value", $f["value"]);
     $stmt->execute();
   }
