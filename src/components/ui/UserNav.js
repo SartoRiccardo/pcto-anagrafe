@@ -15,7 +15,7 @@ function UserNav(props) {
         <li><NavLink to="/search">Cerca</NavLink></li>
         <li><NavLink to="/saved">Salvati</NavLink></li>
         <li><NavLink to="/projects">Attività</NavLink></li>
-        <li><a onClick={props.logout}>Logout</a></li>
+        <li><a onClick={props.logout} href="#">Logout</a></li>
       </ul>
     </nav>
   );

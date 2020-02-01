@@ -6,6 +6,7 @@ import {initLogin} from "../../redux/actions/authAction";
 import Login from "../forms/Login";
 import AdminNav from "./AdminNav";
 import UserNav from "./UserNav";
+import AnonymousNav from "./AnonymousNav";
 import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import ShowCompany from "../company/ShowCompany";
@@ -29,11 +30,10 @@ class App extends Component {
 
   render() {
     const {privileges, token} = this.props;
-    let links;
+    let links, nav;
     if(!token) {
-      links = (
-        <Login />
-      );
+      links = <Login />
+      nav = <AnonymousNav />
     }
     else if("ADMIN" in privileges) {
       links = (
@@ -49,6 +49,7 @@ class App extends Component {
           <Route path="/" component={SearchCompany} />
         </Switch>
       );
+      nav = <AdminNav />;
     }
     else {
       links = (
@@ -62,11 +63,12 @@ class App extends Component {
           <Route path="/" component={SearchCompany} />
         </Switch>
       );
+      nav = <UserNav />;
     }
 
     return(
       <BrowserRouter>
-        <UserNav />
+        {nav}
         <div className="content">
           {links}
         </div>
