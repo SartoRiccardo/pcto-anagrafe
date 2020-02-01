@@ -19,7 +19,7 @@ class ChangePage extends Component {
     return (
       <div>
         <input type="button" onClick={this.handleClick} name="decrease" value="<" disabled={page === 0} />
-        Pagina {page}
+        Pagina {page+1}
         <input type="button" onClick={this.handleClick} name="increase" value=">" />
       </div>
     );

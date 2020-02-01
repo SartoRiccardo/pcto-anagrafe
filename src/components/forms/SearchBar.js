@@ -123,12 +123,15 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     addSearchField: search => {
+      dispatch({type: "RESET_PAGE"});
       dispatch({type: "ADD_SEARCH_FIELD", search});
     },
     deleteSearchField: id => {
+      dispatch({type: "RESET_PAGE"});
       dispatch({type: "DELETE_SEARCH_FIELD", id});
     },
     updateSearchField: search => {
+      dispatch({type: "RESET_PAGE"});
       dispatch({type: "UPDATE_SEARCH_FIELD", search});
     },
     updateResults: searches => {

@@ -31,7 +31,7 @@ function searchReducer(state=init, action) {
       search = state.search;
       return {
         ...state,
-        search: search.filter(s => s.id !== id)
+        search: search.filter(s => s.id !== id),
       };
 
     case "UPDATE_SEARCH_FIELD":
@@ -69,6 +69,12 @@ function searchReducer(state=init, action) {
       return {
         ...state,
         page: (state.page-1 < 0) ? 0 : state.page-1,
+      };
+
+    case "RESET_PAGE":
+      return {
+        ...state,
+        page: 0,
       };
 
     default:
