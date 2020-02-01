@@ -77,6 +77,9 @@ function searchReducer(state=init, action) {
         page: 0,
       };
 
+    case "RESET_SEARCH":
+      return init;
+
     default:
       return state;
   }

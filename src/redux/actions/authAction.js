@@ -58,7 +58,8 @@ export function initLogin() {
 
 
 export function logoutAction() {
-  return {
-    type: "LOGOUT"
-  };
+  return (dispatch, getState) => {
+    dispatch({type: "LOGOUT"});
+    dispatch({type: "RESET_SEARCH"});
+  }
 }
