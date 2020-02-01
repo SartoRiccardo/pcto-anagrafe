@@ -18,8 +18,8 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.props.initStructure();
     this.props.initLogin();
+    this.props.initStructure();
   }
 
   componentDidUpdate() {
