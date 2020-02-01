@@ -5,6 +5,7 @@ import {reloadStructure} from "../../redux/actions/structureAction";
 import {initLogin} from "../../redux/actions/authAction";
 import Login from "../forms/Login";
 import AdminNav from "./AdminNav";
+import UserNav from "./UserNav";
 import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import ShowCompany from "../company/ShowCompany";
@@ -65,7 +66,7 @@ class App extends Component {
 
     return(
       <BrowserRouter>
-        <AdminNav />
+        <UserNav />
         <div className="content">
           {links}
         </div>

@@ -35,7 +35,7 @@ function getCompanyById($id) {
   );
 }
 
-function getCompaniesBySearch($search) {
+function getCompaniesBySearch($search, $page=0) {
   global $dbc;
 
   $params = array();
@@ -73,6 +73,9 @@ function getCompaniesBySearch($search) {
     }
     $params = array_merge($params, $newParams);
   }
+  $maxRows = 50;
+  $min = $page * $maxRows;
+  $q = "$q LIMIT $min, $maxRows;";
   $stmt = $dbc->prepare($q);
   $stmt->execute($params);
 

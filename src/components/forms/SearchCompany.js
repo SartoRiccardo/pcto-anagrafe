@@ -1,6 +1,7 @@
 import React from "react";
 import SearchBar from "./SearchBar";
 import CompanyResults from "../company/CompanyResults";
+import ChangePage from "./ChangePage";
 
 /**
  * A component to search companies and visualize the results.
@@ -17,6 +18,7 @@ function SearchCompany() {
       <SearchBar />
       <hr />
       <CompanyResults />
+      <ChangePage />
     </div>
   );
 }
