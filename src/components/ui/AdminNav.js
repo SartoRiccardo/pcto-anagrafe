@@ -1,5 +1,7 @@
-import React, {} from "react";
+import React from "react";
 import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import {logoutAction} from "../../redux/actions/authAction";
 
 /**
  * A list of NavLink administrators see.
@@ -15,9 +17,18 @@ function AdminNav(props) {
         <li><NavLink to="/saved">Salvati</NavLink></li>
         <li><NavLink to="/add">Aggiungi</NavLink></li>
         <li><NavLink to="/projects">Alunni</NavLink></li>
+        <li><a onClick={props.logout}>Logout</a></li>
       </ul>
     </nav>
   );
 }
 
-export default AdminNav;
+function mapDispatchToProps(dispatch) {
+  return {
+    logout: (evt) => {
+      dispatch(logoutAction());
+    }
+  };
+}
+
+export default connect(null, mapDispatchToProps)(AdminNav);

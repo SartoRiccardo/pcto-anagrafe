@@ -7,8 +7,12 @@ export function updateStructure(fields) {
   }
 }
 
-export function initStructure() {
+export function reloadStructure() {
   return (dispatch, getState) => {
+    if(!getToken()) {
+      return;
+    }
+
     let payload = new FormData();
     payload.set("user", getToken());
     payload.set("target", "COMPANY");

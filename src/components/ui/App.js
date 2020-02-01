@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {connect} from "react-redux";
-import {initStructure} from "../../redux/actions/structureAction";
+import {reloadStructure} from "../../redux/actions/structureAction";
+import {initLogin} from "../../redux/actions/authAction";
 import Login from "../forms/Login";
 import AdminNav from "./AdminNav";
 import SearchCompany from "../forms/SearchCompany";
@@ -17,6 +18,11 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.props.initStructure();
+    this.props.initLogin();
+  }
+
+  componentDidUpdate() {
     this.props.initStructure();
   }
 
@@ -78,7 +84,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     initStructure: () => {
-      dispatch(initStructure());
+      dispatch(reloadStructure());
+    },
+    initLogin: () => {
+      dispatch(initLogin());
     },
   };
 }

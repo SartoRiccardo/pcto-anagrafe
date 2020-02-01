@@ -67,7 +67,7 @@ class SearchBar extends Component {
 
       const {fields} = this.state;
       this.props.addSearchField(fields[fields.length-1]);
-      this.props.updateResults(this.state.fields);
+      this.props.updateResults(fields);
     });
   }
 
