@@ -26,4 +26,15 @@ if(isset($_POST["login"]) && isset($_POST["pswd"])) {
     echo json_encode($json);
   }
 }
+else if(isset($_POST["token"])) {
+  $token = intval($_POST["token"]);
+  if(isRegistered($token)) {
+    $permissions = getPrivilegesFor($token);
+    $json = array(
+      "token"=>$token,
+      "privileges"=>$permissions
+    );
+    echo json_encode($json);
+  }
+}
 ?>
