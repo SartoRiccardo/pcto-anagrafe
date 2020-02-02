@@ -1,4 +1,8 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
+
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import FormControl from "react-bootstrap/FormControl";
 
 /**
  * A single field to write a query for an attribute.
@@ -71,13 +75,21 @@ class SearchField extends Component {
       return <option key={o.id} value={o.id}>{o.name}</option>;
     })
     return (
-      <div>
-        <select name="field" onChange={this.changeField} value={field ? field.id : 0}>
-          {optionsUi}
-        </select>
-        <input type="text" name="value" value={value} onChange={this.changeHandler} />
-        <input type="button" value="-" onClick={this.deleteSearchField} />
-      </div>
+      <Fragment>
+        <Col xs={{order:1}} md={{order: 1, span:"auto"}}>
+          <FormControl as="select" name="field" onChange={this.changeField} value={field ? field.id : 0}>
+            {optionsUi}
+          </FormControl>
+        </Col>
+
+        <Col xs={{order:3, span:12}} md={{order:2, span:5}}>
+          <FormControl name="value" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
+        </Col>
+
+        <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
+          <FormControl as="button" onClick={this.deleteSearchField}>-</FormControl>
+        </Col>
+      </Fragment>
     );
   }
 }

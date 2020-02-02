@@ -2,6 +2,10 @@ import React from "react";
 import CompanySummary from "./CompanySummary";
 import {connect} from "react-redux";
 
+import Table from "react-bootstrap/Table";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 /**
  * A table of CompanySummary.
  *
@@ -33,17 +37,21 @@ function CompanyResults(props) {
   });
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          {header}
-        </tr>
-      </thead>
-      <tbody>
-        {summaries}
-      </tbody>
-    </table>
+    <Row>
+      <Col>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              {header}
+            </tr>
+          </thead>
+          <tbody>
+            {summaries}
+          </tbody>
+        </Table>
+      </Col>
+    </Row>
   );
 }
 

@@ -3,6 +3,12 @@ import SearchField from "./SearchField";
 import {resultAction} from "../../redux/actions/resultAction";
 import {connect} from "react-redux";
 
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 /**
  * A list of SearchField.
  *
@@ -95,19 +101,25 @@ class SearchBar extends Component {
     const {fields} = this.state;
     const sFields = fields.map(f => {
       return (
-        <SearchField
-          key={f.id}
-          options={this.props.options}
-          initState={f}
-          onChange={this.handleChange}
-          onDelete={this.handleDelete}
-        />
+        <Form.Row key={f.id} className="justify-content-sm-center my-2">
+          <SearchField
+            options={this.props.options}
+            initState={f}
+            onChange={this.handleChange}
+            onDelete={this.handleDelete}
+          />
+        </Form.Row>
       );
     })
     return (
-      <form onSubmit={evt => evt.preventDefault()}>
+      <form onSubmit={evt => evt.preventDefault()} className="my-3">
         {sFields}
-        <input className="btn" type="button" value="Cerca" onClick={this.addSearchField} />
+
+        <Row className="justify-content-sm-center">
+          <Col sm md="auto">
+            <FormControl as="button" onClick={this.addSearchField}>Cerca</FormControl>
+          </Col>
+        </Row>
       </form>
     );
   }

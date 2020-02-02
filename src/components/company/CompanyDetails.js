@@ -1,4 +1,5 @@
-import React from "react";
+import React, {Fragment} from "react";
+import Table from "react-bootstrap/Table";
 
 /**
  * A table showing all of a company's information.
@@ -31,14 +32,14 @@ function CompanyDetails(props) {
   });
 
   return(
-    <div>
+    <Fragment>
       <h1>{company.name}</h1>
-      <table>
+      <Table>
         <tbody>
           {data}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Fragment>
   )
 }
 

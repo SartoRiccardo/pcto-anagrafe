@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,700&display=swap');
 
+
 body {
   text-align: center;
   background-color: #eeeeee;
@@ -13,14 +14,14 @@ body {
 }
 
 .company-summary:not(:hover) {
-  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
 
 .company-summary:hover {
   background-color: #ffe0b2;
   cursor: pointer;
-  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
 
@@ -43,6 +44,7 @@ table {
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+*/
 
 
 /* INPUT */
@@ -64,7 +66,7 @@ tr:nth-child(even) {
 
 
 /* NAVBAR */
-ul {
+/* ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -85,13 +87,13 @@ li a {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
 
 li a:hover:not(.active) {
   background-color: #bf360c;
-  -webkit-transition: background-color 0.5s; /* Safari prior 6.1 */
+  -webkit-transition: background-color 0.5s;
   transition: background-color 0.5s;
 }
 
@@ -102,4 +104,4 @@ li a:hover:not(.active) {
 .content {
   padding:20px;
   margin-top:30px;
-}
+} */

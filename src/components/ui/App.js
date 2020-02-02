@@ -69,9 +69,7 @@ class App extends Component {
     return(
       <BrowserRouter>
         {nav}
-        <div className="content">
-          {links}
-        </div>
+        {links}
       </BrowserRouter>
     );
   }

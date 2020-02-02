@@ -3,6 +3,8 @@ import SearchBar from "./SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "./ChangePage";
 
+import Container from "react-bootstrap/Container";
+
 /**
  * A component to search companies and visualize the results.
  *
@@ -14,12 +16,12 @@ import ChangePage from "./ChangePage";
  */
 function SearchCompany() {
   return (
-    <div>
+    <Container>
       <SearchBar />
       <hr />
-      <CompanyResults />
       <ChangePage />
-    </div>
+      <CompanyResults />
+    </Container>
   );
 }
 
