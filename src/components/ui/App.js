@@ -3,10 +3,9 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {connect} from "react-redux";
 import {reloadStructure} from "../../redux/actions/structureAction";
 import {initLogin} from "../../redux/actions/authAction";
-import Login from "../forms/Login";
+import AnonymousPage from "./AnonymousPage";
 import AdminNav from "./AdminNav";
 import UserNav from "./UserNav";
-import AnonymousNav from "./AnonymousNav";
 import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import ShowCompany from "../company/ShowCompany";
@@ -32,8 +31,8 @@ class App extends Component {
     const {privileges, token} = this.props;
     let links, nav;
     if(!token) {
-      links = <Login />
-      nav = <AnonymousNav />
+      links = <AnonymousPage />
+      nav = null;
     }
     else if("ADMIN" in privileges) {
       links = (

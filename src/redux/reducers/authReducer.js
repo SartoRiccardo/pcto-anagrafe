@@ -15,6 +15,7 @@ const init = {
   privileges: [],
   token: null,
   error: null,
+  loading: false,
 }
 
 function companyReducer(state=init, action) {
@@ -25,6 +26,7 @@ function companyReducer(state=init, action) {
         privileges: action.privileges,
         token: action.token,
         error: null,
+        loading: false,
       };
 
     case "ERROR":
@@ -32,6 +34,7 @@ function companyReducer(state=init, action) {
         privileges: [],
         token: null,
         error: action.error,
+        loading: false,
       };
 
     case "LOGOUT":
@@ -40,7 +43,14 @@ function companyReducer(state=init, action) {
         privileges: [],
         token: null,
         error: null,
+        loading: false,
       };
+
+    case "START_LOGIN":
+      return {
+        ...state,
+        loading: true,
+      }
 
     default:
       return state;

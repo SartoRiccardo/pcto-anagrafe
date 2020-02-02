@@ -1,6 +1,10 @@
 import axios from "axios";
 import {getToken} from "../../session/tokenManager";
 
+export function startLogin() {
+  return {type:"START_LOGIN"};
+}
+
 export function loginAction(user, pswd) {
   return (dispatch, getState) => {
     let payload = new FormData();

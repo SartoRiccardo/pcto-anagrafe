@@ -2,6 +2,9 @@ import React from "react";
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import {logoutAction} from "../../redux/actions/authAction";
+
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
@@ -22,6 +25,9 @@ function UserNav(props) {
           <Nav.Link as={NavLink} to="/projects">Attività</Nav.Link>
         </Nav>
       </Navbar.Collapse>
+      <Form inline>
+        <Button as={NavLink} to="/" onClick={props.logout}>Logout</Button>
+      </Form>
     </Navbar>
   );
   // <ul>

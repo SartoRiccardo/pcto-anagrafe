@@ -1,6 +1,13 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {loginAction} from "../../redux/actions/authAction";
+import {loginAction, startLogin} from "../../redux/actions/authAction";
+import loadingSvg from "../../img/loading.svg";
+
+import Image from "react-bootstrap/Image";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 /**
  * A simple login form.
@@ -32,18 +39,41 @@ class Login extends Component {
 
   render() {
     const {user, pswd} = this.state;
-    const {error} = this.props;
+    const {error, loading} = this.props;
 
-    const errorMessage = error ? (
-      <h5>{error}</h5>
+    let status = error ? (
+      <Row className="justify-content-center my-3 text-center">
+        <Col>
+          <h5>{error}</h5>
+        </Col>
+      </Row>
     ) : null;
+
+    let loadingIcon = loading ? (
+      <img src={loadingSvg} style={{width: "2rem"}} />
+    ) : null;
+
     return(
-      <form onSubmit={this.submitHandler}>
-        {errorMessage}
-        <input type="text" name="user" onChange={this.changeHandler} value={user} />
-        <input type="password" name="pswd" onChange={this.changeHandler} value={pswd} />
-        <input type="submit" value="Login"/>
-      </form>
+      <Form onSubmit={this.submitHandler}>
+        {status}
+        <Form.Row className="justify-content-center my-3">
+          <Col md={6}>
+            <Form.Control type="text" placeholder="E-Mail/Badge" name="user" onChange={this.changeHandler} value={user} />
+          </Col>
+        </Form.Row>
+        <Form.Row className="justify-content-center my-3">
+          <Col md={6}>
+            <Form.Control type="password" placeholder="Password" name="pswd" onChange={this.changeHandler} value={pswd} />
+          </Col>
+        </Form.Row>
+
+        <Form.Row className="justify-content-center my-3">
+          <Col xs="auto">
+            <Button as="button" type="submit" disabled={loading}>Login</Button>
+            {loadingIcon}
+          </Col>
+        </Form.Row>
+      </Form>
     )
   }
 }
@@ -51,12 +81,14 @@ class Login extends Component {
 function mapStateToProps(state) {
   return {
     error: state.auth.error,
+    loading: state.auth.loading,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     login: (user, pswd) => {
+      dispatch(startLogin());
       dispatch(loginAction(user, pswd));
     },
   };
