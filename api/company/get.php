@@ -35,10 +35,68 @@ function getCompanyById($id) {
   );
 }
 
-function getCompaniesBySearch($search, $page=0) {
+function getCompaniesBySearch($search, $page=-1) {
   global $dbc;
 
+  $q = generateSearchQuery($search);
   $params = array();
+  for ($i=0; $i < count($search); $i++) {
+    if($search[$i]["id"] == 0) {
+      $newParams = array("%".$search[$i]["value"]."%");
+    }
+    else {
+      $newParams = array(
+        $search[$i]["id"],
+        "%".$search[$i]["value"]."%"
+      );
+    }
+    $params = array_merge($params, $newParams);
+  }
+  if($page >= 0){
+    $maxRows = 50;
+    $min = $page * $maxRows;
+    $q = "$q LIMIT $min, $maxRows;";
+  }
+  $stmt = $dbc->prepare($q);
+  $stmt->execute($params);
+
+  $ids = array();
+  while($res = $stmt->fetch()) {
+    array_push($ids, $res["company"]);
+  }
+
+  $ret = array();
+  foreach ($ids as $id) {
+    array_push($ret, getCompanyById($id));
+  }
+  return $ret;
+}
+
+function getCompanyNumberBySearch($search) {
+  global $dbc;
+
+  $q = generateSearchQuery($search);
+  $params = array();
+  for ($i=0; $i < count($search); $i++) {
+    if($search[$i]["id"] == 0) {
+      $newParams = array("%".$search[$i]["value"]."%");
+    }
+    else {
+      $newParams = array(
+        $search[$i]["id"],
+        "%".$search[$i]["value"]."%"
+      );
+    }
+    $params = array_merge($params, $newParams);
+  }
+  $q = "SELECT COUNT(*) AS amount FROM ($q) res";
+  $stmt = $dbc->prepare($q);
+  $stmt->execute($params);
+  return intval($stmt->fetch()["amount"]);
+}
+
+function generateSearchQuery($search) {
+  $q = "";
   for ($i=0; $i < count($search); $i++) {
     if($search[$i]["id"] == 0) {  // Name attribute is treated specially
       $q = $i == 0 ? ("
@@ -51,7 +109,6 @@ function getCompaniesBySearch($search, $page=0) {
             ON c.id = prev.company
           WHERE c.name LIKE ?
       ");
-      $newParams = array("%".$search[$i]["value"]."%");
     }
     else {
       $q = $i == 0 ? ("
@@ -66,28 +123,9 @@ function getCompaniesBySearch($search, $page=0) {
           WHERE c.field = ?
             AND c.value LIKE ?
       ");
-      $newParams = array(
-        $search[$i]["id"],
-        "%".$search[$i]["value"]."%"
-      );
     }
-    $params = array_merge($params, $newParams);
-  }
-  $maxRows = 50;
-  $min = $page * $maxRows;
-  $q = "$q LIMIT $min, $maxRows;";
-  $stmt = $dbc->prepare($q);
-  $stmt->execute($params);
-
-  $ids = array();
-  while($res = $stmt->fetch()) {
-    array_push($ids, $res["company"]);
   }
 
-  $ret = array();
-  foreach ($ids as $id) {
-    array_push($ret, getCompanyById($id));
-  }
-  return $ret;
+  return $q;
 }
 ?>
