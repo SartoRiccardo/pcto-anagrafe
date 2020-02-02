@@ -20,8 +20,8 @@ class ChangePage extends Component {
   }
 
   render() {
-    const {page} = this.props;
-    return (
+    const {page, show} = this.props;
+    return show ? (
       <Row className="justify-content-center">
         <Col xs={12} md="auto">
           <FormControl as="button" onClick={this.handleClick} name="decrease" disabled={page === 0}>&lt;</FormControl>
@@ -33,7 +33,7 @@ class ChangePage extends Component {
           <FormControl as="button" onClick={this.handleClick} name="increase">&gt;</FormControl>
         </Col>
       </Row>
-    );
+    ) : null;
 
       // <input type="button" onClick={this.handleClick} name="decrease" value="<" disabled={page === 0} />
       // Pagina {page+1}
@@ -44,6 +44,7 @@ class ChangePage extends Component {
 function mapStateToProps(state) {
   return {
     page: state.search.page,
+    show: state.search.search.length > 0 && state.search.results.length > 0,
   };
 }
 

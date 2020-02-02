@@ -21,6 +21,7 @@ function SearchCompany() {
       <hr />
       <ChangePage />
       <CompanyResults />
+      <ChangePage />
     </Container>
   );
 }

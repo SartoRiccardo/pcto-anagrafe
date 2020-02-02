@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import CompanySummary from "./CompanySummary";
 import {connect} from "react-redux";
 
@@ -17,39 +17,59 @@ import Col from "react-bootstrap/Col";
  */
 function CompanyResults(props) {
   const {results, search} = props;
-  const summaries = results.map(res => {
-    return <CompanySummary key={res.id} data={res} search={search} />
-  });
 
-  let uniqueFields = [];
-  for (let i = 0; i < search.length; i++) {
-    if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
-      uniqueFields.push(search[i].field.id);
-    }
-  }
+  let table;
+  if(results.length > 0) {
+    const summaries = results.map(res => {
+      return <CompanySummary key={res.id} data={res} search={search} />
+    });
 
-  const header = uniqueFields.map(id => {
-    let value = null;
+    let uniqueFields = [];
     for (let i = 0; i < search.length; i++) {
-      if(search[i].field.id === id) value = search[i].field.name;
+      if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+        uniqueFields.push(search[i].field.id);
+      }
     }
-    return <th key={id}>{value ? value : "N/A"}</th>;
-  });
+
+    const header = uniqueFields.map(id => {
+      let value = null;
+      for (let i = 0; i < search.length; i++) {
+        if(search[i].field.id === id) value = search[i].field.name;
+      }
+      return <th key={id}>{value ? value : "N/A"}</th>;
+    });
+
+    table = (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            {header}
+          </tr>
+        </thead>
+        <tbody>
+          {summaries}
+        </tbody>
+      </Table>
+    );
+  }
+  else {
+    table = search.length == 0 ? (
+      <Fragment>
+        <h1 className="text-center">Inizia a cercare aziende</h1>
+      </Fragment>
+    ) : (
+      <Fragment>
+        <h1 className="text-center">Nessun risultato</h1>
+        <p className="lead text-center">Prova a restringere i campi di ricerca</p>
+      </Fragment>
+    );
+  }
 
   return (
     <Row>
       <Col>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              {header}
-            </tr>
-          </thead>
-          <tbody>
-            {summaries}
-          </tbody>
-        </Table>
+        {table}
       </Col>
     </Row>
   );
