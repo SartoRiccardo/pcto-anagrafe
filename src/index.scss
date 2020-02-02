@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo:400,700&display=swap');
+
+$primary: #e53935;
+$secondary: #ff8f00;
+
+body {
+  font-family: "Heebo";
+}
+
+.jumbotron {
+  background-color: #b71c1c!important;
+  color: white;
+}
+
+input,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-secondary:focus,
+.btn-secondary:active {
+    box-shadow:none!important;
+    outline:0px;
+}
+
+.page-selector-selected {
+  background-color: #e65100!important;
+  border-color: #e65100!important;
+}
+
+.btn-secondary:not(:hover):focus {
+  background-color: $secondary!important;
+  border-color: $secondary!important;
+  color: inherit!important;
+}
+
+.table-hover tbody tr:hover {
+  cursor: pointer;
+  background-color: #b3e5fc;
+}
+
+@import '~bootstrap/scss/bootstrap';

@@ -1,4 +1,4 @@
-import {saveToken, deleteToken} from "../../session/tokenManager";
+import {saveToken, deleteToken} from "../../util/tokenManager";
 
 /**
  * The initial state of the authReducer store.

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getToken} from "../../session/tokenManager";
+import {getToken} from "../../util/tokenManager";
 
 export function resultAction(arg0=null) {
   return (dispatch, getState) => {
@@ -26,10 +26,11 @@ export function resultAction(arg0=null) {
     axios.post("http://localhost/INI/pcto-anagrafe/api/company/", payload)
       .then(res => {
         if(res.status === 200 && !res.data.error) {
-          const results = res.data;
+          const {totalResults, results} = res.data;
           dispatch({
             type: "UPDATE_RESULTS",
             results,
+            totalResults
           });
         }
         else if(res.data.error) {

@@ -7,14 +7,16 @@ import update from "immutability-helper";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search  The current search terms.
- * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results The companies to show.
- * @param {int}                                                                                 page    The current page number.
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search       The current search terms.
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results      The companies to show.
+ * @param {int}                                                                                 page         The current page number.
+ * @param {int}                                                                                 totalResults The total results the search generated.
  */
 const init = {
   search: [],
   results: [],
   page: 0,
+  totalResults: 0,
 };
 
 function searchReducer(state=init, action) {
@@ -57,6 +59,13 @@ function searchReducer(state=init, action) {
       return {
         ...state,
         results: action.results,
+        totalResults: action.totalResults,
+      };
+
+    case "SET_PAGE":
+      return {
+        ...state,
+        page: action.page,
       };
 
     case "INCREASE_PAGE":

@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {connect} from "react-redux";
 import {reloadStructure} from "../../redux/actions/structureAction";
 import {initLogin} from "../../redux/actions/authAction";
+
 import AnonymousPage from "./AnonymousPage";
 import AdminNav from "./AdminNav";
 import UserNav from "./UserNav";

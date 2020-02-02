@@ -23,7 +23,6 @@ function SearchCompany(props) {
   return (
     <Container>
       <SearchBar />
-      <hr />
       {resultsPresent ? <ChangePage /> : null}
       <CompanyResults />
       {resultsPresent ? <ChangePage /> : null}

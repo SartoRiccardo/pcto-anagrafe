@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getToken} from "../../session/tokenManager";
+import {getToken} from "../../util/tokenManager";
 
 export function startLogin() {
   return {type:"START_LOGIN"};
