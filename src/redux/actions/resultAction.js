@@ -1,4 +1,5 @@
 import axios from "axios";
+import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
 export function resultAction(arg0=null) {
@@ -23,7 +24,7 @@ export function resultAction(arg0=null) {
     payload.set("page", getState().search.page);
     payload.set("REQUEST_METHOD", "GET");
 
-    axios.post("http://localhost/INI/pcto-anagrafe/api/company/", payload)
+    axios.post(apiUrl("/api/company"), payload)
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const {totalResults, results} = res.data;
@@ -52,7 +53,7 @@ export function selectCompany(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post("http://localhost/INI/pcto-anagrafe/api/company/", payload)
+    axios.post(apiUrl("/api/company"), payload)
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const match = res.data;

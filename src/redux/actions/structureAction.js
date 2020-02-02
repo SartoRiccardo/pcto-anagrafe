@@ -1,4 +1,5 @@
 import axios from "axios";
+import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
 export function updateStructure(fields) {
@@ -18,7 +19,7 @@ export function reloadStructure() {
     payload.set("target", "COMPANY");
     payload.set("REQUEST_METHOD", "GET");
 
-    axios.post("http://localhost/INI/pcto-anagrafe/api/structure/", payload)
+    axios.post(apiUrl("/api/structure"), payload)
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const fields = res.data;

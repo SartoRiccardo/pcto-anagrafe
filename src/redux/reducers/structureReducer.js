@@ -1,4 +1,6 @@
 
+const nameField = {id:0, name:"Nome", regex:".+"};
+
 /**
  * The initial state of the structureReducer store.
  *
@@ -9,9 +11,8 @@
  * @param {{id:int, name:String, regex:String}[]} fields The table structure's fields.
  */
 const init = {
-  fields: []
+  fields: [nameField]
 }
-const nameField = {id:0, name:"Nome", regex:".+"};
 
 function structureReducer(state=init, action) {
   let fields;

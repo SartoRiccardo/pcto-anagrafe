@@ -1,4 +1,5 @@
 import axios from "axios";
+import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
 export function startLogin() {
@@ -11,7 +12,7 @@ export function loginAction(user, pswd) {
     payload.set("login", user);
     payload.set("pswd", pswd);
 
-    axios.post("http://localhost/INI/pcto-anagrafe/api/auth/", payload)
+    axios.post(apiUrl("/api/auth"), payload)
       .then(res => {
         if(res.status === 200 && !res.data.error) {
           const {token, privileges} = res.data;
@@ -40,7 +41,7 @@ export function initLogin() {
     let payload = new FormData();
     payload.set("token", token);
 
-    axios.post("http://localhost/INI/pcto-anagrafe/api/auth/", payload)
+    axios.post(apiUrl("/api/auth"), payload)
     .then(res => {
       if(res.status === 200 && !res.data.error) {
         const {token, privileges} = res.data;
