@@ -12,7 +12,7 @@ function getCompanyById($id) {
 
   $q = "SELECT ft.id, ft.name, ft.regex, cf.value
           FROM CompanyField cf JOIN Field ft
-            ON cf.type = ft.id
+            ON cf.field = ft.id
           WHERE cf.company = ?";
   $stmt = $dbc->prepare($q);
   $stmt->execute(array($id));
@@ -20,7 +20,7 @@ function getCompanyById($id) {
   $fields = array();
   while($res = $stmt->fetch()) {
     $f = array(
-      "id"=>$res["id"],
+      "id"=>intval($res["id"]),
       "name"=>utf8_encode($res["name"]),
       "regex"=>utf8_encode($res["regex"]),
       "value"=>utf8_encode($res["value"]),
@@ -29,13 +29,13 @@ function getCompanyById($id) {
   }
 
   return array(
-    "id"=>$id,
+    "id"=>intval($id),
     "name"=>$name,
     "fields"=>$fields
   );
 }
 
-function getCompaniesBySearch($search) {
+function getCompaniesBySearch($search, $page=0) {
   global $dbc;
 
   $params = array();
@@ -57,14 +57,14 @@ function getCompaniesBySearch($search) {
       $q = $i == 0 ? ("
         SELECT company
           FROM CompanyField
-          WHERE type = ?
+          WHERE field = ?
             AND value LIKE ?
       ") : ("
         SELECT c.company AS company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
-          WHERE type = ?
-            AND value LIKE ?
+          WHERE c.field = ?
+            AND c.value LIKE ?
       ");
       $newParams = array(
         $search[$i]["id"],
@@ -73,6 +73,9 @@ function getCompaniesBySearch($search) {
     }
     $params = array_merge($params, $newParams);
   }
+  $maxRows = 50;
+  $min = $page * $maxRows;
+  $q = "$q LIMIT $min, $maxRows;";
   $stmt = $dbc->prepare($q);
   $stmt->execute($params);
 

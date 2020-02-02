@@ -1,19 +1,21 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
+header("Content-Type: application/json");
 
 include "../database/database.php";
-include "../auth/permissions.php";
+include "../auth/privileges.php";
 include "./get.php";
 
 if(!isset($_POST["user"])) {
   echo json_encode(array(
+    "error" => true,
     "message" => "Blocked anonymous request."
   ));
   die();
 }
 if(!hasPermission($_POST['user'], $_POST['REQUEST_METHOD'])) {
   echo json_encode(array(
+    "error" => true,
     "message" => "{$_POST['user']} doesn't have permission to {$_POST['REQUEST_METHOD']}"
   ));
   die();

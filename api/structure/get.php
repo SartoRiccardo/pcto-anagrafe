@@ -13,7 +13,7 @@ function getStructureOf($target) {
   $ret = array();
   while(($res = $stmt->fetch())) {
     array_push($ret, array(
-      "id" => $res["id"],
+      "id" => intval($res["id"]),
       "name" => $res["name"],
       "regex" => $res["regex"],
     ));
