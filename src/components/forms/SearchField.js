@@ -3,6 +3,7 @@ import React, {Component, Fragment} from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import FormControl from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
 
 /**
  * A single field to write a query for an attribute.
@@ -87,7 +88,7 @@ class SearchField extends Component {
         </Col>
 
         <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
-          <FormControl as="button" onClick={this.deleteSearchField}>-</FormControl>
+          <Button onClick={this.deleteSearchField}>-</Button>
         </Col>
       </Fragment>
     );

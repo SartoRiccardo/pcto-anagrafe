@@ -23,14 +23,14 @@ class ChangePage extends Component {
     const {page, show} = this.props;
     return show ? (
       <Row className="justify-content-center">
-        <Col xs={12} md="auto">
-          <FormControl as="button" onClick={this.handleClick} name="decrease" disabled={page === 0}>&lt;</FormControl>
+        <Col xs="auto">
+          <Button onClick={this.handleClick} name="decrease" disabled={page === 0}>&lt;</Button>
         </Col>
-        <Col xs={12} md="auto">
+        <Col xs="auto">
           <p className="text-center">Pagina {page+1}</p>
         </Col>
-        <Col xs={12} md="auto">
-          <FormControl as="button" onClick={this.handleClick} name="increase">&gt;</FormControl>
+        <Col xs="auto">
+          <Button onClick={this.handleClick} name="increase">&gt;</Button>
         </Col>
       </Row>
     ) : null;

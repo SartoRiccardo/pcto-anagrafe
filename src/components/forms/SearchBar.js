@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 /**
  * A list of SearchField.
@@ -101,7 +102,7 @@ class SearchBar extends Component {
     const {fields} = this.state;
     const sFields = fields.map(f => {
       return (
-        <Form.Row key={f.id} className="justify-content-sm-center my-2">
+        <Form.Row key={f.id} className="justify-content-center my-2">
           <SearchField
             options={this.props.options}
             initState={f}
@@ -115,9 +116,9 @@ class SearchBar extends Component {
       <form onSubmit={evt => evt.preventDefault()} className="my-3">
         {sFields}
 
-        <Row className="justify-content-sm-center">
-          <Col sm md="auto">
-            <FormControl as="button" onClick={this.addSearchField}>Cerca</FormControl>
+        <Row className="justify-content-center">
+          <Col xs="auto">
+            <Button onClick={this.addSearchField}>Cerca</Button>
           </Col>
         </Row>
       </form>
