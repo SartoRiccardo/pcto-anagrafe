@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from "react-redux"
 import SearchBar from "./SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "./ChangePage";
@@ -13,17 +14,27 @@ import Container from "react-bootstrap/Container";
  * @author Riccardo Sartori
  * @see SearchBar
  * @see CompanyResults
+ *
+ * @param {boolean} props.resultsPresent If there are any results to show.
  */
-function SearchCompany() {
+function SearchCompany(props) {
+  const {resultsPresent} = props;
+
   return (
     <Container>
       <SearchBar />
       <hr />
-      <ChangePage />
+      {resultsPresent ? <ChangePage /> : null}
       <CompanyResults />
-      <ChangePage />
+      {resultsPresent ? <ChangePage /> : null}
     </Container>
   );
 }
 
-export default SearchCompany;
+function mapStateToProps(state) {
+  return {
+    resultsPresent: state.search.search.length > 0 && state.search.results.length > 0,
+  };
+}
+
+export default connect(mapStateToProps)(SearchCompany);

@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {loginAction, startLogin} from "../../redux/actions/authAction";
 import loadingSvg from "../../img/loading.svg";
 
-import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -13,6 +12,9 @@ import Button from "react-bootstrap/Button";
  * A simple login form.
  *
  * @author Riccardo Sartori
+ *
+ * @param {string}   props.error   An error message if the login doesn't work.
+ * @param {booelean} props.loading If a request has been sent but there has been no answer yet.
  */
 class Login extends Component {
   constructor(props) {
@@ -50,7 +52,7 @@ class Login extends Component {
     ) : null;
 
     let loadingIcon = loading ? (
-      <img src={loadingSvg} style={{width: "2rem"}} />
+      <img src={loadingSvg} style={{width: "2rem"}} alt="" />
     ) : null;
 
     return(

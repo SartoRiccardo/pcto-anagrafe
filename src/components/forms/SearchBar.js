@@ -3,9 +3,7 @@ import SearchField from "./SearchField";
 import {resultAction} from "../../redux/actions/resultAction";
 import {connect} from "react-redux";
 
-import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";

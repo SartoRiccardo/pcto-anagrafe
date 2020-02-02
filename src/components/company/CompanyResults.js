@@ -54,7 +54,7 @@ function CompanyResults(props) {
     );
   }
   else {
-    table = search.length == 0 ? (
+    table = search.length === 0 ? (
       <Fragment>
         <h1 className="text-center">Inizia a cercare aziende</h1>
       </Fragment>

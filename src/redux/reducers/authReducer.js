@@ -10,6 +10,7 @@ import {saveToken, deleteToken} from "../../session/tokenManager";
  * @param {string[]} privileges The privileges the user has.
  * @param {int}      token      The user's identifier.
  * @param {string}   error      If there was an error while logging in.
+ * @param {boolean}  loading    If a request has been sent but there has been no answer yet.
  */
 const init = {
   privileges: [],

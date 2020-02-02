@@ -33,7 +33,7 @@ function CompanyDetails(props) {
 
   return(
     <Fragment>
-      <h1>{company.name}</h1>
+      <h1 className="text-center">{company.name}</h1>
       <Table>
         <tbody>
           {data}

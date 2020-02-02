@@ -30,12 +30,6 @@ function UserNav(props) {
       </Form>
     </Navbar>
   );
-  // <ul>
-  //   <li><NavLink to="/search">Cerca</NavLink></li>
-  //   <li><NavLink to="/saved">Salvati</NavLink></li>
-  //   <li><NavLink to="/projects">Attività</NavLink></li>
-  //   <li><a onClick={props.logout} href="#">Logout</a></li>
-  // </ul>
 }
 
 function mapDispatchToProps(dispatch) {

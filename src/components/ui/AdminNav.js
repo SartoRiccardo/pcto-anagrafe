@@ -17,7 +17,7 @@ function AdminNav(props) {
         <li><NavLink to="/saved">Salvati</NavLink></li>
         <li><NavLink to="/add">Aggiungi</NavLink></li>
         <li><NavLink to="/projects">Alunni</NavLink></li>
-        <li><a onClick={props.logout}>Logout</a></li>
+        <li><NavLink to="/" onClick={props.logout}>Logout</NavLink></li>
       </ul>
     </nav>
   );

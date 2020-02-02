@@ -3,14 +3,20 @@ import {connect} from "react-redux";
 import {increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
 
-import FormControl from "react-bootstrap/FormControl";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A component to change the result page
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} page The current page.
+ */
 class ChangePage extends Component {
   handleClick = evt => {
-    if(evt.target.name == "increase") {
+    if(evt.target.name === "increase") {
       this.props.increasePage();
     }
     else {
@@ -20,8 +26,8 @@ class ChangePage extends Component {
   }
 
   render() {
-    const {page, show} = this.props;
-    return show ? (
+    const {page} = this.props;
+    return (
       <Row className="justify-content-center">
         <Col xs="auto">
           <Button onClick={this.handleClick} name="decrease" disabled={page === 0}>&lt;</Button>
@@ -33,18 +39,13 @@ class ChangePage extends Component {
           <Button onClick={this.handleClick} name="increase">&gt;</Button>
         </Col>
       </Row>
-    ) : null;
-
-      // <input type="button" onClick={this.handleClick} name="decrease" value="<" disabled={page === 0} />
-      // Pagina {page+1}
-      // <input type="button" onClick={this.handleClick} name="increase" value=">" />
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     page: state.search.page,
-    show: state.search.search.length > 0 && state.search.results.length > 0,
   };
 }
 

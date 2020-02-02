@@ -3,7 +3,9 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import CompanyDetails from "./CompanyDetails";
-import EditCompany from "../forms/EditCompany";
+import loadingSvg from "../../img/loading.svg"
+
+import Container from "react-bootstrap/Container";
 
 /**
  * A wrapper to show a company's details.
@@ -16,8 +18,6 @@ import EditCompany from "../forms/EditCompany";
  *
  * @param {{id:int, name:String, regex:String, value:String}[]}                               props.fields      The fields to show.
  * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.company     The company we're showing (optional).
- * @param {boolean}                                                                           props.newCompany  If we're creating a new company.
- * @param @deprecated {boolean}                                                               props.admin       Whether the user has administrator privileges.
  */
 class ShowCompany extends Component {
   constructor(props) {
@@ -28,45 +28,20 @@ class ShowCompany extends Component {
   }
 
   render() {
-    const {newCompany, admin, company, fields} = this.props;
-    const {id} = this.props.match.params;
-    const link = this.props.match;
-    const editing = true; // check link
+    const {company, fields} = this.props;
 
     let component;
     if(company == null) {
-      component = (
-        <div>
-        </div>
-      );
-    }
-    else if(admin && editing) {
-      component = (
-        <div>
-          <EditCompany />
-        </div>
-      );
-    }
-    else if (admin) {
-      component = (
-        <div>
-          <CompanyDetails company={company} fields={fields} />
-          <input type="button" value="Modifica" />
-        </div>
-      );
+      component = <img src={loadingSvg} alt="" className="mx-auto d-block" />;
     }
     else {
-      component = (
-        <div>
-          <CompanyDetails company={company} fields={fields} />
-        </div>
-      );
+      component = <CompanyDetails company={company} fields={fields} />;
     }
 
     return (
-      <div>
+      <Container>
         {component}
-      </div>
+      </Container>
     );
   }
 }
