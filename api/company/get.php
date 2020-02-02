@@ -124,20 +124,6 @@ function generateSearchQuery($search) {
             AND c.value LIKE ?
       ");
     }
-<<<<<<< HEAD
-    $params = array_merge($params, $newParams);
-  }
-  $maxRows = 50;
-  $min = $page * $maxRows;
-  $q = "$q LIMIT $min, $maxRows;";
-  $stmt = $dbc->prepare($q);
-  $stmt->execute($params);
-
-  $ids = array();
-  while($res = $stmt->fetch()) {
-    array_push($ids, $res["company"]);
-=======
->>>>>>> backend
   }
 
   return $q;
