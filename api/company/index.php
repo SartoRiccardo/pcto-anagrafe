@@ -28,14 +28,19 @@ switch ($_POST["REQUEST_METHOD"]) {
     if(isset($_POST["id"])) {
       echo json_encode(getCompanyById($_POST["id"]));
     }
-    else if(isset($_POST["search"]) && isset($_POST["page"])) {
+    else if(isset($_POST["search"])) {
+      $page = isset($_POST["page"]) ? intval(isset($_POST["page"])) : -1;
       if(count(json_decode($_POST["search"], true)) > 0) {
-        echo json_encode(
-          getCompaniesBySearch(
+        $json = array(
+          "totalResults"=>getCompanyNumberBySearch(
+            json_decode($_POST["search"], true)
+          ),
+          "results"=>getCompaniesBySearch(
             json_decode($_POST["search"], true),
-            intval($_POST["page"])
+            $page
           )
         );
+        echo json_encode($json);
       }
       else echo "[]";
     }
