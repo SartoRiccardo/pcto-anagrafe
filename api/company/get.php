@@ -38,6 +38,8 @@ function getCompanyById($id) {
 function getCompaniesBySearch($search, $page=-1) {
   global $dbc;
 
+  if(count($search) == 0) return array();
+
   $q = generateSearchQuery($search);
   $params = array();
   for ($i=0; $i < count($search); $i++) {
@@ -74,6 +76,8 @@ function getCompaniesBySearch($search, $page=-1) {
 
 function getCompanyNumberBySearch($search) {
   global $dbc;
+
+  if(count($search) == 0) return 0;
 
   $q = generateSearchQuery($search);
   $params = array();
