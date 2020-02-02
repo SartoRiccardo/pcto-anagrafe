@@ -40,7 +40,7 @@ class ChangePage extends Component {
     for (let i = 0; i < pageNum; i++) {
       if(i === 0 || i === pageNum-1 || (i > page-renderButtonRange && i < page+renderButtonRange)) {
         let className = "page-selector";
-        if(i == page) className += "-selected";
+        if(i === page) className += "-selected";
         buttons.push(
           <Button key={i} onClick={this.jumpToPage} className={className} value={i} variant="secondary">{i+1}</Button>
         );
