@@ -20,6 +20,8 @@ class ChangePage extends Component {
   jumpToPage = evt => {
     this.props.updatePage(parseInt(evt.target.value));
     this.props.updateResults();
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 
   changePage = evt => {
@@ -30,6 +32,8 @@ class ChangePage extends Component {
       this.props.decreasePage();
     }
     this.props.updateResults();
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 
   render() {

@@ -87,7 +87,7 @@ class SearchField extends Component {
         </Col>
 
         <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
-          <Button onClick={this.deleteSearchField} variant="secondary">-</Button>
+          <Button onClick={this.deleteSearchField} variant="primary">-</Button>
         </Col>
       </Fragment>
     );
