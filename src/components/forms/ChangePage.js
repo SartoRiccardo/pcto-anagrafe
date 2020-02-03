@@ -12,8 +12,9 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
  *
  * @author Riccardo Sartori
  *
- * @param {int} page         The current page.
- * @param {int} totalResults The results of the search.
+ * @param {int} page              The current page.
+ * @param {int} totalResults      The results of the search.
+ * @param {boolean} multiplePages If there are multiple result pages.
  */
 class ChangePage extends Component {
   jumpToPage = evt => {
@@ -32,9 +33,9 @@ class ChangePage extends Component {
   }
 
   render() {
-    const {page, totalResults} = this.props;
-    const resPerPage = 50;
-    const pageNum = Math.ceil(totalResults/resPerPage);
+    const {page, totalResults, multiplePages, resultsPerPage} = this.props;
+
+    const pageNum = Math.ceil(totalResults/resultsPerPage);
     const renderButtonRange = 2;
     let buttons = [];
     for (let i = 0; i < pageNum; i++) {
@@ -47,24 +48,23 @@ class ChangePage extends Component {
       }
     }
 
+    const leftButton = (
+      <Button onClick={this.changePage} name="decrease" variant="secondary" disabled={page <= 0}>
+        &lt;
+      </Button>
+    );
+    const rightButton = (
+      <Button onClick={this.changePage} name="increase" variant="secondary" disabled={page >= pageNum-1}>
+        &gt;
+      </Button>
+    );
+
     return (
       <Row className="justify-content-center my-3">
         <ButtonGroup>
-          <Button
-            onClick={this.changePage}
-            name="decrease"
-            variant="secondary"
-            disabled={page <= 0}>
-            &lt;
-          </Button>
+          {multiplePages ? leftButton : null}
           {buttons}
-          <Button
-            onClick={this.changePage}
-            name="increase"
-            variant="secondary"
-            disabled={page >= pageNum-1}>
-            &gt;
-          </Button>
+          {multiplePages ? rightButton : null}
         </ButtonGroup>
       </Row>
     )
@@ -75,6 +75,7 @@ function mapStateToProps(state) {
   return {
     page: state.search.page,
     totalResults: state.search.totalResults,
+    resultsPerPage: state.search.resultsPerPage,
   };
 }
 

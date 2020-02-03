@@ -26,7 +26,7 @@ input,
   border-color: #e65100!important;
 }
 
-.btn-secondary:not(:hover):focus {
+.btn-secondary:not(:hover):not(.page-selector-selected):focus {
   background-color: $secondary!important;
   border-color: $secondary!important;
   color: inherit!important;

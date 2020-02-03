@@ -16,6 +16,7 @@ const init = {
   search: [],
   results: [],
   page: 0,
+  resultsPerPage: 50,
   totalResults: 0,
 };
 
