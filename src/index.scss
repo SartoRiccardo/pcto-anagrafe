@@ -56,9 +56,14 @@ input:focus, select:focus {
   color: inherit!important;
 }
 
-.table-hover tbody tr:hover {
+.table-hover tbody tr:hover:nth-child(odd) {
   cursor: pointer;
-  background-color: #b3e5fc!important;
+  background-color: #ffcc80!important;
+}
+
+.table-hover tbody tr:hover:nth-child(even) {
+  cursor: pointer;
+  background-color: #ffe0b2!important;
 }
 
 footer {

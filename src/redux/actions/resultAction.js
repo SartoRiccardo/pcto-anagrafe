@@ -18,6 +18,9 @@ export function resultAction(arg0=null) {
       return;
     }
 
+    const searchId = Math.random();
+    dispatch({type: "NOTIFY_BEGIN_SEARCH", searchId});
+
     let payload = new FormData();
     payload.set("user", getToken());
     payload.set("search", JSON.stringify(searchReq));
@@ -26,6 +29,9 @@ export function resultAction(arg0=null) {
 
     axios.post(apiUrl("/api/company"), payload)
       .then(res => {
+        const {lastestSearchId} = getState().search;
+        if(lastestSearchId !== searchId) return;
+
         if(res.status === 200 && !res.data.error) {
           const {totalResults, results} = res.data;
           dispatch({

@@ -7,16 +7,18 @@ import {saveToken, deleteToken} from "../../util/tokenManager";
  *
  * @author Riccardo Sartori
  *
- * @param {string[]} privileges The privileges the user has.
- * @param {int}      token      The user's identifier.
- * @param {string}   error      If there was an error while logging in.
- * @param {boolean}  loading    If a request has been sent but there has been no answer yet.
+ * @param {string[]} privileges  The privileges the user has.
+ * @param {int}      token       The user's identifier.
+ * @param {string}   error       If there was an error while logging in.
+ * @param {boolean}  loading     If a request has been sent but there has been no answer yet.
+ * @param {boolean}  initialized If the login status has been initialized.
  */
 const init = {
   privileges: [],
   token: null,
   error: null,
   loading: false,
+  initalized: false,
 }
 
 function companyReducer(state=init, action) {
@@ -24,14 +26,17 @@ function companyReducer(state=init, action) {
     case "LOGIN":
       saveToken(action.token);
       return {
+        ...state,
         privileges: action.privileges,
         token: action.token,
         error: null,
         loading: false,
+        initalized: true,
       };
 
     case "ERROR":
       return {
+        ...state,
         privileges: [],
         token: null,
         error: action.error,
@@ -41,6 +46,7 @@ function companyReducer(state=init, action) {
     case "LOGOUT":
       deleteToken();
       return {
+        ...state,
         privileges: [],
         token: null,
         error: null,

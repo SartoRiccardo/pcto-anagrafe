@@ -30,7 +30,9 @@ class App extends Component {
   }
 
   render() {
-    const {privileges, token} = this.props;
+    const {initialized, privileges, token} = this.props;
+    if(!initialized) return null;
+
     let links, nav;
     if(!token) {
       links = <AnonymousPage />
@@ -81,6 +83,7 @@ function mapStateToProps(state) {
   return {
     privileges: state.auth.privileges,
     token: state.auth.token,
+    initialized: state.auth.initalized,
   };
 }
 

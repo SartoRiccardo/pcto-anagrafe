@@ -7,10 +7,12 @@ import update from "immutability-helper";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search       The current search terms.
- * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results      The companies to show.
- * @param {int}                                                                                 page         The current page number.
- * @param {int}                                                                                 totalResults The total results the search generated.
+ * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search          The current search terms.
+ * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results         The companies to show.
+ * @param {int}                                                                                 page            The current page number.
+ * @param {int}                                                                                 resultsPerPage  The results to show per page.
+ * @param {int}                                                                                 totalResults    The total results the search generated.
+ * @param {float}                                                                               lastestSearchId The ID of the last search that was made, useful for bad connection.
  */
 const init = {
   search: [],
@@ -18,6 +20,7 @@ const init = {
   page: 0,
   resultsPerPage: 50,
   totalResults: 0,
+  lastestSearchId: 0,
 };
 
 function searchReducer(state=init, action) {
@@ -89,6 +92,12 @@ function searchReducer(state=init, action) {
 
     case "RESET_SEARCH":
       return init;
+
+    case "NOTIFY_BEGIN_SEARCH":
+      return {
+        ...state,
+        lastestSearchId: action.searchId,
+      };
 
     default:
       return state;
