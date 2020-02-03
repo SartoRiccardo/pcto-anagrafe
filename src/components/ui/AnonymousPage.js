@@ -7,7 +7,7 @@ import Container from "react-bootstrap/Container";
 function AnonymousPage() {
   return (
     <Fragment>
-      <Jumbotron className="text-center">
+      <Jumbotron fluid className="text-center">
         <h1 className="display-4">PCTOkay!</h1>
         <p className="lead">Gestisci le tue aziende con facilità</p>
       </Jumbotron>

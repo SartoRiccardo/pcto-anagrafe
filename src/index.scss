@@ -25,9 +25,20 @@ input, select,
 .btn-primary:focus,
 .btn-primary:active,
 .btn-secondary:focus,
-.btn-secondary:active {
+.btn-secondary:active,
+.navbar-toggler:focus {
     box-shadow:none!important;
     outline:0px;
+}
+
+.toggler:active, .toggler:hover, .toggler:focus {
+  background-color: inherit!important;
+  border-color: rgba(0, 0, 0, 0)!important;
+  transition: border-color 0s!important;
+}
+
+.logout-btn {
+  background-color: rgba(0, 0, 0, 0.05)!important;
 }
 
 input:focus, select:focus {
@@ -47,7 +58,7 @@ input:focus, select:focus {
 
 .table-hover tbody tr:hover {
   cursor: pointer;
-  background-color: #b3e5fc;
+  background-color: #b3e5fc!important;
 }
 
 footer {
@@ -56,6 +67,14 @@ footer {
   bottom: 0;
   left: 0;
   padding: 1rem;
+}
+
+.mobile-collapse-link {
+  color: rgba(255, 255, 255, 0.5)!important;
+}
+
+.mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
+  color: rgba(255, 255, 255, 1)!important;
 }
 
 @import '~bootstrap/scss/bootstrap';
