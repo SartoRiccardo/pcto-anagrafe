@@ -40,12 +40,20 @@ class ChangePage extends Component {
     const {page, totalResults, multiplePages, resultsPerPage} = this.props;
 
     const pageNum = Math.ceil(totalResults/resultsPerPage);
-    const renderButtonRange = 2;
+    const renderRangeMd = 2;
+    const renderRangeXs = 1;
     let buttons = [];
     for (let i = 0; i < pageNum; i++) {
-      if(i === 0 || i === pageNum-1 || (i > page-renderButtonRange && i < page+renderButtonRange)) {
+      if(i === 0 || i === pageNum-1 || (i >= page-renderRangeMd && i <= page+renderRangeMd)) {
         let className = "page-selector";
-        if(i === page) className += "-selected";
+        if(i === page) {
+          className += "-selected";
+        }
+        if((i >= page-renderRangeMd && i < page-renderRangeXs)
+        || (i <= page+renderRangeMd && i > page+renderRangeXs)) {
+          className += " d-none d-md-block";
+        }
+
         buttons.push(
           <Button key={i} onClick={this.jumpToPage} className={className} value={i} variant="secondary">{i+1}</Button>
         );
