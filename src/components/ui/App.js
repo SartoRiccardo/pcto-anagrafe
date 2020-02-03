@@ -10,6 +10,7 @@ import UserNav from "./UserNav";
 import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import ShowCompany from "../company/ShowCompany";
+import Footer from "./Footer";
 
 /**
  * The application wrapper.
@@ -70,6 +71,7 @@ class App extends Component {
       <BrowserRouter>
         {nav}
         {links}
+        <Footer />
       </BrowserRouter>
     );
   }

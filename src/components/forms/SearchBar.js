@@ -100,7 +100,7 @@ class SearchBar extends Component {
     const {fields} = this.state;
     const sFields = fields.map(f => {
       return (
-        <Form.Row key={f.id} className="justify-content-center my-2">
+        <Form.Row key={f.id} className="justify-content-center my-3 my-sm-2">
           <SearchField
             options={this.props.options}
             initState={f}

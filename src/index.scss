@@ -3,7 +3,16 @@
 $primary: #e53935;
 $secondary: #ff8f00;
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
   font-family: "Heebo";
 }
 
@@ -12,13 +21,17 @@ body {
   color: white;
 }
 
-input,
+input, select,
 .btn-primary:focus,
 .btn-primary:active,
 .btn-secondary:focus,
 .btn-secondary:active {
     box-shadow:none!important;
     outline:0px;
+}
+
+input:focus, select:focus {
+  border-color: #ffca28!important;
 }
 
 .page-selector-selected {
@@ -35,6 +48,14 @@ input,
 .table-hover tbody tr:hover {
   cursor: pointer;
   background-color: #b3e5fc;
+}
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
 }
 
 @import '~bootstrap/scss/bootstrap';
