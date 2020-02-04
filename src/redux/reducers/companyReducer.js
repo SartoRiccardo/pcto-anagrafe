@@ -14,13 +14,13 @@ const init = {
 
 function companyReducer(state=init, action) {
   switch(action.type) {
-    case "RESET":
+    case "COMPANYR_RESET":
       return {
         ...state,
         match: null,
       };
 
-    case "SET_MATCH":
+    case "COMPANYR_SET_MATCH":
       return {
         ...state,
         match: action.match,

@@ -134,16 +134,16 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     addSearchField: search => {
-      dispatch({type: "RESET_PAGE"});
-      dispatch({type: "ADD_SEARCH_FIELD", search});
+      dispatch({type: "SEARCHR_RESET_PAGE"});
+      dispatch({type: "SEARCHR_ADD_FIELD", search});
     },
     deleteSearchField: id => {
-      dispatch({type: "RESET_PAGE"});
-      dispatch({type: "DELETE_SEARCH_FIELD", id});
+      dispatch({type: "SEARCHR_RESET_PAGE"});
+      dispatch({type: "SEARCHR_DELETE_FIELD", id});
     },
     updateSearchField: search => {
-      dispatch({type: "RESET_PAGE"});
-      dispatch({type: "UPDATE_SEARCH_FIELD", search});
+      dispatch({type: "SEARCHR_RESET_PAGE"});
+      dispatch({type: "SEARCHR_UPDATE_FIELD", search});
     },
     updateResults: searches => {
       dispatch(resultAction(searches));

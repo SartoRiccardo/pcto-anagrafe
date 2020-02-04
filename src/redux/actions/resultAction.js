@@ -19,7 +19,7 @@ export function resultAction(arg0=null) {
     }
 
     const searchId = Math.random();
-    dispatch({type: "NOTIFY_BEGIN_SEARCH", searchId});
+    dispatch({type: "SEARCHR_NOTIFY_BEGIN_SEARCH", searchId});
 
     let payload = new FormData();
     payload.set("user", getToken());
@@ -35,7 +35,7 @@ export function resultAction(arg0=null) {
         if(res.status === 200 && !res.data.error) {
           const {totalResults, results} = res.data;
           dispatch({
-            type: "UPDATE_RESULTS",
+            type: "SEARCHR_UPDATE_RESULTS",
             results,
             totalResults
           });
@@ -67,7 +67,7 @@ export function selectCompany(id) {
         if(res.status === 200 && !res.data.error) {
           const match = res.data;
           dispatch({
-            type: "SET_MATCH",
+            type: "COMPANYR_SET_MATCH",
             match,
           });
         }
@@ -82,5 +82,5 @@ export function selectCompany(id) {
 }
 
 export function resetCompany() {
-  return {type:"RESET"};
+  return {type:"COMPANYR_RESET"};
 }

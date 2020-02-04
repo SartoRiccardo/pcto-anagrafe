@@ -103,7 +103,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateStructure: fields => {
-      dispatch({type:"UPDATE_STRUCTURE", fields});
+      dispatch({type:"STRUCTURER_UPDATE", fields});
     },
   };
 }

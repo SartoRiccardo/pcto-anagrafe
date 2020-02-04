@@ -23,7 +23,7 @@ const init = {
 
 function companyReducer(state=init, action) {
   switch(action.type) {
-    case "LOGIN":
+    case "AUTHR_LOGIN":
       saveToken(action.token);
       return {
         ...state,
@@ -34,7 +34,7 @@ function companyReducer(state=init, action) {
         initalized: true,
       };
 
-    case "ERROR":
+    case "AUTHR_ERROR":
       return {
         ...state,
         privileges: [],
@@ -43,7 +43,7 @@ function companyReducer(state=init, action) {
         loading: false,
       };
 
-    case "LOGOUT":
+    case "AUTHR_LOGOUT":
       deleteToken();
       return {
         ...state,
@@ -53,7 +53,7 @@ function companyReducer(state=init, action) {
         loading: false,
       };
 
-    case "START_LOGIN":
+    case "AUTHR_START_LOGIN":
       return {
         ...state,
         loading: true,

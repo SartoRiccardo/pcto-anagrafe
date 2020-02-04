@@ -17,7 +17,7 @@ const init = {
 function structureReducer(state=init, action) {
   let fields;
   switch(action.type) {
-    case "UPDATE_STRUCTURE":
+    case "STRUCTURER_UPDATE":
       fields = [nameField, ...action.fields];
       return {
         ...state,

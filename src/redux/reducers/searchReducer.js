@@ -26,13 +26,13 @@ const init = {
 function searchReducer(state=init, action) {
   let search;
   switch(action.type) {
-    case "ADD_SEARCH_FIELD":
+    case "SEARCHR_ADD_FIELD":
       return {
         ...state,
         search: [...state.search, action.search],
       };
 
-    case "DELETE_SEARCH_FIELD":
+    case "SEARCHR_DELETE_FIELD":
       const {id} = action;
       search = state.search;
       return {
@@ -40,7 +40,7 @@ function searchReducer(state=init, action) {
         search: search.filter(s => s.id !== id),
       };
 
-    case "UPDATE_SEARCH_FIELD":
+    case "SEARCHR_UPDATE_FIELD":
       search = state.search;
       let updateSearch = action.search;
 
@@ -59,41 +59,41 @@ function searchReducer(state=init, action) {
         search
       };
 
-    case "UPDATE_RESULTS":
+    case "SEARCHR_UPDATE_RESULTS":
       return {
         ...state,
         results: action.results,
         totalResults: action.totalResults,
       };
 
-    case "SET_PAGE":
+    case "SEARCHR_SET_PAGE":
       return {
         ...state,
         page: action.page,
       };
 
-    case "INCREASE_PAGE":
+    case "SEARCHR_INCREASE_PAGE":
       return {
         ...state,
         page: state.page+1,
       };
 
-    case "DECREASE_PAGE":
+    case "SEARCHR_DECREASE_PAGE":
       return {
         ...state,
         page: (state.page-1 < 0) ? 0 : state.page-1,
       };
 
-    case "RESET_PAGE":
+    case "SEARCHR_RESET_PAGE":
       return {
         ...state,
         page: 0,
       };
 
-    case "RESET_SEARCH":
+    case "SEARCHR_RESET_SEARCH":
       return init;
 
-    case "NOTIFY_BEGIN_SEARCH":
+    case "SEARCHR_NOTIFY_BEGIN_SEARCH":
       return {
         ...state,
         lastestSearchId: action.searchId,

@@ -24,7 +24,7 @@ export function reloadStructure() {
         if(res.status === 200 && !res.data.error) {
           const fields = res.data;
           dispatch({
-            type: "UPDATE_STRUCTURE",
+            type: "STRUCTURER_UPDATE",
             fields,
           });
         }

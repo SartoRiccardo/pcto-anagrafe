@@ -94,7 +94,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updatePage: (page) => {
-      dispatch({type:"SET_PAGE", page});
+      dispatch({type:"SEARCHR_SET_PAGE", page});
     },
     decreasePage: () => {
       dispatch(decreasePage());

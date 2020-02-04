@@ -1,12 +1,12 @@
 
 export function decreasePage() {
   return {
-    type: "DECREASE_PAGE",
+    type: "SEARCHR_DECREASE_PAGE",
   };
 }
 
 export function increasePage() {
   return {
-    type: "INCREASE_PAGE",
+    type: "SEARCHR_INCREASE_PAGE",
   };
 }

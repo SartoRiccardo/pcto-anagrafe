@@ -3,7 +3,7 @@ import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
 export function startLogin() {
-  return {type:"START_LOGIN"};
+  return {type:"AUTHR_START_LOGIN"};
 }
 
 export function loginAction(user, pswd) {
@@ -17,21 +17,21 @@ export function loginAction(user, pswd) {
         if(res.status === 200 && !res.data.error) {
           const {token, privileges} = res.data;
           dispatch({
-            type: "LOGIN",
+            type: "AUTHR_LOGIN",
             token,
             privileges,
           });
         }
         else if(res.data.error) {
           dispatch({
-            type: "ERROR",
+            type: "AUTHR_ERROR",
             error: res.data.message,
           });
         }
       })
       .catch(e => {
         dispatch({
-          type: "ERROR",
+          type: "AUTHR_ERROR",
           error: "Errore di connessione.",
         });
       });
@@ -52,14 +52,14 @@ export function initLogin() {
       if(res.status === 200 && !res.data.error) {
         const {token, privileges} = res.data;
         dispatch({
-          type: "LOGIN",
+          type: "AUTHR_LOGIN",
           token,
           privileges,
         });
       }
       else if(res.data.error) {
         dispatch({
-          type: "ERROR",
+          type: "AUTHR_ERROR",
           error: res.data.message,
         });
       }
@@ -70,7 +70,7 @@ export function initLogin() {
 
 export function logoutAction() {
   return (dispatch, getState) => {
-    dispatch({type: "LOGOUT"});
-    dispatch({type: "RESET_SEARCH"});
+    dispatch({type: "AUTHR_LOGOUT"});
+    dispatch({type: "SEARCHR_RESET_SEARCH"});
   }
 }
