@@ -68,6 +68,8 @@ CREATE TABLE Activity (
 
 Questa tabella è necessaria per garantire un'integrità semantica non presente in un database SQL. Si possono inserire nuovi campi a proprio piacimento, con una sintassi inventata, senza modificare la struttura del database. Tutti i controlli verranno fatti a livello applicativo.
 
+Un altro motivo di questa scelta è di avere consistenza nel database: visto che le colonne sono dinamiche e potrebbero essere cambiate continuamente, modificare la struttura delle tabelle potrebbe rivelarsi scomodo. Lo svantaggio di questo sistema è che, per applicare più di un filtro, sono necessarie più `JOIN`, ma visto che il database da gestire non è molto grande lo si può permettere.
+
 ### Modello Logico
 
 |  Campo   | Descrizione |
@@ -84,7 +86,7 @@ CREATE TABLE Field (
   id INT NOT NULL AUTO_INCREMENT,
   target VARCHAR(128) NOT NULL,
   name VARCHAR(128) NOT NULL,
-  regex TEXT NOT NULL,
+  regex VARCHAR(255) NOT NULL,
   PRIMARY KEY(id)
 )
 ```
@@ -105,7 +107,7 @@ CREATE TABLE Field (
 CREATE TABLE CompanyField (
   company INT NOT NULL,
   field INT NOT NULL,
-  value TEXT NOT NULL,
+  value VARCHAR(255) NOT NULL,
   PRIMARY KEY(company, field),
   FOREIGN KEY (company) REFERENCES Company(id),
   FOREIGN KEY (field) REFERENCES Field(id)
@@ -116,11 +118,11 @@ CREATE TABLE CompanyField (
 
 ### Modello Logico
 
-|   Campo   | Descrizione |
-| --------- | ----------- |
+|    Campo   | Descrizione |
+| ---------- | ----------- |
 | `activity` | L'ID dell'attività a cui appartiene il campo. Chiave esterna a `Activity(id)`. |
-|  `field`  | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
-|  `value`  | Il valore del campo. |
+|  `field`   | L'ID del tipo di campo in questione. Chiave esterna a `Field(id)`.
+|  `value`   | Il valore del campo. |
 
 ### Modello Fisico
 
@@ -128,7 +130,7 @@ CREATE TABLE CompanyField (
 CREATE TABLE ActivityField (
   activity INT NOT NULL,
   field INT NOT NULL,
-  value TEXT NOT NULL,
+  value VARCHAR(255) NOT NULL,
   PRIMARY KEY(activity, field),
   FOREIGN KEY (activity) REFERENCES Activity(id),
   FOREIGN KEY (field) REFERENCES Field(id)
@@ -156,18 +158,20 @@ CREATE TABLE Saved (
 
 ## Internship
 
+Per limitazioni tecniche, non si può inserire l'ID di Spaggiari nel campo `student`. Un utente che non è ma entrato nell'applicazione, e quindi dall'ID ignoto, potrebbe comunque essere uno stagista.
+
 ### Modello Logico
 
 |   Campo    | Descrizione |
 | ---------- | ----------- |
-| `student`  | Lo studente che si è salvato l'azienda. Corrisponde con l'ID utente di Spaggiari. |
+| `student`  | Lo studente che sta svolgendo l'attività. |
 | `activity` | L'attività svolta dall'utente. |
 
 ### Modello Fisico
 
 ```SQL
 CREATE TABLE Internship (
-  student INT NOT NULL,
+  student VARCHAR(255) NOT NULL,
   activity INT NOT NULL,
   FOREIGN KEY (activity) REFERENCES Activity(id)
 )

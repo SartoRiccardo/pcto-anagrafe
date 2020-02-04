@@ -1,9 +1,12 @@
 site_name: 'Sartori Riccardo Anagrafe'
+repo_url: 'https://github.com/SartoRiccardo/pcto-anagrafe'
 
 nav:
     - 'Project Summary': 'customer_requests.md'
     - 'Project Charter': 'project_charter.md'
     - 'Database': 'database.md'
+    - 'Front-End': 'frontend.md'
+    - 'Back-End': 'backend.md'
 
 theme:
     name: readthedocs
