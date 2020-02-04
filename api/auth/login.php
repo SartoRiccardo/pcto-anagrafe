@@ -1,17 +1,24 @@
 <?php
+$INVALID_LOGIN = 1;
+$CONNECTION_ERR = 2;
+
 function getStudentId($login, $pswd) {
-  global $url;
+  global $url, $INVALID_LOGIN, $CONNECTION_ERR;
 
   $client = new SoapClient($url);
-  $result = $client->__soapCall(
-    "wsExtAuth..ckAuth",
-    array(
-      "cid" => "VRIT0007",
-      "login" => $login,
-      "password" => $pswd
-  ));
+  try {
+    $result = $client->__soapCall(
+      "wsExtAuth..ckAuth",
+      array(
+        "cid" => "VRIT0007",
+        "login" => $login,
+        "password" => $pswd
+    ));
+  } catch(Exception $e) {
+    return $CONNECTION_ERR;
+  }
 
-  return empty($result[0]) ? $result[2] : null;
+  return empty($result[0]) ? $result[2] : $INVALID_LOGIN;
 }
 
 function registerId($id) {

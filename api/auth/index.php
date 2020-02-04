@@ -9,12 +9,29 @@ include "./privileges.php";
 
 if(isset($_POST["login"]) && isset($_POST["pswd"])) {
   $res = getStudentId($_POST["login"], $_POST["pswd"]);
-  if($res == null) {
-    echo json_encode(array(
-      "error"=>true,
-      "message"=>"Login o Password errati."
-    ));
-    die();
+  if(is_int($res)) {
+    switch($res) {
+      case $INVALID_LOGIN:
+        echo json_encode(array(
+          "error"=>true,
+          "message"=>"Login o Password errati."
+        ));
+        die();
+
+      case $CONNECTION_ERR:
+        echo json_encode(array(
+          "error"=>true,
+          "message"=>"Errore di connessione."
+        ));
+        die();
+
+      default:
+        echo json_encode(array(
+          "error"=>true,
+          "message"=>"Errore generico."
+        ));
+        die();
+      }
   }
   else {
     $id = $res->id;
