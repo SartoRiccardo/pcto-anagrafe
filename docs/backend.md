@@ -1,3 +1,5 @@
+# Struttura
+
 Il back-end dell'applicazione sarà primariamente programmato in PHP, e si occuperà di trasferire i dati dal Server al Client tramite richieste AJAX. I dati sono restituiti sottoforma di PHP. C'è stato un tentativo di emulare una API RESTful (fallito perché non ci siamo ancora arrivati).
 
 In ogni richiesta si dovrà mandare in POST con gli attributi `REQUEST_TYPE` e `auth` settati, rispettvamente, al tipo di richiesta da fare (GET, POST, ...) e all'ID dell'utente.
