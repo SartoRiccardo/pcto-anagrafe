@@ -109,14 +109,16 @@ class SearchBar extends Component {
           />
         </Form.Row>
       );
-    })
+    });
+    const buttonText = this.props.search.length === 0 ? "Cerca" : "Aggiungi";
+
     return (
       <form onSubmit={evt => evt.preventDefault()} className="my-3">
         {sFields}
 
         <Row className="justify-content-center">
           <Col xs="auto">
-            <Button onClick={this.addSearchField}>Cerca</Button>
+            <Button onClick={this.addSearchField}>{buttonText}</Button>
           </Col>
         </Row>
       </form>
