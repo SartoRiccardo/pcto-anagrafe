@@ -43,6 +43,9 @@ export function resultAction(arg0=null) {
         else if(res.data.error) {
           // Handle error...
         }
+      })
+      .catch(e => {
+
       });
   }
 }
@@ -71,6 +74,9 @@ export function selectCompany(id) {
         else if(res.data.error) {
           // Handle error...
         }
+      })
+      .catch(e => {
+
       });
   }
 }

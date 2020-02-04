@@ -31,6 +31,9 @@ export function reloadStructure() {
         else if(res.data.error) {
           // Handle error...
         }
+      })
+      .catch(e => {
+        
       });
   }
 }

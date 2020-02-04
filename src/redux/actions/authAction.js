@@ -28,6 +28,12 @@ export function loginAction(user, pswd) {
             error: res.data.message,
           });
         }
+      })
+      .catch(e => {
+        dispatch({
+          type: "ERROR",
+          error: "Errore di connessione.",
+        });
       });
   }
 }
