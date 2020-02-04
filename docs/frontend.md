@@ -10,7 +10,7 @@ Per ogni azienda, un utente potrà anche visualizzare che percorsi sono stati fa
 
 Visto che si possono modificare i singoli privilegi per ogni utente, non esiste un vero e proprio account "amministratore". Nonostante ciò, i dati in sé e come sono organizzati sono molto flessibili. Chi ha i permessi potrà accedere a dei pannelli specifici per modificare i dati di un'azienda, aggiungerne una nuova, che tipo di dati verranno salvati e che pattern dovranno seguire.
 
-# Dettagli tecnici
+## Dettagli tecnici
 
 L'applicazione verrà sviluppata unicamente con Javascript, utilizzando le librerie React e Bootstrap.
 

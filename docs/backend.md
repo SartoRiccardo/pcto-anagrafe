@@ -2,7 +2,7 @@ Il back-end dell'applicazione sarà primariamente programmato in PHP, e si occup
 
 In ogni richiesta si dovrà mandare in POST con gli attributi `REQUEST_TYPE` e `auth` settati, rispettvamente, al tipo di richiesta da fare (GET, POST, ...) e all'ID dell'utente.
 
-# /api/company
+## /api/company
 
 Gestisce tutto quello che riguarda le tabelle `Company` e `CompanyField`.
 
@@ -35,7 +35,7 @@ Gestisce tutto quello che riguarda le tabelle `Company` e `CompanyField`.
 | ----- | ---- | ----------- |
 | `id`  | `int` | L'ID dell'azienda da eliminare. |
 
-# /api/structure
+## /api/structure
 
 Gestisce tutto quello che riguarda la tabella `Field`.
 
@@ -68,7 +68,7 @@ Gestisce tutto quello che riguarda la tabella `Field`.
 | ----- | ---- | ----------- |
 | `id`  | `int` | L'ID dell'azienda da eliminare. |
 
-# /api/activity
+## /api/activity
 
 Gestisce tutto quello che riguarda le tabelle `Activity` e `ActivityField`.
 
@@ -101,7 +101,7 @@ Gestisce tutto quello che riguarda le tabelle `Activity` e `ActivityField`.
 | ----- | ---- | ----------- |
 | `id`  | `int` | L'ID dell'attività da eliminare. |
 
-# /api/saved
+## /api/saved
 
 Gestisce tutto quello che riguarda le tabelle `Saved`.
 
@@ -121,7 +121,7 @@ Tutta l'informazione viene già spedita dal campo `auth`.
 | ----- | ---- | ----------- |
 | `id`  | `int` | L'ID dell'azienda da eliminare dai preferiti. |
 
-# /api/internship
+## /api/internship
 
 Gestisce tutto quello che riguarda le tabelle `Internship`.
 
