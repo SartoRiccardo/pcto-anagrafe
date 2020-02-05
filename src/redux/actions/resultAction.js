@@ -81,6 +81,19 @@ export function selectCompany(id) {
   }
 }
 
+export function reloadCompany() {
+  return (dispatch, getState) => {
+    if(getToken() == null) {
+      // Logout...
+      return;
+    }
+    let {id} = getState().company.match;
+    if(id == null) return;
+
+    dispatch(selectCompany(id));
+  }
+}
+
 export function resetCompany() {
   return {type:"COMPANYR_RESET"};
 }

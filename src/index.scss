@@ -37,6 +37,10 @@ input, select,
   transition: border-color 0s!important;
 }
 
+.page-selector:hover {
+  border-color: rgba(0, 0, 0, 0)!important;
+}
+
 .logout-btn {
   background-color: rgba(0, 0, 0, 0.05)!important;
 }
@@ -80,6 +84,10 @@ footer {
 
 .mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
   color: rgba(255, 255, 255, 1)!important;
+}
+
+.fav-star {
+  fill: yellow!important;
 }
 
 @import '~bootstrap/scss/bootstrap';

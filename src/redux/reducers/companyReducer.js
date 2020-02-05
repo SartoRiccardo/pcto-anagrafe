@@ -6,7 +6,7 @@
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} match A single company object.
+ * @param {{id:int, saved:boolean, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} match A single company object.
  */
 const init = {
   match: null,
