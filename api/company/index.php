@@ -5,6 +5,7 @@ header('Content-Type: application/json');
 include "../database/database.php";
 include "../auth/privileges.php";
 include "./get.php";
+include "../saved/get.php";
 include "./post.php";
 include "./delete.php";
 
@@ -15,7 +16,9 @@ if(!isset($_POST["user"])) {
   ));
   die();
 }
-if(!hasPermission($_POST['user'], $_POST['REQUEST_METHOD'])) {
+
+$user = $_POST['user'];
+if(!hasPermission($user, $_POST['REQUEST_METHOD'])) {
   echo json_encode(array(
     "error" => true,
     "message" => "{$_POST['user']} doesn't have permission to {$_POST['REQUEST_METHOD']}"
@@ -26,18 +29,26 @@ if(!hasPermission($_POST['user'], $_POST['REQUEST_METHOD'])) {
 switch ($_POST["REQUEST_METHOD"]) {
   case "GET":
     if(isset($_POST["id"])) {
-      echo json_encode(getCompanyById($_POST["id"]));
+      $company = getCompanyById($_POST["id"]);
+      $company["saved"] = isSavedBy($user, $company["id"]);
+      echo json_encode($company);
     }
     else if(isset($_POST["search"])) {
       $page = isset($_POST["page"]) ? intval($_POST["page"]) : -1;
+      $results = getCompaniesBySearch(
+        json_decode($_POST["search"], true),
+        $page
+      );
+      for($i=0; $i<count($results); $i++) {
+        $r = $results[$i];
+        $r["saved"] = isSavedBy($user, $r["id"]);
+        $results[$i] = $r;
+      }
       $json = array(
         "totalResults"=>getCompanyNumberBySearch(
           json_decode($_POST["search"], true)
         ),
-        "results"=>getCompaniesBySearch(
-          json_decode($_POST["search"], true),
-          $page
-        )
+        "results"=>$results
       );
       echo json_encode($json);
     }
