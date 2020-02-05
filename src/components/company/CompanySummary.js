@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
-import {saveCompany, deleteSave} from "../../redux/actions/saveAction";
-import star from "../../img/star.svg";
-import starEmpty from "../../img/starEmpty.svg";
+import SaveStar from "./SaveStar";
 
 /**
  * A short table row describing certain company attributes.
@@ -30,17 +27,8 @@ class CompanySummary extends Component {
     this.redirect = true;
   }
 
-  saveCompany = evt => {
+  handleSave = evt => {
     this.redirect = false;
-
-    const {saveCompany, deleteSave} = this.props;
-    const {saved, id} = this.props.data;
-    if(saved) {
-      deleteSave(id);
-    }
-    else {
-      saveCompany(id);
-    }
   }
 
   render() {
@@ -61,26 +49,16 @@ class CompanySummary extends Component {
       return <td key={id}>{value ? value : "N/A"}</td>;
     });
 
-    const starType = data.saved ? star : starEmpty;
-
     return(
       <tr className="company-summary" onClick={this.handleClick}>
-        <td><img alt="star" onClick={this.saveCompany} className="fav-star" src={starType} /> <b>{data.name}</b></td>
+        <td>
+          <SaveStar className="mini-star" onClick={this.handleSave} companyId={data.id} status={data.saved} />
+          <b>{data.name}</b>
+        </td>
         {information}
       </tr>
     );
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    saveCompany: (id) => {
-      dispatch(saveCompany(id));
-    },
-    deleteSave: (id) => {
-      dispatch(deleteSave(id));
-    }
-  }
-}
-
-export default connect(null, mapDispatchToProps)(withRouter(CompanySummary));
+export default withRouter(CompanySummary);

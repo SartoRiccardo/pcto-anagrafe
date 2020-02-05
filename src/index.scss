@@ -60,14 +60,14 @@ input:focus, select:focus {
   color: inherit!important;
 }
 
-.table-hover tbody tr:hover:nth-child(odd) {
+.table-hover tbody tr:hover:nth-child(odd) {  // Darker
   cursor: pointer;
-  background-color: #ffcc80!important;
+  background-color: #ffecb3!important;
 }
 
-.table-hover tbody tr:hover:nth-child(even) {
+.table-hover tbody tr:hover:nth-child(even) { // Lighter
   cursor: pointer;
-  background-color: #ffe0b2!important;
+  background-color: #fff8e1!important;
 }
 
 footer {
@@ -86,8 +86,19 @@ footer {
   color: rgba(255, 255, 255, 1)!important;
 }
 
-.fav-star {
-  fill: yellow!important;
+.saved-star {
+  fill: #f9a825;
+  height: 100%;
+  width: auto;
+}
+
+.saved-star:hover {
+  fill:#e64a19;
+  cursor: pointer;
+}
+
+.mini-star {
+  height: 120%;
 }
 
 @import '~bootstrap/scss/bootstrap';
