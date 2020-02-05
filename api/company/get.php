@@ -40,20 +40,23 @@ function getCompaniesBySearch($search, $page=-1) {
 
   if(count($search) == 0) return array();
 
-  $q = generateSearchQuery($search);
+
+  $uniqueFields = groupFields($search);
   $params = array();
-  for ($i=0; $i < count($search); $i++) {
-    if($search[$i]["id"] == 0) {
-      $newParams = array("%".$search[$i]["value"]."%");
-    }
-    else {
-      $newParams = array(
-        $search[$i]["id"],
-        "%".$search[$i]["value"]."%"
-      );
+  foreach ($uniqueFields as $uf) {
+    $newParams = array();
+    foreach ($uf["values"] as $v) {
+      if($uf["id"] == 0) {
+        array_push($newParams, "%". $v ."%");
+      } else {
+        array_push($newParams, $uf["id"]);
+        array_push($newParams, "%". $v ."%");
+      }
     }
     $params = array_merge($params, $newParams);
   }
+
+  $q = generateSearchQuery($search);
   if($page >= 0){
     $maxRows = 50;
     $min = $page * $maxRows;
@@ -79,20 +82,22 @@ function getCompanyNumberBySearch($search) {
 
   if(count($search) == 0) return 0;
 
-  $q = generateSearchQuery($search);
+  $uniqueFields = groupFields($search);
   $params = array();
-  for ($i=0; $i < count($search); $i++) {
-    if($search[$i]["id"] == 0) {
-      $newParams = array("%".$search[$i]["value"]."%");
-    }
-    else {
-      $newParams = array(
-        $search[$i]["id"],
-        "%".$search[$i]["value"]."%"
-      );
+  foreach ($uniqueFields as $uf) {
+    $newParams = array();
+    foreach ($uf["values"] as $v) {
+      if($uf["id"] == 0) {
+        array_push($newParams, "%". $v ."%");
+      } else {
+        array_push($newParams, $uf["id"]);
+        array_push($newParams, "%". $v ."%");
+      }
     }
     $params = array_merge($params, $newParams);
   }
+
+  $q = generateSearchQuery($search);
   $q = "SELECT COUNT(*) AS amount FROM ($q) res";
   $stmt = $dbc->prepare($q);
   $stmt->execute($params);
@@ -100,36 +105,76 @@ function getCompanyNumberBySearch($search) {
 }
 
 function generateSearchQuery($search) {
+  // Groups together fields with the same ID, so they go in OR.
+  $uniqueFields = groupFields($search);
+
+  // Generates the query itself
   $q = "";
-  for ($i=0; $i < count($search); $i++) {
-    if($search[$i]["id"] == 0) {  // Name attribute is treated specially
+  for($i=0; $i < count($uniqueFields); $i++) {
+    $uf = $uniqueFields[$i];
+    if($uf["id"] == 0) {  // Name attribute is treated specially
+      $selectors = array();
+      for($j=0; $j < count($uf["values"]); $j++) {
+        array_push($selectors, "c.name LIKE ?");
+      }
+      $condition = join(" OR ", $selectors);
+
       $q = $i == 0 ? ("
-        SELECT id AS company
-          FROM Company
-          WHERE name LIKE ?
+        SELECT c.id AS company
+          FROM Company c
+          WHERE $condition
       ") : ("
         SELECT c.id AS company
           FROM Company c JOIN ($q) prev
             ON c.id = prev.company
-          WHERE c.name LIKE ?
+          WHERE $condition
       ");
     }
     else {
+      $selectors = array();
+      for($j=0; $j < count($uf["values"]); $j++) {
+        array_push($selectors, "(c.field = ? AND c.value LIKE ?)");
+      }
+      $condition = join(" OR ", $selectors);
+
       $q = $i == 0 ? ("
-        SELECT company
-          FROM CompanyField
-          WHERE field = ?
-            AND value LIKE ?
+        SELECT c.company
+          FROM CompanyField c
+          WHERE $condition
       ") : ("
-        SELECT c.company AS company
+        SELECT c.company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
-          WHERE c.field = ?
-            AND c.value LIKE ?
+          WHERE $condition
       ");
     }
   }
 
   return $q;
+}
+
+function groupFields($search) {
+  $uniqueFields = array();
+  foreach($search as $s) {
+    $fieldIndex = -1;
+    for($i=0; $i < count($uniqueFields); $i++) {
+      if($s["id"] == $uniqueFields[$i]["id"]) {
+        $fieldIndex = $i;
+        break;
+      }
+    }
+
+    if($fieldIndex < 0) {
+      array_push($uniqueFields, array(
+        "id"=>$s["id"],
+        "values"=>array($s["value"])
+      ));
+    }
+    else {
+      array_push($uniqueFields[$i]["values"], $s["value"]);
+    }
+  }
+
+  return $uniqueFields;
 }
 ?>
