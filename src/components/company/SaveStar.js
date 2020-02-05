@@ -13,13 +13,13 @@ import {ReactComponent as StarEmpty} from "../../img/starEmpty.svg";
  */
 class SaveStar extends Component {
   saveHandler = evt => {
-    const {status, saveCompany, deleteSave, companyId} = this.props;
+    const {status, saveCompany, deleteSave, company} = this.props;
 
     if(status) {
-      deleteSave(companyId);
+      deleteSave(company.id);
     }
     else {
-      saveCompany(companyId);
+      saveCompany(company);
     }
 
     if(this.props.onClick) {
@@ -40,8 +40,8 @@ class SaveStar extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveCompany: (id) => {
-      dispatch(saveCompany(id));
+    saveCompany: (company) => {
+      dispatch(saveCompany(company));
     },
     deleteSave: (id) => {
       dispatch(deleteSave(id));

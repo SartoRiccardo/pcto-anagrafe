@@ -42,7 +42,7 @@ class CompanyDetails extends Component {
           <Container className="text-center my-3">
             <Row className="d-flex justify-content-center">
               <Col className="pr-0">
-                <SaveStar className="float-right" companyId={company.id} status={company.saved} />
+                <SaveStar className="float-right" company={company} status={company.saved} />
               </Col>
               <Col xs="auto" className="pl-0">
                 <h1 className="text-center" xs="auto">{company.name}</h1>

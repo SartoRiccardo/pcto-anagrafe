@@ -35,9 +35,11 @@ class CompanySummary extends Component {
     const {data, search} = this.props;
 
     let uniqueFields = [];
-    for (let i = 0; i < search.length; i++) {
-      if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
-        uniqueFields.push(search[i].field.id);
+    if(search) {
+      for (let i = 0; i < search.length; i++) {
+        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+          uniqueFields.push(search[i].field.id);
+        }
       }
     }
 
@@ -52,7 +54,7 @@ class CompanySummary extends Component {
     return(
       <tr className="company-summary" onClick={this.handleClick}>
         <td>
-          <SaveStar className="mini-star" onClick={this.handleSave} companyId={data.id} status={data.saved} />
+          <SaveStar className="mini-star" onClick={this.handleSave} company={data} status={data.saved} />
           <b>{data.name}</b>
         </td>
         {information}

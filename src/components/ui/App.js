@@ -10,6 +10,7 @@ import UserNav from "./UserNav";
 import SearchCompany from "../forms/SearchCompany";
 import EditStructure from "../forms/EditStructure";
 import ShowCompany from "../company/ShowCompany";
+import ShowSaved from "../forms/ShowSaved";
 import Footer from "./Footer";
 
 /**
@@ -44,8 +45,8 @@ class App extends Component {
           <Route path="/search" component={SearchCompany} />
           <Route path="/structure" component={EditStructure} />
           <Route path="/company/:id" component={ShowCompany} />
+          <Route path="/saved" component={ShowSaved} />
           {/*
-          <Route path="/saved" component={} />
           <Route path="/add" component={} />
           <Route path="/projects" component={} />
           */}
@@ -59,8 +60,8 @@ class App extends Component {
         <Switch>
           <Route path="/search" component={SearchCompany} />
           <Route path="/company/:id" component={ShowCompany} />
+          <Route path="/saved" component={ShowSaved} />
           {/*
-          <Route path="/saved" component={} />
           <Route path="/projects" component={} />
           */}
           <Route path="/" component={SearchCompany} />

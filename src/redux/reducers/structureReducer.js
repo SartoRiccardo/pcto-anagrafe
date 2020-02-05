@@ -1,5 +1,5 @@
 
-const nameField = {id:0, name:"Nome", regex:".+"};
+export const nameField = {id:0, name:"Nome", regex:".+"};
 
 /**
  * The initial state of the structureReducer store.

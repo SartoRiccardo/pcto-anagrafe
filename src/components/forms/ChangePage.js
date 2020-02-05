@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {increasePage, decreasePage} from "../../redux/actions/searchPageAction";
+import {setPage, increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
 
 import Row from "react-bootstrap/Row";
@@ -12,24 +12,26 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
  *
  * @author Riccardo Sartori
  *
- * @param {int} page              The current page.
- * @param {int} totalResults      The results of the search.
+ * @param {int}     page          The current page.
+ * @param {int}     totalResults  The results of the search.
  * @param {boolean} multiplePages If there are multiple result pages.
  */
 class ChangePage extends Component {
   jumpToPage = evt => {
-    this.props.updatePage(parseInt(evt.target.value));
+    const {reducer} = this.props;
+    this.props.updatePage(reducer, parseInt(evt.target.value));
     this.props.updateResults();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
 
   changePage = evt => {
+    const {reducer} = this.props;
     if (evt.target.name === "increase") {
-      this.props.increasePage();
+      this.props.increasePage(reducer);
     }
     else if (evt.target.name === "decrease") {
-      this.props.decreasePage();
+      this.props.decreasePage(reducer);
     }
     this.props.updateResults();
     document.body.scrollTop = 0;
@@ -37,7 +39,8 @@ class ChangePage extends Component {
   }
 
   render() {
-    const {page, totalResults, multiplePages, resultsPerPage} = this.props;
+    const {page, totalResults, resultsPerPage} = this.props;
+    const multiplePages = totalResults > resultsPerPage;
 
     const pageNum = Math.ceil(totalResults/resultsPerPage);
     const renderRangeMd = 2;
@@ -83,24 +86,16 @@ class ChangePage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    page: state.search.page,
-    totalResults: state.search.totalResults,
-    resultsPerPage: state.search.resultsPerPage,
-  };
-}
-
 function mapDispatchToProps(dispatch) {
   return {
-    updatePage: (page) => {
-      dispatch({type:"SEARCHR_SET_PAGE", page});
+    updatePage: (reducer, page) => {
+      dispatch(setPage(reducer, page));
     },
-    decreasePage: () => {
-      dispatch(decreasePage());
+    decreasePage: reducer => {
+      dispatch(decreasePage(reducer));
     },
-    increasePage: () => {
-      dispatch(increasePage());
+    increasePage: reducer => {
+      dispatch(increasePage(reducer));
     },
     updateResults: () => {
       dispatch(resultAction());
@@ -108,4 +103,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePage);
+export default connect(null, mapDispatchToProps)(ChangePage);

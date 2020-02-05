@@ -1,6 +1,5 @@
 import React, {Fragment} from "react";
 import CompanySummary from "./CompanySummary";
-import {connect} from "react-redux";
 
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
@@ -25,9 +24,11 @@ function CompanyResults(props) {
     });
 
     let uniqueFields = [];
-    for (let i = 0; i < search.length; i++) {
-      if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
-        uniqueFields.push(search[i].field.id);
+    if(search) {
+      for (let i = 0; i < search.length; i++) {
+        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+          uniqueFields.push(search[i].field.id);
+        }
       }
     }
 
@@ -55,9 +56,7 @@ function CompanyResults(props) {
   }
   else {
     table = search.length === 0 ? (
-      <Fragment>
-        <h1 className="text-center">Inizia a cercare aziende</h1>
-      </Fragment>
+      <h1 className="text-center">Inizia a cercare aziende</h1>
     ) : (
       <Fragment>
         <h1 className="text-center">Nessun risultato</h1>
@@ -75,11 +74,4 @@ function CompanyResults(props) {
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    search: state.search.search,
-    results: state.search.results,
-  };
-}
-
-export default connect(mapStateToProps)(CompanyResults);
+export default CompanyResults;
