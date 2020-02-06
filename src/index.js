@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/ui/App";
+import App from "./components/App";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import "./index.scss";
 import {createStore, applyMiddleware} from "redux";

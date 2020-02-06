@@ -107,4 +107,25 @@ svg.big-star {
   height: 120%;
 }
 
+.pencil-icon {
+  fill: rgba(0, 0, 0, 0.1);
+  height: 75%;
+  width: auto;
+}
+
+.pencil-icon:hover {
+  fill: black;
+  cursor: pointer;
+  height: 75%;
+  width: auto;
+}
+
+input.input-field-valid {
+  box-shadow: 0 0 3px rgba(0, 255, 0, 1) !important;
+}
+
+input.input-field-invalid {
+  box-shadow: 0 0 3px rgba(255, 0, 0, 1) !important;
+}
+
 @import '~bootstrap/scss/bootstrap';
