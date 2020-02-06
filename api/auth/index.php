@@ -1,11 +1,11 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
 include "../config/authconfig.php";
 include "../database/database.php";
 include "./login.php";
 include "./privileges.php";
+
+header("Access-Control-Allow-Origin: $cors");
+header('Content-Type: application/json');
 
 if(isset($_POST["login"]) && isset($_POST["pswd"])) {
   $res = getStudentId($_POST["login"], $_POST["pswd"]);

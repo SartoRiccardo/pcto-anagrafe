@@ -1,12 +1,13 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
+include "../config/authconfig.php";
 include "../database/database.php";
 include "../auth/privileges.php";
 include "./get.php";
 include "./post.php";
 include "./delete.php";
+
+header("Access-Control-Allow-Origin: $cors");
+header('Content-Type: application/json');
 
 if(!isset($_POST["user"])) {
   echo json_encode(array(
@@ -15,22 +16,31 @@ if(!isset($_POST["user"])) {
   ));
   die();
 }
-// if(!hasPermission($_POST['user'], $_POST['REQUEST_METHOD'])) {
-//   echo json_encode(array(
-//     "error" => true,
-//     "message" => "{$_POST['user']} doesn't have permission to {$_POST['REQUEST_METHOD']}"
-//   ));
-//   die();
-// }
 
 switch ($_POST["REQUEST_METHOD"]) {
   case "GET":
+    if(!hasPermission($user, "BASE")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "The given user does not have BASE permissions."
+      ));
+      die();
+    }
+
     echo json_encode(
       getCompaniesSavedBy($_POST["user"])
     );
     break;
 
   case "POST":
+    if(!hasPermission($user, "BASE")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "The given user does not have BASE permissions."
+      ));
+      die();
+    }
+
     if(isset($_POST["id"])) {
       saveCompany($_POST["user"], $_POST["id"]);
       echo json_encode(array(
@@ -41,10 +51,25 @@ switch ($_POST["REQUEST_METHOD"]) {
     break;
 
   case "PUT":
-    // code...
+    if(!hasPermission($user, "BASE")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "The given user does not have BASE permissions."
+      ));
+      die();
+    }
+
     break;
 
   case "DELETE":
+    if(!hasPermission($user, "BASE")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "The given user does not have BASE permissions."
+      ));
+      die();
+    }
+
     if(isset($_POST["id"])) {
       deleteSave($_POST["user"], $_POST["id"]);
       echo json_encode(array(
