@@ -12,7 +12,7 @@ Il database è stato progettato in modo di essere il più possibile flessibile e
 
 | Campo  | Descrizione |
 | ------ | ----------- |
-| `id`   | L'ID dell'utente. corrisponde con l'ID utente di Spaggiari. |
+| `id`   | L'ID dell'utente. Corrisponde con l'ID utente di Spaggiari. |
 | `type` | Il tipo di permesso dato all'utente. |
 
 ### Modello Fisico
