@@ -23,7 +23,7 @@ function insertCompany($arg0, $arg1, $arg2=null) {
   $fields = $tmp;
 
   $validity = companyIsValid($name, $fields);
-  if(isset($validity["message"])) {
+  if($validity["error"]) {
     return $validity;
   }
 
@@ -44,6 +44,7 @@ function insertCompany($arg0, $arg1, $arg2=null) {
   $stmt->execute();
   if(!($res = $stmt->fetch())) {
     return array(
+      "error"=>true,
       "message"=>"Company was not inserted: invalid name"
     );
   }
@@ -68,6 +69,7 @@ function companyIsValid($name, $fields) {
   foreach ($fields as $f) {
     if(!(isset($f["id"]) && isset($f["value"]))) {
       return array(
+        "error"=>true,
         "message"=>"Invalid field."
       );
     }
@@ -81,6 +83,7 @@ function companyIsValid($name, $fields) {
 
     if(!($ret = $stmt->fetch())) {
       return array(
+        "error"=>true,
         "message"=>"Invalid field id: ".$f["id"]."."
       );
     }
@@ -88,11 +91,15 @@ function companyIsValid($name, $fields) {
     $reg = $ret["regex"];
     if(!preg_match("/^$reg$/", $f["value"])) {
       return array(
+        "error"=>true,
         "message"=>"Field with id ".$f["id"]." does not fully match ".$reg
       );
     }
   }
 
-  return array();
+  return array(
+    "error"=>false,
+    "message"=>""
+  );
 }
 ?>

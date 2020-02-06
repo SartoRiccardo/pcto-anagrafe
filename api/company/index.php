@@ -5,6 +5,7 @@ include "../auth/privileges.php";
 include "./get.php";
 include "../saved/get.php";
 include "./post.php";
+include "./put.php";
 include "./delete.php";
 
 header("Access-Control-Allow-Origin: $cors");
@@ -84,9 +85,8 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
 
     if(isset($_POST["id"]) && isset($_POST["name"]) && isset($_POST["fields"])) {
-      deleteCompanyById(intval($_POST["id"]));
       echo json_encode(
-        insertCompany(
+        updateCompany(
           intval($_POST["id"]),
           $_POST["name"],
           json_decode($_POST["fields"], true)
