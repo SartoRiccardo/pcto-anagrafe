@@ -18,7 +18,7 @@ import Container from "react-bootstrap/Container";
  * @param {boolean} props.resultsPresent If there are any results to show.
  */
 function SearchCompany(props) {
-  const {multiplePages, search, results, currentPage, totalResults, resultsPerPage} = props;
+  const {search, results, currentPage, totalResults, resultsPerPage} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const pageSwitcher = <ChangePage

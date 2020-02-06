@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 import Table from "react-bootstrap/Table";
 import SaveStar from "./SaveStar";
 
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -39,23 +38,26 @@ class CompanyDetails extends Component {
 
     return(
       <Fragment>
-          <Container className="text-center my-3">
-            <Row className="d-flex justify-content-center">
-              <Col className="pr-0">
-                <SaveStar className="float-right" company={company} status={company.saved} />
-              </Col>
-              <Col xs="auto" className="pl-0">
-                <h1 className="text-center" xs="auto">{company.name}</h1>
-              </Col>
-              <Col>
-              </Col>
-            </Row>
-          </Container>
-        <Table responsive striped bordered size="sm">
-          <tbody>
-            {data}
-          </tbody>
-        </Table>
+        <Row className="my-3 d-flex justify-content-center">
+          <Col className="d-flex justify-content-center justify-content-md-start" xs={12} md>
+            <SaveStar className="big-star" company={company} status={company.saved} />
+          </Col>
+          <Col xs={12} md={10}>
+            <h1 className="text-center" xs={12} md="auto">{company.name}</h1>
+          </Col>
+          <Col>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <Table responsive striped bordered size="sm">
+              <tbody>
+                {data}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
       </Fragment>
     );
   }

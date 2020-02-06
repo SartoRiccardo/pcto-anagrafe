@@ -2,6 +2,7 @@
 
 $primary: #e53935;
 $secondary: #ff8f00;
+$enable-responsive-font-sizes: true;
 
 html {
   height: 100%;
@@ -84,6 +85,11 @@ footer {
 
 .mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
   color: rgba(255, 255, 255, 1)!important;
+}
+
+svg.big-star {
+  height: 48px;
+  width: 48px;
 }
 
 .saved-star {
