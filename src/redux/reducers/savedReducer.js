@@ -18,11 +18,11 @@ function savedReducer(state=init, action) {
       };
 
     case "SAVEDR_ADD":
-      console.log("w");
       let company = update(action.company, {saved: {$set: true}});
       return {
         ...state,
         saved: [...state.saved, company],
+        totalResults: state.totalResults+1,
         page: 0,
       }
 
@@ -32,6 +32,7 @@ function savedReducer(state=init, action) {
         saved: state.saved.filter(s => {
           return s.id !== action.id;
         }),
+        totalResults: state.totalResults-1,
         page: 0,
       }
 
@@ -40,6 +41,9 @@ function savedReducer(state=init, action) {
         ...state,
         initialized: true,
       }
+
+    case "SAVEDR_RESET":
+      return init;
 
     default:
       return state;

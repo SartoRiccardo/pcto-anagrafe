@@ -72,5 +72,6 @@ export function logoutAction() {
   return (dispatch, getState) => {
     dispatch({type: "AUTHR_LOGOUT"});
     dispatch({type: "SEARCHR_RESET_SEARCH"});
+    dispatch({type: "SAVEDR_RESET"});
   }
 }
