@@ -14,6 +14,7 @@ if(!isset($_POST["user"])) {
   ));
   die();
 }
+$user = intval($_POST["user"]);
 
 switch ($_POST["REQUEST_METHOD"]) {
   case "GET":
