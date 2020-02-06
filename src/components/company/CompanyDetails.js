@@ -59,21 +59,33 @@ class CompanyDetails extends Component {
 
     const {field, value, valid} = evt
     if(valid) {
-      const {id, name, fields} = this.props.company;
-      let newFields = fields.filter(f => {
-        return f.id !== field.id;
-      });
-      newFields.push({...field, value});
-      const newCompany = {
-        id, name,
-        fields: newFields,
-      };
+      let newCompany;
+      if(field.id === 0) {
+        const {id, fields} = this.props.company;
+        newCompany = {
+          id, fields,
+          name: value,
+        };
+      }
+      else {
+        const {id, name, fields} = this.props.company;
+        let newFields = fields.filter(f => {
+          return f.id !== field.id;
+        });
+        newFields.push({...field, value});
+        newCompany = {
+          id, name,
+          fields: newFields,
+        };
+      }
+
       this.props.updateCompany(newCompany);
     }
   }
 
   render() {
     const {company, fields} = this.props;
+    const canModify = this.props.privileges.includes("MANAGE_COMPANY");
 
     if(company == null) {
       return (
@@ -81,8 +93,13 @@ class CompanyDetails extends Component {
       );
     }
 
+    let nameField = null;
     const data = fields.map(f => {
-      if(f.id === 0) return null;  // Name field
+      if(f.id === 0) {
+        nameField = f;
+        return null;
+      }
+
       let match = null;
       for (let i = 0; i < company.fields.length; i++) {
         if(company.fields[i].id === f.id) {
@@ -92,7 +109,7 @@ class CompanyDetails extends Component {
       }
 
       let cellContent = null;
-      if(this.state.modifying === f.id) {
+      if(this.state.modifying === f.id && canModify) {
         const value = match ? match.value : "";
         cellContent = <FieldModifier value={value} field={f} onFinish={this.modifyFinishHandler} />;
       }
@@ -100,7 +117,7 @@ class CompanyDetails extends Component {
         cellContent = (
           <Fragment>
             {(match ? match.value : "") + " "}
-            <Pencil className="pencil-icon" onClick={this.onClickConstructor(f.id)} />
+            {canModify ? <Pencil className="pencil-icon" onClick={this.onClickConstructor(f.id)} /> : null}
           </Fragment>
         );
       }
@@ -115,6 +132,15 @@ class CompanyDetails extends Component {
       );
     });
 
+    const title = this.state.modifying === 0 && canModify ? (
+      <FieldModifier value={company.name} field={nameField} onFinish={this.modifyFinishHandler} />
+    ) : (
+      <h1 className="text-center" xs={12} md="auto">
+        {company.name + " "}
+        {canModify ? <Pencil className="pencil-icon" onClick={this.onClickConstructor(0)} /> : null}
+      </h1>
+    );
+
     return(
       <Container>
         <Row className="my-3 d-flex justify-content-center">
@@ -123,7 +149,7 @@ class CompanyDetails extends Component {
           </Col>
 
           <Col xs={12} md={10}>
-            <h1 className="text-center" xs={12} md="auto">{company.name}</h1>
+            {title}
           </Col>
 
           <Col>
@@ -148,6 +174,7 @@ function mapStateToProps(state) {
   return {
     company: state.company.match,
     fields: state.structure.fields,
+    privileges: state.auth.privileges,
   };
 }
 
