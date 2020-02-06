@@ -23,8 +23,12 @@ class ShowCompany extends Component {
   constructor(props) {
     super(props);
 
-    this.props.resetCompany();
-    this.props.selectCompany(this.props.match.params.id);
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+    if(!company || company.id !== id) {
+      this.props.resetCompany();
+      this.props.selectCompany(id);
+    }
   }
 
   render() {
