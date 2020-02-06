@@ -83,6 +83,17 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
+    if(isset($_POST["id"]) && isset($_POST["name"]) && isset($_POST["fields"])) {
+      deleteCompanyById(intval($_POST["id"]));
+      echo json_encode(
+        insertCompany(
+          intval($_POST["id"]),
+          $_POST["name"],
+          json_decode($_POST["fields"], true)
+        )
+      );
+    }
+
     break;
 
   case "DELETE":

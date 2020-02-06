@@ -1,6 +1,26 @@
 <?php
-function insertCompany($name, $fields) {
+function insertCompany($arg0, $arg1, $arg2=null) {
   global $dbc;
+
+  if($arg2 == null) {
+    $id = null;
+    $name = $arg0;
+    $fields = $arg1;
+  }
+  else {
+    $id = $arg0;
+    $name = $arg1;
+    $fields = $arg2;
+  }
+
+  // Eliminate empty fields
+  $tmp = array();
+  foreach ($fields as $f) {
+    if(strlen($f["value"]) > 0) {
+      array_push($tmp, $f);
+    }
+  }
+  $fields = $tmp;
 
   $validity = companyIsValid($name, $fields);
   if(isset($validity["message"])) {
@@ -8,8 +28,9 @@ function insertCompany($name, $fields) {
   }
 
   $q = "INSERT INTO Company
-          VALUES (NULL, :name)";
+          VALUES (:id, :name)";
   $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id);
   $stmt->bindParam(":name", $name);
   $stmt->execute();
 
