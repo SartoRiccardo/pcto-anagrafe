@@ -15,10 +15,7 @@ const init = {
 function companyReducer(state=init, action) {
   switch(action.type) {
     case "COMPANYR_RESET":
-      return {
-        ...state,
-        match: null,
-      };
+      return init;
 
     case "COMPANYR_SET_MATCH":
       return {

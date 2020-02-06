@@ -11,15 +11,16 @@ class FieldModifier extends Component {
       value: value ? value : "",
       field,
     };
+    this.forceInvalid = false;
   }
 
-  finish = evt => {
+  finish = () => {
     const {value, field} = this.state;
-    if(this.props.onFinish && this.inputIsValid()) {
+    if(this.props.onFinish && (this.inputIsValid() || this.forceInvalid)) {
       this.props.onFinish({
         field,
         value,
-        valid: this.inputIsValid(),
+        valid: !this.forceInvalid && this.inputIsValid(),
       });
     }
   }
@@ -32,7 +33,18 @@ class FieldModifier extends Component {
 
   inputIsValid = () => {
     const {value, field} = this.state;
-    return value === "" || value.match("^" + field.regex + "$");
+    return (value === "" || value.match("^" + field.regex + "$"));
+  }
+
+  handleKeyPress = evt => {
+    if(evt.key === "Enter") {
+      this.finish();
+    }
+    else if(evt.key === "Escape") {
+      this.forceInvalid = true;
+      this.finish();
+      this.forceInvalid = false;
+    }
   }
 
   render() {
@@ -46,6 +58,7 @@ class FieldModifier extends Component {
         onChange={this.handleChange}
         onBlur={this.finish}
         className={className}
+        onKeyDown={this.handleKeyPress}
       autoFocus />
     );
   }
