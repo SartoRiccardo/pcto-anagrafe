@@ -44,32 +44,34 @@ class AddCompany extends Component {
 
   render() {
     return (
-      <Container>
-        <Row>
-          <Col>
-            <h1>Crea un'azienda</h1>
-          </Col>
-        </Row>
-
-        <Form onSubmit={this.submitHandler}>
-          <Form.Row>
-            <Col xs md={6}>
-              <Form.Control
-                type="text"
-                placeholder="Nome dell'azienda..."
-                value={this.state.name}
-                onChange={this.changeHandler}
-              />
+      <div className="vertical-center d-flex align-items-center">
+        <Container>
+          <Row>
+            <Col className="text-center">
+              <h1>Crea un'azienda</h1>
             </Col>
-          </Form.Row>
+          </Row>
 
-          <Form.Row>
-            <Col xs={12}>
-              <Button type="submit">Crea</Button>
-            </Col>
-          </Form.Row>
-        </Form>
-      </Container>
+          <Form onSubmit={this.submitHandler}>
+            <Form.Row className="d-flex justify-content-center my-3">
+              <Col xs md={6}>
+                <Form.Control
+                  type="text"
+                  placeholder="Nome dell'azienda..."
+                  value={this.state.name}
+                  onChange={this.changeHandler}
+                />
+              </Col>
+            </Form.Row>
+
+            <Form.Row>
+              <Col xs={12} className="d-flex justify-content-center">
+                <Button type="submit">Crea</Button>
+              </Col>
+            </Form.Row>
+          </Form>
+        </Container>
+      </div>
     );
   }
 }
