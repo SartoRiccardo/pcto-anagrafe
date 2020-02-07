@@ -29,8 +29,8 @@ export function resultAction(arg0=null) {
 
     axios.post(apiUrl("/api/company"), payload)
       .then(res => {
-        const {lastestSearchId} = getState().search;
-        if(lastestSearchId !== searchId) return;
+        const {lastSearchId} = getState().search;
+        if(lastSearchId !== searchId) return;
 
         if(res.status === 200 && !res.data.error) {
           const {totalResults, results} = res.data;

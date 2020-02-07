@@ -154,12 +154,30 @@ svg.big-pencil {
   margin: 0px !important;
 }
 
+.loading-table-overlay {
+  max-width: 192px;
+  max-height: 192px;
+  height: 100%;
+  width: 100%;
+}
+
 input.input-field-valid {
   box-shadow: 0 0 3px rgba(0, 255, 0, 1) !important;
 }
 
 input.input-field-invalid {
   box-shadow: 0 0 3px rgba(255, 0, 0, 1) !important;
+}
+
+.table-overlay {
+  margin-left: 15px;
+  margin-right: 15px;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
 }
 
 @import '~bootstrap/scss/bootstrap';

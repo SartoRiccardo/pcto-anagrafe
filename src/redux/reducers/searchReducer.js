@@ -12,7 +12,7 @@ import update from "immutability-helper";
  * @param {int}                                                                                 page            The current page number.
  * @param {int}                                                                                 resultsPerPage  The results to show per page.
  * @param {int}                                                                                 totalResults    The total results the search generated.
- * @param {float}                                                                               lastestSearchId The ID of the last search that was made, useful for bad connection.
+ * @param {float}                                                                               lastSearchId The ID of the last search that was made, useful for bad connection.
  */
 const init = {
   search: [],
@@ -20,7 +20,8 @@ const init = {
   page: 0,
   resultsPerPage: 50,
   totalResults: 0,
-  lastestSearchId: 0,
+  lastSearchId: 0,
+  loading: false,
 };
 
 function searchReducer(state=init, action) {
@@ -64,6 +65,7 @@ function searchReducer(state=init, action) {
         ...state,
         results: action.results,
         totalResults: action.totalResults,
+        loading: false,
       };
 
     case "SEARCHR_SET_PAGE":
@@ -96,7 +98,8 @@ function searchReducer(state=init, action) {
     case "SEARCHR_NOTIFY_BEGIN_SEARCH":
       return {
         ...state,
-        lastestSearchId: action.searchId,
+        lastSearchId: action.searchId,
+        loading: true,
       };
 
     default:

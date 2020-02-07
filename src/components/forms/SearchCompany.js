@@ -18,35 +18,28 @@ import Container from "react-bootstrap/Container";
  * @param {boolean} props.resultsPresent If there are any results to show.
  */
 function SearchCompany(props) {
-  const {search, results, currentPage, totalResults, resultsPerPage} = props;
+  const {search, results, page, totalResults, loading, resultsPerPage} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const pageSwitcher = <ChangePage
-    page={currentPage}
+    page={page}
     totalResults={totalResults}
     resultsPerPage={resultsPerPage}
     reducer="SEARCH"
-  />
+  />;
 
   return (
     <Container>
       <SearchBar />
       {resultsPresent ? pageSwitcher : null}
-      <CompanyResults search={search} results={results} />
+      <CompanyResults search={search} results={results} loading={loading} />
       {resultsPresent ? pageSwitcher : null}
     </Container>
   );
 }
 
 function mapStateToProps(state) {
-  const {search, results, page, totalResults, resultsPerPage} = state.search;
-  return {
-    search: search,
-    results: results,
-    currentPage: page,
-    totalResults: totalResults,
-    resultsPerPage: resultsPerPage,
-  };
+  return {...state.search};
 }
 
 export default connect(mapStateToProps)(SearchCompany);

@@ -1,5 +1,6 @@
 import React, {Fragment} from "react";
 import CompanySummary from "./CompanySummary";
+import {ReactComponent as Loading} from "../../img/loading.svg";
 
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
@@ -15,7 +16,15 @@ import Col from "react-bootstrap/Col";
  * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 props.search  The parameters in the search.
  */
 function CompanyResults(props) {
-  const {results, search} = props;
+  const {results, loading, search} = props;
+
+  const loadingComponent = results.length > 0 ? (
+    <div className="table-overlay">
+      <Loading className="loading-table-overlay" />
+    </div>
+  ) : (
+    <Loading />
+  );
 
   let table;
   if(results.length > 0) {
@@ -64,11 +73,11 @@ function CompanyResults(props) {
       </Fragment>
     );
   }
-
   return (
     <Row>
       <Col>
         {table}
+        {loading ? loadingComponent : null}
       </Col>
     </Row>
   );
