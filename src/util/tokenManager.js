@@ -1,5 +1,6 @@
 
 export function saveToken(token) {
+  deleteToken();
   document.cookie = "token=" + token;
 }
 
@@ -20,5 +21,5 @@ export function getToken() {
 }
 
 export function deleteToken() {
-  document.cookie = "token=";
+  document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 }

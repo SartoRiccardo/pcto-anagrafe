@@ -84,7 +84,7 @@ function mapStateToProps(state) {
   return {
     privileges: state.auth.privileges,
     token: state.auth.token,
-    initialized: state.auth.initalized,
+    initialized: state.auth.initialized,
   };
 }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
-import {resultAction, reloadCompany} from "./resultAction";
+import {resultAction, selectCompany} from "./resultAction";
 
 export function createCompany(name) {
   return (dispatch, getState) => {
@@ -9,9 +9,10 @@ export function createCompany(name) {
   };
 }
 
-// LIST OF VICTIMS: 204, 1122
 export function updateCompany(company) {
   return (dispatch, getState) => {
+    const id = getState().company.match.id;
+
     if(!getToken()) {
       // Logout
       return;
@@ -27,8 +28,9 @@ export function updateCompany(company) {
     axios.post(apiUrl("/api/company"), payload)
     .then(res => {
       if(res.status === 200) {
+        dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
-        dispatch(reloadCompany());
+        dispatch(selectCompany(id));
       }
     })
     .catch(e => {

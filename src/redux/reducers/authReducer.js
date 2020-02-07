@@ -18,11 +18,18 @@ const init = {
   token: null,
   error: null,
   loading: false,
-  initalized: false,
+  initialized: false,
 }
 
 function companyReducer(state=init, action) {
   switch(action.type) {
+    case "AUTHR_ANONYMOUS":
+      return {
+        ...state,
+        loading: false,
+        initialized: true,
+      };
+
     case "AUTHR_LOGIN":
       saveToken(action.token);
       return {
@@ -31,7 +38,7 @@ function companyReducer(state=init, action) {
         token: action.token,
         error: null,
         loading: false,
-        initalized: true,
+        initialized: true,
       };
 
     case "AUTHR_ERROR":

@@ -42,7 +42,10 @@ export function loginAction(user, pswd) {
 export function initLogin() {
   return (dispatch, getState) => {
     const token = getToken();
-    if(token == null) return;
+    if(token == null) {
+      dispatch({type: "AUTHR_ANONYMOUS"});
+      return;
+    }
 
     let payload = new FormData();
     payload.set("token", token);
@@ -70,8 +73,9 @@ export function initLogin() {
 
 export function logoutAction() {
   return (dispatch, getState) => {
-    dispatch({type: "AUTHR_LOGOUT"});
     dispatch({type: "SEARCHR_RESET_SEARCH"});
     dispatch({type: "SAVEDR_RESET"});
+    dispatch({type: "COMPANYR_RESET"});
+    dispatch({type: "AUTHR_LOGOUT"});
   }
 }
