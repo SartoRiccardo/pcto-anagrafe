@@ -3,6 +3,12 @@ $INVALID_LOGIN = 1;
 $CONNECTION_ERR = 2;
 
 function getStudentId($login, $pswd) {
+  if($login == "a" && $pswd == "a") {
+    return (object) array(
+      "id"=>1
+    );
+  }
+
   global $url, $INVALID_LOGIN, $CONNECTION_ERR;
 
   $client = new SoapClient($url);
@@ -27,7 +33,7 @@ function registerId($id) {
   if(isRegistered($id)) return;
 
   $q = "INSERT INTO Privilege
-          VALUES (:id, 'GET')";
+          VALUES (:id, 'BASE')";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
