@@ -63,8 +63,10 @@ class App extends Component {
 
     return(
       <BrowserRouter>
-        {nav}
-        {links}
+          {nav}
+        <div className="content">
+          {links}
+        </div>
         <Footer />
       </BrowserRouter>
     );

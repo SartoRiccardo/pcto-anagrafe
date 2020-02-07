@@ -24,7 +24,10 @@ export function createCompany(name) {
       }
     })
     .catch(e => {
-
+      dispatch({
+        type: "CHANGECOMPANYR_END_ERROR",
+        error: "Errore di connessione.",
+      });
     });
   };
 }

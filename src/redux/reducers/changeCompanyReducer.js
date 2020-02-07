@@ -4,6 +4,7 @@ const init = {
   requestType: null,
   finished: false,
   payload: {},
+  error: "",
 }
 
 function changeCompanyReducer(state=init, action) {
@@ -14,6 +15,7 @@ function changeCompanyReducer(state=init, action) {
         submitted: true,
         requestType: "ADD",
         finished: false,
+        error: "",
       };
 
     case "CHANGECOMPANYR_END_ADD":
@@ -23,6 +25,16 @@ function changeCompanyReducer(state=init, action) {
         requestType: null,
         finished: true,
         payload: action.payload,
+        error: "",
+      };
+
+    case "CHANGECOMPANYR_END_ERROR":
+      return {
+        ...state,
+        submitted: false,
+        requestType: null,
+        finished: true,
+        error: action.error,
       };
 
     case "CHANGECOMPANYR_ACK":

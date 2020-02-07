@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {loginAction, startLogin} from "../../redux/actions/authAction";
-import loadingSvg from "../../img/loading.svg";
+import {ReactComponent as Loading} from "../../img/loading.svg";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -52,7 +52,7 @@ class Login extends Component {
     ) : null;
 
     let loadingIcon = loading ? (
-      <img src={loadingSvg} style={{width: "2rem"}} alt="" />
+      <Loading className="loading-icon" />
     ) : null;
 
     return(
@@ -69,10 +69,9 @@ class Login extends Component {
           </Col>
         </Form.Row>
 
-        <Form.Row className="justify-content-center my-3">
-          <Col xs="auto">
-            <Button as="button" type="submit" disabled={loading}>Login</Button>
-            {loadingIcon}
+        <Form.Row className="my-3">
+          <Col xs={12} className="d-flex justify-content-center">
+            <Button as="button" type="submit" disabled={loading}>Login</Button> {loadingIcon}
           </Col>
         </Form.Row>
       </Form>

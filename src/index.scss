@@ -19,26 +19,34 @@ body {
 }
 
 #root {
-  min-height: 100%;
-  height: 100%;
   display: flex;
-  flex-flow: column;
+  min-height: 100vh;
+  flex-direction: column;
+  // min-height: 100%;
+  // height: 100%;
+  // display: flex;
+  // flex-flow: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
 }
 
 .vertical-center {
-  flex: 1 1 auto;
+  width: 100%;
 }
 
-footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-}
+// footer {
+//   position: absolute;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   padding: 1rem;
+// }
 
 .jumbotron {
-  background-color: #b71c1c!important;
+  background-color: #b71c1c !important;
   color: white;
 }
 
@@ -48,55 +56,55 @@ input, select,
 .btn-secondary:focus,
 .btn-secondary:active,
 .navbar-toggler:focus {
-    box-shadow:none!important;
+    box-shadow:none !important;
     outline:0px;
 }
 
 .toggler:active, .toggler:hover, .toggler:focus {
-  background-color: inherit!important;
-  border-color: rgba(0, 0, 0, 0)!important;
-  transition: border-color 0s!important;
+  background-color: inherit !important;
+  border-color: rgba(0, 0, 0, 0) !important;
+  transition: border-color 0s !important;
 }
 
 .page-selector:hover {
-  border-color: rgba(0, 0, 0, 0)!important;
+  border-color: rgba(0, 0, 0, 0) !important;
 }
 
 .logout-btn {
-  background-color: rgba(0, 0, 0, 0.05)!important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 input:focus, select:focus {
-  border-color: #ffca28!important;
+  border-color: #ffca28 !important;
 }
 
 .page-selector-selected {
-  background-color: #e65100!important;
-  border-color: #e65100!important;
+  background-color: #e65100 !important;
+  border-color: #e65100 !important;
 }
 
 .btn-secondary:not(:hover):not(.page-selector-selected):focus {
-  background-color: $secondary!important;
-  border-color: $secondary!important;
-  color: inherit!important;
+  background-color: $secondary !important;
+  border-color: $secondary !important;
+  color: inherit !important;
 }
 
 .table-hover tbody tr:hover:nth-child(odd) {  // Darker
   cursor: pointer;
-  background-color: #ffecb3!important;
+  background-color: #ffecb3 !important;
 }
 
 .table-hover tbody tr:hover:nth-child(even) { // Lighter
   cursor: pointer;
-  background-color: #fff8e1!important;
+  background-color: #fff8e1 !important;
 }
 
 .mobile-collapse-link {
-  color: rgba(255, 255, 255, 0.5)!important;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
-  color: rgba(255, 255, 255, 1)!important;
+  color: rgba(255, 255, 255, 1) !important;
 }
 
 svg.big-star {
@@ -130,6 +138,12 @@ svg.big-star {
   cursor: pointer;
   height: 75%;
   width: auto;
+}
+
+.loading-icon {
+  height: 2.3rem;
+  width: auto;
+  margin: 0px !important;
 }
 
 input.input-field-valid {

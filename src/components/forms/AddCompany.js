@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {createCompany} from "../../redux/actions/companyAction";
+import {ReactComponent as Loading} from "../../img/loading.svg";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -15,6 +16,8 @@ class AddCompany extends Component {
 
     this.state = {
       name: "",
+      error: null,
+      loading: false,
     }
   }
 
@@ -30,7 +33,9 @@ class AddCompany extends Component {
     const {name} = this.state;
     const {submitted} = this.props;
     if(!submitted && name.length > 0) {
-      console.log("SUBMIT");
+      this.setState({
+        loading: true,
+      });
       this.props.createCompany(name);
     }
   }
@@ -38,17 +43,37 @@ class AddCompany extends Component {
   componentDidUpdate() {
     if(this.props.finished) {
       this.props.acknowledge();
-      this.props.history.push("/company/" + this.props.payload.id);
+      if(this.props.error === "") {
+        this.setState({
+          loading: false,
+        });
+        this.props.history.push("/company/" + this.props.payload.id);
+      }
+      else {
+        this.setState({
+          error: this.props.error,
+          loading: false,
+        });
+      }
     }
   }
 
   render() {
+    const errorMessage = this.state.error ? (
+      <h5>{this.state.error}</h5>
+    ) : null;
+
+    const loadingIcon = this.state.loading ? (
+      <Loading className="loading-icon" />
+    ) : null;
+
     return (
       <div className="vertical-center d-flex align-items-center">
         <Container>
           <Row>
             <Col className="text-center">
               <h1>Crea un'azienda</h1>
+              {errorMessage}
             </Col>
           </Row>
 
@@ -66,7 +91,7 @@ class AddCompany extends Component {
 
             <Form.Row>
               <Col xs={12} className="d-flex justify-content-center">
-                <Button type="submit">Crea</Button>
+                <Button type="submit" disabled={this.state.loading}>Crea</Button> {loadingIcon}
               </Col>
             </Form.Row>
           </Form>
