@@ -2,16 +2,20 @@ import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateCompany} from "../../redux/actions/companyAction";
-import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
+import {resultAction, selectCompany, resetCompany} from "../../redux/actions/resultAction";
+import {deleteCompany} from "../../redux/actions/companyAction";
 import Table from "react-bootstrap/Table";
 import SaveStar from "./SaveStar";
 import FieldModifier from "../forms/FieldModifier";
 import {ReactComponent as Pencil} from "../../img/pencil.svg";
-import {ReactComponent as Loading} from "../../img/loading.svg"
+import {ReactComponent as Loading} from "../../img/loading.svg";
+import {ReactComponent as Trash} from "../../img/trash.svg";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 /**
  * A table showing all of a company's information.
@@ -37,6 +41,7 @@ class CompanyDetails extends Component {
 
     this.state = {
       modifying: null,
+      deleteStarted: false,
     };
   }
 
@@ -96,14 +101,58 @@ class CompanyDetails extends Component {
     }
   }
 
+  startDelete = evt => {
+    this.setState({
+      deleteStarted: true,
+    });
+  }
+
+  cancelDelete = evt => {
+    if(this.state.deleteStarted && !this.props.deleteStatus.submitted) {
+      this.setState({
+        deleteStarted: false,
+      });
+    }
+  }
+
+  deleteCompany = evt => {
+    this.props.deleteCompany(this.props.company.id);
+  }
+
+  componentDidUpdate() {
+    const {company, deleteStatus, history} = this.props;
+    if(this.state.deleteStarted && deleteStatus.finished && deleteStatus.payload.id === company.id) {
+      this.props.acknowledge();
+      this.props.resetCompany();
+      this.props.reloadSearches();
+      history.push("/");
+    }
+  }
+
   render() {
-    const {company, fields} = this.props;
+    const {company, error, fields} = this.props;
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
 
     if(company == null) {
-      return (
-        <Loading />
-      );
+      if(error == null) {
+        return (
+          <Loading />
+        );
+      }
+      else {
+        return (
+          <div className="vertical-center d-flex align-items-center">
+            <Container>
+              <Row>
+                <Col className="text-center">
+                  <h1>Azienda non trovata</h1>
+                  <p className="lead">L'azienda che stai cercando non esiste o è stata eliminata.</p>
+                </Col>
+              </Row>
+            </Container>
+          </div>
+        );
+      }
     }
 
     let nameField = null;
@@ -154,11 +203,27 @@ class CompanyDetails extends Component {
       </h1>
     );
 
+    const modal = (
+      <Modal centered show={this.state.deleteStarted} onHide={this.cancelDelete} animation={true}>
+        <Modal.Header>
+          <Modal.Title>Elimina l'azienda</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Sei sicuro di voler eliminare l'azienda <b>{company.name}</b>?</Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.cancelDelete} variant="muted">Annulla</Button>
+          <Button onClick={this.deleteCompany} variant="danger">Elimina</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+
     return(
       <Container>
+        {modal}
+
         <Row className="my-3 d-flex justify-content-center">
           <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
             <SaveStar className="big-star" company={company} status={company.saved} />
+            <Trash className="trash-icon" onClick={this.startDelete} />
             {canModify ? <Pencil className="pencil-icon big-pencil d-block d-md-none mx-0" onClick={this.onClickConstructor(0)} /> : null}
           </Col>
 
@@ -187,8 +252,10 @@ class CompanyDetails extends Component {
 function mapStateToProps(state) {
   return {
     company: state.company.match,
+    error: state.company.error,
     fields: state.structure.fields,
     privileges: state.auth.privileges,
+    deleteStatus: state.changeCompany.delete,
   };
 }
 
@@ -202,6 +269,15 @@ function mapDispatchToProps(dispatch) {
     },
     resetCompany: () => {
       dispatch(resetCompany());
+    },
+    reloadSearches: () => {
+      dispatch(resultAction());
+    },
+    deleteCompany: id => {
+      dispatch(deleteCompany(id));
+    },
+    acknowledge: () => {
+      dispatch({type: "CHANGECOMPANYR_ACK", request: "delete"});
     }
   };
 }

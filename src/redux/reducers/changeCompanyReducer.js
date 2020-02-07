@@ -1,44 +1,57 @@
 
 const init = {
-  submitted: false,
-  requestType: null,
-  finished: false,
-  payload: {},
-  error: "",
+  add: {
+    submitted: false,
+    finished: false,
+    payload: {},
+    error: "",
+  },
+  delete: {
+    submitted: false,
+    finished: false,
+    payload: {},
+    error: "",
+  }
 }
 
 function changeCompanyReducer(state=init, action) {
   switch(action.type) {
-    case "CHANGECOMPANYR_START_ADD":
+    case "CHANGECOMPANYR_START":
       return {
         ...state,
-        submitted: true,
-        requestType: "ADD",
-        finished: false,
-        error: "",
+        [action.request]: {
+          submitted: true,
+          finished: false,
+          error: "",
+        }
       };
 
-    case "CHANGECOMPANYR_END_ADD":
+    case "CHANGECOMPANYR_END":
       return {
         ...state,
-        submitted: false,
-        requestType: null,
-        finished: true,
-        payload: action.payload,
-        error: "",
+        [action.request]: {
+          submitted: false,
+          finished: true,
+          payload: action.payload,
+          error: "",
+        }
       };
 
     case "CHANGECOMPANYR_END_ERROR":
       return {
-        ...state,
-        submitted: false,
-        requestType: null,
-        finished: true,
-        error: action.error,
+        [action.request]: {
+          ...state,
+          submitted: false,
+          finished: true,
+          error: action.error,
+        }
       };
 
     case "CHANGECOMPANYR_ACK":
-      return init;
+      return {
+        ...state,
+        [action.request]: init[action.request],
+      };
 
     default:
       return state;

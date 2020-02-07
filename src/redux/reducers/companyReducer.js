@@ -10,6 +10,7 @@
  */
 const init = {
   match: null,
+  error: null,
 }
 
 function companyReducer(state=init, action) {
@@ -21,7 +22,15 @@ function companyReducer(state=init, action) {
       return {
         ...state,
         match: action.match,
+        error: null,
       };
+
+    case "COMPANYR_ERROR":
+      return {
+        ...state,
+        match: null,
+        error: action.error,
+      }
 
     default:
       return state;

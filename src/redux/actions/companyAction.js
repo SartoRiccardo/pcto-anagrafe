@@ -9,7 +9,7 @@ export function createCompany(name) {
       // Logout
       return;
     }
-    dispatch({type: "CHANGECOMPANYR_START_ADD"});
+    dispatch({type: "CHANGECOMPANYR_START", request:"add"});
 
     let payload = new FormData();
     payload.set("REQUEST_METHOD", "POST");
@@ -20,12 +20,12 @@ export function createCompany(name) {
     axios.post(apiUrl("/api/company"), payload)
     .then(res => {
       if(res.status === 200 && !res.data.error) {
-        dispatch({type: "CHANGECOMPANYR_END_ADD", payload: {id: res.data.id}});
+        dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
       }
     })
     .catch(e => {
       dispatch({
-        type: "CHANGECOMPANYR_END_ERROR",
+        type: "CHANGECOMPANYR_END_ERROR", request:"add",
         error: "Errore di connessione.",
       });
     });
@@ -54,6 +54,32 @@ export function updateCompany(company) {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(id));
+      }
+    })
+    .catch(e => {
+
+    });
+  };
+}
+
+export function deleteCompany(id) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    dispatch({type: "CHANGECOMPANYR_START", request:"delete"});
+
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "DELETE");
+    payload.set("user", getToken());
+    payload.set("id", id);
+
+    axios.post(apiUrl("/api/company"), payload)
+    .then(res => {
+      if(res.status === 200) {
+        dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
       }
     })
     .catch(e => {

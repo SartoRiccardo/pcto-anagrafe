@@ -25,6 +25,8 @@ class CompanySummary extends Component {
     if(this.redirect) {
       this.props.setMatch(this.props.data);
       this.props.history.push("/company/" + this.props.data.id);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
 
     this.redirect = true;

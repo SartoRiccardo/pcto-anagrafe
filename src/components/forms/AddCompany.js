@@ -103,7 +103,7 @@ class AddCompany extends Component {
 
 function mapStateToProps(state) {
   return {
-    ...state.changeCompany,
+    ...state.changeCompany.add,
   };
 }
 
@@ -113,7 +113,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(createCompany(name));
     },
     acknowledge: () => {
-      dispatch({type: "CHANGECOMPANYR_ACK"});
+      dispatch({type: "CHANGECOMPANYR_ACK", request:"add"});
     }
   };
 }

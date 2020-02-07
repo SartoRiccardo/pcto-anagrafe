@@ -43,6 +43,10 @@ input, select,
 .btn-primary:active,
 .btn-secondary:focus,
 .btn-secondary:active,
+.btn-muted:focus,
+.btn-muted:active,
+.btn-danger:focus,
+.btn-danger:active,
 .navbar-toggler:focus {
     box-shadow:none !important;
     outline:0px;
@@ -131,6 +135,17 @@ svg.big-star {
 svg.big-pencil {
   height: 40px !important;
   width: 40px !important;
+}
+
+.trash-icon {
+  fill: rgba(0, 0, 0, 0.1);
+  height: 42px;
+  width: 42px;
+}
+
+.trash-icon:hover {
+  fill: black;
+  cursor: pointer;
 }
 
 .loading-icon {

@@ -83,7 +83,7 @@ class SearchField extends Component {
         </Col>
 
         <Col xs={{order:3, span:12}} md={{order:2, span:5}}>
-          <FormControl name="value" className="my-2 my-sm-0" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
+          <FormControl name="value" className="my-2 my-md-0" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
         </Col>
 
         <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
