@@ -137,15 +137,16 @@ class CompanyDetails extends Component {
     ) : (
       <h1 className="text-center" xs={12} md="auto">
         {company.name + " "}
-        {canModify ? <Pencil className="pencil-icon" onClick={this.onClickConstructor(0)} /> : null}
+        {canModify ? <Pencil className="pencil-icon d-none d-md-inline" onClick={this.onClickConstructor(0)} /> : null}
       </h1>
     );
 
     return(
       <Container>
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="d-flex justify-content-center justify-content-md-start" xs={12} md>
+          <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
             <SaveStar className="big-star" company={company} status={company.saved} />
+            {canModify ? <Pencil className="pencil-icon big-pencil d-block d-md-none mx-0" onClick={this.onClickConstructor(0)} /> : null}
           </Col>
 
           <Col xs={12} md={10}>

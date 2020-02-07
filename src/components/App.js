@@ -64,7 +64,7 @@ class App extends Component {
     return(
       <BrowserRouter>
           {nav}
-        <div className="content">
+        <div className="content d-flex">
           {links}
         </div>
         <Footer />
