@@ -1,3 +1,15 @@
+# 2020-02-07: 0.3.0
+
+## Versioni
++ [Front-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/1bfd634f2b9f7fa59544f8d14836a71fcdb2a521)
++ [Back-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/d07333afc1a18fbc45b104f30e29a88ac742b9bb)
+
+## Aggiunte
++ Chi possiede i privilegi può aggiungere nuove aziende e modificarne il contenuto
+
+## Sicurezza
++ Risolto finalmente un bug che non cancellava completamente la sessione una volta eseguito il logout
+
 # 2020-02-06: 0.2.1
 
 ## Versioni
