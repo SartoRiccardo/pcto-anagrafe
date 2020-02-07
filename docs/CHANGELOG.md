@@ -1,7 +1,7 @@
 # 2020-02-07: 0.3.0
 
 ## Versioni
-+ [Front-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/1bfd634f2b9f7fa59544f8d14836a71fcdb2a521)
++ [Front-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/e03fff0a1f48781cef1e5579a050c0a4e9b16633)
 + [Back-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/d07333afc1a18fbc45b104f30e29a88ac742b9bb)
 
 ## Aggiunte
