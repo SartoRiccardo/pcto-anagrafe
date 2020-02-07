@@ -60,7 +60,11 @@ function insertCompany($arg0, $arg1, $arg2=null) {
     $stmt->execute();
   }
 
-  return getCompanyById($id);
+  return array(
+    "id"=>$id,
+    "error"=>false,
+    "message"=>"",
+  );
 }
 
 function companyIsValid($name, $fields) {
