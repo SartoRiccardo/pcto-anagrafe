@@ -61,10 +61,11 @@ class App extends Component {
       nav = <UserNav privileges={privileges} />
     }
 
+    const display = token ? "flex" : "block";
     return(
       <BrowserRouter>
           {nav}
-        <div className="content d-flex">
+        <div className={"content d-" + display}>
           {links}
         </div>
         <Footer />
