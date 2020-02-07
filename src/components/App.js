@@ -5,7 +5,6 @@ import {reloadStructure} from "../redux/actions/structureAction";
 import {initLogin} from "../redux/actions/authAction";
 
 import AnonymousPage from "./ui/AnonymousPage";
-import AdminNav from "./ui/AdminNav";
 import UserNav from "./ui/UserNav";
 import SearchCompany from "./forms/SearchCompany";
 import EditStructure from "./forms/EditStructure";
@@ -34,40 +33,31 @@ class App extends Component {
     const {initialized, privileges, token} = this.props;
     if(!initialized) return null;
 
+    const routes = [
+      {privilege: "BASE",             component: <Route key={0} path="/search" component={SearchCompany} />},
+      {privilege: "MANAGE_STRUCTURE", component: <Route key={1} path="/structure" component={EditStructure} />},
+      {privilege: "BASE",             component: <Route key={2} path="/company/:id" component={CompanyDetails} />},
+      {privilege: "BASE",             component: <Route key={3} path="/saved" component={ShowSaved} />},
+      // {privilege: "MANAGE_COMPANY",   component: <Route key={4} path="/add" component={} />},
+      {privilege: "BASE",             component: <Route key={6} path="/" component={SearchCompany} />},
+    ];
+
     let links, nav;
     if(!token) {
       links = <AnonymousPage />
       nav = null;
     }
-    else if("ADMIN" in privileges) {
-      links = (
-        <Switch>
-          <Route path="/search" component={SearchCompany} />
-          <Route path="/structure" component={EditStructure} />
-          <Route path="/company/:id" component={CompanyDetails} />
-          <Route path="/saved" component={ShowSaved} />
-          {/*
-          <Route path="/add" component={} />
-          <Route path="/projects" component={} />
-          */}
-          <Route path="/" component={SearchCompany} />
-        </Switch>
-      );
-      nav = <AdminNav />;
-    }
     else {
+      const availableRoutes = routes.map(r => {
+        return privileges.includes(r.privilege) ? r.component : null;
+      });
+
       links = (
         <Switch>
-          <Route path="/search" component={SearchCompany} />
-          <Route path="/company/:id" component={CompanyDetails} />
-          <Route path="/saved" component={ShowSaved} />
-          {/*
-          <Route path="/projects" component={} />
-          */}
-          <Route path="/" component={SearchCompany} />
+          {availableRoutes}
         </Switch>
       );
-      nav = <UserNav />;
+      nav = <UserNav privileges={privileges} />
     }
 
     return(

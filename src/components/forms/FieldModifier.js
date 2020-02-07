@@ -33,7 +33,10 @@ class FieldModifier extends Component {
 
   inputIsValid = () => {
     const {value, field} = this.state;
-    return (value === "" || value.match("^" + field.regex + "$"));
+    return (value.length < 256
+      && (value === ""
+      || value.match("^" + field.regex + "$"))
+    );
   }
 
   handleKeyPress = evt => {

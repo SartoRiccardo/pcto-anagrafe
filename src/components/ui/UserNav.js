@@ -34,23 +34,26 @@ class UserNav extends Component {
   render() {
     const span = 4;
     const links = [
-      {key:0, path:"/search", label:"Cerca"},
-      {key:1, path:"/saved", label:"Salvati"},
-      {key:2, path:"/projects", label:"Attività"},
+      {key:0, privilege:"BASE",             path:"/search",    label:"Cerca"},
+      {key:1, privilege:"BASE",             path:"/saved",     label:"Salvati"},
+      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure", label:"Struttura"},
+      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",       label:"Aggiungi"},
     ];
 
     const mdNavLinks = links.map(l => {
-      const {key, path, label} = l;
-      return <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>;
+      const {key, privilege, path, label} = l;
+      return this.props.privileges.includes(privilege) ? (
+        <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>
+      ) : null;
     });
 
     const sxNavLinks = links.map(l => {
-      const {key, path, label} = l;
-      return (
+      const {key, privilege, path, label} = l;
+      return this.props.privileges.includes(privilege) ? (
         <Col key={key} className="px-0 d-flex justify-content-center">
           <Nav.Link className="mobile-collapse-link" as={NavLink} to={path}>{label}</Nav.Link>
         </Col>
-      );
+      ) : null;
     })
 
     return (
