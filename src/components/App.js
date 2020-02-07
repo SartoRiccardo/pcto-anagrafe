@@ -7,6 +7,7 @@ import {initLogin} from "../redux/actions/authAction";
 import AnonymousPage from "./ui/AnonymousPage";
 import UserNav from "./ui/UserNav";
 import SearchCompany from "./forms/SearchCompany";
+import AddCompany from "./forms/AddCompany";
 import EditStructure from "./forms/EditStructure";
 import CompanyDetails from "./company/CompanyDetails";
 import ShowSaved from "./forms/ShowSaved";
@@ -38,7 +39,7 @@ class App extends Component {
       {privilege: "MANAGE_STRUCTURE", component: <Route key={1} path="/structure" component={EditStructure} />},
       {privilege: "BASE",             component: <Route key={2} path="/company/:id" component={CompanyDetails} />},
       {privilege: "BASE",             component: <Route key={3} path="/saved" component={ShowSaved} />},
-      // {privilege: "MANAGE_COMPANY",   component: <Route key={4} path="/add" component={} />},
+      {privilege: "MANAGE_COMPANY",   component: <Route key={4} path="/add" component={AddCompany} />},
       {privilege: "BASE",             component: <Route key={6} path="/" component={SearchCompany} />},
     ];
 

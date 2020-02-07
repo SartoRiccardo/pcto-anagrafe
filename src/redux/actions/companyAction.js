@@ -5,7 +5,27 @@ import {resultAction, selectCompany} from "./resultAction";
 
 export function createCompany(name) {
   return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+    dispatch({type: "CHANGECOMPANYR_START_ADD"});
 
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "POST");
+    payload.set("user", getToken());
+    payload.set("name", name);
+    payload.set("fields", "[]");
+
+    axios.post(apiUrl("/api/company"), payload)
+    .then(res => {
+      if(res.status === 200 && !res.data.error) {
+        dispatch({type: "CHANGECOMPANYR_END_ADD", payload: {id: res.data.id}});
+      }
+    })
+    .catch(e => {
+
+    });
   };
 }
 
