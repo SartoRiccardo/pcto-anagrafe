@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {setMatchCompany} from "../../redux/actions/resultAction";
 import SaveStar from "./SaveStar";
 
 /**
@@ -20,7 +22,8 @@ class CompanySummary extends Component {
   }
 
   handleClick = evt => {
-    if(this.redirect){
+    if(this.redirect) {
+      this.props.setMatch(this.props.data);
       this.props.history.push("/company/" + this.props.data.id);
     }
 
@@ -63,4 +66,12 @@ class CompanySummary extends Component {
   }
 }
 
-export default withRouter(CompanySummary);
+function mapDispatchToProps(dispatch) {
+  return {
+    setMatch: company => {
+      dispatch(setMatchCompany(company));
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(withRouter(CompanySummary));

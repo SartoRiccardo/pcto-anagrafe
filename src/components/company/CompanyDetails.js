@@ -57,11 +57,24 @@ class CompanyDetails extends Component {
       modifying: null,
     });
 
-    const {field, value, valid} = evt
-    if(valid) {
+    const {field, value, valid} = evt;
+    const {id, name, fields} = this.props.company;
+    let unmodifiedValue = null;
+    if(field.id === 0) {
+      unmodifiedValue = name;
+    }
+    else {
+      for (var i = 0; i < fields.length; i++) {
+        if(fields[i].id === field.id) {
+          unmodifiedValue = fields[i].value;
+          break;
+        }
+      }
+    }
+
+    if(valid && unmodifiedValue !== value) {
       let newCompany;
       if(field.id === 0) {
-        const {id, fields} = this.props.company;
         newCompany = {
           id, fields,
           name: value,

@@ -97,3 +97,7 @@ export function reloadCompany() {
 export function resetCompany() {
   return {type:"COMPANYR_RESET"};
 }
+
+export function setMatchCompany(company) {
+  return {type: "COMPANYR_SET_MATCH", match: company};
+}
