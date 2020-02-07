@@ -21,6 +21,11 @@ export function resultAction(arg0=null) {
     const searchId = Math.random();
     dispatch({type: "SEARCHR_NOTIFY_BEGIN_SEARCH", searchId});
 
+    if(searchReq.length === 0) {
+      dispatch({type: "SEARCHR_UPDATE_RESULTS", results:[], totalResults:0});
+      return;
+    }
+
     let payload = new FormData();
     payload.set("user", getToken());
     payload.set("search", JSON.stringify(searchReq));

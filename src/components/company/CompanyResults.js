@@ -23,7 +23,7 @@ function CompanyResults(props) {
       <Loading className="loading-table-overlay" />
     </div>
   ) : (
-    <Loading />
+    <Loading className="loading-table-overlay" />
   );
 
   let table;

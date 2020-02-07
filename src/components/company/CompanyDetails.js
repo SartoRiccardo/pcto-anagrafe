@@ -203,15 +203,21 @@ class CompanyDetails extends Component {
       </h1>
     );
 
+    const modalButtonsDisabled = !(this.state.deleteStarted && !this.props.deleteStatus.submitted);
     const modal = (
       <Modal centered show={this.state.deleteStarted} onHide={this.cancelDelete} animation={true}>
         <Modal.Header>
           <Modal.Title>Elimina l'azienda</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Sei sicuro di voler eliminare l'azienda <b>{company.name}</b>?</Modal.Body>
+        <Modal.Body>
+          Sei sicuro di voler eliminare l'azienda <b>{company.name}</b>?
+        </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.cancelDelete} variant="muted">Annulla</Button>
-          <Button onClick={this.deleteCompany} variant="danger">Elimina</Button>
+          {modalButtonsDisabled ? (
+            <Loading className="loading-icon d-inline" />
+          ) : null}
+          <Button onClick={this.cancelDelete} variant="muted" disabled={modalButtonsDisabled}>Annulla</Button>
+          <Button onClick={this.deleteCompany} variant="danger" disabled={modalButtonsDisabled}>Elimina</Button>
         </Modal.Footer>
       </Modal>
     );
