@@ -32,8 +32,16 @@ switch ($_POST["REQUEST_METHOD"]) {
 
     if(isset($_POST["id"])) {
       $company = getCompanyById($_POST["id"]);
-      $company["saved"] = isSavedBy($user, $company["id"]);
-      echo json_encode($company);
+      if($company == null) {
+        echo json_encode(array(
+          "error"=>true,
+          "message"=>"Company does not exist."
+        ));
+      }
+      else {
+        $company["saved"] = isSavedBy($user, $company["id"]);
+        echo json_encode($company);
+      }
     }
     else if(isset($_POST["search"])) {
       $page = isset($_POST["page"]) ? intval($_POST["page"]) : -1;
