@@ -7,6 +7,7 @@ import {deleteCompany} from "../../redux/actions/companyAction";
 import Table from "react-bootstrap/Table";
 import SaveStar from "./SaveStar";
 import FieldModifier from "../forms/FieldModifier";
+import ConfirmDelete from "../forms/ConfirmDelete";
 import {ReactComponent as Pencil} from "../../img/pencil.svg";
 import {ReactComponent as Loading} from "../../img/loading.svg";
 import {ReactComponent as Trash} from "../../img/trash.svg";
@@ -108,25 +109,9 @@ class CompanyDetails extends Component {
   }
 
   cancelDelete = evt => {
-    if(this.state.deleteStarted && !this.props.deleteStatus.submitted) {
-      this.setState({
-        deleteStarted: false,
-      });
-    }
-  }
-
-  deleteCompany = evt => {
-    this.props.deleteCompany(this.props.company.id);
-  }
-
-  componentDidUpdate() {
-    const {company, deleteStatus, history} = this.props;
-    if(this.state.deleteStarted && deleteStatus.finished && deleteStatus.payload.id === company.id) {
-      this.props.acknowledge();
-      this.props.resetCompany();
-      this.props.reloadSearches();
-      history.push("/");
-    }
+    this.setState({
+      deleteStarted: false,
+    });
   }
 
   render() {
@@ -203,28 +188,9 @@ class CompanyDetails extends Component {
       </h1>
     );
 
-    const modalButtonsDisabled = !(this.state.deleteStarted && !this.props.deleteStatus.submitted);
-    const modal = (
-      <Modal centered show={this.state.deleteStarted} onHide={this.cancelDelete} animation={true}>
-        <Modal.Header>
-          <Modal.Title>Elimina l'azienda</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Sei sicuro di voler eliminare l'azienda <b>{company.name}</b>?
-        </Modal.Body>
-        <Modal.Footer>
-          {modalButtonsDisabled ? (
-            <Loading className="loading-icon d-inline" />
-          ) : null}
-          <Button onClick={this.cancelDelete} variant="muted" disabled={modalButtonsDisabled}>Annulla</Button>
-          <Button onClick={this.deleteCompany} variant="danger" disabled={modalButtonsDisabled}>Elimina</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-
     return(
       <Container>
-        {modal}
+        <ConfirmDelete show={this.state.deleteStarted} company={company} onCancel={this.cancelDelete} />
 
         <Row className="my-3 d-flex justify-content-center">
           <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
@@ -261,7 +227,6 @@ function mapStateToProps(state) {
     error: state.company.error,
     fields: state.structure.fields,
     privileges: state.auth.privileges,
-    deleteStatus: state.changeCompany.delete,
   };
 }
 
@@ -276,15 +241,6 @@ function mapDispatchToProps(dispatch) {
     resetCompany: () => {
       dispatch(resetCompany());
     },
-    reloadSearches: () => {
-      dispatch(resultAction());
-    },
-    deleteCompany: id => {
-      dispatch(deleteCompany(id));
-    },
-    acknowledge: () => {
-      dispatch({type: "CHANGECOMPANYR_ACK", request: "delete"});
-    }
   };
 }
 
