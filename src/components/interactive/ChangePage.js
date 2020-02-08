@@ -22,7 +22,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
  * @param {function} props.updateResults  Updates the current search results.
  */
 class ChangePage extends Component {
-  jumpToPage = evt => {
+  jumpToPage = (evt) => {
     const {reducer} = this.props;
     this.props.updatePage(reducer, parseInt(evt.target.value));
     this.props.updateResults();
@@ -30,7 +30,7 @@ class ChangePage extends Component {
     document.documentElement.scrollTop = 0;
   }
 
-  changePage = evt => {
+  changePage = (evt) => {
     const {reducer} = this.props;
     if (evt.target.name === "increase") {
       this.props.increasePage(reducer);
@@ -87,7 +87,7 @@ class ChangePage extends Component {
           {multiplePages ? rightButton : null}
         </ButtonGroup>
       </Row>
-    )
+    );
   }
 }
 
@@ -96,10 +96,10 @@ function mapDispatchToProps(dispatch) {
     updatePage: (reducer, page) => {
       dispatch(setPage(reducer, page));
     },
-    decreasePage: reducer => {
+    decreasePage: (reducer) => {
       dispatch(decreasePage(reducer));
     },
-    increasePage: reducer => {
+    increasePage: (reducer) => {
       dispatch(increasePage(reducer));
     },
     updateResults: () => {

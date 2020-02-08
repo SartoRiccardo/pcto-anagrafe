@@ -4,39 +4,6 @@ import {apiUrl} from "./url";
 import {resultAction, reloadCompany} from "./resultAction";
 
 /**
- * An action creator to update the current saved companies.
- *
- * Dispatches loadSaved on success.
- *
- * @author Riccardo Sartori
- *
- */
-export function updateSaved() {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout...
-      return;
-    }
-
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "GET");
-    payload.set("user", getToken());
-
-    axios.post(apiUrl("/api/saved"), payload)
-    .then(res => {
-      if(res.status === 200) {
-        dispatch({type: "SAVEDR_START_DUMP", totalResults: res.data.length});
-        dispatch(loadSaved(res.data));
-        if(res.data.length === 0) dispatch({type: "SAVEDR_END_DUMP"});
-      }
-    })
-    .catch(e => {
-
-    });
-  }
-}
-
-/**
  * An action creator to load a single saved company.
  *
  * Fires a SAVEDR_ADD on success, and SAVEDR_END_DUMP if it was the last company to load.
@@ -59,7 +26,7 @@ export function loadSaved(saved) {
       payload.set("id", saved[i]);
 
       axios.post(apiUrl("/api/company"), payload)
-      .then(res => {
+      .then((res) => {
         if(res.status === 200) {
           dispatch({type: "SAVEDR_ADD", company: res.data});
           if(i === saved.length-1) {
@@ -67,10 +34,45 @@ export function loadSaved(saved) {
           }
         }
       })
-      .catch(e => {
+      .catch((e) => {
 
       });
     }
+  }
+}
+
+/**
+ * An action creator to update the current saved companies.
+ *
+ * Dispatches loadSaved on success.
+ *
+ * @author Riccardo Sartori
+ *
+ */
+export function updateSaved() {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout...
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "GET");
+    payload.set("user", getToken());
+
+    axios.post(apiUrl("/api/saved"), payload)
+    .then((res) => {
+      if(res.status === 200) {
+        dispatch({type: "SAVEDR_START_DUMP", totalResults: res.data.length});
+        dispatch(loadSaved(res.data));
+        if(res.data.length === 0) {
+          dispatch({type: "SAVEDR_END_DUMP"});
+        }
+      }
+    })
+    .catch((e) => {
+
+    });
   }
 }
 
@@ -96,14 +98,16 @@ export function saveCompany(company) {
     payload.set("id", company.id);
 
     axios.post(apiUrl("/api/saved"), payload)
-    .then(res => {
+    .then((res) => {
       if(res.status === 200) {
-        if(getState().saved.initialized) dispatch({type: "SAVEDR_ADD", company});
+        if(getState().saved.initialized) {
+          dispatch({type: "SAVEDR_ADD", company});
+        }
         dispatch(resultAction());
         dispatch(reloadCompany());
       }
     })
-    .catch(e => {
+    .catch((e) => {
 
     });
   }
@@ -131,15 +135,17 @@ export function deleteSave(id) {
     payload.set("id", id);
 
     axios.post(apiUrl("/api/saved"), payload)
-    .then(res => {
+    .then((res) => {
       if(res.status === 200) {
-        if(getState().saved.initialized) dispatch({type: "SAVEDR_DELETE", id});
+        if(getState().saved.initialized) {
+          dispatch({type: "SAVEDR_DELETE", id});
+        }
         dispatch(resultAction());
         dispatch(reloadCompany());
       }
     })
-    .catch(e => {
+    .catch((e) => {
 
     });
-  }
+  };
 }

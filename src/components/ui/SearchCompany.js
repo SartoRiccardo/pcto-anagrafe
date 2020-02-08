@@ -1,5 +1,5 @@
 import React from "react";
-import {connect} from "react-redux"
+import {connect} from "react-redux";
 import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
