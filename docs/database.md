@@ -60,7 +60,7 @@ CREATE TABLE Activity (
   id INT NOT NULL AUTO_INCREMENT,
   company INT NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY (company) REFERENCES Company(id)
+  FOREIGN KEY (company) REFERENCES Company(id) ON DELETE CASCADE
 )
 ```
 
@@ -109,8 +109,8 @@ CREATE TABLE CompanyField (
   field INT NOT NULL,
   value VARCHAR(255) NOT NULL,
   PRIMARY KEY(company, field),
-  FOREIGN KEY (company) REFERENCES Company(id),
-  FOREIGN KEY (field) REFERENCES Field(id)
+  FOREIGN KEY (company) REFERENCES Company(id) ON DELETE CASCADE,
+  FOREIGN KEY (field) REFERENCES Field(id) ON DELETE CASCADE
 )
 ```
 
@@ -132,8 +132,8 @@ CREATE TABLE ActivityField (
   field INT NOT NULL,
   value VARCHAR(255) NOT NULL,
   PRIMARY KEY(activity, field),
-  FOREIGN KEY (activity) REFERENCES Activity(id),
-  FOREIGN KEY (field) REFERENCES Field(id)
+  FOREIGN KEY (activity) REFERENCES Activity(id) ON DELETE CASCADE,
+  FOREIGN KEY (field) REFERENCES Field(id) ON DELETE CASCADE
 )
 ```
 
@@ -152,7 +152,7 @@ CREATE TABLE ActivityField (
 CREATE TABLE Saved (
   student INT NOT NULL,
   company INT NOT NULL,
-  FOREIGN KEY (company) REFERENCES Company(id)
+  FOREIGN KEY (company) REFERENCES Company(id) ON DELETE CASCADE
 )
 ```
 
@@ -173,6 +173,6 @@ Per limitazioni tecniche, non si può inserire l'ID di Spaggiari nel campo `stud
 CREATE TABLE Internship (
   student VARCHAR(255) NOT NULL,
   activity INT NOT NULL,
-  FOREIGN KEY (activity) REFERENCES Activity(id)
+  FOREIGN KEY (activity) REFERENCES Activity(id) ON DELETE CASCADE
 )
 ```
