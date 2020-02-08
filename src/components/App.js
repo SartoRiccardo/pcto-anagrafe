@@ -6,11 +6,11 @@ import {initLogin} from "../redux/actions/authAction";
 
 import AnonymousPage from "./ui/AnonymousPage";
 import UserNav from "./ui/UserNav";
-import SearchCompany from "./forms/SearchCompany";
+import SearchCompany from "./ui/SearchCompany";
 import AddCompany from "./forms/AddCompany";
 import EditStructure from "./forms/EditStructure";
 import CompanyDetails from "./company/CompanyDetails";
-import ShowSaved from "./forms/ShowSaved";
+import ShowSaved from "./ui/ShowSaved";
 import Footer from "./ui/Footer";
 
 /**

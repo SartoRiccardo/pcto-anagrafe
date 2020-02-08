@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux"
-import SearchBar from "./SearchBar";
+import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
-import ChangePage from "./ChangePage";
+import ChangePage from "../interactive/ChangePage";
 
 import Container from "react-bootstrap/Container";
 

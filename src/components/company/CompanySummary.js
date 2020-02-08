@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {setMatchCompany} from "../../redux/actions/resultAction";
-import SaveStar from "./SaveStar";
+import SaveStar from "../interactive/SaveStar";
 
 /**
  * A short table row describing certain company attributes.

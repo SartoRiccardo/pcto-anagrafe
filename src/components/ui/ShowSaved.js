@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {updateSaved} from "../../redux/actions/saveAction";
 import CompanyResults from "../company/CompanyResults";
-import ChangePage from "./ChangePage";
+import ChangePage from "../interactive/ChangePage";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
