@@ -9,9 +9,11 @@ import Button from "react-bootstrap/Button";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, name:String, field:{id:int, name:String, regex:String, value:String}}} props.initState    The state to initialize the component.
- * @param {int}                                                                            props.id           The component ID, redundant if initState is present.
- * @param {{id:int, name:String, regex:String}[]}                                          this.props.options A list of searchable fields.
+ * @param {Search}   props.initState  The state to initialize the component.
+ * @param {int}      props.id         The component ID, redundant if initState is present.
+ * @param {Field[]}  props.options    A list of searchable fields.
+ * @param {function} props.onDelete   A handler for when the field gets deleted.
+ * @param {function} props.onChange   A handler for when the field state changes.
  */
 class SearchField extends Component {
   constructor(props) {

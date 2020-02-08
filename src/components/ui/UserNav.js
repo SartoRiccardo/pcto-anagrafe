@@ -15,6 +15,8 @@ import Collapse from "react-bootstrap/Collapse";
  * A navbar for users without particular privileges.
  *
  * @author Riccardo Sartori
+ *
+ * @param {function} logout  Logs out the user.
  */
 class UserNav extends Component {
   constructor(props) {

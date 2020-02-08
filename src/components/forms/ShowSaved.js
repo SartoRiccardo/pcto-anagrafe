@@ -8,6 +8,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/**
+ * A component that shows an user's saved companies.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {state.saved} props              The saved section of the store.
+ * @param {function}    props.updateSaved  Refreshes the currently saved companies
+ */
 class ShowSaved extends Component {
   constructor(props) {
     super(props);

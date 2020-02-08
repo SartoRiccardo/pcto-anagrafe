@@ -8,6 +8,13 @@ export function updateStructure(fields) {
   }
 }
 
+/**
+ * An action creator to reload the current table structure.
+ *
+ * Fires STRUCTURER_UPDATE on success.
+ *
+ * @author Riccardo Sartori
+ */
 export function reloadStructure() {
   return (dispatch, getState) => {
     if(!getToken()) {
@@ -20,20 +27,20 @@ export function reloadStructure() {
     payload.set("REQUEST_METHOD", "GET");
 
     axios.post(apiUrl("/api/structure"), payload)
-      .then(res => {
-        if(res.status === 200 && !res.data.error) {
-          const fields = res.data;
-          dispatch({
-            type: "STRUCTURER_UPDATE",
-            fields,
-          });
-        }
-        else if(res.data.error) {
-          // Handle error...
-        }
-      })
-      .catch(e => {
-        
-      });
+    .then(res => {
+      if(res.status === 200 && !res.data.error) {
+        const fields = res.data;
+        dispatch({
+          type: "STRUCTURER_UPDATE",
+          fields,
+        });
+      }
+      else if(res.data.error) {
+        // Handle error...
+      }
+    })
+    .catch(e => {
+
+    });
   }
 }

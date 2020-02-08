@@ -2,6 +2,15 @@ import React, {Component} from "react";
 
 import Form from "react-bootstrap/Form";
 
+/**
+ * A form to change a company's field value.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {String}   props.value     The current field's value.
+ * @param {Field}    props.field     The field to modify.
+ * @param {function} props.onFinish  A handler for when the user is finished editing.
+ */
 class FieldModifier extends Component {
   constructor(props) {
     super(props);

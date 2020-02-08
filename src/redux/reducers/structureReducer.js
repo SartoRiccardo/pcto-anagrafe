@@ -8,7 +8,7 @@ export const nameField = {id:0, name:"Nome", regex:".+"};
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, name:String, regex:String}[]} fields The table structure's fields.
+ * @param {Field[]} fields  The table structure's fields.
  */
 const init = {
   fields: [nameField]

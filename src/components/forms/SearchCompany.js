@@ -12,10 +12,8 @@ import Container from "react-bootstrap/Container";
  * Server as a wrapper for the Route component.
  *
  * @author Riccardo Sartori
- * @see SearchBar
- * @see CompanyResults
  *
- * @param {boolean} props.resultsPresent If there are any results to show.
+ * @param {state.search} props  The current search's state.
  */
 function SearchCompany(props) {
   const {search, results, page, totalResults, loading, resultsPerPage} = props;

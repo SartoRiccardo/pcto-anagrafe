@@ -12,9 +12,14 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
  *
  * @author Riccardo Sartori
  *
- * @param {int}     page          The current page.
- * @param {int}     totalResults  The results of the search.
- * @param {boolean} multiplePages If there are multiple result pages.
+ * @param {int}      props.page           The current page.
+ * @param {int}      props.totalResults   The results of the search.
+ * @param {boolean}  props.multiplePages  If there are multiple result pages.
+ * @param {String}   props.reducer        The reducer that must handler the page change events.
+ * @param {function} props.updatePage     Jumps to the given page.
+ * @param {function} props.decreasePage   Decreases the page by 1.
+ * @param {function} props.increasePage   Increases the page by 1.
+ * @param {function} props.updateResults  Updates the current search results.
  */
 class ChangePage extends Component {
   jumpToPage = evt => {

@@ -1,5 +1,18 @@
 import update from "immutability-helper";
 
+/**
+ * The initial access of the savedReducer store.
+ *
+ * This state is similar to searchReducer, but only tracks saved companies.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Company[]} saved           The saved companies.
+ * @param {int}       totalResults    The total saved companies.
+ * @param {int}       resultsPerPage  The results to show per page.
+ * @param {int}       page            The current page number.
+ * @param {boolean}   initialized     If the saved companies have been retrieved yet.
+ */
 const init = {
   saved: [],
   totalResults: 0,

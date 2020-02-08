@@ -5,11 +5,15 @@ import {ReactComponent as Star} from "../../img/star.svg";
 import {ReactComponent as StarEmpty} from "../../img/starEmpty.svg";
 
 /**
- * A star to save companies
+ * A star to save companies.
  *
- * @param {function} onClick   An event to trigger when the component is clicked.
- * @param {int}      companyId The ID of the company to handle.
- * @param {boolean}  status    Whether the company is saved or not.
+ * @author Riccardo Sartori
+ *
+ * @param {Company}  props.company      The ID of the company to handle.
+ * @param {boolean}  props.status       Whether the company is saved or not.
+ * @param {function} props.onClick      A handler for when the component is clicked.
+ * @param {function} props.saveCompany  Save the current company.
+ * @param {function} props.deleteSave   Unsave the current company.
  */
 class SaveStar extends Component {
   saveHandler = evt => {

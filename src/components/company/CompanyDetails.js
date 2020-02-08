@@ -2,8 +2,7 @@ import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateCompany} from "../../redux/actions/companyAction";
-import {resultAction, selectCompany, resetCompany} from "../../redux/actions/resultAction";
-import {deleteCompany} from "../../redux/actions/companyAction";
+import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import Table from "react-bootstrap/Table";
 import SaveStar from "./SaveStar";
 import FieldModifier from "../forms/FieldModifier";
@@ -15,8 +14,6 @@ import {ReactComponent as Trash} from "../../img/trash.svg";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 
 /**
  * A table showing all of a company's information.
@@ -26,8 +23,13 @@ import Button from "react-bootstrap/Button";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.company A single company object.
- * @param {{id:int, name:String, regex:String}[]}                                             props.fields  The table structure's fields.
+ * @param {Company}  props.company        A single company object.
+ * @param {String}   props.error          An eventual error.
+ * @param {Field[]}  props.fields         The table structure's fields.
+ * @param {String[]} props.privileges     The privileges the logged user has.
+ * @param {function} props.updateCompany  Updates the currently selected company.
+ * @param {function} props.selectCompany  Selects a company.
+ * @param {function} props.resetCompany   Unmatches the currently selected company.
  */
 class CompanyDetails extends Component {
   constructor(props) {
@@ -195,7 +197,7 @@ class CompanyDetails extends Component {
         <Row className="my-3 d-flex justify-content-center">
           <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
             <SaveStar className="big-star" company={company} status={company.saved} />
-            <Trash className="trash-icon" onClick={this.startDelete} />
+            {canModify ? <Trash className="trash-icon" onClick={this.startDelete} /> : null}
             {canModify ? <Pencil className="pencil-icon big-pencil d-block d-md-none mx-0" onClick={this.onClickConstructor(0)} /> : null}
           </Col>
 

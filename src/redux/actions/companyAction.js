@@ -4,6 +4,16 @@ import {getToken} from "../../util/tokenManager";
 import {resultAction, selectCompany} from "./resultAction";
 import {updateSaved} from "./saveAction";
 
+/**
+ * An action creator to create a company.
+ *
+ * Fires CHANGECOMPANYR_END on success and passes the newly created company's ID to the payload.
+ * Fires CHANGECOMPANYR_END_ERROR on error.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {String} name  The name of the company to create.
+ */
 export function createCompany(name) {
   return (dispatch, getState) => {
     if(!getToken()) {
@@ -33,6 +43,15 @@ export function createCompany(name) {
   };
 }
 
+/**
+ * Updates a company.
+ *
+ * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Company} company  The updated company.
+ */
 export function updateCompany(company) {
   return (dispatch, getState) => {
     const id = getState().company.match.id;
@@ -63,6 +82,15 @@ export function updateCompany(company) {
   };
 }
 
+/**
+ * Deletes a company.
+ *
+ * Fires CHANGECOMPANYR_END and dispatches updateSaved on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} id  The ID of the company to delete.
+ */
 export function deleteCompany(id) {
   return (dispatch, getState) => {
     if(!getToken()) {

@@ -7,12 +7,13 @@ import update from "immutability-helper";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                 search          The current search terms.
- * @param {{id:int, name:String, fields:{id:int, name:String, regex:String, value:String}[]}[]} results         The companies to show.
- * @param {int}                                                                                 page            The current page number.
- * @param {int}                                                                                 resultsPerPage  The results to show per page.
- * @param {int}                                                                                 totalResults    The total results the search generated.
- * @param {float}                                                                               lastSearchId The ID of the last search that was made, useful for bad connection.
+ * @param {Search[]}  search
+ * @param {Company[]} results
+ * @param {int}       page            The current page number.
+ * @param {int}       resultsPerPage  The results to show per page.
+ * @param {int}       totalResults    The total results the search generated.
+ * @param {float}     lastSearchId    The ID of the last search that was made, useful for bad connection.
+ * @param {boolean}   loading         If the search has started, but no result has been communicated yet.
  */
 const init = {
   search: [],

@@ -11,8 +11,9 @@ import SaveStar from "./SaveStar";
  *
  * @author Riccardo Sartori
  *
- * @param {{id:int, saved:boolean, name:String, fields:{id:int, name:String, regex:String, value:String}[]}} props.data   A single company object.
- * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]}                              props.search The parameters in the search.
+ * @param {Company}  props.data      A single company object.
+ * @param {Search[]} props.search    The parameters in the search.
+ * @param {function} props.setMatch  Sets the currently active company.
  */
 class CompanySummary extends Component {
   constructor(props) {

@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Footer.
+ *
+ * @author Riccardo Sartori
+ */
 function Footer() {
   return (
     <footer className="text-center">

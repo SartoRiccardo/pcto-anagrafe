@@ -14,10 +14,14 @@ import Button from "react-bootstrap/Button";
  * This component coordinates its children and sends all their data to their respective reducers.
  *
  * @author Riccardo Sartori
- * @see SearchField
  *
- * @param {{id:int, name:String, regex:String, value:String}[]}                 props.options A list of searchable fields.
- * @param {{id:int, value:String, field:{id:int, name:String, regex:String}}[]} props.search  The current search terms.
+ * @param {Field[]}  props.options            A list of searchable fields.
+ * @param {Search[]} props.search             The current search terms.
+ * @param {function} props.onChange           A handler for when the bar's state changes.
+ * @param {function} props.addSearchField     Adds a search field.
+ * @param {function} props.deleteSearchField  Deletes a search field.
+ * @param {function} props.updateSearchField  Updates a search field.
+ * @param {function} props.updateResults      Updates the search results.
  */
 class SearchBar extends Component {
   constructor(props) {

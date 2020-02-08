@@ -2,10 +2,23 @@ import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
+/**
+ * An action creator to fire AUTHR_START_LOGIN
+ *
+ * @author Riccardo Sartori
+ */
 export function startLogin() {
   return {type:"AUTHR_START_LOGIN"};
 }
 
+/**
+ * An action creator to login.
+ *
+ * Fires AUTHR_LOGIN on success.
+ * Fires AUTHR_ERROR on error.
+ *
+ * @author Riccardo Sartori
+ */
 export function loginAction(user, pswd) {
   return (dispatch, getState) => {
     let payload = new FormData();
@@ -38,7 +51,14 @@ export function loginAction(user, pswd) {
   }
 }
 
-
+/**
+ * An action creator to fetch the login data.
+ *
+ * Fires AUTHR_LOGIN on success.
+ * Fires AUTHR_ERROR on error.
+ *
+ * @author Riccardo Sartori
+ */
 export function initLogin() {
   return (dispatch, getState) => {
     const token = getToken();
@@ -70,7 +90,11 @@ export function initLogin() {
   }
 }
 
-
+/**
+ * An action creator to completely logout.
+ *
+ * @author Riccardo Sartori
+ */
 export function logoutAction() {
   return (dispatch, getState) => {
     dispatch({type: "SEARCHR_RESET_SEARCH"});

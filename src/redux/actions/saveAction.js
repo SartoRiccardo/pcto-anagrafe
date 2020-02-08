@@ -3,6 +3,14 @@ import {getToken} from "../../util/tokenManager";
 import {apiUrl} from "./url";
 import {resultAction, reloadCompany} from "./resultAction";
 
+/**
+ * An action creator to update the current saved companies.
+ *
+ * Dispatches loadSaved on success.
+ *
+ * @author Riccardo Sartori
+ *
+ */
 export function updateSaved() {
   return (dispatch, getState) => {
     if(!getToken()) {
@@ -28,6 +36,15 @@ export function updateSaved() {
   }
 }
 
+/**
+ * An action creator to load a single saved company.
+ *
+ * Fires a SAVEDR_ADD on success, and SAVEDR_END_DUMP if it was the last company to load.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} saved  The ID of the saved company.
+ */
 export function loadSaved(saved) {
   return (dispatch, getState) => {
     if(!getToken()) {
@@ -57,6 +74,15 @@ export function loadSaved(saved) {
   }
 }
 
+/**
+ * An action creator to save a company.
+ *
+ * Dispatches resultAction and reloadCompany on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} company  The ID of the company to save.
+ */
 export function saveCompany(company) {
   return (dispatch, getState) => {
     if(!getToken()) {
@@ -83,6 +109,15 @@ export function saveCompany(company) {
   }
 }
 
+/**
+ * An action creator to unsave a company.
+ *
+ * Fires SAVEDR_DELETE and dispatches resultAction and reloadCompany on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} company  The ID of the company to unsave.
+ */
 export function deleteSave(id) {
   return (dispatch, getState) => {
     if(!getToken()) {

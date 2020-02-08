@@ -2,6 +2,16 @@ import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 
+/**
+ * Loads all companies that match the given search.
+ *
+ * If no parameters are given, it gets the search from the current state.
+ * Fires SEARCHR_UPDATE_RESULTS on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Search[]} arg0  The search.
+ */
 export function resultAction(arg0=null) {
   return (dispatch, getState) => {
     let search = arg0 == null ? getState().search.search : arg0;
@@ -55,6 +65,16 @@ export function resultAction(arg0=null) {
   }
 }
 
+/**
+ * Loads all companies that match the given search.
+ *
+ * Fires COMPANYR_SET_MATCH on success.
+ * Fires COMPANYR_ERROR on error.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int} id  The ID of the company to load.
+ */
 export function selectCompany(id) {
   return (dispatch, getState) => {
     if(getToken() == null) {
@@ -89,6 +109,13 @@ export function selectCompany(id) {
   }
 }
 
+/**
+ * An action creator to reload the currently loaded company.
+ *
+ * Dispatches selectCompany with the current state's ID.
+ *
+ * @author Riccardo Sartori
+ */
 export function reloadCompany() {
   return (dispatch, getState) => {
     if(getToken() == null) {
@@ -102,10 +129,23 @@ export function reloadCompany() {
   }
 }
 
+/**
+ * An action creator that fires COMPANYR_RESET.
+ *
+ * @author Riccardo Sartori
+ */
 export function resetCompany() {
   return {type:"COMPANYR_RESET"};
 }
 
+
+/**
+ * An action creator that fires COMPANYR_SET_MATCH.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Company} company  The currently loaded company.
+ */
 export function setMatchCompany(company) {
   return {type: "COMPANYR_SET_MATCH", match: company};
 }

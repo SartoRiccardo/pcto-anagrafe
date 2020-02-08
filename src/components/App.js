@@ -17,6 +17,9 @@ import Footer from "./ui/Footer";
  * The application wrapper.
  *
  * @author Riccardo Sartori
+ *
+ * @param {function} props.initLogin      Fetches the current login data.
+ * @param {function} props.initStructure  Fetches the company's data structure.
  */
 class App extends Component {
   constructor(props) {
