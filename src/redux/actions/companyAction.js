@@ -2,6 +2,7 @@ import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 import {resultAction, selectCompany} from "./resultAction";
+import {updateSaved} from "./saveAction";
 
 export function createCompany(name) {
   return (dispatch, getState) => {
@@ -80,6 +81,7 @@ export function deleteCompany(id) {
     .then(res => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
+        dispatch(updateSaved());
       }
     })
     .catch(e => {
