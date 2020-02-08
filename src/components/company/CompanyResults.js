@@ -62,10 +62,25 @@ function CompanyResults(props) {
       </Table>
     );
   }
-  else {
-    table = search.length === 0 ? (
+  else if(loading) {
+    return (
+      <Row>
+        <Col>
+          {loadingComponent}
+        </Col>
+      </Row>
+    );
+  }
+  else if(loading) {
+    table = null;
+  }
+  else if(search.length === 0) {
+    table = (
       <h1 className="text-center">Inizia a cercare aziende</h1>
-    ) : (
+    );
+  }
+  else {
+    table = (
       <Fragment>
         <h1 className="text-center">Nessun risultato</h1>
         <p className="lead text-center">Prova a restringere i campi di ricerca</p>
