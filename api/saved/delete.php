@@ -1,4 +1,10 @@
 <?php
+/**
+ * Deletes a save.
+ * @param  int  $user     The user that saved the company.
+ * @param  int  $company  The company to unsave.
+ * @return null
+ */
 function deleteSave($user, $company) {
   global $dbc;
 

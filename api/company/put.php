@@ -1,4 +1,11 @@
 <?php
+/**
+ * Sets an existing company's values to the given ones.
+ * @param  int     $id     The company's ID.
+ * @param  string  $name   The company's name.
+ * @param  Field[] $fields The company's fields.
+ * @return array           A message and an eventual error.
+ */
 function updateCompany($id, $name, $fields) {
   global $dbc;
 

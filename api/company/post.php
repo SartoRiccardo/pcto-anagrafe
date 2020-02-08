@@ -1,4 +1,11 @@
 <?php
+/**
+ * Inserts a company if valid.
+ * @param  int $id          The company's ID. Can be null.
+ * @param  string $name     The company's name.
+ * @param  Field[] $fields  The company's fields.
+ * @return array            The company's ID if the insert was successful, plus a message.
+ */
 function insertCompany($arg0, $arg1, $arg2=null) {
   global $dbc;
 
@@ -67,6 +74,12 @@ function insertCompany($arg0, $arg1, $arg2=null) {
   );
 }
 
+/**
+ * Checks if a company has valid name and fields.
+ * @param  string  $name    The company's name.
+ * @param  Field[] $fields  The company's fields.
+ * @return boolean
+ */
 function companyIsValid($name, $fields) {
   global $dbc;
 

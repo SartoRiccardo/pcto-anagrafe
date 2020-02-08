@@ -1,4 +1,10 @@
 <?php
+/**
+ * Saves a company in the user's favourites.
+ * @param  int  $user  The user's ID.
+ * @param  int  $id    The company's ID.
+ * @return null
+ */
 function saveCompany($user, $id) {
   global $dbc;
 

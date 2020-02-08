@@ -1,4 +1,9 @@
 <?php
+/**
+ * Gets a list of companies saved by the user.
+ * @param  int   $user  The ID of the user.
+ * @return int[]        The IDs of the companies saved by the user.
+ */
 function getCompaniesSavedBy($user) {
   global $dbc;
 
@@ -16,6 +21,12 @@ function getCompaniesSavedBy($user) {
   return $ret;
 }
 
+/**
+ * Checks if a company is saved by an user.
+ * @param  int     $user     The user's ID.
+ * @param  int     $company  The company's ID.
+ * @return boolean
+ */
 function isSavedBy($user, $company) {
   global $dbc;
 

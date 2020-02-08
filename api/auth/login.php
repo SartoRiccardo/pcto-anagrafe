@@ -2,6 +2,12 @@
 $INVALID_LOGIN = 1;
 $CONNECTION_ERR = 2;
 
+/**
+ * Gets a student's ID by their credentials.
+ * @param  string $login  The user's username/email/badge.
+ * @param  string $pswd   The user's password.
+ * @return int            The user's ID.
+ */
 function getStudentId($login, $pswd) {
   if($login == "a" && $pswd == "a") {
     return (object) array(
@@ -27,6 +33,11 @@ function getStudentId($login, $pswd) {
   return empty($result[0]) ? $result[2] : $INVALID_LOGIN;
 }
 
+/**
+ * Registers an ID to the database and gives it BASE privileges.
+ * @param  int  $id  The user's ID.
+ * @return null
+ */
 function registerId($id) {
   global $dbc;
 
@@ -39,6 +50,13 @@ function registerId($id) {
   $stmt->execute();
 }
 
+/**
+ * Checks if an user is registered.
+ * @param  int     $id     The user's ID.
+ * @param  string  $login  The user's name/email/badge.
+ * @param  string  $pswd   The user's password.
+ * @return boolean
+ */
 function isRegistered($arg0, $arg1=null) {
   global $dbc;
 

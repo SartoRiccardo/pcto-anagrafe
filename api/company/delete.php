@@ -1,4 +1,9 @@
 <?php
+/**
+ * Deletes a company
+ * @param  int $id  The company's ID.
+ * @return array    A message and if there were any errors.
+ */
 function deleteCompanyById($id) {
   global $dbc;
 

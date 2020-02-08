@@ -1,4 +1,9 @@
 <?php
+/**
+ * Gets the structure of the given entity.
+ * @param  string  $target  The target entity.
+ * @return Field[]          The table's structure.
+ */
 function getStructureOf($target) {
   global $dbc;
 

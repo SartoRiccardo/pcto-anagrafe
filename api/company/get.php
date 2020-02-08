@@ -1,4 +1,9 @@
 <?php
+/**
+ * Gets a company by its ID.
+ * @param  int     $id  The company's ID.
+ * @return Company      The matching company.
+ */
 function getCompanyById($id) {
   global $dbc;
 
@@ -35,6 +40,12 @@ function getCompanyById($id) {
   );
 }
 
+/**
+ * Gets all companies that match the search.
+ * @param  Search[]  $search  The search parameters.
+ * @param  int       $page    The current search page. If negative, all results are returned.
+ * @return Company[]          The companies that match the search.
+ */
 function getCompaniesBySearch($search, $page=-1) {
   global $dbc;
 
@@ -77,6 +88,11 @@ function getCompaniesBySearch($search, $page=-1) {
   return $ret;
 }
 
+/**
+ * Gets the number of companies that match the search.
+ * @param  Search[] $search  The search parameters.
+ * @return int               The number of companies that match the search.
+ */
 function getCompanyNumberBySearch($search) {
   global $dbc;
 
@@ -104,6 +120,11 @@ function getCompanyNumberBySearch($search) {
   return intval($stmt->fetch()["amount"]);
 }
 
+/**
+ * Generates the query for getting companies by search.
+ * @param  Search[] $search  The search parameters.
+ * @return string            The generated query.
+ */
 function generateSearchQuery($search) {
   // Groups together fields with the same ID, so they go in OR.
   $uniqueFields = groupFields($search);
@@ -153,6 +174,11 @@ function generateSearchQuery($search) {
   return $q;
 }
 
+/**
+ * Groups together searches of the same type.
+ * @param  Search[] $search The search parameters.
+ * @return array            The grouped search.
+ */
 function groupFields($search) {
   $uniqueFields = array();
   foreach($search as $s) {
