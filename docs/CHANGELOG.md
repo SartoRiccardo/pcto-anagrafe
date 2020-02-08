@@ -1,3 +1,28 @@
+# 2020-02-08: 0.4.0
+
+## Versioni
++ [Front-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/b9428ce7848d6e5a9d44a3e5ac0b0afa563dcdf0)
++ [Back-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/4ef8a087815596ae4e98908a0c306ae3f20014d8)
+
+## Aggiunte
++ Chi possiede i privilegi può eliminare aziende
++ Introdotta un'animazione quando si cerca un'azienda
+
+## Bug
++ Andare nella pagina di un'azienda inesistente fornirà un messaggio di errore invece di crashare l'app
+
+# 2020-02-07: 0.3.0
+
+## Versioni
++ [Front-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/e03fff0a1f48781cef1e5579a050c0a4e9b16633)
++ [Back-end](https://github.com/SartoRiccardo/pcto-anagrafe/commit/d07333afc1a18fbc45b104f30e29a88ac742b9bb)
+
+## Aggiunte
++ Chi possiede i privilegi può aggiungere nuove aziende e modificarne il contenuto
+
+## Sicurezza
++ Risolto finalmente un bug che non cancellava completamente la sessione una volta eseguito il logout
+
 # 2020-02-06: 0.2.1
 
 ## Versioni
