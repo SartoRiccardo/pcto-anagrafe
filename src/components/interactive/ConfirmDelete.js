@@ -73,7 +73,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteCompany: id => {
+    deleteCompany: (id) => {
       dispatch(deleteCompany(id));
     },
     acknowledge: () => {
@@ -85,7 +85,7 @@ function mapDispatchToProps(dispatch) {
     reloadSearches: () => {
       dispatch(resultAction());
     },
-  }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ConfirmDelete));

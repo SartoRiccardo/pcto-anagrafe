@@ -14,9 +14,9 @@ import {getToken} from "../../util/tokenManager";
  */
 export function resultAction(arg0=null) {
   return (dispatch, getState) => {
-    let search = arg0 == null ? getState().search.search : arg0;
+    let search = arg0 === null ? getState().search.search : arg0;
 
-    const searchReq = search.map(s => {
+    const searchReq = search.map((s) => {
       return {
         id: s.field.id,
         value: s.value
@@ -37,15 +37,17 @@ export function resultAction(arg0=null) {
     }
 
     let payload = new FormData();
+    payload.set("REQUEST_METHOD", "GET");
     payload.set("user", getToken());
     payload.set("search", JSON.stringify(searchReq));
     payload.set("page", getState().search.page);
-    payload.set("REQUEST_METHOD", "GET");
 
     axios.post(apiUrl("/api/company"), payload)
-      .then(res => {
+      .then((res) => {
         const {lastSearchId} = getState().search;
-        if(lastSearchId !== searchId) return;
+        if(lastSearchId !== searchId) {
+          return;
+        }
 
         if(res.status === 200 && !res.data.error) {
           const {totalResults, results} = res.data;
@@ -59,7 +61,7 @@ export function resultAction(arg0=null) {
           // Handle error...
         }
       })
-      .catch(e => {
+      .catch((e) => {
 
       });
   }
@@ -88,24 +90,24 @@ export function selectCompany(id) {
     payload.set("id", id);
 
     axios.post(apiUrl("/api/company"), payload)
-      .then(res => {
-        if(res.status === 200 && !res.data.error) {
-          const match = res.data;
-          dispatch({
-            type: "COMPANYR_SET_MATCH",
-            match,
-          });
-        }
-        else if(res.data.error) {
+    .then((res) => {
+      if(res.status === 200 && !res.data.error) {
+        const match = res.data;
         dispatch({
-          type: "COMPANYR_ERROR",
-          error: res.data.message,
+          type: "COMPANYR_SET_MATCH",
+          match,
         });
-        }
-      })
-      .catch(e => {
-
+      }
+      else if(res.data.error) {
+      dispatch({
+        type: "COMPANYR_ERROR",
+        error: res.data.message,
       });
+      }
+    })
+    .catch((e) => {
+
+    });
   }
 }
 
@@ -118,15 +120,17 @@ export function selectCompany(id) {
  */
 export function reloadCompany() {
   return (dispatch, getState) => {
-    if(getToken() == null) {
+    if(getToken() === null) {
       // Logout...
       return;
     }
     let {id} = getState().company.match;
-    if(id == null) return;
+    if(id === null) {
+      return;
+    }
 
     dispatch(selectCompany(id));
-  }
+  };
 }
 
 /**
@@ -135,7 +139,9 @@ export function reloadCompany() {
  * @author Riccardo Sartori
  */
 export function resetCompany() {
-  return {type:"COMPANYR_RESET"};
+  return {
+    type:"COMPANYR_RESET"
+  };
 }
 
 

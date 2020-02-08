@@ -28,7 +28,7 @@ class SearchField extends Component {
     };
   }
 
-  changeField = evt => {
+  changeField = (evt) => {
     const {options} = this.props;
     let newField = null;
     for (let i = 0; i < options.length; i++) {
@@ -45,7 +45,7 @@ class SearchField extends Component {
     })
   }
 
-  changeHandler = evt => {
+  changeHandler = (evt) => {
     this.setState({
       [evt.target.name]: evt.target.value,
     }, () => {
@@ -53,7 +53,7 @@ class SearchField extends Component {
     })
   }
 
-  deleteSearchField = evt => {
+  deleteSearchField = (evt) => {
     if(this.props.onDelete) {
       this.props.onDelete({
         target: this,
@@ -75,7 +75,7 @@ class SearchField extends Component {
     const {options} = this.props;
     const optionsUi = options.map(o => {
       return <option key={o.id} value={o.id}>{o.name}</option>;
-    })
+    });
     return (
       <Fragment>
         <Col xs={{order:1}} md={{order: 1, span:"auto"}}>

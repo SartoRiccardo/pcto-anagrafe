@@ -48,19 +48,19 @@ class CompanyDetails extends Component {
     };
   }
 
-  handleModify = fieldID => {
+  handleModify = (fieldID) => {
     this.setState({
       modifying: fieldID,
     });
   }
 
-  onClickConstructor = id => {
+  onClickConstructor = (id) => {
     return () => {
       this.handleModify(id);
     };
   }
 
-  modifyFinishHandler = evt => {
+  modifyFinishHandler = (evt) => {
     this.setState({
       modifying: null,
     });
@@ -104,13 +104,13 @@ class CompanyDetails extends Component {
     }
   }
 
-  startDelete = evt => {
+  startDelete = (evt) => {
     this.setState({
       deleteStarted: true,
     });
   }
 
-  cancelDelete = evt => {
+  cancelDelete = (evt) => {
     this.setState({
       deleteStarted: false,
     });
@@ -120,8 +120,8 @@ class CompanyDetails extends Component {
     const {company, error, fields} = this.props;
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
 
-    if(company == null) {
-      if(error == null) {
+    if(company === null) {
+      if(error === null) {
         return (
           <Loading />
         );
@@ -143,7 +143,7 @@ class CompanyDetails extends Component {
     }
 
     let nameField = null;
-    const data = fields.map(f => {
+    const data = fields.map((f) => {
       if(f.id === 0) {
         nameField = f;
         return null;
@@ -234,10 +234,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateCompany: company => {
+    updateCompany: (company) => {
       dispatch(updateCompany(company));
     },
-    selectCompany: id => {
+    selectCompany: (id) => {
       dispatch(selectCompany(id));
     },
     resetCompany: () => {

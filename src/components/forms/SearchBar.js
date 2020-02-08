@@ -30,8 +30,10 @@ class SearchBar extends Component {
     const fields = this.props.search;
     let biggestId = 0;
     for (let i = 0; i < fields.length; i++) {
-      if(fields[i].id > biggestId) biggestId = fields[i].id;
-    };
+      if(fields[i].id > biggestId) {
+        biggestId = fields[i].id;
+      }
+    }
 
     this.state = {
       fields,
@@ -39,7 +41,7 @@ class SearchBar extends Component {
     };
   }
 
-  handleChange = evt => {
+  handleChange = (evt) => {
     let fields = [...this.state.fields];
     let changedField = null;
     for (let i = 0; i < fields.length; i++) {
@@ -59,7 +61,7 @@ class SearchBar extends Component {
     });
   }
 
-  addSearchField = evt => {
+  addSearchField = (evt) => {
     const {fields, lastId} = this.state;
     this.setState({
       fields: [
@@ -80,11 +82,11 @@ class SearchBar extends Component {
     });
   }
 
-  handleDelete = evt => {
+  handleDelete = (evt) => {
     const {id} = evt.target.state;
     const {fields} = this.state;
     this.setState({
-      fields: fields.filter(f => f.id !== id),
+      fields: fields.filter((f) => f.id !== id),
     }, () => {
       this.notifyChange();
       this.props.deleteSearchField(id);
@@ -102,7 +104,7 @@ class SearchBar extends Component {
 
   render() {
     const {fields} = this.state;
-    const sFields = fields.map(f => {
+    const sFields = fields.map((f) => {
       return (
         <Form.Row key={f.id} className="justify-content-center my-3 my-sm-2">
           <SearchField
@@ -117,7 +119,7 @@ class SearchBar extends Component {
     const buttonText = this.props.search.length === 0 ? "Cerca" : "Aggiungi";
 
     return (
-      <form onSubmit={evt => evt.preventDefault()} className="my-3">
+      <form onSubmit={(evt) => evt.preventDefault()} className="my-3">
         {sFields}
 
         <Row className="justify-content-center">
@@ -139,19 +141,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addSearchField: search => {
+    addSearchField: (search) => {
       dispatch({type: "SEARCHR_RESET_PAGE"});
       dispatch({type: "SEARCHR_ADD_FIELD", search});
     },
-    deleteSearchField: id => {
+    deleteSearchField: (id) => {
       dispatch({type: "SEARCHR_RESET_PAGE"});
       dispatch({type: "SEARCHR_DELETE_FIELD", id});
     },
-    updateSearchField: search => {
+    updateSearchField: (search) => {
       dispatch({type: "SEARCHR_RESET_PAGE"});
       dispatch({type: "SEARCHR_UPDATE_FIELD", search});
     },
-    updateResults: searches => {
+    updateResults: (searches) => {
       dispatch(resultAction(searches));
     },
   };

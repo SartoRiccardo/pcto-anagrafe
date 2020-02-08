@@ -27,16 +27,16 @@ class AddCompany extends Component {
       name: "",
       error: null,
       loading: false,
-    }
+    };
   }
 
-  changeHandler = evt => {
+  changeHandler = (evt) => {
     this.setState({
       name: evt.target.value,
     });
   }
 
-  submitHandler = evt => {
+  submitHandler = (evt) => {
     evt.preventDefault();
 
     const {name} = this.state;
@@ -118,7 +118,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createCompany: name => {
+    createCompany: (name) => {
       dispatch(createCompany(name));
     },
     acknowledge: () => {

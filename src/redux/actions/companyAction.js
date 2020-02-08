@@ -29,12 +29,12 @@ export function createCompany(name) {
     payload.set("fields", "[]");
 
     axios.post(apiUrl("/api/company"), payload)
-    .then(res => {
+    .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
       }
     })
-    .catch(e => {
+    .catch((e) => {
       dispatch({
         type: "CHANGECOMPANYR_END_ERROR", request:"add",
         error: "Errore di connessione.",
@@ -69,14 +69,14 @@ export function updateCompany(company) {
     payload.set("fields", JSON.stringify(company.fields));
 
     axios.post(apiUrl("/api/company"), payload)
-    .then(res => {
+    .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(id));
       }
     })
-    .catch(e => {
+    .catch((e) => {
 
     });
   };
@@ -106,13 +106,13 @@ export function deleteCompany(id) {
     payload.set("id", id);
 
     axios.post(apiUrl("/api/company"), payload)
-    .then(res => {
+    .then((res) => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
         dispatch(updateSaved());
       }
     })
-    .catch(e => {
+    .catch((e) => {
 
     });
   };

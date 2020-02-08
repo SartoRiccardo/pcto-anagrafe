@@ -22,7 +22,7 @@ class CompanySummary extends Component {
     this.redirect = true;
   }
 
-  handleClick = evt => {
+  handleClick = (evt) => {
     if(this.redirect) {
       this.props.setMatch(this.props.data);
       this.props.history.push("/company/" + this.props.data.id);
@@ -33,7 +33,7 @@ class CompanySummary extends Component {
     this.redirect = true;
   }
 
-  handleSave = evt => {
+  handleSave = (evt) => {
     this.redirect = false;
   }
 
@@ -49,10 +49,12 @@ class CompanySummary extends Component {
       }
     }
 
-    const information = uniqueFields.map(id => {
+    const information = uniqueFields.map((id) => {
       let value = null;
       for (let i = 0; i < data.fields.length; i++) {
-        if(data.fields[i].id === id) value=data.fields[i].value;
+        if(data.fields[i].id === id) {
+          value = data.fields[i].value;
+        }
       }
       return <td key={id}>{value ? value : "N/A"}</td>;
     });
@@ -71,7 +73,7 @@ class CompanySummary extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setMatch: company => {
+    setMatch: (company) => {
       dispatch(setMatchCompany(company));
     },
   };

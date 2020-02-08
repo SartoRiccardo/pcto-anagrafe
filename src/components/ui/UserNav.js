@@ -27,7 +27,7 @@ class UserNav extends Component {
     };
   }
 
-  switchSmallNav = evt => {
+  switchSmallNav = (evt) => {
     this.setState({
       smallNavOpen: !this.state.smallNavOpen,
     });
@@ -42,21 +42,21 @@ class UserNav extends Component {
       {key:3, privilege:"MANAGE_COMPANY",   path:"/add",       label:"Aggiungi"},
     ];
 
-    const mdNavLinks = links.map(l => {
+    const mdNavLinks = links.map((l) => {
       const {key, privilege, path, label} = l;
       return this.props.privileges.includes(privilege) ? (
         <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>
       ) : null;
     });
 
-    const sxNavLinks = links.map(l => {
+    const sxNavLinks = links.map((l) => {
       const {key, privilege, path, label} = l;
       return this.props.privileges.includes(privilege) ? (
         <Col key={key} className="px-0 d-flex justify-content-center">
           <Nav.Link className="mobile-collapse-link" as={NavLink} to={path}>{label}</Nav.Link>
         </Col>
       ) : null;
-    })
+    });
 
     return (
       <Navbar bg="primary" variant="dark" expand="md">

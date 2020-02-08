@@ -27,8 +27,8 @@ function CompanyResults(props) {
 
   let table;
   if(results.length > 0) {
-    const summaries = results.map(res => {
-      return <CompanySummary key={res.id} data={res} search={search} />
+    const summaries = results.map((res) => {
+      return <CompanySummary key={res.id} data={res} search={search} />;
     });
 
     let uniqueFields = [];
@@ -40,10 +40,12 @@ function CompanyResults(props) {
       }
     }
 
-    const header = uniqueFields.map(id => {
+    const header = uniqueFields.map((id) => {
       let value = null;
       for (let i = 0; i < search.length; i++) {
-        if(search[i].field.id === id) value = search[i].field.name;
+        if(search[i].field.id === id) {
+          value = search[i].field.name;
+        }
       }
       return <th key={id}>{value ? value : "N/A"}</th>;
     });

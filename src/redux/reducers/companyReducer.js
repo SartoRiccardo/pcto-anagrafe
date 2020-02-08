@@ -31,7 +31,7 @@ function companyReducer(state=init, action) {
         ...state,
         match: null,
         error: action.error,
-      }
+      };
 
     default:
       return state;

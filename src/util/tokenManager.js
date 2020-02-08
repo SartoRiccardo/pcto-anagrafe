@@ -1,5 +1,14 @@
 
 /**
+ * Deletes the token, DOES NOT WORK ON BRAVE.
+ *
+ * @author Riccardo Sartori
+ */
+export function deleteToken() {
+  document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+}
+
+/**
  * Saves the token.
  *
  * @author Riccardo Sartori
@@ -32,14 +41,4 @@ export function getToken() {
   }
 
   return ret;
-}
-
-
-/**
- * Deletes the token, DOES NOT WORK ON BRAVE.
- *
- * @author Riccardo Sartori
- */
-export function deleteToken() {
-  document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 }
