@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css?family=Heebo:400,700&display=swap');
+
+$primary: #e53935;
+$secondary: #ff8f00;
+$enable-responsive-font-sizes: true;
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  height: 100%;
+  font-family: "Heebo";
+}
+
+#root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+}
+
+.vertical-center {
+  width: 100%;
+}
+
+.jumbotron {
+  background-color: #b71c1c !important;
+  color: white;
+}
+
+input, select,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-muted:focus,
+.btn-muted:active,
+.btn-danger:focus,
+.btn-danger:active,
+.navbar-toggler:focus {
+    box-shadow:none !important;
+    outline:0px;
+}
+
+.toggler:active, .toggler:hover, .toggler:focus {
+  background-color: inherit !important;
+  border-color: rgba(0, 0, 0, 0) !important;
+  transition: border-color 0s !important;
+}
+
+.page-selector:hover {
+  border-color: rgba(0, 0, 0, 0) !important;
+}
+
+.logout-btn {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+input:focus, select:focus {
+  border-color: #ffca28 !important;
+}
+
+.page-selector-selected {
+  background-color: #e65100 !important;
+  border-color: #e65100 !important;
+}
+
+.btn-secondary:not(:hover):not(.page-selector-selected):focus {
+  background-color: $secondary !important;
+  border-color: $secondary !important;
+  color: inherit !important;
+}
+
+.table-hover tbody tr:hover:nth-child(odd) {  // Darker
+  cursor: pointer;
+  background-color: #ffecb3 !important;
+}
+
+.table-hover tbody tr:hover:nth-child(even) { // Lighter
+  cursor: pointer;
+  background-color: #fff8e1 !important;
+}
+
+.mobile-collapse-link {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+svg.big-star {
+  height: 48px;
+  width: 48px;
+}
+
+.saved-star {
+  fill: #f9a825;
+  height: 100%;
+  width: auto;
+}
+
+.saved-star:hover {
+  fill:#e64a19;
+  cursor: pointer;
+}
+
+.mini-star {
+  height: 120%;
+}
+
+.pencil-icon {
+  fill: rgba(0, 0, 0, 0.1);
+  height: 75%;
+  width: auto;
+}
+
+.pencil-icon:hover {
+  fill: black;
+  cursor: pointer;
+  height: 75%;
+  width: auto;
+}
+
+svg.big-pencil {
+  height: 40px !important;
+  width: 40px !important;
+}
+
+.trash-icon {
+  fill: rgba(0, 0, 0, 0.1);
+  height: 42px;
+  width: 42px;
+}
+
+.trash-icon:hover {
+  fill: black;
+  cursor: pointer;
+}
+
+.loading-icon {
+  height: 2.3rem;
+  width: auto;
+  margin: 0px !important;
+}
+
+.loading-table-overlay {
+  max-width: 192px;
+  max-height: 192px;
+  height: 100%;
+  width: 100%;
+}
+
+input.input-field-valid {
+  box-shadow: 0 0 3px rgba(0, 255, 0, 1) !important;
+}
+
+input.input-field-invalid {
+  box-shadow: 0 0 3px rgba(255, 0, 0, 1) !important;
+}
+
+.table-overlay {
+  margin-left: 15px;
+  margin-right: 15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+}
+
+@import '~bootstrap/scss/bootstrap';
