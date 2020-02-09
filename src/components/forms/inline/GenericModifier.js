@@ -12,6 +12,7 @@ import Col from "react-bootstrap/Col";
  *
  * @param {string}   props.value      The value before it was modified.
  * @param {function} props.validator  Validates the input if needed.
+ * @param {function} props.onFinish   Is fired when the user is finished.
  */
 class GenericModifier extends Component {
   constructor(props) {

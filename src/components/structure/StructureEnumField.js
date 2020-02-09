@@ -142,7 +142,7 @@ class StructureEnumField extends Component {
           return (
             <ListGroup.Item key={i}>
               {o + " "}
-              <Pencil className="icon-button" onClick={this.createModifyHandler(i)} />{" "}
+              {modifying ? null : <Pencil className="icon-button" onClick={this.createModifyHandler(i)} />}{" "}
               {modifying ? null : <Trash className="icon-button" onClick={this.createDeleteHandler(i)} />}
             </ListGroup.Item>
           );

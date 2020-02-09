@@ -1,7 +1,8 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import StructureEnumField from "./StructureEnumField";
 import FieldTypeSelect from "../forms/inline/FieldTypeSelect";
 import RegExpModifier from "../forms/inline/RegExpModifier";
+import GenericModifier from "../forms/inline/GenericModifier";
 import {ReactComponent as Pencil} from "../../img/pencil.svg";
 import {ReactComponent as Trash} from "../../img/trash.svg";
 
@@ -18,6 +19,7 @@ class FieldCard extends Component {
   constructor(props) {
     super(props);
 
+    const {field} = this.props;
     this.choices = [
       {name: "REGEX", default:".+"},
       {name:"ENUM", default:"()"},
@@ -25,9 +27,10 @@ class FieldCard extends Component {
     this.defaultType = 0;
     this.state = {
       fieldType: 0,
+      changingName: false,
+      name: field.name,
     };
 
-    const {field} = this.props;
     const multipleValueRegex = /^\([^?].*\)$/;
     if(multipleValueRegex.exec(field.regex)) {
       this.state.fieldType = 1;
@@ -49,9 +52,12 @@ class FieldCard extends Component {
 
   notifyChange = () => {
     if(this.props.onChange) {
-      const {fieldType} = this.state;
+      const {fieldType, name} = this.state;
       const selected = this.choices[fieldType].name;
-      this.props.onChange(this.state[selected]);
+      this.props.onChange({
+        ...this.state[selected],
+        name: this.state.name
+      });
     }
   }
 
@@ -71,8 +77,22 @@ class FieldCard extends Component {
     }, this.notifyChange);
   }
 
+  changeName = (evt) => {
+    const name = evt.value;
+    this.setState({
+      name,
+      changingName: false,
+    }, this.notifyChange);
+  }
+
+  startChangingName = (evt) => {
+    this.setState({
+      changingName: true,
+    });
+  }
+
   render() {
-    const {fieldType} = this.state;
+    const {fieldType, changingName, name} = this.state;
     const {field} = this.props;
 
     let cardBody;
@@ -93,15 +113,23 @@ class FieldCard extends Component {
     });
     const hasBeenModified = (
       this.defaultType !== this.state.fieldType
-      || !(this.state[selected].name === field.name
+      || !(this.state.name === field.name
       && this.state[selected].regex === field.regex)
+    );
+
+    const header = changingName ? (
+      <GenericModifier value={name} validator={str => str.length > 0} onFinish={this.changeName} />
+    ) : (
+      <Fragment>
+        {name + " "}
+        <Pencil className="icon-button" onClick={this.startChangingName} />{" "}
+        <Trash className="icon-button" />
+      </Fragment>
     );
     return (
       <Card className="my-3">
         <Card.Header className={hasBeenModified ? "field-modified" : null}>
-          {field.name + " "}
-          <Pencil className="icon-button" />{" "}
-          <Trash className="icon-button" />
+          {header}
         </Card.Header>
 
         <Card.Body>
