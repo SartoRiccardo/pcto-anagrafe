@@ -34,7 +34,7 @@ class FieldModifier extends Component {
     }
   }
 
-  handleChange = evt => {
+  handleChange = (evt) => {
     this.setState({
       value: evt.target.value,
     });

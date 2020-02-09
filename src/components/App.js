@@ -8,7 +8,7 @@ import AnonymousPage from "./ui/AnonymousPage";
 import UserNav from "./ui/UserNav";
 import SearchCompany from "./ui/SearchCompany";
 import AddCompany from "./forms/AddCompany";
-import EditStructure from "./forms/EditStructure";
+import EditStructure from "./structure/EditStructure";
 import CompanyDetails from "./company/CompanyDetails";
 import ShowSaved from "./ui/ShowSaved";
 import Footer from "./ui/Footer";
