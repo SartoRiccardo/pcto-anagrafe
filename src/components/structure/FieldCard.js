@@ -5,6 +5,7 @@ import RegExpModifier from "../forms/inline/RegExpModifier";
 import GenericModifier from "../forms/inline/GenericModifier";
 import {ReactComponent as Pencil} from "../../img/pencil.svg";
 import {ReactComponent as Trash} from "../../img/trash.svg";
+import {ReactComponent as Restore} from "../../img/restore.svg";
 
 import Card from "react-bootstrap/Card";
 
@@ -29,6 +30,7 @@ class FieldCard extends Component {
       fieldType: 0,
       changingName: false,
       name: field.name,
+      deleted: false,
     };
 
     const multipleValueRegex = /^\([^?].*\)$/;
@@ -91,8 +93,32 @@ class FieldCard extends Component {
     });
   }
 
+  deleteSelf = (evt) => {
+    this.setState({
+      deleted: true,
+    }, () => {
+      const {fieldType} = this.state;
+      const selected = this.choices[fieldType].name;
+      if(this.props.onDelete) {
+        this.props.onDelete(this.state[selected]);
+      }
+    });
+  }
+
+  restoreSelf = (evt) => {
+    this.setState({
+      deleted: false,
+    }, () => {
+      const {fieldType} = this.state;
+      const selected = this.choices[fieldType].name;
+      if(this.props.onRestore) {
+        this.props.onRestore(this.state[selected]);
+      }
+    });
+  }
+
   render() {
-    const {fieldType, changingName, name} = this.state;
+    const {fieldType, changingName, name, deleted} = this.state;
     const {field} = this.props;
 
     let cardBody;
@@ -117,27 +143,50 @@ class FieldCard extends Component {
       && this.state[selected].regex === field.regex)
     );
 
-    const header = changingName ? (
-      <GenericModifier value={name} validator={str => str.length > 0} onFinish={this.changeName} />
-    ) : (
-      <Fragment>
-        {name + " "}
-        <Pencil className="icon-button" onClick={this.startChangingName} />{" "}
-        <Trash className="icon-button" />
-      </Fragment>
+    let body = (
+      <Card.Body>
+        <FieldTypeSelect onChange={this.updateFieldType} default={fieldType} options={choiceNames} />
+        <hr />
+
+        {cardBody}
+      </Card.Body>
     );
+
+    let header;
+    if(changingName) {
+      header = (
+        <GenericModifier value={name} validator={str => str.length > 0} onFinish={this.changeName} />
+      );
+    }
+    else if(deleted) {
+      header = (
+        <Fragment>
+          {name + " "}
+          <Restore className="icon-button" onClick={this.restoreSelf} />
+        </Fragment>
+      );
+      body = null;
+    }
+    else {
+      header = (
+        <Fragment>
+          {name + " "}
+          <Pencil className="icon-button" onClick={this.startChangingName} />{" "}
+          <Trash className="icon-button" onClick={this.deleteSelf} />
+        </Fragment>
+      );
+    }
+
+    let headerClass = null;
+    if(hasBeenModified) {headerClass = "field-modified";}
+    if(deleted) {headerClass = "field-deleted";}
     return (
       <Card className="my-3">
-        <Card.Header className={hasBeenModified ? "field-modified" : null}>
+        <Card.Header className={headerClass}>
           {header}
         </Card.Header>
 
-        <Card.Body>
-          <FieldTypeSelect onChange={this.updateFieldType} default={fieldType} options={choiceNames} />
-          <hr />
-
-          {cardBody}
-        </Card.Body>
+        {body}
       </Card>
     );
   }

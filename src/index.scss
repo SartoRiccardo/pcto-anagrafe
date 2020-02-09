@@ -107,7 +107,7 @@ svg {
 
 .icon-button {
   cursor: pointer;
-  fill: rgba(0, 0, 0, 0.1);
+  fill: rgba(0, 0, 0, 0.2);
 }
 
 .icon-button:hover {
@@ -135,7 +135,7 @@ svg.big-star {
 }
 
 .pencil-icon {
-  fill: rgba(0, 0, 0, 0.1);
+  fill: rgba(0, 0, 0, 0.2);
   height: 75%;
   width: auto;
 }
@@ -153,7 +153,7 @@ svg.big-pencil {
 }
 
 .trash-icon {
-  fill: rgba(0, 0, 0, 0.1);
+  fill: rgba(0, 0, 0, 0.2);
   height: 42px;
   width: 42px;
 }
@@ -201,6 +201,10 @@ input.input-field-invalid {
 
 .field-modified.card-header {
   background-color: #dcedc8;
+}
+
+.field-deleted.card-header {
+  background-color: #ffcdd2;
 }
 
 @import '~bootstrap/scss/bootstrap';

@@ -40,13 +40,49 @@ class EditStructure extends Component {
     }
   }
 
+  handleDelete = (field) => {
+    const {fields} = this.state;
+    this.setState({
+      fields: fields.filter((f) => {
+        return f.id !== field.id;
+      }),
+    });
+  }
+
+  handleRestore = (field) => {
+    const {fields} = this.state;
+    let newFields = [...fields, field];
+
+    // Sorts by ID.
+    for (let i = 0; i < newFields.length; i++) {
+      for (let j = 0; j < newFields.length; j++) {
+        if(newFields[i].id > newFields[j].id) {
+          const tmp = newFields[i];
+          newFields[i] = newFields[j];
+          newFields[j] = tmp;
+        }
+      }
+    }
+
+    this.setState({
+      fields: newFields.reverse(),
+    });
+  }
+
   render() {
     const {fields} = this.props;
     const list = fields.map((f) => {
       if(f.id === 0) {
         return null;
       }
-      return <FieldCard key={f.id} field={f} onChange={this.handleChange} />
+      return (
+        <FieldCard
+          key={f.id}
+          field={f}
+          onChange={this.handleChange}
+          onDelete={this.handleDelete}
+          onRestore={this.handleRestore}
+        />);
     });
 
     return (
