@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {updateField, createField, deleteField} from "../../redux/actions/structureAction";
+import {updateField, createField, deleteField, reloadStructure} from "../../redux/actions/structureAction";
 import update from "immutability-helper";
 import FieldCard from "./FieldCard";
 import AddField from "../forms/inline/AddField";
+import {ReactComponent as Loading} from "../../img/loading.svg";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -23,19 +24,29 @@ class EditStructure extends Component {
   constructor(props) {
     super(props);
 
-    const {fields, initialized} = this.props;
+    const {fields, initialized, dumping} = this.props;
     this.state = {
       fields: [...fields],
       lastTempId: -1,
       initialized,
+      dumping,
     };
   }
 
   componentDidUpdate() {
     if(!this.state.initialized && this.props.initialized) {
+      console.log("initializing...");
       this.setState({
         fields: [...this.props.fields],
         initialized: true,
+      });
+    }
+
+    if(!this.props.dumping && this.state.dumping && this.props.actions.length === 0) {
+      this.props.reload();
+      this.setState({
+        dumping: false,
+        initialized: false,
       });
     }
   }
@@ -140,24 +151,32 @@ class EditStructure extends Component {
         || m[0].regex !== m[1].regex;
     });
 
-    for (let i = 0; i < changes.length; i++) {
-      const c = changes[i];
-      if(c[1] === null) {
-        this.props.createField(c[0]);
+    this.props.startChange();
+    this.setState({
+      dumping: true,
+    }, () => {
+      for (let i = 0; i < changes.length; i++) {
+        const c = changes[i];
+        if(c[1] === null) {
+          this.props.createField(c[0]);
+        }
+        else if(c[0] === null) {
+          this.props.deleteField(c[1].id);
+        }
+        else {
+          this.props.updateField(c[1]);
+        }
       }
-      else if(c[0] === null) {
-        this.props.deleteField(c[1].id);
-      }
-      else {
-        this.props.updateField(c[1]);
-      }
-    }
+      this.props.finishChange();
+    })
   }
 
   render() {
-    const {fields, lastTempId, initialized} = this.state;
-    if(!initialized) {
-      return null;
+    const {fields, lastTempId, initialized, dumping} = this.state;
+    if(!initialized || dumping) {
+      return (
+        <Loading />
+      );
     }
 
     const original = this.props.fields;
@@ -210,6 +229,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    startChange: () => {
+      dispatch({type:"STRUCTURER_START_DUMP"});
+    },
+    finishChange: () => {
+      dispatch({type:"STRUCTURER_FINISH_DUMP"});
+    },
     deleteField: (id) => {
       dispatch(deleteField(id));
     },
@@ -219,6 +244,9 @@ function mapDispatchToProps(dispatch) {
     updateField: (field) => {
       dispatch(updateField(field));
     },
+    reload: () => {
+      dispatch(reloadStructure());
+    }
   };
 }
 

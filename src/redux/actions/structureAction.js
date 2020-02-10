@@ -87,6 +87,8 @@ export function reloadStructure() {
       return;
     }
 
+    dispatch({type:"STRUCTURER_RESET"});
+
     let payload = new FormData();
     payload.set("user", getToken());
     payload.set("target", "COMPANY");
