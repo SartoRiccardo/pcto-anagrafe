@@ -1,11 +1,15 @@
 import React, {Component} from "react";
+// HOCs and Actions
 import {connect} from "react-redux";
 import {updateField, createField, deleteField, reloadStructure} from "../../redux/actions/structureAction";
 import update from "immutability-helper";
+// Custom Components
 import FieldCard from "./FieldCard";
 import AddField from "../forms/inline/AddField";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -35,7 +39,6 @@ class EditStructure extends Component {
 
   componentDidUpdate() {
     if(!this.state.initialized && this.props.initialized) {
-      console.log("initializing...");
       this.setState({
         fields: [...this.props.fields],
         initialized: true,
@@ -174,8 +177,11 @@ class EditStructure extends Component {
   render() {
     const {fields, lastTempId, initialized, dumping} = this.state;
     if(!initialized || dumping) {
+      console.log("LOADING ICON");
       return (
-        <Loading />
+        <Container className="d-flex justify-content-center">
+          <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" />
+        </Container>
       );
     }
 

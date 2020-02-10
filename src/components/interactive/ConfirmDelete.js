@@ -1,10 +1,13 @@
 import React, {Component} from "react";
+// HOCs and actions
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {resultAction, resetCompany} from "../../redux/actions/resultAction";
 import {deleteCompany} from "../../redux/actions/companyAction";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
@@ -55,7 +58,7 @@ class ConfirmDelete extends Component {
         </Modal.Body>
         <Modal.Footer>
           {modalButtonsDisabled ? (
-            <Loading className="loading-icon d-inline" />
+            <FontAwesomeIcon icon={faSpinner} className="d-inline" />
           ) : null}
           <Button onClick={this.cancelDelete} variant="muted" disabled={modalButtonsDisabled}>Annulla</Button>
           <Button onClick={this.deleteCompany} variant="danger" disabled={modalButtonsDisabled}>Elimina</Button>

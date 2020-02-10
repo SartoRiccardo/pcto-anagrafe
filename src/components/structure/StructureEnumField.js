@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
 import GenericModifier from "../forms/inline/GenericModifier";
-import {ReactComponent as Pencil} from "../../img/pencil.svg";
-import {ReactComponent as Trash} from "../../img/trash.svg";
-import {ReactComponent as Add} from "../../img/add.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPen, faTrashAlt, faPlus} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -141,9 +141,9 @@ class StructureEnumField extends Component {
         else {
           return (
             <ListGroup.Item key={i}>
-              {o + " "}
-              {modifying ? null : <Pencil className="icon-button" onClick={this.createModifyHandler(i)} />}{" "}
-              {modifying ? null : <Trash className="icon-button" onClick={this.createDeleteHandler(i)} />}
+              {o}
+              {modifying ? null : <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.createModifyHandler(i)} />}
+              {modifying ? null : <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.createDeleteHandler(i)} />}
             </ListGroup.Item>
           );
         }
@@ -181,7 +181,9 @@ class StructureEnumField extends Component {
             </Col>
 
             <Col xs="auto">
-              <Button type="submit" onClick={this.addOption}><Add style={{fill: "white"}} /></Button>
+              <Button type="submit" onClick={this.addOption}>
+                <FontAwesomeIcon icon={faPlus} className="text-white" />
+              </Button>
             </Col>
           </Form.Row>
         </Form>

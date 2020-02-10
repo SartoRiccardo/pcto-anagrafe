@@ -1,7 +1,10 @@
 import React, {Fragment} from "react";
+// Custom Components
 import CompanySummary from "./CompanySummary";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -18,11 +21,13 @@ function CompanyResults(props) {
   const {results, loading, search} = props;
 
   const loadingComponent = results.length > 0 ? (
-    <div className="table-overlay">
-      <Loading className="loading-table-overlay" />
+    <div className="table-overlay d-flex justify-content-center">
+      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
     </div>
   ) : (
-    <Loading className="loading-table-overlay" />
+    <div className="d-flex justify-content-center">
+      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
+    </div>
   );
 
   let table;

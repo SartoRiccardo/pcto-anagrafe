@@ -3,10 +3,10 @@ import StructureEnumField from "./StructureEnumField";
 import FieldTypeSelect from "../forms/inline/FieldTypeSelect";
 import RegExpModifier from "../forms/inline/RegExpModifier";
 import GenericModifier from "../forms/inline/GenericModifier";
-import {ReactComponent as Pencil} from "../../img/pencil.svg";
-import {ReactComponent as Trash} from "../../img/trash.svg";
-import {ReactComponent as Restore} from "../../img/restore.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPen, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Card from "react-bootstrap/Card";
 
 /**
@@ -155,8 +155,8 @@ class FieldCard extends Component {
     else if(deleted) {
       header = (
         <Fragment>
-          {name + " "}
-          <Restore className="icon-button" onClick={this.restoreSelf} />
+          <FontAwesomeIcon icon={faUndo} className="icon-button mr-2" onClick={this.restoreSelf} />
+          {name}
         </Fragment>
       );
       body = null;
@@ -164,9 +164,9 @@ class FieldCard extends Component {
     else {
       header = (
         <Fragment>
-          {name + " "}
-          <Pencil className="icon-button" onClick={this.startChangingName} />{" "}
-          <Trash className="icon-button" onClick={this.deleteSelf} />
+          {name}
+          <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
+          <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.deleteSelf} />
         </Fragment>
       );
     }

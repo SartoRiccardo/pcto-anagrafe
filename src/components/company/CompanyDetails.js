@@ -1,16 +1,18 @@
 import React, {Component, Fragment} from "react";
+// HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateCompany} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
+// Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import FieldModifier from "../forms/FieldModifier";
 import ConfirmDelete from "../interactive/ConfirmDelete";
-import {ReactComponent as Pencil} from "../../img/pencil.svg";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-import {ReactComponent as Trash} from "../../img/trash.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPen, faTrashAlt, faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -123,7 +125,9 @@ class CompanyDetails extends Component {
     if(company === null) {
       if(error === null) {
         return (
-          <Loading />
+          <Container className="d-flex justify-content-center">
+            <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+          </Container>
         );
       }
       else {
@@ -166,7 +170,12 @@ class CompanyDetails extends Component {
         cellContent = (
           <Fragment>
             {(match ? match.value : "") + " "}
-            {canModify ? <Pencil className="pencil-icon" onClick={this.onClickConstructor(f.id)} /> : null}
+            {canModify ?
+              <FontAwesomeIcon
+                icon={faPen}
+                className="icon-button ml-1"
+                onClick={this.onClickConstructor(f.id)}
+              /> : null}
           </Fragment>
         );
       }
@@ -186,7 +195,12 @@ class CompanyDetails extends Component {
     ) : (
       <h1 className="text-center" xs={12} md="auto">
         {company.name + " "}
-        {canModify ? <Pencil className="pencil-icon d-none d-md-inline" onClick={this.onClickConstructor(0)} /> : null}
+        {canModify ?
+          <FontAwesomeIcon
+            icon={faPen}
+            className="icon-button d-none d-md-inline-block"
+            onClick={this.onClickConstructor(0)}
+          /> : null}
       </h1>
     );
 
@@ -195,13 +209,15 @@ class CompanyDetails extends Component {
         <ConfirmDelete show={this.state.deleteStarted} company={company} onCancel={this.cancelDelete} />
 
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
-            <SaveStar className="big-star" company={company} status={company.saved} />
-            {canModify ? <Trash className="trash-icon" onClick={this.startDelete} /> : null}
-            {canModify ? <Pencil className="pencil-icon big-pencil d-block d-md-none mx-0" onClick={this.onClickConstructor(0)} /> : null}
+          <Col className="text-center text-md-left" xs={12} md>
+            <h1>
+              <SaveStar company={company} status={company.saved} />{" "}
+              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.startDelete} /> : null}{" "}
+              {canModify ? <FontAwesomeIcon icon={faPen} className="icon-button d-inline-block d-md-none" onClick={this.onClickConstructor(0)} /> : null}
+            </h1>
           </Col>
 
-          <Col xs={12} md={10}>
+          <Col xs={12} md="auto">
             {title}
           </Col>
 

@@ -1,8 +1,11 @@
 import React, {Component} from "react";
+// HOCs and Actions
 import {connect} from "react-redux";
 import {saveCompany, deleteSave} from "../../redux/actions/saveAction";
-import {ReactComponent as Star} from "../../img/star.svg";
-import {ReactComponent as StarEmpty} from "../../img/starEmpty.svg";
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faStar as full} from '@fortawesome/free-solid-svg-icons';
+import {faStar as empty} from '@fortawesome/free-regular-svg-icons';
 
 /**
  * A star to save companies.
@@ -33,11 +36,11 @@ class SaveStar extends Component {
 
   render() {
     const {className} = this.props;
-    const actualClass = (className ? (className + " ") : "") + "saved-star";
-    const Rendered = this.props.status ? Star : StarEmpty;
+    const actualClass = className ? (className + " ") : "";
+    const starType = this.props.status ? full : empty;
 
     return (
-      <Rendered className={actualClass} onClick={this.saveHandler} />
+      <FontAwesomeIcon icon={starType} className={actualClass + "saved-star"} onClick={this.saveHandler} />
     );
   }
 }

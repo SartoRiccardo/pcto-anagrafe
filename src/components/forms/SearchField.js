@@ -1,5 +1,8 @@
 import React, {Component, Fragment} from "react";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faMinus} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Col from "react-bootstrap/Col";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
@@ -89,7 +92,9 @@ class SearchField extends Component {
         </Col>
 
         <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
-          <Button onClick={this.deleteSearchField} variant="primary">-</Button>
+          <Button onClick={this.deleteSearchField} variant="primary">
+            <FontAwesomeIcon icon={faMinus} />
+          </Button>
         </Col>
       </Fragment>
     );

@@ -107,44 +107,30 @@ svg {
 
 .icon-button {
   cursor: pointer;
-  fill: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .icon-button:hover {
-fill: rgba(0, 0, 0, 1);
-}
-
-svg.big-star {
-  height: 48px;
-  width: 48px;
+  color: rgba(0, 0, 0, 1);
 }
 
 .saved-star {
-  fill: #f9a825;
-  height: 100%;
+  color: #f9a825;
   width: auto;
 }
 
 .saved-star:hover {
-  fill:#e64a19;
+  color:#e64a19;
   cursor: pointer;
-}
-
-.mini-star {
-  height: 120%;
 }
 
 .pencil-icon {
-  fill: rgba(0, 0, 0, 0.2);
-  height: 75%;
-  width: auto;
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .pencil-icon:hover {
-  fill: black;
+  color: black;
   cursor: pointer;
-  height: 75%;
-  width: auto;
 }
 
 svg.big-pencil {
@@ -172,8 +158,8 @@ svg.big-pencil {
 .loading-table-overlay {
   max-width: 192px;
   max-height: 192px;
-  height: 100%;
-  width: 100%;
+  height: 80% !important;
+  width: 80% !important;
 }
 
 input.input-field-valid {

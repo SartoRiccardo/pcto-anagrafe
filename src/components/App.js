@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
+// HOCs and actions
 import {connect} from "react-redux";
 import {reloadStructure} from "../redux/actions/structureAction";
 import {initLogin} from "../redux/actions/authAction";
-
+// Custom Components
 import AnonymousPage from "./ui/AnonymousPage";
 import UserNav from "./ui/UserNav";
 import SearchCompany from "./ui/SearchCompany";

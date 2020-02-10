@@ -62,7 +62,7 @@ class CompanySummary extends Component {
     return(
       <tr className="company-summary" onClick={this.handleClick}>
         <td>
-          <SaveStar className="mini-star" onClick={this.handleSave} company={data} status={data.saved} />
+          <SaveStar onClick={this.handleSave} className="mr-2" company={data} status={data.saved} />
           <b>{data.name}</b>
         </td>
         {information}

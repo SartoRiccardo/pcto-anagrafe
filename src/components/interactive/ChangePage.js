@@ -2,7 +2,10 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {setPage, increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faAngleLeft as leftArrow, faAngleRight as rightArrow} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
@@ -70,12 +73,12 @@ class ChangePage extends Component {
 
     const leftButton = (
       <Button onClick={this.changePage} name="decrease" variant="secondary" disabled={page <= 0}>
-        &lt;
+        <FontAwesomeIcon icon={leftArrow} />
       </Button>
     );
     const rightButton = (
       <Button onClick={this.changePage} name="increase" variant="secondary" disabled={page >= pageNum-1}>
-        &gt;
+        <FontAwesomeIcon icon={rightArrow} />
       </Button>
     );
 

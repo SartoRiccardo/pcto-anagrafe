@@ -1,6 +1,8 @@
 import React, {Component} from "react";
-import {ReactComponent as Done} from "../../../img/done.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -75,7 +77,7 @@ class GenericModifier extends Component {
 
           <Col xs="auto">
             <Button type="submit" onMouseDown={this.finish}>
-              <Done className="icon-button" style={{fill: "white"}} />
+              <FontAwesomeIcon icon={faCheck} className="text-white" />
             </Button>
           </Col>
         </Form.Row>
