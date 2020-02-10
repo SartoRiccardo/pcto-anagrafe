@@ -22,10 +22,21 @@ class EditStructure extends Component {
   constructor(props) {
     super(props);
 
+    const {fields, initialized} = this.props;
     this.state = {
       fields: [...this.props.fields],
       lastTempId: -1,
+      initialized,
     };
+  }
+
+  componentDidUpdate() {
+    if(!this.state.initialized && this.props.initialized) {
+      this.setState({
+        fields: [...this.props.fields],
+        initialized: true,
+      });
+    }
   }
 
   handleChange = (field) => {
@@ -120,7 +131,11 @@ class EditStructure extends Component {
   }
 
   render() {
-    const {fields, lastTempId} = this.state;
+    const {fields, lastTempId, initialized} = this.state;
+    if(!initialized) {
+      return null;
+    }
+
     const original = this.props.fields;
 
     // Matches the state fields with the props fields.
@@ -157,7 +172,7 @@ class EditStructure extends Component {
 
 function mapStateToProps(state) {
   return {
-    fields: state.structure.fields,
+    ...state.structure,
   };
 }
 
