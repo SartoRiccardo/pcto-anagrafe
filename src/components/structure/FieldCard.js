@@ -20,7 +20,8 @@ class FieldCard extends Component {
   constructor(props) {
     super(props);
 
-    const {field} = this.props;
+    const {field, original} = this.props;
+    const currentField = field ? field : original;
     this.choices = [
       {name: "REGEX", default:".+"},
       {name:"ENUM", default:"()"},
@@ -28,13 +29,13 @@ class FieldCard extends Component {
     this.defaultType = 0;
     this.state = {
       fieldType: 0,
+      field: currentField,
       changingName: false,
-      name: field.name,
-      deleted: false,
+      name: currentField.name,
     };
 
     const multipleValueRegex = /^\([^?].*\)$/;
-    if(multipleValueRegex.exec(field.regex)) {
+    if(multipleValueRegex.exec(currentField.regex)) {
       this.state.fieldType = 1;
       this.defaultType = 1;
     }
@@ -94,32 +95,24 @@ class FieldCard extends Component {
   }
 
   deleteSelf = (evt) => {
-    this.setState({
-      deleted: true,
-    }, () => {
-      const {fieldType} = this.state;
-      const selected = this.choices[fieldType].name;
-      if(this.props.onDelete) {
-        this.props.onDelete(this.state[selected]);
-      }
-    });
+    const {fieldType} = this.state;
+    const selected = this.choices[fieldType].name;
+    if(this.props.onDelete) {
+      this.props.onDelete(this.state[selected]);
+    }
   }
 
   restoreSelf = (evt) => {
-    this.setState({
-      deleted: false,
-    }, () => {
-      const {fieldType} = this.state;
-      const selected = this.choices[fieldType].name;
-      if(this.props.onRestore) {
-        this.props.onRestore(this.state[selected]);
-      }
-    });
+    const {fieldType} = this.state;
+    const selected = this.choices[fieldType].name;
+    if(this.props.onRestore) {
+      this.props.onRestore(this.state[selected]);
+    }
   }
 
   render() {
-    const {fieldType, changingName, name, deleted} = this.state;
-    const {field} = this.props;
+    const {fieldType, field, changingName, name} = this.state;
+    const deleted = this.props.field === null && this.props.original;
 
     let cardBody;
     const selected = this.choices[fieldType].name;
@@ -138,7 +131,8 @@ class FieldCard extends Component {
       return o.name;
     });
     const hasBeenModified = (
-      this.defaultType !== this.state.fieldType
+      this.props.field && this.props.original === null
+      || this.defaultType !== this.state.fieldType
       || !(this.state.name === field.name
       && this.state[selected].regex === field.regex)
     );

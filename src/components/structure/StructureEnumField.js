@@ -181,7 +181,7 @@ class StructureEnumField extends Component {
             </Col>
 
             <Col xs="auto">
-            <Button type="submit" onClick={this.addOption}><Add style={{fill: "white"}} /></Button>
+              <Button type="submit" onClick={this.addOption}><Add style={{fill: "white"}} /></Button>
             </Col>
           </Form.Row>
         </Form>
