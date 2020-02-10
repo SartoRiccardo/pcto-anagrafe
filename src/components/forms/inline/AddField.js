@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
@@ -36,22 +36,22 @@ class AddField extends Component {
 
   render() {
     return (
-      <Form inline className="d-flex justify-content-center" onSubmit={this.handleSubmit}>
-        <Form.Row>
-          <Col>
+      <Card>
+        <Form onSubmit={this.handleSubmit}>
+          <Card.Header>
             <Form.Control
               type="text"
               placeholder="Nome campo"
               value={this.state.value}
               onChange={this.handleChange}
             />
-          </Col>
+          </Card.Header>
 
-          <Col xs="auto">
+          <Card.Body className="d-flex justify-content-center">
             <Button type="submit">Aggiungi</Button>
-          </Col>
-        </Form.Row>
-      </Form>
+          </Card.Body>
+        </Form>
+      </Card>
     );
   }
 }

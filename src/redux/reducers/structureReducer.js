@@ -8,11 +8,13 @@ export const nameField = {id:0, name:"Nome", regex:".+"};
  *
  * @author Riccardo Sartori
  *
- * @param {Field[]} fields  The table structure's fields.
+ * @param {Field[]} fields       The table structure's fields.
+ * @param {boolean} initialized  If the fields have already been loaded.
  */
 const init = {
   fields: [nameField],
   initialized: false,
+  actions: [],
 }
 
 function structureReducer(state=init, action) {
@@ -24,6 +26,20 @@ function structureReducer(state=init, action) {
         ...state,
         fields,
         initialized: true,
+      };
+
+    case "STRUCTURER_ADD_ACTION":
+      return {
+        ...state,
+        actions: [...state.actions, action.actionId],
+      };
+
+    case "STRUCTURER_FINISH_ACTION":
+      return {
+        ...state,
+        actions: state.actions.filter((a) => {
+          return a.id !== action.actionId;
+        })
       };
 
     default:

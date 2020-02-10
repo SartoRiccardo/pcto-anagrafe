@@ -55,7 +55,7 @@ class FieldCard extends Component {
 
   notifyChange = () => {
     if(this.props.onChange) {
-      const {fieldType, name} = this.state;
+      const {fieldType} = this.state;
       const selected = this.choices[fieldType].name;
       this.props.onChange({
         ...this.state[selected],
@@ -131,7 +131,7 @@ class FieldCard extends Component {
       return o.name;
     });
     const hasBeenModified = (
-      this.props.field && this.props.original === null
+      (this.props.field && this.props.original === null)
       || this.defaultType !== this.state.fieldType
       || !(this.state.name === field.name
       && this.state[selected].regex === field.regex)

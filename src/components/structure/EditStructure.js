@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {updateField, createField, deleteField} from "../../redux/actions/structureAction";
 import update from "immutability-helper";
 import FieldCard from "./FieldCard";
 import AddField from "../forms/inline/AddField";
 
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import CardColumns from "react-bootstrap/CardColumns";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 /**
@@ -24,7 +25,7 @@ class EditStructure extends Component {
 
     const {fields, initialized} = this.props;
     this.state = {
-      fields: [...this.props.fields],
+      fields: [...fields],
       lastTempId: -1,
       initialized,
     };
@@ -130,6 +131,29 @@ class EditStructure extends Component {
     return ret;
   }
 
+  saveChanges = (evt) => {
+    let matches = this.groupFields(this.state.fields, this.props.fields);
+    const changes = matches.filter((m) => {
+      return m[0] === null
+        || m[1] === null
+        || m[0].name !== m[1].name
+        || m[0].regex !== m[1].regex;
+    });
+
+    for (let i = 0; i < changes.length; i++) {
+      const c = changes[i];
+      if(c[1] === null) {
+        this.props.createField(c[0]);
+      }
+      else if(c[0] === null) {
+        this.props.deleteField(c[1].id);
+      }
+      else {
+        this.props.updateField(c[1]);
+      }
+    }
+  }
+
   render() {
     const {fields, lastTempId, initialized} = this.state;
     if(!initialized) {
@@ -160,11 +184,19 @@ class EditStructure extends Component {
 
     return (
       <Container>
-        <CardColumns>
-          {list}
-        </CardColumns>
+        <Row>
+          <CardColumns>
+            {list}
+            <AddField id={lastTempId} onSubmit={this.addTempField} />
+          </CardColumns>
+        </Row>
 
-        <AddField id={lastTempId} onSubmit={this.addTempField} />
+        <hr />
+        <Row>
+          <Col className="d-flex justify-content-center">
+            <Button onClick={this.saveChanges}>Salva</Button>
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -178,8 +210,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateStructure: fields => {
-      dispatch({type:"STRUCTURER_UPDATE", fields});
+    deleteField: (id) => {
+      dispatch(deleteField(id));
+    },
+    createField: (field) => {
+      dispatch(createField(field));
+    },
+    updateField: (field) => {
+      dispatch(updateField(field));
     },
   };
 }
