@@ -59,7 +59,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"]) && isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"])) {
+    if(isset($_POST["id"]) && isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"]) && is_numeric($_POST["id"])) {
       echo json_encode(
         updateField(intval($_POST["id"]), $_POST["target"], $_POST["name"], $_POST["regex"])
       );
@@ -75,7 +75,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       echo json_encode(
         deleteField(intval($_POST["id"]))
       );

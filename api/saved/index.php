@@ -42,7 +42,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       saveCompany($_POST["user"], $_POST["id"]);
       echo json_encode(array(
         "error" => false,
@@ -60,7 +60,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       deleteSave($_POST["user"], $_POST["id"]);
       echo json_encode(array(
         "error" => false,

@@ -30,7 +30,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       $company = getCompanyById($_POST["id"]);
       if($company == null) {
         echo json_encode(array(
@@ -92,7 +92,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       if(isset($_POST["name"])) {
         echo json_encode(
           updateCompanyName(
@@ -126,7 +126,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"])) {
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       echo json_encode(
         deleteCompanyById($_POST["id"])
       );
