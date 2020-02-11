@@ -12,7 +12,9 @@ function getCompanyById($id) {
           WHERE id = ?";
   $stmt = $dbc->prepare($q);
   $stmt->execute(array($id));
-  if(!($res = $stmt->fetch())) return null;
+  if(!($res = $stmt->fetch())) {
+    return null;
+  }
   $name = utf8_encode($res["name"]);
 
   $q = "SELECT ft.id, ft.name, ft.regex, cf.value
@@ -202,5 +204,64 @@ function groupFields($search) {
   }
 
   return $uniqueFields;
+}
+
+/**
+ * Checks if a field with the specified ID exists.
+ *
+ * @param  int     $id  The ID of the field to check.
+ * @return boolean
+ */
+function fieldExists($id) {
+  global $dbc;
+
+  $q = "SELECT *
+          FROM Field
+          WHERE id = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->execute();
+
+  return $stmt->fetch() != false;
+}
+
+/**
+ * Checks if a company has a certain field set.
+ *
+ * @param  int     $companyId  The ID of the company to check.
+ * @param  int     $fieldId    The ID of the field to check.
+ * @return boolean
+ */
+function companyHasField($companyId, $fieldId) {
+  global $dbc;
+
+  $q = "SELECT *
+          FROM CompanyField
+          WHERE company = :companyId
+            AND field = :fieldId";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":companyId", $companyId, PDO::PARAM_INT);
+  $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
+  $stmt->execute();
+
+  return $stmt->fetch() != false;
+}
+
+function fieldIsValid($id, $value) {
+  global $dbc;
+
+  $q = "SELECT regex
+          FROM Field
+          WHERE id = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id);
+  $stmt->execute();
+
+  if(!($ret = $stmt->fetch())) {
+    return false;
+  }
+
+  $reg = $ret["regex"];
+  return preg_match("/^$reg$/", $value);
 }
 ?>

@@ -20,6 +20,13 @@ function insertCompany($arg0, $arg1, $arg2=null) {
     $fields = $arg2;
   }
 
+  if($id != null && getCompanyById($id) != null) {
+    return array(
+      "error" => true,
+      "message" => "A company with id $id already exists."
+    );
+  }
+
   // Eliminate empty fields
   $tmp = array();
   foreach ($fields as $f) {
@@ -34,11 +41,11 @@ function insertCompany($arg0, $arg1, $arg2=null) {
     return $validity;
   }
 
-  $q = "INSERT INTO Company
+  $q = "INSERT INTO Company (id, name)
           VALUES (:id, :name)";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id);
-  $stmt->bindParam(":name", $name);
+  $stmt->bindParam(":name", $name, PDO::PARAM_STR);
   $stmt->execute();
 
   $q = "SELECT id
@@ -47,21 +54,21 @@ function insertCompany($arg0, $arg1, $arg2=null) {
           ORDER BY id DESC
           LIMIT 1";
   $stmt = $dbc->prepare($q);
-  $stmt->bindParam(":name", $name);
+  $stmt->bindParam(":name", $name, PDO::PARAM_STR);
   $stmt->execute();
   if(!($res = $stmt->fetch())) {
     return array(
       "error"=>true,
-      "message"=>"Company was not inserted: invalid name"
+      "message"=>"Company was not inserted."
     );
   }
-  $id = $res["id"];
+  $id = intval($res["id"]);
 
+  $q = "INSERT INTO CompanyField
+          VALUES(:company, :field, :value)";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":company", $id);
   foreach ($fields as $f) {
-    $q = "INSERT INTO CompanyField
-            VALUES(:company, :field, :value)";
-    $stmt = $dbc->prepare($q);
-    $stmt->bindParam(":company", $id);
     $stmt->bindParam(":field", $f["id"]);
     $stmt->bindParam(":value", $f["value"]);
     $stmt->execute();

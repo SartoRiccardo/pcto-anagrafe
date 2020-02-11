@@ -92,14 +92,27 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"]) && isset($_POST["name"]) && isset($_POST["fields"])) {
-      echo json_encode(
-        updateCompany(
-          intval($_POST["id"]),
-          $_POST["name"],
-          json_decode($_POST["fields"], true)
-        )
-      );
+    if(isset($_POST["id"])) {
+      if(isset($_POST["name"])) {
+        echo json_encode(
+          updateCompanyName(
+            intval($_POST["id"]),
+            $_POST["name"]
+          )
+        );
+      }
+      else if(isset($_POST["field"])) {
+        $field = json_decode($_POST["field"], true);
+        if(isset($field["id"]) && isset($field["value"])) {
+          echo json_encode(
+            updateCompanyField(
+              intval($_POST["id"]),
+              intval(json_decode($_POST["field"], true)["id"]),
+              json_decode($_POST["field"], true)["value"]
+            )
+          );
+        }
+      }
     }
 
     break;
@@ -114,7 +127,9 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
 
     if(isset($_POST["id"])) {
-      deleteCompanyById($_POST["id"]);
+      echo json_encode(
+        deleteCompanyById($_POST["id"])
+      );
     }
     break;
 
