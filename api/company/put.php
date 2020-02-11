@@ -98,7 +98,7 @@ function updateCompanyField($companyId, $fieldId, $fieldValue) {
     );
   }
 
-  if(!fieldIsValid($fieldId, $fieldValue)) {
+  if(strlen($fieldValue) > 0 && !fieldIsValid($fieldId, $fieldValue)) {
     return array(
       "error" => true,
       "message" => "Il valore $fieldValue non è valido per $fieldId."
