@@ -141,6 +141,33 @@ class EditStructure extends Component {
       }
     }
 
+    console.log(ret.map(r => r[0] !== null ? r[0].id : r[1].id));
+    // Sorts the array
+    for (let i = 0; i < ret.length; i++) {
+      for (let j = i+1; j < ret.length; j++) {
+        const idI = ret[i][0] !== null ? ret[i][0].id : ret[i][1].id;
+        const idJ = ret[j][0] !== null ? ret[j][0].id : ret[j][1].id;
+        if(idI > idJ) {
+          const tmp = ret[i];
+          ret[i] = ret[j];
+          ret[j] = tmp;
+        }
+      }
+    }
+    console.log(ret.map(r => r[0] !== null ? r[0].id : r[1].id));
+
+    // Puts the negative IDs last in ascending order.
+    let idIsNegative = true;
+    while(ret.length > 0 && idIsNegative) {
+      const id = ret[0][0] !== null ? ret[0][0].id : ret[0][1].id;
+      if(id > 0) {
+        idIsNegative = false;
+        continue;
+      }
+      ret.push(ret[0]);
+      ret.splice(0, 1);
+    }
+
     return ret;
   }
 
