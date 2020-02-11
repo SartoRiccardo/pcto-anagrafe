@@ -13,7 +13,6 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import CardColumns from "react-bootstrap/CardColumns";
 import Button from "react-bootstrap/Button";
 
 /**
@@ -177,7 +176,6 @@ class EditStructure extends Component {
   render() {
     const {fields, lastTempId, initialized, dumping} = this.state;
     if(!initialized || dumping) {
-      console.log("LOADING ICON");
       return (
         <Container className="d-flex justify-content-center">
           <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" />
@@ -197,23 +195,25 @@ class EditStructure extends Component {
         return null;
       }
       return (
-        <FieldCard
-          key={id}
-          field={m[0]}
-          original={m[1]}
-          onChange={this.handleChange}
-          onDelete={this.handleDelete}
-          onRestore={this.handleRestore}
-        />);
+        <Col key={id} xs={12} md={12/2} lg={12/3}>
+          <FieldCard
+            field={m[0]}
+            original={m[1]}
+            onChange={this.handleChange}
+            onDelete={this.handleDelete}
+            onRestore={this.handleRestore}
+          />
+        </Col>
+      );
     });
 
     return (
       <Container>
         <Row>
-          <CardColumns>
-            {list}
+          {list}
+          <Col xs={12} md={12/2} lg={12/3}>
             <AddField id={lastTempId} onSubmit={this.addTempField} />
-          </CardColumns>
+          </Col>
         </Row>
 
         <hr />

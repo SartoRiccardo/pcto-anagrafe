@@ -5,9 +5,10 @@ import RegExpModifier from "../forms/inline/RegExpModifier";
 import GenericModifier from "../forms/inline/GenericModifier";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPen, faTrashAlt, faUndo} from '@fortawesome/free-solid-svg-icons';
+import {faPen, faTrashAlt, faUndo, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
 // Bootstrap
 import Card from "react-bootstrap/Card";
+import Collapse from "react-bootstrap/Collapse";
 
 /**
  * A section where you can edit a column.
@@ -29,6 +30,7 @@ class FieldCard extends Component {
     this.defaultType = 0;
     this.state = {
       fieldType: 0,
+      showing: false,
       field: currentField,
       changingName: false,
       name: currentField.name,
@@ -110,8 +112,20 @@ class FieldCard extends Component {
     }
   }
 
+  expandField = () => {
+    this.setState({
+      showing: true,
+    });
+  }
+
+  collapseField = () => {
+    this.setState({
+      showing: false,
+    });
+  }
+
   render() {
-    const {fieldType, field, changingName, name} = this.state;
+    const {fieldType, showing, field, changingName, name} = this.state;
     const deleted = this.props.field === null && this.props.original;
 
     let cardBody;
@@ -138,12 +152,16 @@ class FieldCard extends Component {
     );
 
     let body = (
-      <Card.Body>
-        <FieldTypeSelect onChange={this.updateFieldType} default={fieldType} options={choiceNames} />
-        <hr />
+      <Collapse in={showing}>
+        <div>
+          <Card.Body>
+            <FieldTypeSelect onChange={this.updateFieldType} default={fieldType} options={choiceNames} />
+            <hr />
 
-        {cardBody}
-      </Card.Body>
+            {cardBody}
+          </Card.Body>
+        </div>
+      </Collapse>
     );
 
     let header;
@@ -162,8 +180,14 @@ class FieldCard extends Component {
       body = null;
     }
     else {
+      const caret = showing ? (
+        <FontAwesomeIcon icon={faCaretUp} className="icon-button mr-2" onClick={this.collapseField} />
+      ) : (
+        <FontAwesomeIcon icon={faCaretDown} className="icon-button mr-2" onClick={this.expandField} />
+      );
       header = (
         <Fragment>
+          {caret}
           {name}
           <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
           <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.deleteSelf} />
