@@ -44,7 +44,7 @@ class FieldModifier extends Component {
     const {value, field} = this.state;
     return (value.length < 256
       && (value === ""
-      || value.match("^" + field.regex + "$"))
+      || value.match("^" + field.regex + "$") !== null)
     );
   }
 
