@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {updateCompany} from "../../redux/actions/companyAction";
+import {updateName, updateField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 // Custom components
 import Table from "react-bootstrap/Table";
@@ -11,11 +11,13 @@ import FieldModifier from "../forms/FieldModifier";
 import ConfirmDelete from "../interactive/ConfirmDelete";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPen, faTrashAlt, faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {faPen, faTrashAlt, faSpinner, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 /**
  * A table showing all of a company's information.
@@ -68,41 +70,18 @@ class CompanyDetails extends Component {
     });
 
     const {field, value, valid} = evt;
-    const {id, name, fields} = this.props.company;
-    let unmodifiedValue = null;
-    if(field.id === 0) {
-      unmodifiedValue = name;
+    const {id, fields} = this.props.company;
+    if(field.id === 0 && valid) {
+      this.props.updateName(id, value);
     }
     else {
       for (var i = 0; i < fields.length; i++) {
         if(fields[i].id === field.id) {
-          unmodifiedValue = fields[i].value;
+          const updatedField = {id: field.id, value};
+          this.props.updateField(id, updatedField);
           break;
         }
       }
-    }
-
-    if(valid && unmodifiedValue !== value) {
-      let newCompany;
-      if(field.id === 0) {
-        newCompany = {
-          id, fields,
-          name: value,
-        };
-      }
-      else {
-        const {id, name, fields} = this.props.company;
-        let newFields = fields.filter(f => {
-          return f.id !== field.id;
-        });
-        newFields.push({...field, value});
-        newCompany = {
-          id, name,
-          fields: newFields,
-        };
-      }
-
-      this.props.updateCompany(newCompany);
     }
   }
 
@@ -167,9 +146,18 @@ class CompanyDetails extends Component {
         cellContent = <FieldModifier value={value} field={f} onFinish={this.modifyFinishHandler} />;
       }
       else {
+        const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
+        const regex = new RegExp("^" + f.regex + "$");
+        const warning = match && canModify && !regex.exec(match.value) ? (
+          <OverlayTrigger placement="right" overlay={tooltip}>
+            <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
+          </OverlayTrigger>
+        ) : null;
+
         cellContent = (
           <Fragment>
             {(match ? match.value : "") + " "}
+            {warning}
             {canModify ?
               <FontAwesomeIcon
                 icon={faPen}
@@ -250,15 +238,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateCompany: (company) => {
-      dispatch(updateCompany(company));
-    },
     selectCompany: (id) => {
       dispatch(selectCompany(id));
     },
     resetCompany: () => {
       dispatch(resetCompany());
     },
+    updateField: (company, field) => {
+      dispatch(updateField(company, field));
+    },
+    updateName: (company, name) => {
+      dispatch(updateName(company, name));
+    }
   };
 }
 

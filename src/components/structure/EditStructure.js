@@ -167,7 +167,7 @@ class EditStructure extends Component {
           this.props.deleteField(c[1].id);
         }
         else {
-          this.props.updateField(c[1]);
+          this.props.updateField(c[0]);
         }
       }
       this.props.finishChange();
