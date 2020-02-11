@@ -29,7 +29,7 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
 
     echo json_encode(
-      getCompaniesSavedBy($_POST["user"])
+      getCompaniesSavedBy($user)
     );
     break;
 
@@ -49,17 +49,6 @@ switch ($_POST["REQUEST_METHOD"]) {
         "message" => ""
       ));
     }
-    break;
-
-  case "PUT":
-    if(!hasPermission($user, "BASE")) {
-      echo json_encode(array(
-        "error" => true,
-        "message" => "The given user does not have BASE permissions."
-      ));
-      die();
-    }
-
     break;
 
   case "DELETE":
