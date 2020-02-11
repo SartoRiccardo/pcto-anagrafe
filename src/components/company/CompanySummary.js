@@ -1,8 +1,13 @@
 import React, {Component} from "react";
+// HOCs and actions
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {setMatchCompany} from "../../redux/actions/resultAction";
+// Custom components
 import SaveStar from "../interactive/SaveStar";
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 /**
  * A short table row describing certain company attributes.
@@ -56,7 +61,13 @@ class CompanySummary extends Component {
           value = data.fields[i].value;
         }
       }
-      return <td key={id}>{value ? value : "N/A"}</td>;
+      return (
+        <td key={id} className={value ? "" : "text-center"}>
+          {value
+            ? value
+            : <FontAwesomeIcon icon={faTimes} className="icon-transparent" />}
+        </td>
+      );
     });
 
     return(
