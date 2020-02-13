@@ -12,6 +12,7 @@ import {
   StructureDateField,
   StructureNumericField,
 } from "./StructureSpecificField";
+import StructureCustomField from "./StructureCustomField";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPen, faTrashAlt, faUndo, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
@@ -38,9 +39,9 @@ class FieldCard extends Component {
       StructureWebsiteField,
       StructureNumberField,
       StructureEmailField,
-      StructureAllField,
       StructureEnumField,
-      RegExpModifier,
+      StructureCustomField,
+      StructureAllField,
     ];
     this.defaultType = this.choices.length-1;
     this.state = {
@@ -92,6 +93,11 @@ class FieldCard extends Component {
     }
   }
 
+  /**
+   * An event handler passed down to the card bodies.
+   *
+   * @param {Field} evt.field  The updated field.
+   */
   handleChange = (evt) => {
     const {fieldType} = this.state;
     const selected = this.choices[fieldType];

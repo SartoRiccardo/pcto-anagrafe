@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo:400,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Viga&display=swap');
 
 $primary: #e53935;
 $secondary: #ff8f00;
@@ -161,6 +162,19 @@ svg.big-pencil {
   height: 2.3rem;
   width: auto;
   margin: 0px !important;
+}
+
+.row.simple-regex-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.simple-regex {
+  font-family: "Viga", sans-serif;
+  border-radius: 0.40rem;
 }
 
 .loading-table-overlay {
