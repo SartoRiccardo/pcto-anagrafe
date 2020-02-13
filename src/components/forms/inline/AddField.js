@@ -36,7 +36,7 @@ class AddField extends Component {
 
   render() {
     return (
-      <Card>
+      <Card className="my-3">
         <Form onSubmit={this.handleSubmit}>
           <Card.Header>
             <Form.Control

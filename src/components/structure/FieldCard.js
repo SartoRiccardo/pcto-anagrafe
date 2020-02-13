@@ -1,8 +1,17 @@
 import React, {Component, Fragment} from "react";
+// Custom Components
 import StructureEnumField from "./StructureEnumField";
 import FieldTypeSelect from "../forms/inline/FieldTypeSelect";
 import RegExpModifier from "../forms/inline/RegExpModifier";
 import GenericModifier from "../forms/inline/GenericModifier";
+import {
+  StructureEmailField,
+  StructureAllField,
+  StructureNumberField,
+  StructureWebsiteField,
+  StructureDateField,
+  StructureNumericField,
+} from "./StructureSpecificField";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPen, faTrashAlt, faUndo, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +33,12 @@ class FieldCard extends Component {
     const {field, original} = this.props;
     const currentField = field ? field : original;
     this.choices = [
+      StructureNumericField,
+      StructureDateField,
+      StructureWebsiteField,
+      StructureNumberField,
+      StructureEmailField,
+      StructureAllField,
       StructureEnumField,
       RegExpModifier,
     ];

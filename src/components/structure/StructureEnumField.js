@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from "react";
+// Custom Components
 import GenericModifier from "../forms/inline/GenericModifier";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
