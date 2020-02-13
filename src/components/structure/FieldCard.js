@@ -24,30 +24,33 @@ class FieldCard extends Component {
     const {field, original} = this.props;
     const currentField = field ? field : original;
     this.choices = [
-      {name: "REGEX", default:".+"},
-      {name:"ENUM", default:"()"},
+      StructureEnumField,
+      RegExpModifier,
     ];
-    this.defaultType = 0;
+    this.defaultType = this.choices.length-1;
     this.state = {
-      fieldType: 0,
+      fieldType: this.defaultType,
       showing: false,
       field: currentField,
       changingName: false,
       name: currentField.name,
     };
 
-    const multipleValueRegex = /^\([^?].*\)$/;
-    if(multipleValueRegex.exec(currentField.regex)) {
-      this.state.fieldType = 1;
-      this.defaultType = 1;
+    for(let i = 0; i < this.choices.length; i++) {
+      const c = this.choices[i];
+      if(c.regex.exec(currentField.regex)) {
+        this.state.fieldType = i;
+        this.defaultType = i;
+        break;
+      }
     }
 
     for (let i = 0; i < this.choices.length; i++) {
       if(this.state.fieldType === i) {
-        this.state[this.choices[i].name] = {...field};
+        this.state[this.choices[i]] = {...field};
       }
       else {
-        this.state[this.choices[i].name] = {
+        this.state[this.choices[i]] = {
           ...field,
           regex: this.choices[i].default,
         };
@@ -58,7 +61,7 @@ class FieldCard extends Component {
   notifyChange = () => {
     if(this.props.onChange) {
       const {fieldType} = this.state;
-      const selected = this.choices[fieldType].name;
+      const selected = this.choices[fieldType];
       this.props.onChange({
         ...this.state[selected],
         name: this.state.name
@@ -76,7 +79,7 @@ class FieldCard extends Component {
 
   handleChange = (evt) => {
     const {fieldType} = this.state;
-    const selected = this.choices[fieldType].name;
+    const selected = this.choices[fieldType];
     this.setState({
       [selected]: evt.field,
     }, this.notifyChange);
@@ -98,7 +101,7 @@ class FieldCard extends Component {
 
   deleteSelf = (evt) => {
     const {fieldType} = this.state;
-    const selected = this.choices[fieldType].name;
+    const selected = this.choices[fieldType];
     if(this.props.onDelete) {
       this.props.onDelete(this.state[selected]);
     }
@@ -106,7 +109,7 @@ class FieldCard extends Component {
 
   restoreSelf = (evt) => {
     const {fieldType} = this.state;
-    const selected = this.choices[fieldType].name;
+    const selected = this.choices[fieldType];
     if(this.props.onRestore) {
       this.props.onRestore(this.state[selected]);
     }
@@ -128,27 +131,17 @@ class FieldCard extends Component {
     const {fieldType, showing, field, changingName, name} = this.state;
     const deleted = this.props.field === null && this.props.original;
 
-    let cardBody;
-    const selected = this.choices[fieldType].name;
-    switch(selected) {
-      case "ENUM":
-        cardBody = <StructureEnumField field={this.state[selected]} onChange={this.handleChange} />;
-        break;
-
-      case "REGEX":
-      default:
-        cardBody = <RegExpModifier field={this.state[selected]} onChange={this.handleChange} />;
-        break;
-    }
+    const StructureField = this.choices[fieldType];
+    const cardBody = <StructureField field={this.state[StructureField]} onChange={this.handleChange} />;
 
     const choiceNames = this.choices.map((o) => {
-      return o.name;
+      return o.fieldTypeName;
     });
     const hasBeenModified = (
       (this.props.field && this.props.original === null)
       || this.defaultType !== this.state.fieldType
       || !(this.state.name === field.name
-      && this.state[selected].regex === field.regex)
+      && this.state[StructureField].regex === field.regex)
     );
 
     let body = (

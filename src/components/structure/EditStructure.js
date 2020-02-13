@@ -141,7 +141,6 @@ class EditStructure extends Component {
       }
     }
 
-    console.log(ret.map(r => r[0] !== null ? r[0].id : r[1].id));
     // Sorts the array
     for (let i = 0; i < ret.length; i++) {
       for (let j = i+1; j < ret.length; j++) {
@@ -154,7 +153,6 @@ class EditStructure extends Component {
         }
       }
     }
-    console.log(ret.map(r => r[0] !== null ? r[0].id : r[1].id));
 
     // Puts the negative IDs last in ascending order.
     let idIsNegative = true;

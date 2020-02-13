@@ -64,4 +64,8 @@ class RegExpModifier extends Component {
   }
 }
 
+RegExpModifier.default = ".+";
+RegExpModifier.regex = /.+/;
+RegExpModifier.fieldTypeName = "Espressione Regolare";
+
 export default RegExpModifier;

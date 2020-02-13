@@ -38,7 +38,6 @@ class GenericModifier extends Component {
     const {validator} = this.props;
     let validated = validator ? validator(this.state.value) : true;
 
-    console.log(this.cancelling, validated);
     const value = this.cancelling || !validated ? this.props.value : this.state.value;
     if(this.props.onFinish) {
       this.props.onFinish({value});

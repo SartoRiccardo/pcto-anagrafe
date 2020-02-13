@@ -192,4 +192,8 @@ class StructureEnumField extends Component {
   }
 }
 
+StructureEnumField.default = "()";
+StructureEnumField.regex = /^\([^?].*\)$/;
+StructureEnumField.fieldTypeName = "Valore fisso";
+
 export default StructureEnumField;
