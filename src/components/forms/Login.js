@@ -1,8 +1,11 @@
 import React, {Component} from "react";
+// HOCs and Actions
 import {connect} from "react-redux";
 import {loginAction, startLogin} from "../../redux/actions/authAction";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -53,7 +56,7 @@ class Login extends Component {
     ) : null;
 
     let loadingIcon = loading ? (
-      <Loading className="loading-icon" />
+      <FontAwesomeIcon icon={faSpinner} pulse />
     ) : null;
 
     return(
@@ -72,7 +75,7 @@ class Login extends Component {
 
         <Form.Row className="my-3">
           <Col xs={12} className="d-flex justify-content-center">
-            <Button as="button" type="submit" disabled={loading}>Login</Button> {loadingIcon}
+            <Button as="button" type="submit" disabled={loading}>Login {loadingIcon}</Button>
           </Col>
         </Form.Row>
       </Form>

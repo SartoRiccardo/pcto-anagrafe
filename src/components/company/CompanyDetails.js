@@ -1,19 +1,23 @@
 import React, {Component, Fragment} from "react";
+// HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {updateCompany} from "../../redux/actions/companyAction";
+import {updateName, updateField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
+// Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import FieldModifier from "../forms/FieldModifier";
 import ConfirmDelete from "../interactive/ConfirmDelete";
-import {ReactComponent as Pencil} from "../../img/pencil.svg";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-import {ReactComponent as Trash} from "../../img/trash.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPen, faTrashAlt, faSpinner, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 /**
  * A table showing all of a company's information.
@@ -66,41 +70,23 @@ class CompanyDetails extends Component {
     });
 
     const {field, value, valid} = evt;
-    const {id, name, fields} = this.props.company;
-    let unmodifiedValue = null;
+    if(!valid) {
+      return;
+    }
+
+    const {id} = this.props.company;
+    const {fields} = this.props;
     if(field.id === 0) {
-      unmodifiedValue = name;
+      this.props.updateName(id, value);
     }
     else {
-      for (var i = 0; i < fields.length; i++) {
+      for (let i = 0; i < fields.length; i++) {
         if(fields[i].id === field.id) {
-          unmodifiedValue = fields[i].value;
+          const updatedField = {id: field.id, value};
+          this.props.updateField(id, updatedField);
           break;
         }
       }
-    }
-
-    if(valid && unmodifiedValue !== value) {
-      let newCompany;
-      if(field.id === 0) {
-        newCompany = {
-          id, fields,
-          name: value,
-        };
-      }
-      else {
-        const {id, name, fields} = this.props.company;
-        let newFields = fields.filter(f => {
-          return f.id !== field.id;
-        });
-        newFields.push({...field, value});
-        newCompany = {
-          id, name,
-          fields: newFields,
-        };
-      }
-
-      this.props.updateCompany(newCompany);
     }
   }
 
@@ -123,7 +109,9 @@ class CompanyDetails extends Component {
     if(company === null) {
       if(error === null) {
         return (
-          <Loading />
+          <Container className="d-flex justify-content-center">
+            <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+          </Container>
         );
       }
       else {
@@ -163,10 +151,24 @@ class CompanyDetails extends Component {
         cellContent = <FieldModifier value={value} field={f} onFinish={this.modifyFinishHandler} />;
       }
       else {
+        const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
+        const regex = new RegExp("^" + f.regex + "$");
+        const warning = match && canModify && !regex.exec(match.value) ? (
+          <OverlayTrigger placement="right" overlay={tooltip}>
+            <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
+          </OverlayTrigger>
+        ) : null;
+
         cellContent = (
           <Fragment>
             {(match ? match.value : "") + " "}
-            {canModify ? <Pencil className="pencil-icon" onClick={this.onClickConstructor(f.id)} /> : null}
+            {warning}
+            {canModify ?
+              <FontAwesomeIcon
+                icon={faPen}
+                className="icon-button ml-1"
+                onClick={this.onClickConstructor(f.id)}
+              /> : null}
           </Fragment>
         );
       }
@@ -186,7 +188,12 @@ class CompanyDetails extends Component {
     ) : (
       <h1 className="text-center" xs={12} md="auto">
         {company.name + " "}
-        {canModify ? <Pencil className="pencil-icon d-none d-md-inline" onClick={this.onClickConstructor(0)} /> : null}
+        {canModify ?
+          <FontAwesomeIcon
+            icon={faPen}
+            className="icon-button d-none d-md-inline-block"
+            onClick={this.onClickConstructor(0)}
+          /> : null}
       </h1>
     );
 
@@ -195,13 +202,15 @@ class CompanyDetails extends Component {
         <ConfirmDelete show={this.state.deleteStarted} company={company} onCancel={this.cancelDelete} />
 
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="d-flex align-items-center justify-content-center justify-content-md-start" xs={12} md>
-            <SaveStar className="big-star" company={company} status={company.saved} />
-            {canModify ? <Trash className="trash-icon" onClick={this.startDelete} /> : null}
-            {canModify ? <Pencil className="pencil-icon big-pencil d-block d-md-none mx-0" onClick={this.onClickConstructor(0)} /> : null}
+          <Col className="text-center text-md-left" xs={12} md>
+            <h1>
+              <SaveStar company={company} status={company.saved} />{" "}
+              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.startDelete} /> : null}{" "}
+              {canModify ? <FontAwesomeIcon icon={faPen} className="icon-button d-inline-block d-md-none" onClick={this.onClickConstructor(0)} /> : null}
+            </h1>
           </Col>
 
-          <Col xs={12} md={10}>
+          <Col xs={12} md="auto">
             {title}
           </Col>
 
@@ -234,15 +243,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateCompany: (company) => {
-      dispatch(updateCompany(company));
-    },
     selectCompany: (id) => {
       dispatch(selectCompany(id));
     },
     resetCompany: () => {
       dispatch(resetCompany());
     },
+    updateField: (company, field) => {
+      dispatch(updateField(company, field));
+    },
+    updateName: (company, name) => {
+      dispatch(updateName(company, name));
+    }
   };
 }
 

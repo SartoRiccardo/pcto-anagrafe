@@ -1,9 +1,12 @@
 import React, {Component} from "react";
+// HOCs and actions
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {createCompany} from "../../redux/actions/companyAction";
-import {ReactComponent as Loading} from "../../img/loading.svg";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -73,7 +76,7 @@ class AddCompany extends Component {
     ) : null;
 
     const loadingIcon = this.state.loading ? (
-      <Loading className="loading-icon" />
+      <FontAwesomeIcon icon={faSpinner} pulse />
     ) : null;
 
     return (
@@ -100,7 +103,7 @@ class AddCompany extends Component {
 
             <Form.Row>
               <Col xs={12} className="d-flex justify-content-center">
-                <Button type="submit" disabled={this.state.loading}>Crea</Button> {loadingIcon}
+                <Button type="submit" disabled={this.state.loading}>Crea {loadingIcon}</Button>
               </Col>
             </Form.Row>
           </Form>

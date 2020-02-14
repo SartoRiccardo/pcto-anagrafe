@@ -2,7 +2,10 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {setPage, increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
-
+// Icons
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faAngleLeft as leftArrow, faAngleRight as rightArrow} from '@fortawesome/free-solid-svg-icons';
+// Bootstrap
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
@@ -30,17 +33,23 @@ class ChangePage extends Component {
     document.documentElement.scrollTop = 0;
   }
 
-  changePage = (evt) => {
+  changePage = (name) => {
     const {reducer} = this.props;
-    if (evt.target.name === "increase") {
+    if (name === "increase") {
       this.props.increasePage(reducer);
     }
-    else if (evt.target.name === "decrease") {
+    else if (name === "decrease") {
       this.props.decreasePage(reducer);
     }
     this.props.updateResults();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  }
+
+  changePageBuilder = (action) => {
+    return () => {
+      this.changePage(action);
+    }
   }
 
   render() {
@@ -69,13 +78,13 @@ class ChangePage extends Component {
     }
 
     const leftButton = (
-      <Button onClick={this.changePage} name="decrease" variant="secondary" disabled={page <= 0}>
-        &lt;
+      <Button onClick={this.changePageBuilder("decrease")} variant="secondary" disabled={page <= 0}>
+        <FontAwesomeIcon icon={leftArrow} />
       </Button>
     );
     const rightButton = (
-      <Button onClick={this.changePage} name="increase" variant="secondary" disabled={page >= pageNum-1}>
-        &gt;
+      <Button onClick={this.changePageBuilder("increase")} variant="secondary" disabled={page >= pageNum-1}>
+        <FontAwesomeIcon icon={rightArrow} />
       </Button>
     );
 

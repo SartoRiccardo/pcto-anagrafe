@@ -83,6 +83,95 @@ export function updateCompany(company) {
 }
 
 /**
+ * Updates a company's name.
+ *
+ * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int}    company  The company's ID.
+ * @param {string} name     The new name of the company.
+ */
+export function updateName(company, name) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "PUT");
+    payload.set("user", getToken());
+    payload.set("id", company);
+    payload.set("name", name);
+
+    axios.post(apiUrl("/api/company"), payload)
+    .then((res) => {
+      const {error, message} = res.data;
+      if(res.status === 200) {
+        if(!error) {
+          dispatch({type: "COMPANYR_RESET"});
+          dispatch(resultAction());
+          dispatch(selectCompany(company));
+        }
+        else {
+          console.log(message);
+        }
+      }
+    })
+    .catch((e) => {
+
+    });
+  };
+}
+
+/**
+ * Updates a company's name.
+ *
+ * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {int}    company  The company's ID.
+ * @param {Field}  field    The updated field.
+ */
+export function updateField(company, field) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("REQUEST_METHOD", "PUT");
+    payload.set("user", getToken());
+    payload.set("id", company);
+    payload.set("field", JSON.stringify({
+      id: field.id,
+      value: field.value
+    }));
+
+    axios.post(apiUrl("/api/company"), payload)
+    .then((res) => {
+      const {error, message} = res.data;
+      if(res.status === 200) {
+        if(!error) {
+          dispatch({type: "COMPANYR_RESET"});
+          dispatch(resultAction());
+          dispatch(selectCompany(company));
+        }
+        else {
+          console.log(message);
+        }
+      }
+    })
+    .catch((e) => {
+
+    });
+  };
+}
+
+/**
  * Deletes a company.
  *
  * Fires CHANGECOMPANYR_END and dispatches updateSaved on success.
