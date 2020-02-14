@@ -10,6 +10,14 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A class that represents a list of allowed values.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Field}    props.field     The field to represent.
+ * @param {function} props.onChange  A handler for when the field is changed.
+ */
 class StructureEnumField extends Component {
   constructor(props) {
     super(props);

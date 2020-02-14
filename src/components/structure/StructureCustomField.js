@@ -8,6 +8,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/**
+ * A component to build a simple regex.
+ *
+ * @author Riccardo Sartori
+ *
+ * @param {Field}    props.field     The field to represent.
+ * @param {function} props.onChange  A handler for when the field is changed.
+ */
 class StructureCustomField extends Component {
   constructor(props) {
     super(props);
@@ -114,7 +122,7 @@ class StructureCustomField extends Component {
   deleteCreator = (id) => {
     return () => {
       this.delete(id);
-    }
+    };
   }
 
   delete = (id) => {
