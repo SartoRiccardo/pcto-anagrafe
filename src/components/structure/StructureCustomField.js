@@ -133,7 +133,7 @@ class StructureCustomField extends Component {
     const {choices, example} = this.state;
 
     const buttons = this.options.map((o, i) => {
-      const {name, label} = o;
+      const {label} = o;
       return (
         <Col key={i} xs={12} sm={6} className="my-1 d-flex justify-content-center">
           <Button value={i} className="w-100" onClick={this.add}>{label}</Button>
@@ -142,21 +142,19 @@ class StructureCustomField extends Component {
     });
 
     const buttonGui = choices.map((c, i) => {
-      const {name, label, color, display} = this.options[c];
+      const {color, display} = this.options[c];
       const style = {backgroundColor: color};
       return (
-        <span key={i} className="simple-regex px-2 py-1 mx-1" style={style}>
-          <p className="mb-0">
-            {display + " "}
-            <FontAwesomeIcon icon={faTimes} className="icon-button" onClick={this.deleteCreator(i)} />
-          </p>
-        </span>
+        <div key={i} className="simple-regex px-2 py-1 mx-1" style={style}>
+          {display + " "}
+          <FontAwesomeIcon icon={faTimes} className="icon-button" onClick={this.deleteCreator(i)} />
+        </div>
       );
     });
 
     const body = choices.length > 0 ? (
       <Fragment>
-        <Row className="p-2 my-3 mx-0 simple-regex-container">
+        <Row className="p-2 py-2-5 mx-0 my-3 simple-regex-container">
           {buttonGui}
         </Row>
 

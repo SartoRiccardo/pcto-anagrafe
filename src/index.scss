@@ -165,7 +165,8 @@ svg.big-pencil {
 }
 
 .row.simple-regex-container {
-  overflow-x: auto;
+  display: block;
+  overflow-x: scroll;
   white-space: nowrap;
   flex-wrap: nowrap;
   border: 1px solid #ced4da;
@@ -173,6 +174,7 @@ svg.big-pencil {
 }
 
 .simple-regex {
+  display: inline;
   font-family: "Viga", sans-serif;
   border-radius: 0.40rem;
 }
@@ -227,4 +229,9 @@ input.input-field-invalid {
   @include media-breakpoint-only(sm) {
     column-count: 1;
   }
+}
+
+.py-2-5 {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
 }

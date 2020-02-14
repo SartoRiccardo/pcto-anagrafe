@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 // Custom Components
 import StructureEnumField from "./StructureEnumField";
 import FieldTypeSelect from "../forms/inline/FieldTypeSelect";
-import RegExpModifier from "../forms/inline/RegExpModifier";
 import GenericModifier from "../forms/inline/GenericModifier";
 import {
   StructureEmailField,
