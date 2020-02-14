@@ -158,7 +158,7 @@ class EditStructure extends Component {
     let idIsNegative = true;
     while(ret.length > 0 && idIsNegative) {
       const id = ret[0][0] !== null ? ret[0][0].id : ret[0][1].id;
-      if(id > 0) {
+      if(id >= 0) {
         idIsNegative = false;
         continue;
       }
