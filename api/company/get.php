@@ -12,7 +12,9 @@ function getCompanyById($id) {
           WHERE id = ?";
   $stmt = $dbc->prepare($q);
   $stmt->execute(array($id));
-  if(!($res = $stmt->fetch())) return null;
+  if(!($res = $stmt->fetch())) {
+    return null;
+  }
   $name = utf8_encode($res["name"]);
 
   $q = "SELECT ft.id, ft.name, ft.regex, cf.value
@@ -57,9 +59,9 @@ function getCompaniesBySearch($search, $page=-1) {
   foreach ($uniqueFields as $uf) {
     $newParams = array();
     foreach ($uf["values"] as $v) {
-      if($uf["id"] == 0) {
+      if($uf["id"] == 0 && strlen($v) > 0) {
         array_push($newParams, "%". $v ."%");
-      } else {
+      } else if(strlen($v) > 0) {
         array_push($newParams, $uf["id"]);
         array_push($newParams, "%". $v ."%");
       }
@@ -103,9 +105,9 @@ function getCompanyNumberBySearch($search) {
   foreach ($uniqueFields as $uf) {
     $newParams = array();
     foreach ($uf["values"] as $v) {
-      if($uf["id"] == 0) {
+      if($uf["id"] == 0 && strlen($v) > 0) {
         array_push($newParams, "%". $v ."%");
-      } else {
+      } else if(strlen($v) > 0) {
         array_push($newParams, $uf["id"]);
         array_push($newParams, "%". $v ."%");
       }
@@ -136,37 +138,45 @@ function generateSearchQuery($search) {
     if($uf["id"] == 0) {  // Name attribute is treated specially
       $selectors = array();
       for($j=0; $j < count($uf["values"]); $j++) {
-        array_push($selectors, "c.name LIKE ?");
+        if(strlen($uf["values"][$j]) > 0) {
+          array_push($selectors, "c.name LIKE ?");
+        }
       }
       $condition = join(" OR ", $selectors);
+      $condition = strlen($condition) == 0 ? $condition : "WHERE $condition";
 
       $q = $i == 0 ? ("
         SELECT c.id AS company
           FROM Company c
-          WHERE $condition
+          $condition
       ") : ("
         SELECT c.id AS company
           FROM Company c JOIN ($q) prev
             ON c.id = prev.company
-          WHERE $condition
+          $condition
       ");
     }
     else {
       $selectors = array();
       for($j=0; $j < count($uf["values"]); $j++) {
-        array_push($selectors, "(c.field = ? AND c.value LIKE ?)");
+        if(strlen($uf["values"][$j]) > 0) {
+          array_push($selectors, "(c.field = ? AND c.value LIKE ?)");
+        }
       }
       $condition = join(" OR ", $selectors);
+      $condition = strlen($condition) == 0 ? $condition : "WHERE $condition";
 
       $q = $i == 0 ? ("
         SELECT c.company
           FROM CompanyField c
-          WHERE $condition
+          $condition
+          GROUP BY (c.company)
       ") : ("
         SELECT c.company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
-          WHERE $condition
+          $condition
+          GROUP BY (c.company)
       ");
     }
   }
@@ -202,5 +212,71 @@ function groupFields($search) {
   }
 
   return $uniqueFields;
+}
+
+/**
+ * Checks if a field with the specified ID exists.
+ *
+ * @param  int     $id  The ID of the field to check.
+ * @return boolean
+ */
+function fieldExists($id) {
+  global $dbc;
+
+  $q = "SELECT *
+          FROM Field
+          WHERE id = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->execute();
+
+  return $stmt->fetch() != false;
+}
+
+/**
+ * Checks if a company has a certain field set.
+ *
+ * @param  int     $companyId  The ID of the company to check.
+ * @param  int     $fieldId    The ID of the field to check.
+ * @return boolean
+ */
+function companyHasField($companyId, $fieldId) {
+  global $dbc;
+
+  $q = "SELECT *
+          FROM CompanyField
+          WHERE company = :companyId
+            AND field = :fieldId";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":companyId", $companyId, PDO::PARAM_INT);
+  $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
+  $stmt->execute();
+
+  return $stmt->fetch() != false;
+}
+
+/**
+ * Checks if a field value is valid.
+ *
+ * @param  int     $id     The field's ID.
+ * @param  string  $value  The value of the field.
+ * @return boolean
+ */
+function fieldIsValid($id, $value) {
+  global $dbc;
+
+  $q = "SELECT regex
+          FROM Field
+          WHERE id = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id);
+  $stmt->execute();
+
+  if(!($ret = $stmt->fetch())) {
+    return false;
+  }
+
+  $reg = $ret["regex"];
+  return preg_match("/^$reg$/", $value);
 }
 ?>

@@ -3,6 +3,9 @@ include "../config/authconfig.php";
 include "../database/database.php";
 include "../auth/privileges.php";
 include "./get.php";
+include "./post.php";
+include "./put.php";
+include "./delete.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header('Content-Type: application/json');
@@ -40,6 +43,11 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
+    if(isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"])) {
+      echo json_encode(
+        addField($_POST["target"], $_POST["name"], $_POST["regex"])
+      );
+    }
     break;
 
   case "PUT":
@@ -51,6 +59,11 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
+    if(isset($_POST["id"]) && isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"]) && is_numeric($_POST["id"])) {
+      echo json_encode(
+        updateField(intval($_POST["id"]), $_POST["target"], $_POST["name"], $_POST["regex"])
+      );
+    }
     break;
 
   case "DELETE":
@@ -60,6 +73,12 @@ switch ($_POST["REQUEST_METHOD"]) {
         "message" => "The given user does not have MANAGE_STRUCTURE permissions."
       ));
       die();
+    }
+
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
+      echo json_encode(
+        deleteField(intval($_POST["id"]))
+      );
     }
 
     break;
