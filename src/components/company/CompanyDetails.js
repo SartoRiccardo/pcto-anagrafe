@@ -7,7 +7,7 @@ import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 // Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
-import FieldModifier from "../forms/FieldModifier";
+import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDelete from "../interactive/ConfirmDelete";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -65,29 +65,58 @@ class CompanyDetails extends Component {
   }
 
   modifyFinishHandler = (evt) => {
+    const {modifying} = this.state;
+    const {fields, id, name} = this.props.company;
+    const {value} = evt;
+
     this.setState({
       modifying: null,
     });
 
-    const {field, value, valid} = evt;
-    if(!valid) {
-      return;
-    }
-
-    const {id} = this.props.company;
-    const {fields} = this.props;
-    if(field.id === 0) {
-      this.props.updateName(id, value);
+    if(modifying === 0) {
+      if(name !== value) {
+        this.props.updateName(id, value);
+      }
     }
     else {
+      let isDifferent = true;
+      let found = false;
       for (let i = 0; i < fields.length; i++) {
-        if(fields[i].id === field.id) {
-          const updatedField = {id: field.id, value};
-          this.props.updateField(id, updatedField);
+        const f = fields[i];
+        found = found || f.id === modifying;
+        if(f.id === modifying && f.value === value) {
+          isDifferent = false;
           break;
         }
       }
+
+      if(isDifferent && (found || value.length > 0)) {
+        const updatedField = {id: modifying, value};
+        this.props.updateField(id, updatedField);
+      }
     }
+  }
+
+  modifyValidator = (value) => {
+    const {modifying} = this.state;
+    const {fields} = this.props;
+
+    if(value.length === 0) {
+      return modifying !== 0;
+    }
+
+    for(let i = 0; i < fields.length; i++) {
+      if(fields[i].id === modifying) {
+        try {
+          let reg = new RegExp("^" + fields[i].regex + "$");
+          return reg.test(value);
+        } catch(e) {
+          return false;
+        }
+      }
+    }
+
+    return false;
   }
 
   startDelete = (evt) => {
@@ -148,7 +177,13 @@ class CompanyDetails extends Component {
       let cellContent = null;
       if(this.state.modifying === f.id && canModify) {
         const value = match ? match.value : "";
-        cellContent = <FieldModifier value={value} field={f} onFinish={this.modifyFinishHandler} />;
+        cellContent = (
+          <GenericModifier
+            value={value}
+            validator={this.modifyValidator}
+            onFinish={this.modifyFinishHandler}
+          />
+        );
       }
       else {
         const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
@@ -184,7 +219,11 @@ class CompanyDetails extends Component {
     });
 
     const title = this.state.modifying === 0 && canModify ? (
-      <FieldModifier value={company.name} field={nameField} onFinish={this.modifyFinishHandler} />
+      <GenericModifier
+        value={company.name}
+        validator={this.modifyValidator}
+        onFinish={this.modifyFinishHandler}
+      />
     ) : (
       <h1 className="text-center" xs={12} md="auto">
         {company.name + " "}
