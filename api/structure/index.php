@@ -29,9 +29,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["target"])) {
-      echo json_encode(getStructureOf($_POST["target"]));
-    }
+    echo json_encode(getStructure());
     break;
 
   case "POST":
@@ -43,9 +41,9 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"])) {
+    if(isset($_POST["name"]) && isset($_POST["regex"])) {
       echo json_encode(
-        addField($_POST["target"], $_POST["name"], $_POST["regex"])
+        addField($_POST["name"], $_POST["regex"])
       );
     }
     break;
@@ -59,9 +57,9 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    if(isset($_POST["id"]) && isset($_POST["target"]) && isset($_POST["name"]) && isset($_POST["regex"]) && is_numeric($_POST["id"])) {
+    if(isset($_POST["id"]) && isset($_POST["name"]) && isset($_POST["regex"]) && is_numeric($_POST["id"])) {
       echo json_encode(
-        updateField(intval($_POST["id"]), $_POST["target"], $_POST["name"], $_POST["regex"])
+        updateField(intval($_POST["id"]), $_POST["name"], $_POST["regex"])
       );
     }
     break;
