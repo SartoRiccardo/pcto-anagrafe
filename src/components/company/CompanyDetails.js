@@ -159,10 +159,8 @@ class CompanyDetails extends Component {
       }
     }
 
-    let nameField = null;
     const data = fields.map((f) => {
       if(f.id === 0) {
-        nameField = f;
         return null;
       }
 
@@ -259,7 +257,7 @@ class CompanyDetails extends Component {
 
         <Row>
           <Col>
-            <Table responsive striped bordered size="sm">
+            <Table responsive borderless striped>
               <tbody>
                 {data}
               </tbody>
