@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from "react";
+import {Link} from "react-router-dom";
 // HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -18,6 +19,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Button from "react-bootstrap/Button";
 
 /**
  * A table showing all of a company's information.
@@ -129,6 +131,11 @@ class CompanyDetails extends Component {
     this.setState({
       deleteStarted: false,
     });
+  }
+
+  redirectToProjects = () => {
+    const link = "/company/" + this.props.company.id + "/projects";
+    this.props.history.push(link);
   }
 
   render() {
@@ -262,6 +269,12 @@ class CompanyDetails extends Component {
                 {data}
               </tbody>
             </Table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <Button onClick={this.redirectToProjects}>Hyooo</Button>
           </Col>
         </Row>
       </Container>
