@@ -235,6 +235,13 @@ class EditStructure extends Component {
     return (
       <Container>
         <Row>
+          <Col className="text-center mt-3">
+            <h1>Struttura dei dati</h1>
+            <p className="lead">Qui puoi modificare o vedere come i dati sono salvati.</p>
+          </Col>
+        </Row>
+
+        <Row>
           {list}
           <Col xs={12} md={12/2} lg={12/3}>
             <AddField id={lastTempId} onSubmit={this.addTempField} />

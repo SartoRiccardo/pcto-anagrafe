@@ -93,6 +93,14 @@ input:focus, select:focus {
   background-color: #fff8e1 !important;
 }
 
+.results-table tbody tr td {
+  border-top: none;
+}
+
+.results-table tbody tr:not(:last-child) td {
+  border-bottom: none;
+}
+
 .mobile-collapse-link {
   color: rgba(255, 255, 255, 0.5) !important;
 }
