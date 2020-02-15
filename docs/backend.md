@@ -28,8 +28,8 @@ Gestisce tutto quello che riguarda le tabelle `Company` e `CompanyField`.
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
 | `id` | `int` | L'ID della tabella da modificare. |
-| `name` | `string` | Il nome dell'azienda da modificare. |
-| `fields` | `Array( { id:int, value:string } )` | I campi posseduti dall'azienda. |
+| `name` | `string` | Il nuovo nome dell'azienda. |
+| `field` | `{ id:int, value:string }` | Il campo modificato dell'azienda. |
 
 ### DELETE
 
@@ -51,7 +51,6 @@ Gestisce tutto quello che riguarda la tabella `Field`.
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `target` | `string` | A che entità appartiene il campo. |
 | `name` | `string` | Il nome del campo. |
 | `regex` | `string` | La sintassi valida che il campo può accettare. |
 
@@ -60,7 +59,6 @@ Gestisce tutto quello che riguarda la tabella `Field`.
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
 | `id` | `int` | L'ID del campo da modificare. |
-| `target` | `string` | A che entità appartiene il campo. |
 | `name` | `string` | Il nome del campo. |
 | `regex` | `string` | La sintassi valida che il campo può accettare. |
 
@@ -72,30 +70,28 @@ Gestisce tutto quello che riguarda la tabella `Field`.
 
 ## /api/activity
 
-Gestisce tutto quello che riguarda le tabelle `Activity` e `ActivityField`.
+Gestisce tutto quello che riguarda la tabella `Activity`.
 
 ### GET
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
 | `id`  | `int` | L'ID dell'attività da cercare. |
-| `search` | `Array( { id:int, value:string } )` | I campi di ricerca, in caso `id` non sia specificato. |
-| `page` | `int` | La pagina di ricerca corrente. Ogni pagina contiene 50 risultati. Opzionale. |
 
 ### POST
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `company` | `int` | L'ID dell'azienda che ha organizzato l'attività. |
-| `fields` | `Array( { id:int, value:string } )` | I campi dell'attività. |
+| `name` | `string` | Il nome della nuova attività. |
+| `description` | `string` | La descrizione della nuova attività. |
 
 ### PUT
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `id` | `int` | L'ID dell'attività da modificare. |
-| `company` | `int` | L'ID dell'azienda che ha organizato l'attività. |
-| `fields` | `Array( { id:int, value:string } )` | I campi dell'attività. |
+| `id`  | `int` | L'ID dell'attività da modificare. |
+| `name` | `string` | Il nuovo nome della nuova attività. |
+| `description` | `string` | La nuova descrizione dell'attività. |
 
 ### DELETE
 
@@ -125,33 +121,25 @@ Tutta l'informazione viene già spedita dal campo `auth`.
 
 ## /api/internship
 
-Gestisce tutto quello che riguarda le tabelle `Internship`.
+Gestisce tutto quello che riguarda la tabella `Internship`.
 
 ### GET
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'azienda da cercare. |
-| `search` | `Array( { id:int, value:string } )` | I campi di ricerca, in caso `id` non sia specificato. |
-| `page` | `int` | La pagina di ricerca corrente. Ogni pagina contiene 50 risultati. Opzionale. |
+| `id` | `int` | L'ID dell'esperienza. |
 
-### POST
+### POST & PUT
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `student` | `string` | Il nome dello studente che ha svolto l'attività. |
-| `activity` | `int` | L'ID dell'attività svolta. |
-
-### PUT
-
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `student` | `string` | Il nome dello studente che ha svolto l'attività. |
-| `activity` | `int` | L'ID dell'attività svolta. |
+| `company` | `int` | L'ID dell'azienda. |
+| `activity` | `int` | L'ID dell'attività. |
+| `student` | `string` | Lo studente che sta svolgendo l'attività. |
+| `year` | `int` | L'anno in cui sta svolgendo l'attività. |
 
 ### DELETE
 
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
-| `student` | `string` | Il nome dello studente che ha svolto l'attività da eliminare. |
-| `activity` | `int` | L'ID dell'attività. |
+| `id` | `int` | L'ID dell'esperienza. |
