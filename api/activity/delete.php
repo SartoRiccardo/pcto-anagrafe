@@ -1,20 +1,20 @@
 <?php
 /**
- * Deletes a company
- * @param  int $id  The company's ID.
- * @return array    A message and if there were any errors.
+ * Deletes an activity.
+ * @param  int   $id  The activity's ID.
+ * @return array      A message and if there were any errors.
  */
-function deleteCompanyById($id) {
+function deleteActivity($id) {
   global $dbc;
 
-  if(getCompanyById($id) == null) {
+  if(!getActivity($id)) {
     return array(
       "error"=>true,
       "message"=>"L'azienda non esiste."
     );
   }
 
-  $q = "DELETE FROM Company
+  $q = "DELETE FROM Activity
           WHERE id = :id";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
