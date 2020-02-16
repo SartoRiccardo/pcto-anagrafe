@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from "react";
-import {Link} from "react-router-dom";
 // HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
