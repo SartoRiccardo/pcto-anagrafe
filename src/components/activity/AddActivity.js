@@ -44,7 +44,7 @@ class AddActivity extends Component {
   render() {
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Form.Row className="d-flex justify-content-center">
+        <Form.Row className="d-flex justify-content-center my-2">
           <Col md={6}>
             <Form.Control
               type="text"
@@ -56,7 +56,7 @@ class AddActivity extends Component {
           </Col>
         </Form.Row>
 
-        <Form.Row className="d-flex justify-content-center">
+        <Form.Row className="d-flex justify-content-center my-3">
           <Col md={6}>
             <Form.Control
               type="text"

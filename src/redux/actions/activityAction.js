@@ -135,3 +135,34 @@ export function addActivity(name, description) {
     });
   }
 }
+
+/**
+ * Deletes an activity.
+ *
+ * Fires ACTIVITYR_DELETE on success.
+ *
+ * @param {int} id  The activity's id.
+ */
+export function deleteActivity(id) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("user", getToken());
+    payload.set("REQUEST_METHOD", "DELETE");
+    payload.set("id", id);
+
+    axios.post(apiUrl("/api/activity"), payload)
+    .then((res) => {
+      if(res.status === 200 && !res.data.error) {
+        dispatch({type:"ACTIVITYR_DELETE", id});
+      }
+    })
+    .catch((e) => {
+
+    });
+  }
+}

@@ -1,10 +1,11 @@
 import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
-import {loadActivities, changeDescription, changeName} from "../../redux/actions/activityAction";
+import {loadActivities, changeDescription, changeName, deleteActivity} from "../../redux/actions/activityAction";
 // Custom components
 import GenericModifier from "../forms/inline/GenericModifier";
 import AddActivity from "./AddActivity";
+import ConfirmDeleteActivity from "./ConfirmDeleteActivity";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpinner, faTrashAlt, faPen} from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,7 @@ class ShowActivities extends Component {
         id: null,
         type: null,
       },
+      deleting: null,
     };
   }
 
@@ -66,19 +68,34 @@ class ShowActivities extends Component {
     });
   }
 
-  delete = (id) => {
-    console.log(id);
+  startDelete = (activity) => {
+    this.setState({
+      deleting: activity,
+    });
   }
 
-  createDelete = (id) => {
+  createDelete = (activity) => {
     return () => {
-      this.delete(id);
+      this.startDelete(activity);
     };
+  }
+
+  cancelDelete = () => {
+    this.setState({
+      deleting: null,
+    });
+  }
+
+  confirmDelete = () => {
+    this.props.deleteActivity(this.state.deleting.id);
+    this.setState({
+      deleting: null,
+    });
   }
 
   render() {
     const {initialized, activities} = this.props;
-    const {modifying} = this.state;
+    const {modifying, deleting} = this.state;
 
     if(!initialized) {
       return (
@@ -114,7 +131,7 @@ class ShowActivities extends Component {
             <FontAwesomeIcon
               icon={faTrashAlt}
               className="icon-button"
-              onClick={this.createDelete(a.id)}
+              onClick={this.createDelete(a)}
             />
           </td>
         );
@@ -180,7 +197,19 @@ class ShowActivities extends Component {
       <Container>
         {body}
 
+        <Row className="text-center my-3">
+          <Col>
+            <h3>Aggiungi un'attività</h3>
+          </Col>
+        </Row>
         <AddActivity />
+
+        <ConfirmDeleteActivity
+          show={deleting != null}
+          name={deleting ? deleting.name : null}
+          onCancel={this.cancelDelete}
+          onConfirm={this.confirmDelete}
+        />
       </Container>
     );
   }
@@ -203,6 +232,9 @@ function mapDispatchToProps(dispatch) {
     changeName: (id, name) => {
       dispatch(changeName(id, name));
     },
+    deleteActivity: (id) => {
+      dispatch(deleteActivity(id));
+    }
   };
 }
 

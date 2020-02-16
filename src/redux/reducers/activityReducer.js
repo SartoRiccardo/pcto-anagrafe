@@ -47,6 +47,14 @@ function activityReducer(state=null, action) {
         activities: [...state.activities, action.activity],
       };
 
+    case "ACTIVITYR_DELETE":
+      return {
+        ...state,
+        activities: state.activities.filter((a) => {
+          return a.id !== action.id;
+        }),
+      };
+
     default:
       return state;
   }
