@@ -7,8 +7,8 @@ import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 // Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
-import FieldModifier from "../forms/FieldModifier";
-import ConfirmDelete from "../interactive/ConfirmDelete";
+import GenericModifier from "../forms/inline/GenericModifier";
+import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Button from "react-bootstrap/Button";
 
 /**
  * A table showing all of a company's information.
@@ -65,29 +66,58 @@ class CompanyDetails extends Component {
   }
 
   modifyFinishHandler = (evt) => {
+    const {modifying} = this.state;
+    const {fields, id, name} = this.props.company;
+    const {value} = evt;
+
     this.setState({
       modifying: null,
     });
 
-    const {field, value, valid} = evt;
-    if(!valid) {
-      return;
-    }
-
-    const {id} = this.props.company;
-    const {fields} = this.props;
-    if(field.id === 0) {
-      this.props.updateName(id, value);
+    if(modifying === 0) {
+      if(name !== value) {
+        this.props.updateName(id, value);
+      }
     }
     else {
+      let isDifferent = true;
+      let found = false;
       for (let i = 0; i < fields.length; i++) {
-        if(fields[i].id === field.id) {
-          const updatedField = {id: field.id, value};
-          this.props.updateField(id, updatedField);
+        const f = fields[i];
+        found = found || f.id === modifying;
+        if(f.id === modifying && f.value === value) {
+          isDifferent = false;
           break;
         }
       }
+
+      if(isDifferent && (found || value.length > 0)) {
+        const updatedField = {id: modifying, value};
+        this.props.updateField(id, updatedField);
+      }
     }
+  }
+
+  modifyValidator = (value) => {
+    const {modifying} = this.state;
+    const {fields} = this.props;
+
+    if(value.length === 0) {
+      return modifying !== 0;
+    }
+
+    for(let i = 0; i < fields.length; i++) {
+      if(fields[i].id === modifying) {
+        try {
+          let reg = new RegExp("^" + fields[i].regex + "$");
+          return reg.test(value);
+        } catch(e) {
+          return false;
+        }
+      }
+    }
+
+    return false;
   }
 
   startDelete = (evt) => {
@@ -100,6 +130,11 @@ class CompanyDetails extends Component {
     this.setState({
       deleteStarted: false,
     });
+  }
+
+  redirectToProjects = () => {
+    const link = "/company/" + this.props.company.id + "/projects";
+    this.props.history.push(link);
   }
 
   render() {
@@ -130,10 +165,8 @@ class CompanyDetails extends Component {
       }
     }
 
-    let nameField = null;
     const data = fields.map((f) => {
       if(f.id === 0) {
-        nameField = f;
         return null;
       }
 
@@ -148,7 +181,13 @@ class CompanyDetails extends Component {
       let cellContent = null;
       if(this.state.modifying === f.id && canModify) {
         const value = match ? match.value : "";
-        cellContent = <FieldModifier value={value} field={f} onFinish={this.modifyFinishHandler} />;
+        cellContent = (
+          <GenericModifier
+            value={value}
+            validator={this.modifyValidator}
+            onFinish={this.modifyFinishHandler}
+          />
+        );
       }
       else {
         const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
@@ -184,7 +223,11 @@ class CompanyDetails extends Component {
     });
 
     const title = this.state.modifying === 0 && canModify ? (
-      <FieldModifier value={company.name} field={nameField} onFinish={this.modifyFinishHandler} />
+      <GenericModifier
+        value={company.name}
+        validator={this.modifyValidator}
+        onFinish={this.modifyFinishHandler}
+      />
     ) : (
       <h1 className="text-center" xs={12} md="auto">
         {company.name + " "}
@@ -199,7 +242,11 @@ class CompanyDetails extends Component {
 
     return(
       <Container>
-        <ConfirmDelete show={this.state.deleteStarted} company={company} onCancel={this.cancelDelete} />
+        <ConfirmDeleteCompany
+          show={this.state.deleteStarted}
+          company={company}
+          onCancel={this.cancelDelete}
+        />
 
         <Row className="my-3 d-flex justify-content-center">
           <Col className="text-center text-md-left" xs={12} md>
@@ -220,11 +267,17 @@ class CompanyDetails extends Component {
 
         <Row>
           <Col>
-            <Table responsive striped bordered size="sm">
+            <Table responsive borderless striped>
               <tbody>
                 {data}
               </tbody>
             </Table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <Button onClick={this.redirectToProjects}>Hyooo</Button>
           </Col>
         </Row>
       </Container>

@@ -25,6 +25,7 @@ import Collapse from "react-bootstrap/Collapse";
  * @author Riccardo Sartori
  *
  * @param {Field} props.field  The field's initial state.
+ * @param {} props.original  ???
  */
 class FieldCard extends Component {
   constructor(props) {
@@ -135,6 +136,20 @@ class FieldCard extends Component {
     }
   }
 
+  hardRestore = (evt) => {
+    const {original} = this.props;
+    if(!original) {
+      return;
+    }
+
+    this.setState({
+      fieldType: this.defaultType,
+      field: original,
+    }, () => {
+      this.notifyChange();
+    });
+  }
+
   expandField = () => {
     this.setState({
       showing: true,
@@ -157,8 +172,10 @@ class FieldCard extends Component {
     const choiceNames = this.choices.map((o) => {
       return o.fieldTypeName;
     });
+
+    const isNew = this.props.field && this.props.original === null
     const hasBeenModified = (
-      (this.props.field && this.props.original === null)
+      isNew
       || this.defaultType !== this.state.fieldType
       || !(this.state.name === field.name
       && this.state[StructureField].regex === field.regex)
@@ -168,7 +185,7 @@ class FieldCard extends Component {
       <Collapse in={showing}>
         <div>
           <Card.Body>
-            <FieldTypeSelect onChange={this.updateFieldType} default={fieldType} options={choiceNames} />
+            <FieldTypeSelect onChange={this.updateFieldType} value={fieldType} options={choiceNames} />
             <hr />
 
             {cardBody}
@@ -203,7 +220,10 @@ class FieldCard extends Component {
           {caret}
           {name}
           <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
-          <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.deleteSelf} />
+          <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.deleteSelf} />
+          {!isNew && hasBeenModified
+            ? <FontAwesomeIcon icon={faUndo} className="icon-button" onClick={this.hardRestore} />
+            : null}
         </Fragment>
       );
     }

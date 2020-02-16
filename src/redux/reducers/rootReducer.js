@@ -4,6 +4,7 @@ import companyReducer from "./companyReducer";
 import authReducer from "./authReducer";
 import savedReducer from "./savedReducer";
 import changeCompanyReducer from "./changeCompanyReducer";
+import activityReducer from "./activityReducer";
 import {combineReducers} from "redux";
 
 /**
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   saved: savedReducer,
   changeCompany: changeCompanyReducer,
+  activity: activityReducer,
 });
 
 export default rootReducer;

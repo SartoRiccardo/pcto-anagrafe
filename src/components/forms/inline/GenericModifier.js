@@ -52,7 +52,7 @@ class GenericModifier extends Component {
 
   handleKeyPress = (evt) => {
     if(evt.key === "Escape") {
-      this.cancel();
+      this.cancel(evt);
     }
   }
 

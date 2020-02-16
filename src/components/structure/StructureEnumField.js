@@ -166,7 +166,7 @@ class StructureEnumField extends Component {
     }
     else {
       bodyContent = (
-        <p className="lead text-center">Aggiungi</p>
+        <p className="text-center">Nessun valore</p>
       )
     }
 

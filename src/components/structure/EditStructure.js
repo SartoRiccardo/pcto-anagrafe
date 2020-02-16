@@ -203,7 +203,7 @@ class EditStructure extends Component {
     if(!initialized || dumping) {
       return (
         <Container className="d-flex justify-content-center">
-          <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" />
+          <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" pulse />
         </Container>
       );
     }
@@ -234,6 +234,13 @@ class EditStructure extends Component {
 
     return (
       <Container>
+        <Row>
+          <Col className="text-center mt-3">
+            <h1>Struttura dei dati</h1>
+            <p className="lead">Qui puoi modificare o vedere come i dati sono salvati.</p>
+          </Col>
+        </Row>
+
         <Row>
           {list}
           <Col xs={12} md={12/2} lg={12/3}>

@@ -12,7 +12,6 @@ export function updateField(field) {
     payload.set("user", getToken());
     payload.set("id", field.id);
     payload.set("name", field.name);
-    payload.set("target", "COMPANY");
     payload.set("regex", field.regex);
 
     axios.post(apiUrl("/api/structure"), payload)
@@ -59,7 +58,6 @@ export function createField(field) {
     payload.set("user", getToken());
     payload.set("id", field.id);
     payload.set("name", field.name);
-    payload.set("target", "COMPANY");
     payload.set("regex", field.regex);
 
     axios.post(apiUrl("/api/structure"), payload)
@@ -91,7 +89,6 @@ export function reloadStructure() {
 
     let payload = new FormData();
     payload.set("user", getToken());
-    payload.set("target", "COMPANY");
     payload.set("REQUEST_METHOD", "GET");
 
     axios.post(apiUrl("/api/structure"), payload)

@@ -56,7 +56,7 @@ function CompanyResults(props) {
     });
 
     table = (
-      <Table responsive striped bordered hover>
+      <Table responsive striped bordered hover className="results-table">
         <thead>
           <tr>
             <th>Nome</th>

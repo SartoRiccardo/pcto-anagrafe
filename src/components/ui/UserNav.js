@@ -36,10 +36,11 @@ class UserNav extends Component {
   render() {
     const span = 4;
     const links = [
-      {key:0, privilege:"BASE",             path:"/search",    label:"Cerca"},
-      {key:1, privilege:"BASE",             path:"/saved",     label:"Salvati"},
-      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure", label:"Struttura"},
-      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",       label:"Aggiungi"},
+      {key:0, privilege:"BASE",             path:"/search",     label:"Cerca"},
+      {key:1, privilege:"BASE",             path:"/saved",      label:"Salvati"},
+      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura"},
+      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi"},
+      {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività"},
     ];
 
     const mdNavLinks = links.map((l) => {
