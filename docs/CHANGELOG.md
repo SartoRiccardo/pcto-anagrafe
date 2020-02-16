@@ -1,3 +1,8 @@
+# 2020-02-16: 0.6.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/86df69d73674b86ecbc4893f0ed68553ae4548a6) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/4a5c813bf1d1aec8f131313c5819443a9d310a98)
+
+## Aggiunte
++ È possibile gestire i tipi di esperienza che si faranno in azienda.
+
 # 2020-02-14: 0.5.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/266f067e614442871eeb58fb492e4491801618d8) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/15771fc732f4e8939660c28d206a17ba73482a29)
 
 ## Aggiunte
@@ -36,11 +41,9 @@
 
 ## Aggiunte
 + L'applicazione permette di salvare delle aziende tra i preferiti.
-+ GET, POST e DELETE di /api/saved
 
 # 2020-02-04: 0.1.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/af9655e353c562d87c4bec9b37f7b0d773633e52) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/f34a4e39e0d625f77c9fea0440ac497d920a445b)
 
 ## Aggiunte
 + L'applicazione permette di cercare aziende dopo essersi autenticati
-+ L'API offre la possibilità di accedere ai dati sulle aziende e come sono salvate in sola lettura
 + Possibilità di cercare aziende per più parametri
