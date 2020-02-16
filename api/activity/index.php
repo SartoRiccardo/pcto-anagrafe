@@ -29,53 +29,69 @@ switch ($_POST["REQUEST_METHOD"]) {
       die();
     }
 
-    echo json_encode(getStructure());
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
+      echo json_encode(
+        getActivity(intval($_POST["id"]))
+      );
+    }
+    else {
+      echo json_encode(
+        getActivities()
+      );
+    }
+
     break;
 
   case "POST":
-    if(!hasPermission($user, "MANAGE_STRUCTURE")) {
+    if(!hasPermission($user, "MANAGE_COMPANY")) {
       echo json_encode(array(
         "error" => true,
-        "message" => "The given user does not have MANAGE_STRUCTURE permissions."
+        "message" => "The given user does not have MANAGE_COMPANY permissions."
       ));
       die();
     }
 
-    if(isset($_POST["name"]) && isset($_POST["regex"])) {
+    if(isset($_POST["name"]) && isset($_POST["description"])) {
       echo json_encode(
-        addField($_POST["name"], $_POST["regex"])
+        addActivity($_POST["name"], $_POST["description"])
       );
     }
+
     break;
 
   case "PUT":
-    if(!hasPermission($user, "MANAGE_STRUCTURE")) {
+    if(!hasPermission($user, "MANAGE_COMPANY")) {
       echo json_encode(array(
         "error" => true,
-        "message" => "The given user does not have MANAGE_STRUCTURE permissions."
+        "message" => "The given user does not have MANAGE_COMPANY permissions."
       ));
       die();
     }
 
-    if(isset($_POST["id"]) && isset($_POST["name"]) && isset($_POST["regex"]) && is_numeric($_POST["id"])) {
-      echo json_encode(
-        updateField(intval($_POST["id"]), $_POST["name"], $_POST["regex"])
-      );
+    if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
+      $name = isset($_POST["name"]) ? $_POST["name"] : null;
+      $description = isset($_POST["description"]) ? $_POST["description"] : null;
+      if($name != null || $description != null) {
+        echo json_encode(
+          changeField(intval($_POST["id"]), $name, $description)
+        );
+      }
     }
+
     break;
 
   case "DELETE":
-    if(!hasPermission($user, "MANAGE_STRUCTURE")) {
+    if(!hasPermission($user, "MANAGE_COMPANY")) {
       echo json_encode(array(
         "error" => true,
-        "message" => "The given user does not have MANAGE_STRUCTURE permissions."
+        "message" => "The given user does not have MANAGE_COMPANY permissions."
       ));
       die();
     }
 
     if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       echo json_encode(
-        deleteField(intval($_POST["id"]))
+        deleteActivity(intval($_POST["id"]))
       );
     }
 

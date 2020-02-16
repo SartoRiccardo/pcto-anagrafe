@@ -1,18 +1,13 @@
 <?php
 /**
  * Gets the structure of the given entity.
- * @param  string  $target  The target entity.
+ *
  * @return Field[]          The table's structure.
  */
-function getStructureOf($target) {
+function getStructure() {
   global $dbc;
 
-  $q = "SELECT *
-          FROM Field
-          WHERE target LIKE :target";
-  $stmt = $dbc->prepare($q);
-  $targetLike = "%$target%";
-  $stmt->bindParam(":target", $targetLike, PDO::PARAM_STR);
+  $stmt = $dbc->prepare("SELECT * FROM Field");
   $stmt->execute();
 
   $ret = array();
