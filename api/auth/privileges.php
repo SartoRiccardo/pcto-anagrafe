@@ -4,7 +4,7 @@ function hasPermission($id, $type) {
 
   $q = "SELECT *
           FROM Privilege
-          WHERE id = :id
+          WHERE user = :id
             AND type = :type";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
@@ -19,7 +19,7 @@ function getPrivilegesFor($id) {
 
   $q = "SELECT type
           FROM Privilege
-          WHERE id = :id";
+          WHERE user = :id";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();

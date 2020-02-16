@@ -8,7 +8,7 @@ header("Access-Control-Allow-Origin: $cors");
 header('Content-Type: application/json');
 
 if(isset($_POST["login"]) && isset($_POST["pswd"])) {
-  $res = getStudentId($_POST["login"], $_POST["pswd"]);
+  $res = getStudentData($_POST["login"], $_POST["pswd"]);
   if(is_int($res)) {
     switch($res) {
       case $INVALID_LOGIN:
@@ -38,12 +38,18 @@ if(isset($_POST["login"]) && isset($_POST["pswd"])) {
     $json = array(
       "token"=>intval($id)
     );
-    registerId($id);
+    register(
+      $id,
+      $res->nome,
+      $res->cognome,
+      $res->account_type
+    );
+
     $json["privileges"] = getPrivilegesFor($id);
     echo json_encode($json);
   }
 }
-else if(isset($_POST["token"])) {
+else if(isset($_POST["token"]) && is_numeric($_POST["token"])) {
   $token = intval($_POST["token"]);
   if(isRegistered($token)) {
     $permissions = getPrivilegesFor($token);

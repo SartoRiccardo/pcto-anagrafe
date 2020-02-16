@@ -4,14 +4,18 @@ $CONNECTION_ERR = 2;
 
 /**
  * Gets a student's ID by their credentials.
+ *
  * @param  string $login  The user's username/email/badge.
  * @param  string $pswd   The user's password.
- * @return int            The user's ID.
+ * @return array          The user's Spaggiari data.
  */
-function getStudentId($login, $pswd) {
+function getStudentData($login, $pswd) {
   if($login == "a" && $pswd == "a") {
     return (object) array(
-      "id"=>1
+      "id"=>1,
+      "nome"=>"Easy",
+      "cognome"=>"User",
+      "account_type"=>"S"
     );
   }
 
@@ -35,13 +39,22 @@ function getStudentId($login, $pswd) {
 
 /**
  * Registers an ID to the database and gives it BASE privileges.
+ *
  * @param  int  $id  The user's ID.
- * @return null
  */
-function registerId($id) {
+function register($id, $name, $surname, $status) {
   global $dbc;
 
   if(isRegistered($id)) return;
+
+  $q = "INSERT INTO User
+          VALUES (:id, :name, :surname, :status)";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->bindParam(":name", $name, PDO::PARAM_STR);
+  $stmt->bindParam(":surname", $surname, PDO::PARAM_STR);
+  $stmt->bindParam(":status", $status, PDO::PARAM_STR);
+  $stmt->execute();
 
   $q = "INSERT INTO Privilege
           VALUES (:id, 'BASE')";
@@ -67,12 +80,17 @@ function isRegistered($arg0, $arg1=null) {
     $login = $arg0;
     $pswd = $arg1;
 
-    $id = getStudentId($login, $pswd);
+    $data = getStudentData($login, $pswd);
+    if(isset($data["id"])) {
+      $id = $data["id"];
+    }
   }
-  if($id == null) return false;
+  if($id == null) {
+    return false;
+  }
 
   $q = "SELECT id
-          FROM Privilege
+          FROM User
           WHERE id = :id";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
