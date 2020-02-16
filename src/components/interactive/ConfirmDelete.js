@@ -58,7 +58,7 @@ class ConfirmDelete extends Component {
         </Modal.Body>
         <Modal.Footer>
           {modalButtonsDisabled ? (
-            <FontAwesomeIcon icon={faSpinner} className="d-inline" />
+            <FontAwesomeIcon icon={faSpinner} className="d-inline" pulse />
           ) : null}
           <Button onClick={this.cancelDelete} variant="muted" disabled={modalButtonsDisabled}>Annulla</Button>
           <Button onClick={this.deleteCompany} variant="danger" disabled={modalButtonsDisabled}>Elimina</Button>

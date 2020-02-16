@@ -203,7 +203,7 @@ class EditStructure extends Component {
     if(!initialized || dumping) {
       return (
         <Container className="d-flex justify-content-center">
-          <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" />
+          <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" pulse />
         </Container>
       );
     }
