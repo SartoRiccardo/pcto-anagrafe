@@ -5,7 +5,7 @@ import {loadActivities, changeDescription, changeName, deleteActivity} from "../
 // Custom components
 import GenericModifier from "../forms/inline/GenericModifier";
 import AddActivity from "./AddActivity";
-import ConfirmDeleteActivity from "./ConfirmDeleteActivity";
+import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpinner, faTrashAlt, faPen} from '@fortawesome/free-solid-svg-icons';
@@ -204,7 +204,7 @@ class ShowActivities extends Component {
         </Row>
         <AddActivity />
 
-        <ConfirmDeleteActivity
+        <ConfirmDeleteModal
           show={deleting != null}
           name={deleting ? deleting.name : null}
           onCancel={this.cancelDelete}

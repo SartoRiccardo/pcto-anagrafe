@@ -8,7 +8,7 @@ import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import GenericModifier from "../forms/inline/GenericModifier";
-import ConfirmDelete from "../interactive/ConfirmDelete";
+import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
@@ -242,7 +242,11 @@ class CompanyDetails extends Component {
 
     return(
       <Container>
-        <ConfirmDelete show={this.state.deleteStarted} company={company} onCancel={this.cancelDelete} />
+        <ConfirmDeleteCompany
+          show={this.state.deleteStarted}
+          company={company}
+          onCancel={this.cancelDelete}
+        />
 
         <Row className="my-3 d-flex justify-content-center">
           <Col className="text-center text-md-left" xs={12} md>

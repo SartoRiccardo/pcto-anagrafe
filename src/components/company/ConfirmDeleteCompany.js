@@ -4,6 +4,8 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {resultAction, resetCompany} from "../../redux/actions/resultAction";
 import {deleteCompany} from "../../redux/actions/companyAction";
+// Custom components
+import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal"
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
@@ -24,7 +26,7 @@ import Button from "react-bootstrap/Button";
  * @param {function}            props.resetCompany    Resets the currently selected company.
  * @param {function}            props.reloadSearches  Reloads the current results.
  */
-class ConfirmDelete extends Component {
+class ConfirmDeleteCompany extends Component {
   cancelDelete = () => {
     if(!this.props.deleteStatus.submitted) {
       this.props.onCancel();
@@ -49,21 +51,13 @@ class ConfirmDelete extends Component {
     const {show, deleteStatus, company} = this.props;
     const modalButtonsDisabled = !(show && !deleteStatus.submitted);
     return (
-      <Modal centered show={show} onHide={this.cancelDelete} animation={true}>
-        <Modal.Header>
-          <Modal.Title>Elimina l'azienda</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Sei sicuro di voler eliminare <b>{company.name}</b>?
-        </Modal.Body>
-        <Modal.Footer>
-          {modalButtonsDisabled ? (
-            <FontAwesomeIcon icon={faSpinner} className="d-inline" pulse />
-          ) : null}
-          <Button onClick={this.cancelDelete} variant="muted" disabled={modalButtonsDisabled}>Annulla</Button>
-          <Button onClick={this.deleteCompany} variant="danger" disabled={modalButtonsDisabled}>Elimina</Button>
-        </Modal.Footer>
-      </Modal>
+      <ConfirmDeleteModal
+        show={show}
+        title="Elimina azienda"
+        name={company.name}
+        onCancel={this.cancelDelete}
+        onConfirm={this.deleteCompany}
+      />
     );
   }
 }
@@ -91,4 +85,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ConfirmDelete));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ConfirmDeleteCompany));

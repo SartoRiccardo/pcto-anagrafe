@@ -19,7 +19,7 @@ import Button from "react-bootstrap/Button";
  * @param {function} props.onCancel   Handles the event where the deletion is cancelled.
  * @param {function} props.onConfirm  Handles the event where the deletion is submitted.
  */
-class ConfirmDeleteActivity extends Component {
+class ConfirmDeleteModal extends Component {
   cancelDelete = () => {
     if(this.props.onCancel) {
       const evt = {};
@@ -58,4 +58,4 @@ class ConfirmDeleteActivity extends Component {
   }
 }
 
-export default ConfirmDeleteActivity;
+export default ConfirmDeleteModal;
