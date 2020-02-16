@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {loadActivities, changeDescription, changeName} from "../../redux/actions/activityAction";
 // Custom components
 import GenericModifier from "../forms/inline/GenericModifier";
+import AddActivity from "./AddActivity";
 // Icons
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpinner, faTrashAlt, faPen} from '@fortawesome/free-solid-svg-icons';
@@ -65,6 +66,16 @@ class ShowActivities extends Component {
     });
   }
 
+  delete = (id) => {
+    console.log(id);
+  }
+
+  createDelete = (id) => {
+    return () => {
+      this.delete(id);
+    };
+  }
+
   render() {
     const {initialized, activities} = this.props;
     const {modifying} = this.state;
@@ -100,7 +111,11 @@ class ShowActivities extends Component {
               className="icon-button mx-1"
               onClick={this.createModify(a.id, "NAME")}
             />{" "}
-            <FontAwesomeIcon icon={faTrashAlt} className="icon-button" />
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              className="icon-button"
+              onClick={this.createDelete(a.id)}
+            />
           </td>
         );
         const description = modifying.type === "DESCRIPTION" && modifying.id === a.id ? (
@@ -164,6 +179,8 @@ class ShowActivities extends Component {
     return (
       <Container>
         {body}
+
+        <AddActivity />
       </Container>
     );
   }

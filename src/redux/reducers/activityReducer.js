@@ -41,6 +41,12 @@ function activityReducer(state=null, action) {
         })
       };
 
+    case "ACTIVITYR_ADD":
+      return {
+        ...state,
+        activities: [...state.activities, action.activity],
+      };
+
     default:
       return state;
   }

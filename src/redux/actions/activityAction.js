@@ -40,7 +40,7 @@ export function loadActivities() {
  * @param  {string} name  The activity's name.
  * @param  {string} description  The activity's description.
  */
-function changeActivity(id, name, description){
+function changeActivity(id, name, description) {
   return (dispatch, getState) => {
     if(!getToken()) {
       // Logout
@@ -81,7 +81,7 @@ function changeActivity(id, name, description){
  * @param  {int}    id           The activity's ID.
  * @param  {string} description  The activity's description.
  */
-export function changeDescription(id, description){
+export function changeDescription(id, description) {
   return (dispatch, getState) => {
     dispatch(changeActivity(id, null, description));
   };
@@ -93,8 +93,45 @@ export function changeDescription(id, description){
  * @param  {int}    id           The activity's ID.
  * @param  {string} name  The activity's name.
  */
- export function changeName(id, name){
+export function changeName(id, name) {
    return (dispatch, getState) => {
      dispatch(changeActivity(id, name, null));
    };
  }
+
+/**
+ * Adds an activity.
+ *
+ * Fires ACTIVITYR_ADD on success.
+ *
+ * @param {string} name         The activity's name.
+ * @param {string} description  The activity's description.
+ */
+export function addActivity(name, description) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    let payload = new FormData();
+    payload.set("user", getToken());
+    payload.set("REQUEST_METHOD", "POST");
+    payload.set("name", name);
+    payload.set("description", description);
+
+    axios.post(apiUrl("/api/activity"), payload)
+    .then((res) => {
+      if(res.status === 200 && !res.data.error) {
+        const {id} = res.data
+        dispatch({
+          type:"ACTIVITYR_ADD",
+          activity: {id, name, description}
+        });
+      }
+    })
+    .catch((e) => {
+
+    });
+  }
+}
