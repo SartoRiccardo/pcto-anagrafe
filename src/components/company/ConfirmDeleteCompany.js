@@ -5,10 +5,10 @@ import {connect} from "react-redux";
 import {resultAction, resetCompany} from "../../redux/actions/resultAction";
 import {deleteCompany} from "../../redux/actions/companyAction";
 // Custom components
-import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal"
+import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -65,7 +65,7 @@ class ConfirmDeleteCompany extends Component {
 function mapStateToProps(state) {
   return {
     deleteStatus: state.changeCompany.delete,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {

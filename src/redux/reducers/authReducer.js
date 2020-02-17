@@ -64,7 +64,7 @@ function companyReducer(state=init, action) {
       return {
         ...state,
         loading: true,
-      }
+      };
 
     default:
       return state;

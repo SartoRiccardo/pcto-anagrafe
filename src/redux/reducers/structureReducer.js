@@ -48,7 +48,7 @@ function structureReducer(state=init, action) {
       return {
         ...state,
         dumping: false,
-      }
+      };
 
     case "STRUCTURER_ADD_ACTION":
       return {

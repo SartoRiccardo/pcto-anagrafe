@@ -20,8 +20,8 @@ class FieldTypeSelect extends Component {
   render() {
     const {value} = this.props;
     const options = this.props.options.map((o, i) => {
-      return <option key={i} value={i}>{o}</option>
-    })
+      return <option key={i} value={i}>{o}</option>;
+    });
 
     return (
       <Form>

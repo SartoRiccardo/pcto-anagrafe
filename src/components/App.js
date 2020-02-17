@@ -38,7 +38,9 @@ class App extends Component {
 
   render() {
     const {initialized, privileges, token} = this.props;
-    if(!initialized) return null;
+    if(!initialized) {
+      return null;
+    }
 
     const routes = [
       {privilege: "BASE",             component: <Route key={0} path="/search" component={SearchCompany} />},
@@ -53,11 +55,11 @@ class App extends Component {
 
     let links, nav;
     if(!token) {
-      links = <AnonymousPage />
+      links = <AnonymousPage />;
       nav = null;
     }
     else {
-      const availableRoutes = routes.map(r => {
+      const availableRoutes = routes.map((r) => {
         return privileges.includes(r.privilege) ? r.component : null;
       });
 
@@ -66,7 +68,7 @@ class App extends Component {
           {availableRoutes}
         </Switch>
       );
-      nav = <UserNav privileges={privileges} />
+      nav = <UserNav privileges={privileges} />;
     }
 
     const display = token ? "flex" : "block";

@@ -7,8 +7,8 @@ import GenericModifier from "../forms/inline/GenericModifier";
 import AddActivity from "./AddActivity";
 import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner, faTrashAlt, faPen} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner, faTrashAlt, faPen} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -159,7 +159,7 @@ class ShowActivities extends Component {
             {description}
           </tr>
         );
-      })
+      });
 
       const table = (
         <Table responsive bordered striped className="results-table">
@@ -205,7 +205,7 @@ class ShowActivities extends Component {
         <AddActivity />
 
         <ConfirmDeleteModal
-          show={deleting != null}
+          show={deleting !== null}
           name={deleting ? deleting.name : null}
           onCancel={this.cancelDelete}
           onConfirm={this.confirmDelete}

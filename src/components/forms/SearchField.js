@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMinus} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMinus} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Col from "react-bootstrap/Col";
 import FormControl from "react-bootstrap/FormControl";
@@ -53,7 +53,7 @@ class SearchField extends Component {
       [evt.target.name]: evt.target.value,
     }, () => {
       this.notifyChange();
-    })
+    });
   }
 
   deleteSearchField = (evt) => {
@@ -76,7 +76,7 @@ class SearchField extends Component {
   render() {
     const {field, value} = this.state;
     const {options} = this.props;
-    const optionsUi = options.map(o => {
+    const optionsUi = options.map((o) => {
       return <option key={o.id} value={o.id}>{o.name}</option>;
     });
     return (

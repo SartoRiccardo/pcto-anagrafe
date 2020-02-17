@@ -123,7 +123,7 @@ export function addActivity(name, description) {
     axios.post(apiUrl("/api/activity"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
-        const {id} = res.data
+        const {id} = res.data;
         dispatch({
           type:"ACTIVITYR_ADD",
           activity: {id, name, description}
@@ -164,5 +164,5 @@ export function deleteActivity(id) {
     .catch((e) => {
 
     });
-  }
+  };
 }

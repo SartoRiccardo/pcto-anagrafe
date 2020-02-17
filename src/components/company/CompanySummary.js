@@ -6,8 +6,8 @@ import {setMatchCompany} from "../../redux/actions/resultAction";
 // Custom components
 import SaveStar from "../interactive/SaveStar";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 /**
  * A short table row describing certain company attributes.

@@ -19,7 +19,7 @@ const init = {
   resultsPerPage: 50,
   page: 0,
   initialized: false,
-}
+};
 
 function savedReducer(state=init, action) {
   switch(action.type) {
@@ -42,7 +42,7 @@ function savedReducer(state=init, action) {
     case "SAVEDR_DELETE":
       return {
         ...state,
-        saved: state.saved.filter(s => {
+        saved: state.saved.filter((s) => {
           return s.id !== action.id;
         }),
         totalResults: state.totalResults-1,
@@ -53,7 +53,7 @@ function savedReducer(state=init, action) {
       return {
         ...state,
         initialized: true,
-      }
+      };
 
     case "SAVEDR_RESET":
       return init;

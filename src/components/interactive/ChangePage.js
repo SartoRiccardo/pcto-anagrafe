@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {setPage, increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faAngleLeft as leftArrow, faAngleRight as rightArrow} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faAngleLeft as leftArrow, faAngleRight as rightArrow} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
