@@ -2,8 +2,8 @@ import React, {Fragment} from "react";
 // Custom Components
 import CompanySummary from "./CompanySummary";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";

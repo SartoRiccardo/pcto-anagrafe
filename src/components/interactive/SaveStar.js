@@ -3,9 +3,9 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {saveCompany, deleteSave} from "../../redux/actions/saveAction";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faStar as full} from '@fortawesome/free-solid-svg-icons';
-import {faStar as empty} from '@fortawesome/free-regular-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faStar as full} from "@fortawesome/free-solid-svg-icons";
+import {faStar as empty} from "@fortawesome/free-regular-svg-icons";
 
 /**
  * A star to save companies.
@@ -19,7 +19,7 @@ import {faStar as empty} from '@fortawesome/free-regular-svg-icons';
  * @param {function} props.deleteSave   Unsave the current company.
  */
 class SaveStar extends Component {
-  saveHandler = evt => {
+  saveHandler = (evt) => {
     const {status, saveCompany, deleteSave, company} = this.props;
 
     if(status) {
@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch) {
     deleteSave: (id) => {
       dispatch(deleteSave(id));
     }
-  }
+  };
 }
 
 export default connect(null, mapDispatchToProps)(SaveStar);

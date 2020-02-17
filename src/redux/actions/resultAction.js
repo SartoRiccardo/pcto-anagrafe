@@ -79,7 +79,7 @@ export function resultAction(arg0=null) {
  */
 export function selectCompany(id) {
   return (dispatch, getState) => {
-    if(getToken() == null) {
+    if(getToken() === null) {
       // Logout
       return;
     }
@@ -108,7 +108,7 @@ export function selectCompany(id) {
     .catch((e) => {
 
     });
-  }
+  };
 }
 
 /**

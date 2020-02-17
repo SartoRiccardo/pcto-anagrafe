@@ -2,8 +2,8 @@ import React, {Component, Fragment} from "react";
 // Custom Components
 import GenericModifier from "../forms/inline/GenericModifier";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPen, faTrashAlt, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrashAlt, faPlus} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
@@ -167,7 +167,7 @@ class StructureEnumField extends Component {
     else {
       bodyContent = (
         <p className="text-center">Nessun valore</p>
-      )
+      );
     }
 
     const inputIsValid = this.isValid(this.state.newValue);

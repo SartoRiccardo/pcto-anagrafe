@@ -12,7 +12,7 @@
 const init = {
   match: null,
   error: null,
-}
+};
 
 function companyReducer(state=init, action) {
   switch(action.type) {

@@ -7,8 +7,8 @@ import update from "immutability-helper";
 import FieldCard from "./FieldCard";
 import AddField from "../forms/inline/AddField";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

@@ -24,7 +24,7 @@ const init = {
     payload: {},
     error: "",
   }
-}
+};
 
 function changeCompanyReducer(state=init, action) {
   switch(action.type) {
@@ -67,7 +67,7 @@ function changeCompanyReducer(state=init, action) {
 
     default:
       return state;
-  };
+  }
 }
 
 export default changeCompanyReducer;

@@ -98,7 +98,7 @@ export class StructureWebsiteField extends StructureSimpleField {
         break;
 
       case 2:
-        prefix = "https://www."
+        prefix = "https://www.";
         break;
 
       default:

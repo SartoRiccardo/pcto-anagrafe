@@ -33,7 +33,7 @@ class ShowSaved extends Component {
       totalResults={totalResults}
       resultsPerPage={resultsPerPage}
       reducer="SAVED"
-    />
+    />;
 
     let showContent;
     if(!this.props.initialized) {

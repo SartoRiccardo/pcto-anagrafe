@@ -13,8 +13,8 @@ import {
 } from "./StructureSpecificField";
 import StructureCustomField from "./StructureCustomField";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPen, faTrashAlt, faUndo, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrashAlt, faUndo, faCaretDown, faCaretUp} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
@@ -173,7 +173,7 @@ class FieldCard extends Component {
       return o.fieldTypeName;
     });
 
-    const isNew = this.props.field && this.props.original === null
+    const isNew = this.props.field && this.props.original === null;
     const hasBeenModified = (
       isNew
       || this.defaultType !== this.state.fieldType
@@ -197,7 +197,7 @@ class FieldCard extends Component {
     let header;
     if(changingName) {
       header = (
-        <GenericModifier value={name} validator={str => str.length > 0} onFinish={this.changeName} />
+        <GenericModifier value={name} validator={(str) => str.length > 0} onFinish={this.changeName} />
       );
     }
     else if(deleted) {

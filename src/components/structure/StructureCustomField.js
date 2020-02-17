@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -110,7 +110,7 @@ class StructureCustomField extends Component {
 
   add = (evt) => {
     const index = parseInt(evt.target.value);
-    const newChoices = [...this.state.choices, index]
+    const newChoices = [...this.state.choices, index];
     this.setState({
       choices: newChoices,
       example: this.generateExample(newChoices),

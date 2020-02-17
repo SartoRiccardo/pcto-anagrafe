@@ -39,7 +39,7 @@ function searchReducer(state=init, action) {
       search = state.search;
       return {
         ...state,
-        search: search.filter(s => s.id !== id),
+        search: search.filter((s) => s.id !== id),
       };
 
     case "SEARCHR_UPDATE_FIELD":
@@ -53,7 +53,9 @@ function searchReducer(state=init, action) {
           break;
         }
       }
-      if(index == null) return state;
+      if(index === null) {
+        return state;
+      }
 
       search = update(search, {[index]: {$set: updateSearch}});
       return {

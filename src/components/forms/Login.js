@@ -3,8 +3,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {loginAction, startLogin} from "../../redux/actions/authAction";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -30,14 +30,14 @@ class Login extends Component {
     };
   }
 
-  submitHandler = evt => {
+  submitHandler = (evt) => {
     evt.preventDefault();
 
     const {user, pswd} = this.state;
     this.props.login(user, pswd);
   }
 
-  changeHandler = evt => {
+  changeHandler = (evt) => {
     this.setState({
       [evt.target.name]: evt.target.value,
     });
@@ -79,7 +79,7 @@ class Login extends Component {
           </Col>
         </Form.Row>
       </Form>
-    )
+    );
   }
 }
 

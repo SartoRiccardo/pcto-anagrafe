@@ -4,8 +4,8 @@ import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import {createCompany} from "../../redux/actions/companyAction";
 // Icons
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

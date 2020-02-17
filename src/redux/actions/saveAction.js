@@ -110,7 +110,7 @@ export function saveCompany(company) {
     .catch((e) => {
 
     });
-  }
+  };
 }
 
 /**
