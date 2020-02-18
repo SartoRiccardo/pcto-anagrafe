@@ -1,6 +1,12 @@
 import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
+import {changeInternship, deleteInternship} from "../../redux/actions/internshipAction";
+// Custom components
+import GenericModifier from "../forms/inline/GenericModifier";
+// Icons
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashAlt, faPen} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -15,6 +21,14 @@ import ListGroup from "react-bootstrap/ListGroup";
  * @param {string[]}     props.privileges   The user's privileges.
  */
 class InternshipDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modifying: null,
+    };
+  }
+
   groupInternships = (internships) => {
     let ret = {};
     for (let i = 0; i < internships.length; i++) {
@@ -30,8 +44,41 @@ class InternshipDetails extends Component {
     return ret;
   }
 
+  modify = (internId) => {
+    return () => {
+      this.setState({
+        modifying: internId,
+      });
+    };
+  }
+
+  finishModify = (evt) => {
+    const {internships, changeInternship} = this.props;
+    const {modifying} = this.state;
+    const {value} = evt;
+
+    for (let i = 0; i < internships.length; i++) {
+      const intern = internships[i];
+      if(intern.id === modifying && value !== intern.student) {
+        // console.log(intern.id, value);
+        changeInternship(intern.id, value);
+      }
+    }
+
+    this.setState({
+      modifying: null,
+    });
+  }
+
+  delete = (internId) => {
+    return () => {
+      this.props.deleteInternship(internId);
+    };
+  }
+
   render() {
     const {activity, internships, canSeeInfo} = this.props;
+    const {modifying} = this.state;
     const grouped = this.groupInternships(internships);
 
     let cards = null;
@@ -39,8 +86,26 @@ class InternshipDetails extends Component {
       const kGrouped = Object.keys(grouped);
       cards = kGrouped.map((year) => {
         const listItems = grouped[year].map((intern) => {
-          return (
-            <ListGroup.Item key={intern.id}>{intern.student}</ListGroup.Item>
+          const {id, student} = intern;
+
+          return modifying === id ? (
+            <ListGroup.Item key={id}>
+              <GenericModifier value={student} onFinish={this.finishModify} />
+            </ListGroup.Item>
+          ) : (
+            <ListGroup.Item key={id}>
+              {student}
+              <FontAwesomeIcon
+                icon={faTrashAlt}
+                className="icon-button float-right ml-2"
+                onClick={this.delete(id)}
+              />
+              <FontAwesomeIcon
+                icon={faPen}
+                className="icon-button float-right"
+                onClick={this.modify(id)}
+              />
+            </ListGroup.Item>
           );
         });
 
@@ -82,7 +147,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    changeInternship: (id, student) => {
+      dispatch(changeInternship(id, student));
+    },
+    deleteInternship: (id) => {
+      dispatch(deleteInternship(id));
+    }
   };
 }
 

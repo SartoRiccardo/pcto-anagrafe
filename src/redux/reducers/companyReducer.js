@@ -41,6 +41,28 @@ function companyReducer(state=init, action) {
         internships: action.internships,
       };
 
+    case "COMPANYR_UPDATE_INTERNSHIP":
+      return {
+        ...state,
+        internships: state.internships.map((intern) => {
+          if(intern.id !== action.internship.id) {
+            return intern;
+          }
+          return {
+            ...intern,
+            ...action.internship,
+          };
+        }),
+      };
+
+    case "COMPANYR_DELETE_INTERNSHIP":
+      return {
+        ...state,
+        internships: state.internships.filter((intern) => {
+          return intern.id !== action.id;
+        }),
+      };
+
     default:
       return state;
   }

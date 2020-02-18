@@ -73,8 +73,8 @@ class CompanyActivities extends Component {
 
       let match = null;
       for (let j = 0; j < activities.length; j++) {
-        if(activities[i].id === activityId) {
-          match = activities[i];
+        if(activities[j].id === activityId) {
+          match = activities[j];
           break;
         }
       }
