@@ -6,11 +6,13 @@
  *
  * @author Riccardo Sartori
  *
- * @param {Company} match  A single company object.
- * @param {String}  error  An eventual error that was generated.
+ * @param {Company}      match        A single company object.
+ * @param {Internship[]} internships  The company's internships.
+ * @param {String}       error        An eventual error that was generated.
  */
 const init = {
   match: null,
+  internships: null,
   error: null,
 };
 
@@ -31,6 +33,12 @@ function companyReducer(state=init, action) {
         ...state,
         match: null,
         error: action.error,
+      };
+
+    case "COMPANYR_SET_INTERNSHIPS":
+      return {
+        ...state,
+        internships: action.internships,
       };
 
     default:
