@@ -25,7 +25,7 @@ export function loadSaved(saved) {
       payload.set("user", getToken());
       payload.set("id", saved[i]);
 
-      axios.post(apiUrl("/api/company"), payload)
+      axios.post(apiUrl("company"), payload)
       .then((res) => {
         if(res.status === 200) {
           dispatch({type: "SAVEDR_ADD", company: res.data});
@@ -60,7 +60,7 @@ export function updateSaved() {
     payload.set("REQUEST_METHOD", "GET");
     payload.set("user", getToken());
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "SAVEDR_START_DUMP", totalResults: res.data.length});
@@ -97,7 +97,7 @@ export function saveCompany(company) {
     payload.set("user", getToken());
     payload.set("id", company.id);
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {
@@ -134,7 +134,7 @@ export function deleteSave(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {
