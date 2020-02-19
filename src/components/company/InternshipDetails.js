@@ -162,8 +162,8 @@ class InternshipDetails extends Component {
     return (
       <div className="internship-box my-3 p-3">
         <Row>
-          <Col className="text-center">
-            <h3>
+          <Col>
+            <h3 className="text-center">
               {activity.name}
               {isNew && internships.length === 0 ? (
                 <Fragment>

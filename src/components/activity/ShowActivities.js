@@ -162,7 +162,7 @@ class ShowActivities extends Component {
       });
 
       const table = (
-        <Table responsive bordered striped className="results-table">
+        <Table responsive bordered striped className="activity-table">
           <thead>
             <tr>
               <th>Nome</th>

@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo:400,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Inconsolata&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Viga&display=swap');
 
-$primary: #e53935;
-$secondary: #ff8f00;
+$primary: #d32f2f;
+$secondary: #ff9800;
 $enable-responsive-font-sizes: true;
+
+$table-selected: #ffecb3;
+$yellow-darken-3: #f9a825;
+$deep-orange-darken-2: #e64a19;
+$cyan-lighten-3: #80deea;
+$light-green-lighten-4: #dcedc8;
+$red-lighten-4: #ffcdd2;
 
 html {
   height: 100%;
@@ -40,20 +46,6 @@ body {
   color: white;
 }
 
-input, select,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-secondary:focus,
-.btn-secondary:active,
-.btn-muted:focus,
-.btn-muted:active,
-.btn-danger:focus,
-.btn-danger:active,
-.navbar-toggler:focus {
-    box-shadow:none !important;
-    outline:0px;
-}
-
 .toggler:active, .toggler:hover, .toggler:focus {
   background-color: inherit !important;
   border-color: rgba(0, 0, 0, 0) !important;
@@ -62,19 +54,30 @@ input, select,
 
 .page-selector:hover {
   border-color: rgba(0, 0, 0, 0) !important;
+  color: black !important;
+}
+
+.page-selector-selected:hover {
+  border-color: rgba(0, 0, 0, 0) !important;
+  color: white !important;
 }
 
 .logout-btn {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-input:focus, select:focus {
-  border-color: #ffca28 !important;
+.form-control:focus {
+  border-color: $cyan-lighten-3 !important;
+}
+
+.form-control:focus, .btn:focus {
+  box-shadow:none !important;
 }
 
 .page-selector-selected {
-  background-color: #e65100 !important;
-  border-color: #e65100 !important;
+  background-color: adjust-hue($secondary, -10%) !important;
+  border-color: adjust-hue($secondary, -10%) !important;
+  color: black !important;
 }
 
 .btn-secondary:not(:hover):not(.page-selector-selected):focus {
@@ -83,14 +86,22 @@ input:focus, select:focus {
   color: inherit !important;
 }
 
-.table-hover tbody tr:hover:nth-child(odd) {  // Darker
-  cursor: pointer;
-  background-color: #ffecb3 !important;
+.page-selector.first-page {
+  border-right: 1.5px solid darken($secondary, 10%) !important;
 }
 
-.table-hover tbody tr:hover:nth-child(even) { // Lighter
+.page-selector.last-page {
+  border-left: 1px solid darken($secondary, 10%) !important;
+}
+
+.table-hover tbody tr:hover:nth-child(odd) {
   cursor: pointer;
-  background-color: #fff8e1 !important;
+  background-color: $table-selected !important;
+}
+
+.table-hover tbody tr:hover:nth-child(even) {
+  cursor: pointer;
+  background-color: lighten($table-selected, 5%) !important;
 }
 
 .results-table tbody tr td {
@@ -108,6 +119,8 @@ input:focus, select:focus {
 .mobile-collapse-link:active, .mobile-collapse-link:focus, .mobile-collapse-link.active {
   color: rgba(255, 255, 255, 1) !important;
 }
+
+// Icons
 
 svg {
   height: 1rem;
@@ -128,48 +141,17 @@ svg {
 }
 
 .saved-star {
-  color: #f9a825;
+  color: $yellow-darken-3;
   width: auto;
 }
 
 .saved-star:hover {
-  color:#e64a19;
+  color: $deep-orange-darken-2;
   cursor: pointer;
-}
-
-.pencil-icon {
-  color: rgba(0, 0, 0, 0.2);
-}
-
-.pencil-icon:hover {
-  color: black;
-  cursor: pointer;
-}
-
-svg.big-pencil {
-  height: 40px !important;
-  width: 40px !important;
 }
 
 .warning-icon {
-  color: #f9a825;
-}
-
-.trash-icon {
-  fill: rgba(0, 0, 0, 0.2);
-  height: 42px;
-  width: 42px;
-}
-
-.trash-icon:hover {
-  fill: black;
-  cursor: pointer;
-}
-
-.loading-icon {
-  height: 2.3rem;
-  width: auto;
-  margin: 0px !important;
+  color: $yellow-darken-3;
 }
 
 .row.simple-regex-container {
@@ -194,16 +176,9 @@ svg.big-pencil {
   width: 80% !important;
 }
 
-input.input-field-valid {
-  box-shadow: 0 0 3px rgba(0, 255, 0, 1) !important;
-}
-
-input.input-field-invalid {
-  box-shadow: 0 0 3px rgba(255, 0, 0, 1) !important;
-}
-
-.input-monospace {
-  font-family: "Inconsolata", monospace;
+.form-control.input-field-invalid {
+  box-shadow: 0 0 3px red !important;
+  border-color: red !important;
 }
 
 .table-overlay {
@@ -218,11 +193,11 @@ input.input-field-invalid {
 }
 
 .field-modified.card-header {
-  background-color: #dcedc8;
+  background-color: $light-green-lighten-4;
 }
 
 .field-deleted.card-header {
-  background-color: #ffcdd2;
+  background-color: $red-lighten-4;
 }
 
 .internship-box {
@@ -231,9 +206,13 @@ input.input-field-invalid {
   background: #fbfbfb;
 }
 
-@import '~bootstrap/scss/bootstrap';
-
 .py-2-5 {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
 }
+
+.activity-table tbody tr td:first-child, .details-table tbody tr td:first-child {
+  width: 33%;
+}
+
+@import '~bootstrap/scss/bootstrap';

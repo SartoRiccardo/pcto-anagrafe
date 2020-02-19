@@ -26,7 +26,6 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
  */
 class ChangePage extends Component {
   jumpToPage = (evt) => {
-    console.log("jumped");
     const {reducer} = this.props;
     this.props.updatePage(reducer, parseInt(evt.target.value));
     this.props.updateResults();
@@ -53,23 +52,37 @@ class ChangePage extends Component {
     }
   }
 
+  renderRange = (i, range, max) => {
+    const renderedForward = range + (i-range < 0 ? -(i - range) : 0);
+    const renderedBackward = range + (i+range >= max ? (i+1 +range) - max : 0);
+    let ret = [];
+    let rendered = i-renderedBackward >= 0 ? i-renderedBackward : 0;
+    while(rendered <= i+renderedForward && rendered < max) {
+      ret.push(rendered);
+      rendered++;
+    }
+    return ret;
+  }
+
   render() {
     const {page, totalResults, resultsPerPage} = this.props;
     const multiplePages = totalResults > resultsPerPage;
 
     const pageNum = Math.ceil(totalResults/resultsPerPage);
-    const renderRangeMd = 2;
-    const renderRangeXs = 1;
+    const renderMd = this.renderRange(page, 2, pageNum);
+    const renderXs = this.renderRange(page, 1, pageNum);
     let buttons = [];
     for (let i = 0; i < pageNum; i++) {
-      if(i === 0 || i === pageNum-1 || (i >= page-renderRangeMd && i <= page+renderRangeMd)) {
+      if(i === 0 || i === pageNum-1 || renderMd.includes(i)) {
         let className = "page-selector";
         if(i === page) {
           className += "-selected";
         }
-        if((i >= page-renderRangeMd && i < page-renderRangeXs)
-        || (i <= page+renderRangeMd && i > page+renderRangeXs)) {
+        if(!renderXs.includes(i)) {
           className += " d-none d-md-block";
+        }
+        if(!renderMd.includes(i)) {
+          className += i === 0 ? " first-page" : " last-page";
         }
 
         buttons.push(
@@ -79,23 +92,27 @@ class ChangePage extends Component {
     }
 
     const leftButton = (
-      <Button onClick={this.changePageBuilder("decrease")} variant="secondary" disabled={page <= 0}>
-        <FontAwesomeIcon icon={leftArrow} />
-      </Button>
+      <ButtonGroup className="mx-2">
+        <Button onClick={this.changePageBuilder("decrease")} className="page-selector" variant="secondary">
+          <FontAwesomeIcon icon={leftArrow} />
+        </Button>
+      </ButtonGroup>
     );
     const rightButton = (
-      <Button onClick={this.changePageBuilder("increase")} variant="secondary" disabled={page >= pageNum-1}>
-        <FontAwesomeIcon icon={rightArrow} />
-      </Button>
+      <ButtonGroup className="mx-2">
+        <Button onClick={this.changePageBuilder("increase")} className="page-selector" variant="secondary">
+          <FontAwesomeIcon icon={rightArrow} />
+        </Button>
+      </ButtonGroup>
     );
 
     return (
       <Row className="justify-content-center my-3">
+        {multiplePages && page > 0 ? leftButton : null}
         <ButtonGroup>
-          {multiplePages ? leftButton : null}
           {buttons}
-          {multiplePages ? rightButton : null}
         </ButtonGroup>
+        {multiplePages && page < pageNum-1 ? rightButton : null}
       </Row>
     );
   }

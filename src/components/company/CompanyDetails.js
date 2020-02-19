@@ -267,7 +267,7 @@ class CompanyDetails extends Component {
 
         <Row>
           <Col>
-            <Table responsive borderless striped>
+            <Table responsive bordered striped className="details-table">
               <tbody>
                 {data}
               </tbody>

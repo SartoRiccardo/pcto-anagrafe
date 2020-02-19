@@ -59,7 +59,8 @@ class AddActivity extends Component {
         <Form.Row className="d-flex justify-content-center my-3">
           <Col md={6}>
             <Form.Control
-              type="text"
+              as="textarea"
+              rows={4}
               placeholder="Descrizione"
               value={this.state.description}
               onChange={this.changeDescription}

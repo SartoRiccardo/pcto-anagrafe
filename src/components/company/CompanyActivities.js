@@ -22,7 +22,7 @@ class CompanyActivities extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
-    if(!internships) {
+    if(!internships || company.id !== id) {
       this.props.loadInternships(id);
     }
     if(!initialized) {
@@ -75,7 +75,7 @@ class CompanyActivities extends Component {
   }
 
   render() {
-    const {company, internships, error, activities, initialized} = this.props;
+    const {company, internships, error, activities, initialized, canAdd} = this.props;
     const {addedInternships} = this.state;
     if(error === null && (company === null || internships === null || !initialized)) {
       return <h1>Loading</h1>;
@@ -141,7 +141,7 @@ class CompanyActivities extends Component {
 
         {internShow}
 
-        {addActivityForm}
+        {canAdd ? addActivityForm : null}
       </Container>
     );
   }
@@ -156,6 +156,7 @@ function mapStateToProps(state) {
     privileges: state.auth.privileges,
     activities: state.activity.activities,
     initialized: state.activity.initialized,
+    canAdd: state.auth.privileges.includes("MANAGE_COMPANY"),
   };
 }
 
