@@ -33,7 +33,7 @@ switch ($_POST["REQUEST_METHOD"]) {
       $internshipIds = getCompanyInternships(intval($_POST["company"]));
       $internships = array();
       for ($i=0; $i < count($internshipIds); $i++) {
-        array_push($internships, getInternship($internshipIds[$i]));
+        array_push($internships, getInternship($internshipIds[$i], hasPermission($user, "MANAGE_COMPANY")));
       }
       echo json_encode($internships);
     }
