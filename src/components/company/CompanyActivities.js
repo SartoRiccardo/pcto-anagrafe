@@ -7,6 +7,9 @@ import {loadActivities} from "../../redux/actions/activityAction";
 // Custom components
 import InternshipDetails from "./InternshipDetails";
 import AddCompanyActivity from "./AddCompanyActivity";
+// Icons
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -78,7 +81,11 @@ class CompanyActivities extends Component {
     const {company, internships, error, activities, initialized, canAdd} = this.props;
     const {addedInternships} = this.state;
     if(error === null && (company === null || internships === null || !initialized)) {
-      return <h1>Loading</h1>;
+      return (
+        <Container className="d-flex justify-content-center">
+          <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+        </Container>
+      );
     }
 
     if(company === null || error !== null) {

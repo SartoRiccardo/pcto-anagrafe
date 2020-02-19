@@ -1,9 +1,14 @@
 import React, {Component, Fragment} from "react";
+// HOCs and actions
 import {connect} from "react-redux";
 import {loadSaved} from "../../redux/actions/saveAction";
+// Custom components
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
-
+// Icons
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+// Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -37,7 +42,11 @@ class ShowSaved extends Component {
 
     let showContent;
     if(!this.props.initialized) {
-      showContent = null;
+      return (
+        <Container className="d-flex justify-content-center">
+          <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+        </Container>
+      );
     }
     else if(saved.length > 0) {
       showContent = (

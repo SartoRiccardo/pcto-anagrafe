@@ -144,7 +144,7 @@ class InternshipDetails extends Component {
 
         const nextYear = year%100 + 1;
         return (
-          <Col xs md={12/2} lg={12/3} key={year}>
+          <Col sm={12} md={12/2} lg={12/3} key={year}>
             <Card className="internship-card my-3">
               <Card.Header className="text-center">
                 {`${year}/${nextYear}`}
