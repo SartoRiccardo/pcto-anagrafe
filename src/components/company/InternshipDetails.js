@@ -89,10 +89,22 @@ class InternshipDetails extends Component {
     }
   }
 
+  currentSchoolYear = () => {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    return month >= 9 ? year : year - 1;
+  }
+
   render() {
     const {activity, internships, canSeeInfo} = this.props;
     const {modifying} = this.state;
     const grouped = this.groupInternships(internships);
+    const currentYear = this.currentSchoolYear();
+    if(!(currentYear in grouped)) {
+      grouped[currentYear] = [];
+    }
 
     let cards = null;
     if(canSeeInfo) {
