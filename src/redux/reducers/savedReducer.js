@@ -19,6 +19,10 @@ const init = {
   resultsPerPage: 50,
   page: 0,
   initialized: false,
+  status: {
+    actions: [],
+    dumping: false,
+  }
 };
 
 function savedReducer(state=init, action) {
@@ -27,7 +31,59 @@ function savedReducer(state=init, action) {
       return {
         ...state,
         saved: [],
-        totalResults: action.totalResults,
+        totalResults: 0,
+        page: 0,
+        status: {
+          ...state.status,
+          dumping: true,
+        },
+      };
+
+    case "SAVEDR_BEGIN_ACTION":
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          actions: [...state.status.actions, action.actionId],
+        },
+      };
+
+    case "SAVEDR_END_ACTION":
+      const newActions = state.status.actions.filter((a) => a !== action.actionId);
+      const initialized = newActions.length === 0 && !state.status.dumping;
+
+      let sortedCompanies = null;
+      if(initialized) {
+        sortedCompanies = [];
+        const sortedIds = state.saved.map((c) => c.id).sort();
+        for(let i = 0; i < sortedIds.length; i++) {
+          const id = sortedIds[i];
+          for(let j = 0; j < state.saved.length; j++) {
+            if(id === state.saved[j].id) {
+              sortedCompanies.push(state.saved[j]);
+            }
+          }
+        }
+      }
+
+      return {
+        ...state,
+        saved: sortedCompanies ? sortedCompanies : state.saved,
+        initialized,
+        status: {
+          ...state.status,
+          actions: newActions,
+        },
+      };
+
+    case "SAVEDR_END_DUMP":
+      return {
+        ...state,
+        initialized: state.status.actions.length === 0,
+        status: {
+          ...state.status,
+          dumping: false,
+        },
       };
 
     case "SAVEDR_ADD":
@@ -48,12 +104,6 @@ function savedReducer(state=init, action) {
         totalResults: state.totalResults-1,
         page: 0,
       }
-
-    case "SAVEDR_END_DUMP":
-      return {
-        ...state,
-        initialized: true,
-      };
 
     case "SAVEDR_UPDATE":
       return {
