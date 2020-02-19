@@ -28,7 +28,7 @@ function getCompanyInternships($company) {
  * @param  int        $id  The internship's ID.
  * @return Internship      The match.
  */
-function getInternship($id) {
+function getInternship($id, $full=true) {
   global $dbc;
 
   $q = "SELECT id, student, activity, company, year
@@ -43,11 +43,13 @@ function getInternship($id) {
     $res = $stmt->fetch();
     $ret = array(
       "id" => intval($res["id"]),
-      "student" => $res["student"],
       "activity" => intval($res["activity"]),
       "company" => intval($res["company"]),
-      "year" => intval($res["year"])
     );
+    if($full) {
+      $ret["student"] = $res["student"];
+      $ret["year"] = intval($res["year"]);
+    }
   }
   return $ret;
 }
@@ -55,10 +57,11 @@ function getInternship($id) {
 /**
  * Fetches an internship by its values.
  *
- * @param int    $company   The company doing the internship.
- * @param int    $activity  The activity's of the internship.
- * @param string $student   The hired student.
- * @param int    $year      The year the internship was made in.
+ * @param  int    $company   The company doing the internship.
+ * @param  int    $activity  The activity's of the internship.
+ * @param  string $student   The hired student.
+ * @param  int    $year      The year the internship was made in.
+ * @return int               The ID of the internship.
  */
 function getInternshipByValues($company, $activity, $student, $year) {
   global $dbc;

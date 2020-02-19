@@ -39,7 +39,7 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
     else if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
       $id = intval($_POST["id"]);
-      $internship = getInternship($id);
+      $internship = getInternship($id, hasPermission($user, "MANAGE_COMPANY"));
       $ret = $internship != null ? $internship : array(
         "error" => true,
         "message" => "Non esiste un'alternanza con ID $id."
