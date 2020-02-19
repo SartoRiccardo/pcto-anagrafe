@@ -2,7 +2,7 @@ import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 import {resultAction, selectCompany} from "./resultAction";
-import {updateSaved} from "./saveAction";
+import {loadSaved} from "./saveAction";
 
 /**
  * An action creator to create a company.
@@ -85,7 +85,7 @@ export function updateCompany(company) {
 /**
  * Updates a company's name.
  *
- * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ * Fires COMPANYR_RESET and SAVEDR_UPDATE, and dispatches resultAction and selectCompany on success.
  *
  * @author Riccardo Sartori
  *
@@ -113,6 +113,13 @@ export function updateName(company, name) {
           dispatch({type: "COMPANYR_RESET"});
           dispatch(resultAction());
           dispatch(selectCompany(company));
+          dispatch({
+            type: "SAVEDR_UPDATE",
+            company: {
+              id: company,
+              name,
+            },
+          });
         }
         else {
           console.log(message);
@@ -128,7 +135,7 @@ export function updateName(company, name) {
 /**
  * Updates a company's name.
  *
- * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ * Fires COMPANYR_RESET and SAVEDR_UPDATE, and dispatches resultAction and selectCompany on success.
  *
  * @author Riccardo Sartori
  *
@@ -159,6 +166,13 @@ export function updateField(company, field) {
           dispatch({type: "COMPANYR_RESET"});
           dispatch(resultAction());
           dispatch(selectCompany(company));
+          dispatch({
+            type: "SAVEDR_UPDATE",
+            company: {
+              id: company,
+              fields: [field],
+            },
+          });
         }
         else {
           console.log(message);
@@ -174,7 +188,7 @@ export function updateField(company, field) {
 /**
  * Deletes a company.
  *
- * Fires CHANGECOMPANYR_END and dispatches updateSaved on success.
+ * Fires CHANGECOMPANYR_END and dispatches loadSaved on success.
  *
  * @author Riccardo Sartori
  *
@@ -198,7 +212,7 @@ export function deleteCompany(id) {
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
-        dispatch(updateSaved());
+        dispatch(loadSaved());
       }
     })
     .catch((e) => {

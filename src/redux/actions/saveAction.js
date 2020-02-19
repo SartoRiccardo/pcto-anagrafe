@@ -12,7 +12,7 @@ import {resultAction, reloadCompany} from "./resultAction";
  *
  * @param {int} saved  The ID of the saved company.
  */
-export function loadSaved(saved) {
+export function getSaved(saved) {
   return (dispatch, getState) => {
     if(!getToken()) {
       // Logout...
@@ -44,12 +44,12 @@ export function loadSaved(saved) {
 /**
  * An action creator to update the current saved companies.
  *
- * Dispatches loadSaved on success.
+ * Dispatches getSaved on success.
  *
  * @author Riccardo Sartori
  *
  */
-export function updateSaved() {
+export function loadSaved() {
   return (dispatch, getState) => {
     if(!getToken()) {
       // Logout...
@@ -64,7 +64,7 @@ export function updateSaved() {
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "SAVEDR_START_DUMP", totalResults: res.data.length});
-        dispatch(loadSaved(res.data));
+        dispatch(getSaved(res.data));
         if(res.data.length === 0) {
           dispatch({type: "SAVEDR_END_DUMP"});
         }

@@ -55,6 +55,40 @@ function savedReducer(state=init, action) {
         initialized: true,
       };
 
+    case "SAVEDR_UPDATE":
+      return {
+        ...state,
+        saved: state.saved.map((s) => {
+          let newCompany = {...s};
+          if(s.id === action.company.id) {
+            const {name, fields} = action.company;
+
+            if(name) {
+              newCompany.name = name;
+            }
+
+            if(fields) {
+              newCompany.fields = newCompany.fields.map((f) => {
+                for (let i = 0; i < fields.length; i++) {
+                  if(fields[i].id === f.id) {
+                    if(fields[i].value.length === 0) {
+                      return null;
+                    }
+                    else {
+                      return fields[i];
+                    }
+                  }
+                }
+                return f;
+              });
+              newCompany.fields = newCompany.fields.filter((f) => f !== null);
+            }
+          }
+
+          return newCompany;
+        }),
+      }
+
     case "SAVEDR_RESET":
       return init;
 

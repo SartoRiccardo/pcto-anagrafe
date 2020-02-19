@@ -144,7 +144,6 @@ export function resetCompany() {
   };
 }
 
-
 /**
  * An action creator that fires COMPANYR_SET_MATCH.
  *

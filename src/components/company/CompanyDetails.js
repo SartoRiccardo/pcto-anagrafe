@@ -302,11 +302,11 @@ function mapDispatchToProps(dispatch) {
     resetCompany: () => {
       dispatch(resetCompany());
     },
-    updateField: (company, field) => {
-      dispatch(updateField(company, field));
+    updateField: (companyId, field) => {
+      dispatch(updateField(companyId, field));
     },
-    updateName: (company, name) => {
-      dispatch(updateName(company, name));
+    updateName: (companyId, name) => {
+      dispatch(updateName(companyId, name));
     }
   };
 }

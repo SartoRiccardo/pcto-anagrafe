@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
-import {updateSaved} from "../../redux/actions/saveAction";
+import {loadSaved} from "../../redux/actions/saveAction";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
 
@@ -14,14 +14,14 @@ import Col from "react-bootstrap/Col";
  * @author Riccardo Sartori
  *
  * @param {state.saved} props              The saved section of the store.
- * @param {function}    props.updateSaved  Refreshes the currently saved companies
+ * @param {function}    props.loadSaved  Refreshes the currently saved companies
  */
 class ShowSaved extends Component {
   constructor(props) {
     super(props);
 
     if(!this.props.initialized) {
-      this.props.updateSaved();
+      this.props.loadSaved();
     }
   }
 
@@ -77,8 +77,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateSaved: () => {
-      dispatch(updateSaved());
+    loadSaved: () => {
+      dispatch(loadSaved());
     }
   };
 }
