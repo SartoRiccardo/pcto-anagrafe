@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
-import {changeInternship, deleteInternship} from "../../redux/actions/internshipAction";
+import {changeInternship, deleteInternship, addInternship} from "../../redux/actions/internshipAction";
 // Custom components
 import GenericModifier from "../forms/inline/GenericModifier";
+import GenericAdder from "../forms/inline/GenericAdder";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt, faPen} from "@fortawesome/free-solid-svg-icons";
@@ -76,6 +77,18 @@ class InternshipDetails extends Component {
     };
   }
 
+  addInternship = (year) => {
+    return (evt) => {
+      const {activity, companyId, addInternship} = this.props;
+      const {value} = evt;
+      if(companyId === null) {
+        return;
+      }
+
+      addInternship(companyId, activity.id, value, year);
+    }
+  }
+
   render() {
     const {activity, internships, canSeeInfo} = this.props;
     const {modifying} = this.state;
@@ -109,10 +122,19 @@ class InternshipDetails extends Component {
           );
         });
 
+        listItems.push(
+          <ListGroup.Item key={-1}>
+            <GenericAdder onFinish={this.addInternship(year)} />
+          </ListGroup.Item>
+        );
+
+        const nextYear = year%100 + 1;
         return (
           <Col xs md={12/2} lg={12/3} key={year}>
-            <Card className="my-3">
-              <Card.Header>{year}</Card.Header>
+            <Card className="internship-card my-3">
+              <Card.Header className="text-center">
+                {`${year}/${nextYear}`}
+              </Card.Header>
               <ListGroup variant="flush">
                 {listItems}
               </ListGroup>
@@ -142,6 +164,7 @@ class InternshipDetails extends Component {
 function mapStateToProps(state) {
   return {
     canSeeInfo: state.auth.privileges.includes("MANAGE_COMPANY"),
+    companyId: state.company.match.id,
   };
 }
 
@@ -152,7 +175,10 @@ function mapDispatchToProps(dispatch) {
     },
     deleteInternship: (id) => {
       dispatch(deleteInternship(id));
-    }
+    },
+    addInternship: (company, activity, student, year) => {
+      dispatch(addInternship(company, activity, student, year));
+    },
   };
 }
 

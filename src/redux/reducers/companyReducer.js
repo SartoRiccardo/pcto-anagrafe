@@ -63,6 +63,12 @@ function companyReducer(state=init, action) {
         }),
       };
 
+    case "COMPANYR_ADD_INTERNSHIP":
+      return {
+        ...state,
+        internships: [...state.internships, action.internship],
+      };
+
     default:
       return state;
   }
