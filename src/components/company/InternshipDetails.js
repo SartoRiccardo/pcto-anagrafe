@@ -7,12 +7,14 @@ import GenericModifier from "../forms/inline/GenericModifier";
 import GenericAdder from "../forms/inline/GenericAdder";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrashAlt, faPen} from "@fortawesome/free-solid-svg-icons";
+import {faTrashAlt, faPen, faExclamationTriangle} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 /**
  * Shows all internships of a specific activity a company did in detail.
@@ -98,7 +100,7 @@ class InternshipDetails extends Component {
   }
 
   render() {
-    const {activity, internships, canSeeInfo} = this.props;
+    const {activity, internships, canSeeInfo, isNew} = this.props;
     const {modifying} = this.state;
     const grouped = this.groupInternships(internships);
     const currentYear = this.currentSchoolYear();
@@ -156,19 +158,30 @@ class InternshipDetails extends Component {
       });
     }
 
+    const isNewTooltip = <Tooltip>L'attività è nuova. Verrà eliminata automaticamente se nessun valore verrà inserito.</Tooltip>;
     return (
-      <Fragment>
+      <div className="internship-box my-3 p-3">
         <Row>
           <Col className="text-center">
-            <h3>{activity.name}</h3>
-            <p className="lead">{activity.description}</p>
+            <h3>
+              {activity.name}
+              {isNew && internships.length === 0 ? (
+                <Fragment>
+                  {" "}
+                  <OverlayTrigger placement="top" overlay={isNewTooltip}>
+                    <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
+                  </OverlayTrigger>
+                </Fragment>
+              ) : null}
+            </h3>
+            <p>{activity.description}</p>
           </Col>
         </Row>
 
         <Row>
           {cards}
         </Row>
-      </Fragment>
+      </div>
     );
   }
 }

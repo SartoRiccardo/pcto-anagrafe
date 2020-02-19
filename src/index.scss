@@ -225,19 +225,13 @@ input.input-field-invalid {
   background-color: #ffcdd2;
 }
 
-@import '~bootstrap/scss/bootstrap';
-
-.card-columns {
-  @include media-breakpoint-only(lg) {
-    column-count: 3;
-  }
-  @include media-breakpoint-only(md) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(sm) {
-    column-count: 1;
-  }
+.internship-box {
+  border: 1px solid #d8d8d8;
+  border-radius: 1.5rem;
+  background: #fbfbfb;
 }
+
+@import '~bootstrap/scss/bootstrap';
 
 .py-2-5 {
   padding-top: 0.75rem !important;

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
@@ -6,6 +6,7 @@ import {loadInternshipsFor} from "../../redux/actions/internshipAction";
 import {loadActivities} from "../../redux/actions/activityAction";
 // Custom components
 import InternshipDetails from "./InternshipDetails";
+import AddCompanyActivity from "./AddCompanyActivity";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -27,6 +28,24 @@ class CompanyActivities extends Component {
     if(!initialized) {
       this.props.loadActivities();
     }
+
+    this.state = {
+      addedInternships: [],
+    };
+  }
+
+  selectInternship = (evt) => {
+    const index = parseInt(evt.target.value);
+    this.setState({
+      newInternshipSelected: index,
+    });
+  }
+
+  addEmptyInternship = (evt) => {
+    const {value} = evt;
+    this.setState({
+      addedInternships: [...this.state.addedInternships, value],
+    });
   }
 
   groupInternships = (internships) => {
@@ -44,8 +63,20 @@ class CompanyActivities extends Component {
     return ret;
   }
 
+  missingActivities = () => {
+    const {internships, activities} = this.props;
+    const {addedInternships} = this.state;
+    const doneInternships = internships.map((intern) => {
+      return intern.activity;
+    });
+    return activities.filter((a) => {
+      return !(doneInternships.includes(a.id) || addedInternships.includes(a.id));
+    });
+  }
+
   render() {
     const {company, internships, error, activities, initialized} = this.props;
+    const {addedInternships} = this.state;
     if(error === null && (company === null || internships === null || !initialized)) {
       return <h1>Loading</h1>;
     }
@@ -67,7 +98,13 @@ class CompanyActivities extends Component {
 
     let internShow = [];
     const internGrouped = this.groupInternships(internships);
-    for (let i = 0; i < Object.keys(internGrouped).length; i++) {
+    for (let i = 0; i < addedInternships.length; i++) {
+      if(!(addedInternships[i] in internGrouped)) {
+        internGrouped[addedInternships[i]] = [];
+      }
+    }
+
+    for(let i = 0; i < Object.keys(internGrouped).length; i++) {
       const activityId = parseInt(Object.keys(internGrouped)[i]);
       const intern = internGrouped[activityId];
 
@@ -79,22 +116,32 @@ class CompanyActivities extends Component {
         }
       }
 
-      if(match === null) {
+      if(match === null) {  // HOW
         continue;
       }
 
       internShow.push(
-        <Fragment key={activityId}>
-          <hr />
-          <InternshipDetails activity={match} internships={intern} />
-        </Fragment>
+        <InternshipDetails
+          key={activityId}
+          activity={match}
+          internships={intern}
+          isNew={addedInternships.includes(activityId)}
+        />
       );
     }
+
+    const activitiesMissing = this.missingActivities();
+    const addActivityForm = activitiesMissing.length > 0 ? (
+      <AddCompanyActivity activities={activitiesMissing} onSubmit={this.addEmptyInternship} />
+    ) : null;
 
     return (
       <Container>
         <h2 className="m-3 text-center">Attività di {company.name}</h2>
+
         {internShow}
+
+        {addActivityForm}
       </Container>
     );
   }
