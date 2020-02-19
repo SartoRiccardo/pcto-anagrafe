@@ -136,8 +136,10 @@ class FieldCard extends Component {
     }
   }
 
-  hardRestore = (evt) => {
+  undoChanges = (evt) => {
     const {original} = this.props;
+    console.table(original);
+    console.table(this.state.field)
     if(!original) {
       return;
     }
@@ -145,6 +147,7 @@ class FieldCard extends Component {
     this.setState({
       fieldType: this.defaultType,
       field: original,
+      name: original.name,
     }, () => {
       this.notifyChange();
     });
@@ -222,7 +225,7 @@ class FieldCard extends Component {
           <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
           <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.deleteSelf} />
           {!isNew && hasBeenModified
-            ? <FontAwesomeIcon icon={faUndo} className="icon-button" onClick={this.hardRestore} />
+            ? <FontAwesomeIcon icon={faUndo} className="icon-button" onClick={this.undoChanges} />
             : null}
         </Fragment>
       );
