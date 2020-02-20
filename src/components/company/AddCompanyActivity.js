@@ -61,7 +61,7 @@ class AddCompanyActivity extends Component {
 
     return (
       <Form.Row className="d-flex justify-content-center">
-        <Col md={6}>
+        <Col xs md={6}>
           <Form.Control as="select" value={selected} onChange={this.change}>
             {options}
           </Form.Control>

@@ -160,7 +160,7 @@ class InternshipDetails extends Component {
 
     const isNewTooltip = <Tooltip>L'attività è nuova. Verrà eliminata automaticamente se nessun valore verrà inserito.</Tooltip>;
     return (
-      <div className="internship-box my-3 p-3">
+      <div className="internship-box my-3 p-3 shadow-sm">
         <Row>
           <Col>
             <h3 className="text-center">
@@ -174,7 +174,7 @@ class InternshipDetails extends Component {
                 </Fragment>
               ) : null}
             </h3>
-            <p>{activity.description}</p>
+            <p className="text-justify">{activity.description}</p>
           </Col>
         </Row>
 
@@ -187,9 +187,11 @@ class InternshipDetails extends Component {
 }
 
 function mapStateToProps(state) {
+  const {match} = state.company;
+
   return {
     canSeeInfo: state.auth.privileges.includes("MANAGE_COMPANY"),
-    companyId: state.company.match.id,
+    companyId: match ? match.id : null,
   };
 }
 

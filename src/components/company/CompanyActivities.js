@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
@@ -139,7 +139,19 @@ class CompanyActivities extends Component {
 
     const activitiesMissing = this.missingActivities();
     const addActivityForm = activitiesMissing.length > 0 ? (
-      <AddCompanyActivity activities={activitiesMissing} onSubmit={this.addEmptyInternship} />
+      <Fragment>
+        <hr />
+
+        <div className="my-5">
+          <Row>
+            <Col className="text-center">
+              <h3>Aggiungi un'attività</h3>
+            </Col>
+          </Row>
+
+          <AddCompanyActivity activities={activitiesMissing} onSubmit={this.addEmptyInternship} />
+        </div>
+      </Fragment>
     ) : null;
 
     return (
