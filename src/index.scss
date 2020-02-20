@@ -29,6 +29,10 @@ body {
   font-family: "Heebo" !important;
 }
 
+body.overlay-open {
+  overflow: hidden;
+}
+
 #root {
   display: flex;
   min-height: 100vh;
@@ -232,6 +236,56 @@ svg {
 .internship-card .card-header {
   background-color: saturate($HEADERBORDERTEMP, 20%);
   border: 1px solid darken($HEADERBORDERTEMP, 10%);
+}
+
+// Navbar
+
+.mobile-navbar {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: all 0.5s;
+  transform: translate3d(-100%, 0, 0);
+
+  background-color: $primary;
+  color: black;
+}
+
+.mobile-navbar .mobile-header {
+  background-color: $primary;
+  color: white;
+}
+
+.mobile-navlink {
+  border-top: 1px solid darken($primary, 20%);
+}
+
+.mobile-navlink ~ .mobile-navlink {
+  border-top: none;
+}
+
+.mobile-navlink {
+  border-bottom: 1px solid darken($primary, 20%);
+}
+
+.mobile-navbar.active {
+  transform: translate3d(0, 0, 0);
+}
+
+.menu-icon {
+  width: 0.875em*1.5 !important;
+  height: 0.875em*1.5 !important;
+}
+
+.fullscreen-overlay {
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
 }
 
 @import '~bootstrap/scss/bootstrap';
