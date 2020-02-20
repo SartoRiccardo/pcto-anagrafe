@@ -10,7 +10,7 @@ const init = {
   initialized: false,
 };
 
-function activityReducer(state=null, action) {
+function activityReducer(state=init, action) {
   switch(action.type) {
     case "ACTIVITYR_INITIALIZE":
       return {

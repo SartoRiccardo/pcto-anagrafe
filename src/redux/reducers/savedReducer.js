@@ -19,6 +19,10 @@ const init = {
   resultsPerPage: 50,
   page: 0,
   initialized: false,
+  status: {
+    actions: [],
+    dumping: false,
+  }
 };
 
 function savedReducer(state=init, action) {
@@ -27,7 +31,59 @@ function savedReducer(state=init, action) {
       return {
         ...state,
         saved: [],
-        totalResults: action.totalResults,
+        totalResults: 0,
+        page: 0,
+        status: {
+          ...state.status,
+          dumping: true,
+        },
+      };
+
+    case "SAVEDR_BEGIN_ACTION":
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          actions: [...state.status.actions, action.actionId],
+        },
+      };
+
+    case "SAVEDR_END_ACTION":
+      const newActions = state.status.actions.filter((a) => a !== action.actionId);
+      const initialized = newActions.length === 0 && !state.status.dumping;
+
+      let sortedCompanies = null;
+      if(initialized) {
+        sortedCompanies = [];
+        const sortedIds = state.saved.map((c) => c.id).sort();
+        for(let i = 0; i < sortedIds.length; i++) {
+          const id = sortedIds[i];
+          for(let j = 0; j < state.saved.length; j++) {
+            if(id === state.saved[j].id) {
+              sortedCompanies.push(state.saved[j]);
+            }
+          }
+        }
+      }
+
+      return {
+        ...state,
+        saved: sortedCompanies ? sortedCompanies : state.saved,
+        initialized,
+        status: {
+          ...state.status,
+          actions: newActions,
+        },
+      };
+
+    case "SAVEDR_END_DUMP":
+      return {
+        ...state,
+        initialized: state.status.actions.length === 0,
+        status: {
+          ...state.status,
+          dumping: false,
+        },
       };
 
     case "SAVEDR_ADD":
@@ -49,11 +105,39 @@ function savedReducer(state=init, action) {
         page: 0,
       }
 
-    case "SAVEDR_END_DUMP":
+    case "SAVEDR_UPDATE":
       return {
         ...state,
-        initialized: true,
-      };
+        saved: state.saved.map((s) => {
+          let newCompany = {...s};
+          if(s.id === action.company.id) {
+            const {name, fields} = action.company;
+
+            if(name) {
+              newCompany.name = name;
+            }
+
+            if(fields) {
+              newCompany.fields = newCompany.fields.map((f) => {
+                for (let i = 0; i < fields.length; i++) {
+                  if(fields[i].id === f.id) {
+                    if(fields[i].value.length === 0) {
+                      return null;
+                    }
+                    else {
+                      return fields[i];
+                    }
+                  }
+                }
+                return f;
+              });
+              newCompany.fields = newCompany.fields.filter((f) => f !== null);
+            }
+          }
+
+          return newCompany;
+        }),
+      }
 
     case "SAVEDR_RESET":
       return init;

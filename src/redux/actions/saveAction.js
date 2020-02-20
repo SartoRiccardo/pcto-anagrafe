@@ -10,46 +10,49 @@ import {resultAction, reloadCompany} from "./resultAction";
  *
  * @author Riccardo Sartori
  *
- * @param {int} saved  The ID of the saved company.
+ * @param {int[]} saved  The ID of the companies to load.
  */
-export function loadSaved(saved) {
+export function loadSavedById(saved) {
   return (dispatch, getState) => {
     if(!getToken()) {
       // Logout...
       return;
     }
 
+    dispatch({type: "SAVEDR_START_DUMP"});
     for(let i = 0; i < saved.length; i++) {
       let payload = new FormData();
       payload.set("REQUEST_METHOD", "GET");
       payload.set("user", getToken());
       payload.set("id", saved[i]);
 
-      axios.post(apiUrl("/api/company"), payload)
+      const actionId = Math.random();
+      dispatch({type: "SAVEDR_BEGIN_ACTION", actionId});
+
+      axios.post(apiUrl("company"), payload)
       .then((res) => {
         if(res.status === 200) {
           dispatch({type: "SAVEDR_ADD", company: res.data});
-          if(i === saved.length-1) {
-            dispatch({type: "SAVEDR_END_DUMP"});
-          }
+          dispatch({type: "SAVEDR_END_ACTION", actionId});
         }
       })
       .catch((e) => {
-
+        dispatch({type: "SAVEDR_END_ACTION", actionId});
       });
     }
+    dispatch({type: "SAVEDR_END_DUMP"});
   }
 }
 
 /**
  * An action creator to update the current saved companies.
  *
- * Dispatches loadSaved on success.
+ * Dispatches loadSavedById on success.
  *
  * @author Riccardo Sartori
  *
  */
-export function updateSaved() {
+export function loadSaved() {
   return (dispatch, getState) => {
     if(!getToken()) {
       // Logout...
@@ -60,14 +63,10 @@ export function updateSaved() {
     payload.set("REQUEST_METHOD", "GET");
     payload.set("user", getToken());
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
-        dispatch({type: "SAVEDR_START_DUMP", totalResults: res.data.length});
-        dispatch(loadSaved(res.data));
-        if(res.data.length === 0) {
-          dispatch({type: "SAVEDR_END_DUMP"});
-        }
+        dispatch(loadSavedById(res.data));
       }
     })
     .catch((e) => {
@@ -97,7 +96,7 @@ export function saveCompany(company) {
     payload.set("user", getToken());
     payload.set("id", company.id);
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {
@@ -134,7 +133,7 @@ export function deleteSave(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("/api/saved"), payload)
+    axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {loadActivities, changeDescription, changeName, deleteActivity} from "../../redux/actions/activityAction";
 // Custom components
 import GenericModifier from "../forms/inline/GenericModifier";
+import GenericTextArea from "../forms/inline/GenericTextArea";
 import AddActivity from "./AddActivity";
 import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
 // Icons
@@ -13,7 +14,6 @@ import {faSpinner, faTrashAlt, faPen} from "@fortawesome/free-solid-svg-icons";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
 
 class ShowActivities extends Component {
   constructor(props) {
@@ -112,82 +112,65 @@ class ShowActivities extends Component {
       );
     }
     else {
-      const rows = activities.map((a) => {
+      const containers = activities.map((a) => {
         const name = modifying.type === "NAME" && modifying.id === a.id ? (
-          <td>
-            <GenericModifier
-              value={a.name}
-              onFinish={this.finishHandler}
-            />
-          </td>
+          <GenericModifier
+            value={a.name}
+            onFinish={this.finishHandler}
+          />
         ) : (
-          <td>
-            {a.name}{" "}
+          <h3 className="text-center">
+            {a.name}
             <FontAwesomeIcon
               icon={faPen}
-              className="icon-button mx-1"
+              className="icon-button mx-2"
               onClick={this.createModify(a.id, "NAME")}
-            />{" "}
+            />
             <FontAwesomeIcon
               icon={faTrashAlt}
               className="icon-button"
               onClick={this.createDelete(a)}
             />
-          </td>
+          </h3>
         );
+
         const description = modifying.type === "DESCRIPTION" && modifying.id === a.id ? (
-          <td>
-            <GenericModifier
-              value={a.description}
-              onFinish={this.finishHandler}
-            />
-          </td>
+          <GenericTextArea
+            rows={8}
+            value={a.description}
+            onFinish={this.finishHandler}
+          />
         ) : (
-          <td>
-            {a.description}{" "}
+          <p className="text-justify">
+            {a.description}
             <FontAwesomeIcon
               icon={faPen}
-              className="icon-button mx-1"
+              className="icon-button mx-2"
               onClick={this.createModify(a.id, "DESCRIPTION")}
             />
-          </td>
+          </p>
         );
 
         return (
-          <tr key={a.id}>
-            {name}
-            {description}
-          </tr>
+          <Col key={a.id} xs={12} md={12/2} className="my-2 px-0">
+            <div className="activity-container px-3 pb-2 pt-3 mx-2 shadow-sm">
+              {name}
+              {description}
+            </div>
+          </Col>
         );
       });
-
-      const table = (
-        <Table responsive bordered striped className="results-table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Descrizione</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {rows}
-          </tbody>
-        </Table>
-      );
 
       body = (
         <Fragment>
           <Row className="m-3">
             <Col className="text-center">
-              <h1>Attività presenti</h1>
+              <h1>Attività</h1>
             </Col>
           </Row>
 
           <Row>
-            <Col>
-              {table}
-            </Col>
+            {containers}
           </Row>
         </Fragment>
       );
@@ -196,6 +179,7 @@ class ShowActivities extends Component {
     return (
       <Container>
         {body}
+        <hr />
 
         <Row className="text-center my-3">
           <Col>

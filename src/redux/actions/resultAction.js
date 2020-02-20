@@ -42,7 +42,7 @@ export function resultAction(arg0=null) {
     payload.set("search", JSON.stringify(searchReq));
     payload.set("page", getState().search.page);
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
       .then((res) => {
         const {lastSearchId} = getState().search;
         if(lastSearchId !== searchId) {
@@ -89,7 +89,7 @@ export function selectCompany(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const match = res.data;
@@ -143,7 +143,6 @@ export function resetCompany() {
     type:"COMPANYR_RESET"
   };
 }
-
 
 /**
  * An action creator that fires COMPANYR_SET_MATCH.

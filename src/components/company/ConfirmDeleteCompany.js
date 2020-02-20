@@ -6,12 +6,6 @@ import {resultAction, resetCompany} from "../../redux/actions/resultAction";
 import {deleteCompany} from "../../redux/actions/companyAction";
 // Custom components
 import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
-// Icons
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
-// Bootstrap
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 
 /**
  * A modal to ask confirmation.
@@ -48,8 +42,7 @@ class ConfirmDeleteCompany extends Component {
   }
 
   render() {
-    const {show, deleteStatus, company} = this.props;
-    const modalButtonsDisabled = !(show && !deleteStatus.submitted);
+    const {show, company} = this.props;
     return (
       <ConfirmDeleteModal
         show={show}

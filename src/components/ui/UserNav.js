@@ -1,15 +1,18 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import {logoutAction} from "../../redux/actions/authAction";
-
+// Icons
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase} from "@fortawesome/free-solid-svg-icons";
+// Bootstrap
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Col";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Collapse from "react-bootstrap/Collapse";
+import Fade from "react-bootstrap/Fade";
 
 /**
  * A navbar for users without particular privileges.
@@ -30,17 +33,30 @@ class UserNav extends Component {
   switchSmallNav = (evt) => {
     this.setState({
       smallNavOpen: !this.state.smallNavOpen,
+    }, () => {
+      document.body.classList.add('overlay-open');
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  }
+
+  hideMobile = (evt) => {
+    this.setState({
+      smallNavOpen: false,
+    }, () => {
+      document.body.classList.remove('overlay-open');
     });
   }
 
   render() {
+    const {smallNavOpen} = this.state
     const span = 4;
     const links = [
-      {key:0, privilege:"BASE",             path:"/search",     label:"Cerca"},
-      {key:1, privilege:"BASE",             path:"/saved",      label:"Salvati"},
-      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura"},
-      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi"},
-      {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività"},
+      {key:0, privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
+      {key:1, privilege:"BASE",             path:"/saved",      label:"Salvati",   icon:faStar},
+      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
+      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
+      {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
     ];
 
     const mdNavLinks = links.map((l) => {
@@ -50,47 +66,68 @@ class UserNav extends Component {
       ) : null;
     });
 
-    const sxNavLinks = links.map((l) => {
-      const {key, privilege, path, label} = l;
+    const mobileNavLinks = links.map((l) => {
+      const {key, privilege, path, label, icon} = l;
       return this.props.privileges.includes(privilege) ? (
-        <Col key={key} className="px-0 d-flex justify-content-center">
-          <Nav.Link className="mobile-collapse-link" as={NavLink} to={path}>{label}</Nav.Link>
-        </Col>
+        <Row key={key} className="py-1 mobile-navlink">
+          <Col>
+            <Nav.Link className="mobile-collapse-link px-0" as={NavLink} to={path} onClick={this.hideMobile}>
+              <FontAwesomeIcon icon={icon} className="mr-2" />
+              {label}
+            </Nav.Link>
+          </Col>
+        </Row>
       ) : null;
     });
 
     return (
-      <Navbar bg="primary" variant="dark" expand="md">
-        <Container>
-          <Row>
-            <Col className="px-0 px-md-3 justify-content-center text-center" xs={{order:2, span}} md={{order:1, span:"auto"}}>
-              <Navbar.Brand className="mr-0">PCTOkay!</Navbar.Brand>
-            </Col>
-
-            <Col className="px-0 px-md-3" xs={{order:3, span}} md={{order:2}}>
-              <Navbar.Collapse className="float-right float-md-left">
-                <Nav>
-                  {mdNavLinks}
-                </Nav>
-              </Navbar.Collapse>
-
-              <Button className="d-xs-block d-md-none float-right toggler" onClick={this.switchSmallNav}>
-                <span className="navbar-toggler-icon"></span>
-              </Button>
-            </Col>
-
-            <Col className="px-0 px-md-3" xs={{order:1, span}} md={{order:3}}>
-              <Button className="logout-btn float-left float-md-right" as={NavLink} to="/" onClick={this.props.logout}>Logout</Button>
-            </Col>
-          </Row>
-
-          <Collapse in={this.state.smallNavOpen} className="d-xs-block d-md-none">
+      <Fragment>
+        <Navbar bg="primary" variant="dark" expand="md">
+          <Container>
             <Row>
-              {sxNavLinks}
+              <Col className="px-0 px-md-3 justify-content-center text-center" xs={{order:2, span}} md={{order:1, span:"auto"}}>
+                <Navbar.Brand className="mr-0">PCTOkay!</Navbar.Brand>
+              </Col>
+
+              <Col className="px-0 px-md-3" xs={{order:1, span}} md={{order:2}}>
+                <Navbar.Collapse className="float-left">
+                  <Nav>
+                    {mdNavLinks}
+                  </Nav>
+                </Navbar.Collapse>
+
+                <Button className="d-xs-block d-md-none float-left toggler" onClick={this.switchSmallNav}>
+                  <FontAwesomeIcon icon={faBars} className="menu-icon" />
+                </Button>
+              </Col>
+
+              <Col className="px-0 px-md-3" xs={{order:3, span}} md={{order:3}}>
+                <Button className="logout-btn float-right float-md-right" as={NavLink} to="/" onClick={this.props.logout}>Logout</Button>
+              </Col>
             </Row>
-          </Collapse>
-        </Container>
-      </Navbar>
+          </Container>
+        </Navbar>
+
+        <Fade in={smallNavOpen} mountOnEnter={true} unmountOnExit={true}>
+          <div className="d-block d-md-none fullscreen-overlay w-100 h-100" onClick={this.hideMobile}>
+          </div>
+        </Fade>
+
+        <div className={"mobile-navbar w-75 h-100 d-md-none " + (smallNavOpen ? "active" : "")}>
+          <Container>
+            <Row className="py-3 mb-2 mobile-header">
+              <Col className="text-center">
+                <h1>
+                  <FontAwesomeIcon icon={faClipboardCheck} className="mr-2" />
+                  PCTOkay!
+                </h1>
+              </Col>
+            </Row>
+
+            {mobileNavLinks}
+          </Container>
+        </div>
+      </Fragment>
     );
   }
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
 import {resultAction, selectCompany} from "./resultAction";
-import {updateSaved} from "./saveAction";
+import {loadSaved} from "./saveAction";
 
 /**
  * An action creator to create a company.
@@ -28,7 +28,7 @@ export function createCompany(name) {
     payload.set("name", name);
     payload.set("fields", "[]");
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
@@ -68,7 +68,7 @@ export function updateCompany(company) {
     payload.set("name", company.name);
     payload.set("fields", JSON.stringify(company.fields));
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
@@ -85,7 +85,7 @@ export function updateCompany(company) {
 /**
  * Updates a company's name.
  *
- * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ * Fires COMPANYR_RESET and SAVEDR_UPDATE, and dispatches resultAction and selectCompany on success.
  *
  * @author Riccardo Sartori
  *
@@ -105,7 +105,7 @@ export function updateName(company, name) {
     payload.set("id", company);
     payload.set("name", name);
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -113,6 +113,13 @@ export function updateName(company, name) {
           dispatch({type: "COMPANYR_RESET"});
           dispatch(resultAction());
           dispatch(selectCompany(company));
+          dispatch({
+            type: "SAVEDR_UPDATE",
+            company: {
+              id: company,
+              name,
+            },
+          });
         }
         else {
           console.log(message);
@@ -128,7 +135,7 @@ export function updateName(company, name) {
 /**
  * Updates a company's name.
  *
- * Fires COMPANYR_RESET and dispatches resultAction and selectCompany on success.
+ * Fires COMPANYR_RESET and SAVEDR_UPDATE, and dispatches resultAction and selectCompany on success.
  *
  * @author Riccardo Sartori
  *
@@ -151,7 +158,7 @@ export function updateField(company, field) {
       value: field.value
     }));
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -159,6 +166,13 @@ export function updateField(company, field) {
           dispatch({type: "COMPANYR_RESET"});
           dispatch(resultAction());
           dispatch(selectCompany(company));
+          dispatch({
+            type: "SAVEDR_UPDATE",
+            company: {
+              id: company,
+              fields: [field],
+            },
+          });
         }
         else {
           console.log(message);
@@ -174,7 +188,7 @@ export function updateField(company, field) {
 /**
  * Deletes a company.
  *
- * Fires CHANGECOMPANYR_END and dispatches updateSaved on success.
+ * Fires CHANGECOMPANYR_END and dispatches loadSaved on success.
  *
  * @author Riccardo Sartori
  *
@@ -194,11 +208,11 @@ export function deleteCompany(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("/api/company"), payload)
+    axios.post(apiUrl("company"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
-        dispatch(updateSaved());
+        dispatch(loadSaved());
       }
     })
     .catch((e) => {

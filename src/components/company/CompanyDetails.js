@@ -11,14 +11,13 @@ import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt, faSpinner, faExclamationTriangle} from "@fortawesome/free-solid-svg-icons";
+import {faPen, faTrashAlt, faSpinner, faExclamationTriangle, faUserTie} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Button from "react-bootstrap/Button";
 
 /**
  * A table showing all of a company's information.
@@ -249,35 +248,35 @@ class CompanyDetails extends Component {
         />
 
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="text-center text-md-left" xs={12} md>
+          <Col className="text-center text-md-left" xs={12} md="auto">
             <h1>
-              <SaveStar company={company} status={company.saved} />{" "}
-              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.startDelete} /> : null}{" "}
+              <SaveStar company={company} status={company.saved} />
+              <FontAwesomeIcon icon={faUserTie} className="icon-button mx-2" onClick={this.redirectToProjects} />
+              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.startDelete} /> : null}
               {canModify ? <FontAwesomeIcon icon={faPen} className="icon-button d-inline-block d-md-none" onClick={this.onClickConstructor(0)} /> : null}
             </h1>
           </Col>
 
-          <Col xs={12} md="auto">
+          <Col>
             {title}
           </Col>
 
-          <Col>
+          <Col xs={12} md="auto" className="d-none d-md-block">
+            <h1>
+              <FontAwesomeIcon icon={faUserTie} className="icon-invisible" />
+              <FontAwesomeIcon icon={faUserTie} className="icon-invisible mx-2" />
+              {canModify ? <FontAwesomeIcon icon={faUserTie} className="icon-invisible mr-2" /> : null}
+            </h1>
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <Table responsive borderless striped>
+            <Table responsive bordered striped className="details-table">
               <tbody>
                 {data}
               </tbody>
             </Table>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Button onClick={this.redirectToProjects}>Hyooo</Button>
           </Col>
         </Row>
       </Container>
@@ -302,11 +301,11 @@ function mapDispatchToProps(dispatch) {
     resetCompany: () => {
       dispatch(resetCompany());
     },
-    updateField: (company, field) => {
-      dispatch(updateField(company, field));
+    updateField: (companyId, field) => {
+      dispatch(updateField(companyId, field));
     },
-    updateName: (company, name) => {
-      dispatch(updateName(company, name));
+    updateName: (companyId, name) => {
+      dispatch(updateName(companyId, name));
     }
   };
 }
