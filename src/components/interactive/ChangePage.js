@@ -78,7 +78,7 @@ class ChangePage extends Component {
         if(i === page) {
           className += "-selected";
         }
-        if(!renderXs.includes(i)) {
+        if(!renderXs.includes(i) && renderMd.includes(i)) {
           className += " d-none d-md-block";
         }
         if(!renderMd.includes(i)) {
