@@ -37,6 +37,14 @@ class CompanyActivities extends Component {
     };
   }
 
+  componentDidUpdate() {
+    const {company, internships, loadInternships} = this.props;
+    const id = parseInt(this.props.match.params.id);
+    if(internships === null && company !== null) {
+      loadInternships(id);
+    }
+  }
+
   selectInternship = (evt) => {
     const index = parseInt(evt.target.value);
     this.setState({

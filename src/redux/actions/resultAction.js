@@ -99,10 +99,10 @@ export function selectCompany(id) {
         });
       }
       else if(res.data.error) {
-      dispatch({
-        type: "COMPANYR_ERROR",
-        error: res.data.message,
-      });
+        dispatch({
+          type: "COMPANYR_ERROR",
+          error: res.data.message,
+        });
       }
     })
     .catch((e) => {
