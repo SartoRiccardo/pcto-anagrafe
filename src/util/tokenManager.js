@@ -17,7 +17,7 @@ export function deleteToken() {
  */
 export function saveToken(token) {
   deleteToken();
-  document.cookie = "token=" + token;
+  if(token) document.cookie = "token=" + token;
 }
 
 /**

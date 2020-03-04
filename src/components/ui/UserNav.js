@@ -57,6 +57,7 @@ class UserNav extends Component {
       {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
       {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
       {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
+      {key:5, privilege:"ADMIN",            path:"/privileges", label:"Privilegi", icon:faSuitcase},
     ];
 
     const mdNavLinks = links.map((l) => {

@@ -13,6 +13,7 @@ import EditStructure from "./structure/EditStructure";
 import CompanyDetails from "./company/CompanyDetails";
 import CompanyActivities from "./company/CompanyActivities";
 import ShowActivities from "./activity/ShowActivities";
+import EditPrivileges from "./ui/EditPrivileges";
 import ShowSaved from "./ui/ShowSaved";
 import Footer from "./ui/Footer";
 
@@ -46,6 +47,7 @@ class App extends Component {
       {privilege: "BASE",             component: <Route key={0} path="/search" component={SearchCompany} />},
       {privilege: "MANAGE_STRUCTURE", component: <Route key={1} path="/structure" component={EditStructure} />},
       {privilege: "MANAGE_STRUCTURE", component: <Route key={8} path="/activities" component={ShowActivities} />},
+      {privilege: "ADMIN",            component: <Route key={9} path="/privileges" component={EditPrivileges} />},
       {privilege: "BASE",             component: <Route key={7} path="/company/:id/projects" component={CompanyActivities} />},
       {privilege: "BASE",             component: <Route key={2} path="/company/:id" component={CompanyDetails} />},
       {privilege: "BASE",             component: <Route key={3} path="/saved" component={ShowSaved} />},
