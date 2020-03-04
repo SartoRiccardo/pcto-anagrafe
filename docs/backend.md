@@ -143,3 +143,27 @@ Gestisce tutto quello che riguarda la tabella `Internship`.
 | Campo | Tipo | Descrizione |
 | ----- | ---- | ----------- |
 | `id` | `int` | L'ID dell'esperienza. |
+
+## /api/privileges
+
+Gestisce tutto quello che riguarda la tabella `Privilege`.
+
+### GET
+
+| Campo | Tipo | Descrizione |
+| ----- | ---- | ----------- |
+| `user` | `int` | L'ID dell'utente. |
+
+### POST
+
+| Campo | Tipo | Descrizione |
+| ----- | ---- | ----------- |
+| `user` | `int` | L'ID dell'utente. |
+| `privilege` | `string` | I permessi da dare. |
+
+### DELETE
+
+| Campo | Tipo | Descrizione |
+| ----- | ---- | ----------- |
+| `user` | `int` | L'ID dell'utente. |
+| `privilege` | `string` | I permessi da togliere. |
