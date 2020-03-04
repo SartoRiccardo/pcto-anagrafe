@@ -30,6 +30,8 @@ class ShowActivities extends Component {
       },
       deleting: null,
     };
+
+    document.title = "PCTOKay! Attività";
   }
 
   modify = (id, type) => {
@@ -119,7 +121,7 @@ class ShowActivities extends Component {
             onFinish={this.finishHandler}
           />
         ) : (
-          <h3 className="text-center">
+          <h4>
             {a.name}
             <FontAwesomeIcon
               icon={faPen}
@@ -131,7 +133,7 @@ class ShowActivities extends Component {
               className="icon-button"
               onClick={this.createDelete(a)}
             />
-          </h3>
+          </h4>
         );
 
         const description = modifying.type === "DESCRIPTION" && modifying.id === a.id ? (
@@ -153,8 +155,10 @@ class ShowActivities extends Component {
 
         return (
           <Col key={a.id} xs={12} md={12/2} className="my-2 px-0">
-            <div className="activity-container px-3 pb-2 pt-3 mx-2 shadow-sm">
-              {name}
+            <div className="activity-container px-4 pb-2 pt-3 mx-2 shadow">
+              <div className="mb-3">
+                {name}
+              </div>
               {description}
             </div>
           </Col>

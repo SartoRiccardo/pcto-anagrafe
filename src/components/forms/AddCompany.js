@@ -31,6 +31,8 @@ class AddCompany extends Component {
       error: null,
       loading: false,
     };
+
+    document.title = "PCTOKay! Crea";
   }
 
   changeHandler = (evt) => {

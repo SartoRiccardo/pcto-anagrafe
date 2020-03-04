@@ -45,11 +45,27 @@ class CompanyDetails extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+    else {
+      document.title = `PCTOkay! ${company.name}`;
+    }
 
     this.state = {
       modifying: null,
       deleteStarted: false,
+      initialized: company && company.id === id,
     };
+  }
+
+  componentDidUpdate() {
+    const {initialized} = this.state;
+    const {company} = this.props;
+    const id = parseInt(this.props.match.params.id);
+    if(!initialized && company && company.id === id) {
+      this.setState({
+        initialized: true,
+      });
+      document.title = `PCTOkay! ${company.name}`;
+    }
   }
 
   handleModify = (fieldID) => {

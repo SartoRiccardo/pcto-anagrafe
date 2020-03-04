@@ -25,23 +25,37 @@ class CompanyActivities extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+    else {
+      document.title = `PCTOkay! Attività di ${company.name}`;
+    }
+
     if(!internships || company.id !== id) {
       this.props.loadInternships(id);
     }
+
     if(!initialized) {
       this.props.loadActivities();
     }
 
     this.state = {
       addedInternships: [],
+      initialized: company && company.id === id,
     };
   }
 
   componentDidUpdate() {
     const {company, internships, loadInternships} = this.props;
+    const {initialized} = this.state;
     const id = parseInt(this.props.match.params.id);
     if(internships === null && company !== null) {
       loadInternships(id);
+    }
+
+    if(!initialized && company && company.id === id) {
+      this.setState({
+        initialized: true,
+      });
+      document.title = `PCTOkay! Attività di ${company.name}`;
     }
   }
 

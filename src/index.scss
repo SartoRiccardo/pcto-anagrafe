@@ -13,7 +13,7 @@ $light-green-lighten-4: #dcedc8;
 $red-lighten-4: #ffcdd2;
 $grey-lighten-5: #fafafa;
 $grey: #9e9e9e;
-$HEADERBORDERTEMP: #d7ccc8;
+$brown-lighten-4: #d7ccc8;
 
 html {
   height: 100%;
@@ -212,9 +212,9 @@ svg {
 }
 
 .internship-box {
-  border: 1px solid $grey;
+  border: 1px solid $grey-lighten-5;
   border-radius: 1.5rem;
-  background: #fbfbfb;
+  background-color: white;
 }
 
 .py-2-5 {
@@ -227,15 +227,27 @@ svg {
 }
 
 .activity-container {
-  border: 1px solid $grey;
+  border: 1px solid $grey-lighten-5;
   height: 100%;
-  background-color: $grey-lighten-5;
+  background-color: white;
   border-radius: 1rem;
 }
 
 .internship-card .card-header {
-  background-color: saturate($HEADERBORDERTEMP, 20%);
-  border: 1px solid darken($HEADERBORDERTEMP, 10%);
+  // background-color: saturate($brown-lighten-4, 20%);
+  // border: 1px solid darken($brown-lighten-4, 10%);
+  background-color: rgba(0,0,0,0);
+  border: none;
+}
+
+.card.internship-card {
+  border: none;
+  border-radius: 0;
+}
+
+.card.internship-card .internship-card-body {
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 // Navbar

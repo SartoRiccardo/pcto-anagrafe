@@ -10,6 +10,8 @@ import Container from "react-bootstrap/Container";
  * @author Riccardo Sartori
  */
 function AnonymousPage() {
+  document.title = "PCTOkay!";
+
   return (
     <Fragment>
       <Jumbotron fluid className="text-center">
