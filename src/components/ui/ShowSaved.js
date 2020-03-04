@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {loadSaved} from "../../redux/actions/saveAction";
 // Custom components
 import CompanyResults from "../company/CompanyResults";
-import ChangePage from "../interactive/ChangePage";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
@@ -31,14 +30,7 @@ class ShowSaved extends Component {
   }
 
   render() {
-    const {saved, page, totalResults, resultsPerPage} = this.props;
-
-    const pageSwitcher = <ChangePage
-      page={page}
-      totalResults={totalResults}
-      resultsPerPage={resultsPerPage}
-      reducer="SAVED"
-    />;
+    const {saved} = this.props;
 
     let showContent;
     if(!this.props.initialized) {
@@ -51,9 +43,7 @@ class ShowSaved extends Component {
     else if(saved.length > 0) {
       showContent = (
         <Fragment>
-          {totalResults > 0 ? pageSwitcher : null}
           <CompanyResults results={saved} />
-          {totalResults > 0 ? pageSwitcher : null}
         </Fragment>
       );
     }

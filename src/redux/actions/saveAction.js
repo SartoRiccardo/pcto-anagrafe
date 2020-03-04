@@ -99,7 +99,7 @@ export function saveCompany(company) {
     axios.post(apiUrl("saved"), payload)
     .then((res) => {
       if(res.status === 200) {
-        if(getState().saved.initialized) {
+        if(getState().saved.initialized && !res.data.error) {
           dispatch({type: "SAVEDR_ADD", company});
         }
         dispatch(resultAction());
