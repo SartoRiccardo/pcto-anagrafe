@@ -41,4 +41,21 @@ function isSavedBy($user, $company) {
 
   return $stmt->fetch() != false;
 }
+
+/**
+ * Gets the number of companies saved by an user.
+ * @param  int $user  The user's ID.
+ * @return int        The amount of companies saved.
+ */
+function getNumberOfCompaniesSavedBy($user) {
+  global $dbc;
+
+  $q = "SELECT COUNT(*) AS amount
+          FROM Saved
+          WHERE student = :user";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":user", $user, PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->rowCount() > 0 ? intval($stmt->fetch()["amount"]) : 0;
+}
 ?>

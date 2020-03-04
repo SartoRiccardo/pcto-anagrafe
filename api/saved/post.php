@@ -9,6 +9,16 @@ function saveCompany($user, $id) {
   global $dbc;
 
   if(in_array($id, getCompaniesSavedBy($user))) return true;
+
+  $maxSaved = 50;
+  if(getNumberOfCompaniesSavedBy($user) >= $maxSaved) {
+    return array(
+      "error" => true,
+      "message" => "Puoi salvare massimo $maxSaved aziende."
+    );
+  }
+
+
   $q = "INSERT INTO Saved
           VALUES (:user, :company)";
   $stmt = $dbc->prepare($q);

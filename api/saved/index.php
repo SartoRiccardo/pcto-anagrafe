@@ -43,11 +43,9 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
 
     if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
-      saveCompany($_POST["user"], $_POST["id"]);
-      echo json_encode(array(
-        "error" => false,
-        "message" => ""
-      ));
+      echo json_encode(
+        saveCompany($_POST["user"], $_POST["id"])
+      );
     }
     break;
 
