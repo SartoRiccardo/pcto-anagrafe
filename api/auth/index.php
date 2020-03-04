@@ -3,6 +3,7 @@ include "../config/authconfig.php";
 include "../database/database.php";
 include "./login.php";
 include "./privileges.php";
+include "./get.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header('Content-Type: application/json');
@@ -47,17 +48,85 @@ if(isset($_POST["login"]) && isset($_POST["pswd"])) {
 
     $json["privileges"] = getPrivilegesFor($id);
     echo json_encode($json);
+    die();
   }
 }
-else if(isset($_POST["token"]) && is_numeric($_POST["token"])) {
-  $token = intval($_POST["token"]);
-  if(isRegistered($token)) {
-    $permissions = getPrivilegesFor($token);
-    $json = array(
-      "token"=>$token,
-      "privileges"=>$permissions
-    );
-    echo json_encode($json);
-  }
+
+$user = isset($_POST["auth"]) && is_numeric($_POST["auth"]) ? intval($_POST["auth"]) : null;
+if(!$user) {
+  die();
+}
+
+$request_method = isset($_POST["REQUEST_METHOD"]) ? $_POST["REQUEST_METHOD"] : null;
+switch($request_method) {
+  case "GET":
+    if(!hasPermission($user, "ADMIN")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "Privilegi insufficenti."
+      ));
+      die();
+    }
+
+    if(isset($_POST["user"]) && is_numeric($_POST["user"])) {
+      echo json_encode(
+        getPrivilegesFor($_POST["user"])
+      );
+    }
+    else if(!isset($_POST["user"])){
+      $users = getUsersWithPrivileges();
+      
+      $ret = array();
+      foreach ($users as $id) {
+        array_push($ret, array(
+          "user" => getUserById($id),
+          "privileges" => getPrivilegesFor($id)
+        ));
+      }
+      echo json_encode($ret);
+    }
+    die();
+
+  case "POST":
+    if(!hasPermission($user, "ADMIN")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "Privilegi insufficenti."
+      ));
+      die();
+    }
+
+    if(isset($_POST["user"]) && isset($_POST["privilege"]) && is_numeric($_POST["user"])) {
+      echo json_encode(
+        grantPrivilegeTo($_POST["user"], $_POST["privilege"])
+      );
+    }
+    die();
+
+  case "DELETE":
+    if(!hasPermission($user, "ADMIN")) {
+      echo json_encode(array(
+        "error" => true,
+        "message" => "Privilegi insufficenti."
+      ));
+      die();
+    }
+
+    if(isset($_POST["user"]) && isset($_POST["privilege"]) && is_numeric($_POST["user"])) {
+      echo json_encode(
+        revokePrivilegeTo($_POST["user"], $_POST["privilege"])
+      );
+    }
+    die();
+
+  default:
+    if(isRegistered($user)) {
+      $permissions = getPrivilegesFor($user);
+      $json = array(
+        "token" => $user,
+        "privileges" => $permissions
+      );
+      echo json_encode($json);
+    }
 }
 ?>
