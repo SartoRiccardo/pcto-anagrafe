@@ -1,7 +1,10 @@
 import React, {Component, Fragment} from "react";
 import {NavLink} from "react-router-dom";
+// HOCs and actions
 import {connect} from "react-redux";
 import {logoutAction} from "../../redux/actions/authAction";
+// Custom components
+import UserInfo from "./UserInfo";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase, faUnlockAlt} from "@fortawesome/free-solid-svg-icons";
@@ -105,7 +108,7 @@ class UserNav extends Component {
               </Col>
 
               <Col className="px-0 px-md-3" xs={{order:3, span}} md={{order:3}}>
-                <Button className="logout-btn float-right float-md-right" as={NavLink} to="/" onClick={this.props.logout}>Logout</Button>
+                <UserInfo className="float-right float-md-right" />
               </Col>
             </Row>
           </Container>

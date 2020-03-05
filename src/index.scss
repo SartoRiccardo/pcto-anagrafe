@@ -71,6 +71,34 @@ body.overlay-open {
   box-shadow: none !important;
 }
 
+.user-id-label {
+  font-size: 1rem !important;
+}
+
+.user-id-label.button {
+  background-color: rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+}
+
+#user-id-show:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.popover.user-info .popover-header {
+  background-color: $primary;
+  color: white;
+}
+
+.popover.user-info .popover-header::before {
+  border: none;
+}
+
+.popover.user-info .arrow::after {
+  border-bottom-color: $primary;
+}
+
 // Page selectors & secondary buttons
 
 .btn-secondary:not(:hover):not(.page-selector-selected):focus, .btn-secondary:not(:active) {
@@ -160,7 +188,12 @@ svg {
 }
 
 .icon-button:hover {
-  color: rgba(0, 0, 0, 1);
+  color: black;
+}
+
+.icon-button.bordered {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.10);
 }
 
 .icon-transparent {
@@ -314,6 +347,12 @@ svg {
   top: 0;
   bottom: 0;
   left: 0;
+}
+
+.btn.fab {
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
 
 @import '~bootstrap/scss/bootstrap';

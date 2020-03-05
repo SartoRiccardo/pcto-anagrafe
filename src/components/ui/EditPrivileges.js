@@ -131,8 +131,8 @@ class EditPrivileges extends Component {
   }
 
   render() {
-    const {privileges, initialized, dumping, newUser, ready, users} = this.props;
-    const {changes, showSave, addedUsers} = this.state;
+    const {privileges, initialized, dumping, newUser, ready} = this.props;
+    const {changes, addedUsers} = this.state;
 
     if(!initialized || dumping || !(dumping || ready)) {
       return (

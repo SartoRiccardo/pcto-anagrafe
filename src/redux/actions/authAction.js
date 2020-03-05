@@ -15,10 +15,12 @@ function attemptLogin(dispatch, data) {
   axios.post(apiUrl("auth"), data)
   .then((res) => {
     if(res.status === 200 && !res.data.error) {
-      const {token, privileges} = res.data;
+      const {token, user, privileges} = res.data;
+
       dispatch({
         type: "AUTHR_LOGIN",
         token,
+        user,
         privileges,
       });
     }
