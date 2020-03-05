@@ -40,12 +40,13 @@ class CompanyActivities extends Component {
     this.state = {
       addedInternships: [],
       initialized: company && company.id === id,
+      currentId: id,
     };
   }
 
   componentDidUpdate() {
     const {company, internships, loadInternships} = this.props;
-    const {initialized} = this.state;
+    const {initialized, currentId} = this.state;
     const id = parseInt(this.props.match.params.id);
     if(internships === null && company !== null) {
       loadInternships(id);
@@ -56,6 +57,16 @@ class CompanyActivities extends Component {
         initialized: true,
       });
       document.title = `PCTOkay! Attività di ${company.name}`;
+    }
+
+    if(currentId !== id) {
+      this.setState({
+        initialized: false,
+        currentId: id,
+      });
+      this.props.resetCompany();
+      this.props.selectCompany(id);
+      document.title = `PCTOkay!`;
     }
   }
 
