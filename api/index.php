@@ -6,6 +6,8 @@ require "./config/dbconfig.php";
 include "./company/api.php";
 
 header("Access-Control-Allow-Origin: $cors");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
 
 Flight::register("db", "PDO", array("mysql:host=$dbhost;dbname=$database;charset=utf8", $dbuser, $dbpswd),
@@ -14,22 +16,6 @@ Flight::register("db", "PDO", array("mysql:host=$dbhost;dbname=$database;charset
   }
 );
 $dbc = Flight::db();
-
-// Flight::route('GET /', function(){
-//     echo "GET request";
-// });
-//
-// Flight::route('POST /', function(){
-//     echo 'POST request';
-// });
-//
-// Flight::route('PUT /', function(){
-//     echo 'PUT request';
-// });
-//
-// Flight::route('DELETE /', function(){
-//     echo 'DELETE request';
-// });
 
 Flight::map('notFound', function(){
     include './404.html';

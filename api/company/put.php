@@ -43,8 +43,8 @@ function updateCompany($id, $name, $fields) {
   }
 
   return array(
-    "error"=>false,
-    "message"=>"Azienda aggiornata."
+    "error" => false,
+    "message" => "Azienda aggiornata."
   );
 }
 
@@ -60,8 +60,8 @@ function updateCompanyName($id, $name) {
 
   if(strlen($name) == 0) {
     return array(
-      "error" => false,
-      "message" => "Cannot accept empty name."
+      "error" => true,
+      "message" => "Nome vuoto."
     );
   }
 
@@ -76,7 +76,7 @@ function updateCompanyName($id, $name) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Nome dell'azienda $id aggiornato a $name." : "Errore nell'aggiornamento del nome."
+    "message" => $success ? "" : "Errore nell'aggiornamento del nome."
   );
 }
 
@@ -137,9 +137,7 @@ function updateCompanyField($companyId, $fieldId, $fieldValue) {
 
   return array(
     "error" => !$success,
-    "message" => $success
-      ? "Campo $fieldId dell'azienda $companyId aggiornato a $fieldValue."
-      : "Errore nell'aggiornamento del campo."
+    "message" => $success ? "" : "Errore nell'aggiornamento del campo."
   );
 }
 ?>

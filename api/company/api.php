@@ -1,9 +1,15 @@
 <?php
-require "./company/get.php";
 require "./auth/privileges.php";
+
+require "./company/get.php";
+require "./company/post.php";
+require "./company/put.php";
+require "./company/delete.php";
+
 require "./saved/get.php";
 
-Flight::route('GET /@auth/company/@id:[0-9]+', function($auth, $id){
+// GET Company by ID
+Flight::route("GET /@auth/company/@id:[0-9]+", function($auth, $id){
   $errorMessage = null;
 
   if(!hasPermission($auth, "BASE")) {
@@ -28,7 +34,10 @@ Flight::route('GET /@auth/company/@id:[0-9]+', function($auth, $id){
   echo json_encode($res);
 });
 
-Flight::route('GET /@auth/company', function($auth, $request){
+// GET Company by search
+Flight::route("GET /@auth/company", function($auth, $request){
+  global $NO_PAGE;
+
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
@@ -38,11 +47,11 @@ Flight::route('GET /@auth/company', function($auth, $request){
   }
 
   if(!isset($req->query["search"])) {
-    $errorMessage = "TEMP ERROR MESSAGE";
+    $errorMessage = "Ricerca assente.";
   }
   $search = json_decode($req->query["search"], true);
   if(json_last_error() == JSON_ERROR_SYNTAX) {
-    $errorMessage = "TEMP ERROR MESSAGE";
+    $errorMessage = "Ricerca non ben formattata.";
   }
 
   $page = isset($req->query["page"]) && is_numeric($req->query["page"]) ? (
@@ -63,3 +72,130 @@ Flight::route('GET /@auth/company', function($auth, $request){
 
   echo json_encode($res);
 }, true);
+
+// POST Create Company
+Flight::route("POST /@auth/company", function($auth, $request) {
+  $req = Flight::request();
+  $res = array();
+  $errorMessage = null;
+
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $name = null;
+  if(!isset($req->query["name"]) || strlen($req->query["name"]) == 0) {
+    $errorMessage = "Nome assente o invalido.";
+  }
+  else {
+    $name = $req->query["name"];
+  }
+
+  $fields = [];
+  if(isset($req->query["fields"]) && !is_null($paramFields = json_decode($req->query["fields"], true))) {
+    $fields = $paramFields;
+  }
+
+  if(is_null($errorMessage)) {
+    echo json_encode(insertCompany($name, $fields));
+  }
+  else {
+    echo json_encode(array(
+      "error" => true,
+      "message" => $errorMessage
+    ));
+  }
+}, true);
+
+// PUT Update Company
+Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
+  $req = Flight::request();
+  $res = array();
+  $errorMessage = null;
+
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $name = (isset($req->query["name"]) && strlen($req->query["name"]) >= 0) ? $req->query["name"] : null;
+  $fields = (isset($req->query["fields"]) && !is_null(json_decode($req->query["fields"], true))) ?
+    json_decode($req->query["fields"], true) : null;
+
+  if(is_null($fields)) {
+    if(isset($req->query["fields"])) {
+      $errorMessage = "Campi invalidi.";
+      $res = array(
+        "error" => true,
+        "message" => $errorMessage
+      );
+    }
+    else {
+      // Pass it on
+      return true;
+    }
+  }
+  else if(!is_null($name)) {
+    $res = updateCompany($id, $name, $fields);
+  }
+  else {
+    $errorMessage = "Campi e nome assenti o invalidi.";
+    $res = array(
+      "error" => true,
+      "message" => $errorMessage
+    );
+  }
+
+  echo json_encode($res);
+}, true);
+
+// PUT Update Company Name/Field
+Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
+  $req = Flight::request();
+  $res = array();
+  $errorMessage = null;
+
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $name = (isset($req->query["name"]) && strlen($req->query["name"]) >= 0) ? $req->query["name"] : null;
+  $field = null;
+  if(isset($req->query["id"]) && is_numeric($req->query["id"]) && isset($req->query["value"])) {
+    $field = array(
+      "id" => $req->query["id"],
+      "value" => $req->query["value"]
+    );
+  }
+
+  if(!is_null($name)) {
+    $res = updateCompanyName($id, $name);
+  }
+  else if(!is_null($field)) {
+    $res = updateCompanyField($id, $field["id"], $field["value"]);
+  }
+  else {
+    $errorMessage = "Nome o campo assenti o invalidi.";
+    $res = array(
+      "error" => true,
+      "message" => $errorMessage
+    );
+  }
+
+  echo json_encode($res);
+}, true);
+
+// DELETE Company
+Flight::route("DELETE /@auth/company/@id:[0-9]+", function($auth, $id) {
+  $res = array();
+  $errorMessage = null;
+
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $success = deleteCompanyById($id);
+  echo json_encode(array(
+    "error" => !$success,
+    "message" => $success ? "" : "Si è effettuato un errore nell'eliminazione dell'azienda."
+  ));
+});

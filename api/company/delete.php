@@ -1,8 +1,8 @@
 <?php
 /**
  * Deletes a company
- * @param  int $id  The company's ID.
- * @return array    A message and if there were any errors.
+ * @param  int     $id  The company's ID.
+ * @return boolean      If the deletion was successful.
  */
 function deleteCompanyById($id) {
   global $dbc;
@@ -19,11 +19,6 @@ function deleteCompanyById($id) {
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
-  $success = $stmt->rowCount() > 0;
-
-  return array(
-    "error" => !$success,
-    "message" => $success ? "" : "Si è effettuato un errore nell'eliminazione dell'azienda."
-  );
+  return $stmt->rowCount() > 0;
 }
 ?>
