@@ -27,13 +27,17 @@ switch ($_POST["REQUEST_METHOD"]) {
     }
 
     if(isset($_POST["id"]) && is_numeric($_POST["id"])) {
-      echo json_encode(
-        getUserById(intval($_POST["id"]))
+      echo json_encode(array(
+          "user" => getUserById(intval($_POST["id"]))
+        )
       );
     }
     die();
 
   default:
-    // Send 404
-    break;
+    echo json_encode(array(
+        "user" => getUserById($user)
+      )
+    );
+    die();
 }

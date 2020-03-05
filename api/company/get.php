@@ -1,4 +1,6 @@
 <?php
+$NO_PAGE = -1;
+
 /**
  * Gets a company by its ID.
  * @param  int     $id  The company's ID.
@@ -48,11 +50,11 @@ function getCompanyById($id) {
  * @param  int       $page    The current search page. If negative, all results are returned.
  * @return Company[]          The companies that match the search.
  */
-function getCompaniesBySearch($search, $page=-1) {
-  global $dbc;
+function getCompaniesBySearch($search, $page=null) {
+  global $dbc, $NO_PAGE;
 
   if(count($search) == 0) return array();
-
+  $page = is_null($page) ? $NO_PAGE : $page;
 
   $uniqueFields = groupFields($search);
   $params = array();
@@ -279,4 +281,3 @@ function fieldIsValid($id, $value) {
   $reg = $ret["regex"];
   return preg_match("/^$reg$/", $value);
 }
-?>

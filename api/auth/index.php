@@ -47,6 +47,7 @@ if(isset($_POST["login"]) && isset($_POST["pswd"])) {
     );
 
     $json["privileges"] = getPrivilegesFor($id);
+    $json["user"] = getUserById($id);
     echo json_encode($json);
     die();
   }
@@ -75,7 +76,7 @@ switch($request_method) {
     }
     else if(!isset($_POST["user"])){
       $users = getUsersWithPrivileges();
-      
+
       $ret = array();
       foreach ($users as $id) {
         array_push($ret, array(
@@ -122,9 +123,11 @@ switch($request_method) {
   default:
     if(isRegistered($user)) {
       $permissions = getPrivilegesFor($user);
+      $userData = getUserById($user);
       $json = array(
         "token" => $user,
-        "privileges" => $permissions
+        "privileges" => $permissions,
+        "user" => $userData
       );
       echo json_encode($json);
     }
