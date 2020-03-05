@@ -76,7 +76,7 @@ export function initLogin() {
     }
 
     let payload = new FormData();
-    payload.set("token", token);
+    payload.set("auth", token);
     attemptLogin(dispatch, payload);
   };
 }

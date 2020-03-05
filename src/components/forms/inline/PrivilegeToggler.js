@@ -8,14 +8,10 @@ class PrivilegeToggler extends Component {
     super(props);
 
     const {selected} = this.props;
-    this.state = {
-      selected: selected ? selected : [],
-    };
   }
 
   changeHandler = (evt) => {
-    const {onChange, onSelect, onBlur} = this.props;
-    const {selected} = this.state;
+    const {onChange, onSelect, onBlur, selected} = this.props;
 
     const difference = evt.length > selected.length ? (
       evt.filter(option => !selected.includes(option))
@@ -52,7 +48,7 @@ class PrivilegeToggler extends Component {
     });
 
     return (
-      <ToggleButtonGroup type="checkbox" defaultValue={selected} onChange={this.changeHandler}>
+      <ToggleButtonGroup type="checkbox" value={selected} onChange={this.changeHandler}>
         {buttons}
       </ToggleButtonGroup>
     );

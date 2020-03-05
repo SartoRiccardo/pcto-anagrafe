@@ -5,6 +5,7 @@ import authReducer from "./authReducer";
 import savedReducer from "./savedReducer";
 import changeCompanyReducer from "./changeCompanyReducer";
 import activityReducer from "./activityReducer";
+import privilegeReducer from "./privilegeReducer";
 import {combineReducers} from "redux";
 
 /**
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   saved: savedReducer,
   changeCompany: changeCompanyReducer,
   activity: activityReducer,
+  privilege: privilegeReducer,
 });
 
 export default rootReducer;

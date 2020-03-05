@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
+import {grantPermission, revokePermission, initPermissions} from "../../redux/actions/privilegeAction";
 // Custom components
 import PrivilegeToggler from "../forms/inline/PrivilegeToggler";
 import SearchUser from "../forms/inline/SearchUser";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUserGraduate, faChalkboardTeacher} from "@fortawesome/free-solid-svg-icons";
+import {faUserGraduate, faChalkboardTeacher, faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -20,6 +21,11 @@ class EditPrivileges extends Component {
   constructor(props) {
     super(props);
 
+    const {initialized} = this.props;
+    if(!initialized) {
+      this.props.initPermissions();
+    }
+
     this.state = {
       changes: [],
       addedUsers: [],
@@ -27,10 +33,6 @@ class EditPrivileges extends Component {
 
     document.title = "PCTOkay! Privilegi";
   }
-
-  // componentDidUpdate() {
-  //   console.table(this.state.changes);
-  // }
 
   selectHandler = (user) => {
     return (privilege) => {
@@ -88,18 +90,30 @@ class EditPrivileges extends Component {
     for(const c of changes) {
       const {user, privilege, action} = c;
       if(action === "GRANT") {
-        this.props.grantPermission();
+        this.props.grantPermission(user, privilege);
       }
       else if(action === "REVOKE") {
-        this.props.revokePermission();
+        this.props.revokePermission(user, privilege);
       }
     }
     this.props.endDump();
+
+    this.setState({
+      changes: [],
+    });
   }
 
   render() {
-    const {privileges, users} = this.props;
+    const {privileges, initialized, dumping, users} = this.props;
     const {changes, showSave} = this.state;
+
+    if(!initialized || dumping) {
+      return (
+        <Container className="d-flex justify-content-center">
+          <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+        </Container>
+      );
+    }
 
     const privilegeTypes = [
       "MANAGE_COMPANY",
@@ -113,7 +127,16 @@ class EditPrivileges extends Component {
 
     const userForms = privileges.map((p) => {
       const {name, surname, status, id} = p.user;
-      const userPrivileges = p.privileges;
+      let userPrivileges = p.privileges;
+      const userChanges = changes.filter((c) => c.user === id);
+      for(const uc of userChanges) {
+        if(uc.action === "GRANT") {
+          userPrivileges = [...userPrivileges, uc.privilege];
+        }
+        else if(uc.action === "REVOKE") {
+          userPrivileges = userPrivileges.filter((pvg) => pvg !== uc.privilege);
+        }
+      }
 
       let match = null;
       for(const si of statusIcons) {
@@ -180,17 +203,11 @@ class EditPrivileges extends Component {
 }
 
 function mapStateToProps(state) {
+  const {initialized, dumping, privileges} = state.privilege;
   return {
-    privileges: [
-      {
-        user: {name:"Riccardo", surname:"Sartori", status:"S", id:1},
-        privileges: ["MANAGE_COMPANY", "MANAGE_STRUCTURE"],
-      },
-      {
-        user: {name:"Easy", surname:"User", status:"S", id:2},
-        privileges: ["MANAGE_COMPANY"],
-      },
-    ],
+    privileges,
+    initialized,
+    dumping,
   };
 }
 
@@ -199,15 +216,18 @@ function mapDispatchToProps(dispatch) {
     startDump: () => {
       dispatch({type: "PRIVILEGER_START_DUMP"});
     },
-    grantPermission: () => {
-
+    grantPermission: (user, privilege) => {
+      dispatch(grantPermission(user, privilege));
     },
-    revokePermission: () => {
-
+    revokePermission: (user, privilege) => {
+      dispatch(revokePermission(user, privilege));
     },
     endDump: () => {
       dispatch({type: "PRIVILEGER_END_DUMP"});
     },
+    initPermissions: () => {
+      dispatch(initPermissions());
+    }
   };
 }
 

@@ -138,8 +138,6 @@ class FieldCard extends Component {
 
   undoChanges = (evt) => {
     const {original} = this.props;
-    console.table(original);
-    console.table(this.state.field)
     if(!original) {
       return;
     }

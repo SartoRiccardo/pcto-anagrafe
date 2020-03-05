@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {logoutAction} from "../../redux/actions/authAction";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase} from "@fortawesome/free-solid-svg-icons";
+import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase, faUnlockAlt} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
@@ -52,23 +52,23 @@ class UserNav extends Component {
     const {smallNavOpen} = this.state
     const span = 4;
     const links = [
-      {key:0, privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
-      {key:1, privilege:"BASE",             path:"/saved",      label:"Salvati",   icon:faStar},
-      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
-      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
-      {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
-      {key:5, privilege:"ADMIN",            path:"/privileges", label:"Privilegi", icon:faSuitcase},
+      {privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
+      {privilege:"BASE",             path:"/saved",      label:"Salvati",   icon:faStar},
+      {privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
+      {privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
+      {privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
+      {privilege:"ADMIN",            path:"/privileges", label:"Privilegi", icon:faUnlockAlt},
     ];
 
-    const mdNavLinks = links.map((l) => {
-      const {key, privilege, path, label} = l;
+    const mdNavLinks = links.map((l, key) => {
+      const {privilege, path, label} = l;
       return this.props.privileges.includes(privilege) ? (
         <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>
       ) : null;
     });
 
-    const mobileNavLinks = links.map((l) => {
-      const {key, privilege, path, label, icon} = l;
+    const mobileNavLinks = links.map((l, key) => {
+      const {privilege, path, label, icon} = l;
       return this.props.privileges.includes(privilege) ? (
         <Row key={key} className="py-1 mobile-navlink">
           <Col>
