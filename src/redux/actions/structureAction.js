@@ -22,7 +22,7 @@ function sendField(field, isNew) {
     payload.set("name", field.name);
     payload.set("regex", field.regex);
 
-    axios.post(apiUrl("structure"), payload)
+    axios.post(apiUrl("/structure"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
@@ -60,7 +60,7 @@ export function deleteField(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("structure"), payload)
+    axios.post(apiUrl("/structure"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
@@ -102,7 +102,7 @@ export function reloadStructure() {
     payload.set("user", getToken());
     payload.set("REQUEST_METHOD", "GET");
 
-    axios.post(apiUrl("structure"), payload)
+    axios.post(apiUrl("/structure"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const fields = res.data;

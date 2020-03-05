@@ -18,7 +18,7 @@ export function loadActivities() {
     payload.set("user", getToken());
     payload.set("REQUEST_METHOD", "GET");
 
-    axios.post(apiUrl("activity"), payload)
+    axios.post(apiUrl("/activity"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const activities = res.data;
@@ -58,7 +58,7 @@ function changeActivity(id, name, description) {
       payload.set("description", description);
     }
 
-    axios.post(apiUrl("activity"), payload)
+    axios.post(apiUrl("/activity"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -120,7 +120,7 @@ export function addActivity(name, description) {
     payload.set("name", name);
     payload.set("description", description);
 
-    axios.post(apiUrl("activity"), payload)
+    axios.post(apiUrl("/activity"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {id} = res.data;
@@ -155,7 +155,7 @@ export function deleteActivity(id) {
     payload.set("REQUEST_METHOD", "DELETE");
     payload.set("id", id);
 
-    axios.post(apiUrl("activity"), payload)
+    axios.post(apiUrl("/activity"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type:"ACTIVITYR_DELETE", id});

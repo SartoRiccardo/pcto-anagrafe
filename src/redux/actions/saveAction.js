@@ -21,18 +21,14 @@ export function loadSavedById(saved) {
 
     dispatch({type: "SAVEDR_START_DUMP"});
     for(let i = 0; i < saved.length; i++) {
-      let payload = new FormData();
-      payload.set("REQUEST_METHOD", "GET");
-      payload.set("user", getToken());
-      payload.set("id", saved[i]);
-
       const actionId = Math.random();
       dispatch({type: "SAVEDR_BEGIN_ACTION", actionId});
 
-      axios.post(apiUrl("company"), payload)
+      axios.get(apiUrl(`/company/${saved[i]}`, getToken()))
       .then((res) => {
-        if(res.status === 200) {
-          dispatch({type: "SAVEDR_ADD", company: res.data});
+        if(res.status === 200 && !res.data.error) {
+          const {result} = res.data;
+          dispatch({type: "SAVEDR_ADD", company: result});
           dispatch({type: "SAVEDR_END_ACTION", actionId});
         }
       })
@@ -63,7 +59,7 @@ export function loadSaved() {
     payload.set("REQUEST_METHOD", "GET");
     payload.set("user", getToken());
 
-    axios.post(apiUrl("saved"), payload)
+    axios.post(apiUrl("/saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch(loadSavedById(res.data));
@@ -96,7 +92,7 @@ export function saveCompany(company) {
     payload.set("user", getToken());
     payload.set("id", company.id);
 
-    axios.post(apiUrl("saved"), payload)
+    axios.post(apiUrl("/saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized && !res.data.error) {
@@ -133,7 +129,7 @@ export function deleteSave(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("saved"), payload)
+    axios.post(apiUrl("/saved"), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {

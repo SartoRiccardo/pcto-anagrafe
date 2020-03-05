@@ -12,7 +12,7 @@ import {getToken} from "../../util/tokenManager";
  * @param  {FormData} data      The data to send.
  */
 function attemptLogin(dispatch, data) {
-  axios.post(apiUrl("auth"), data)
+  axios.post(apiUrl("/auth"), data)
   .then((res) => {
     if(res.status === 200 && !res.data.error) {
       const {token, user, privileges} = res.data;

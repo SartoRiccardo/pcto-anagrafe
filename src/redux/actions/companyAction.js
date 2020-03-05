@@ -28,7 +28,7 @@ export function createCompany(name) {
     payload.set("name", name);
     payload.set("fields", "[]");
 
-    axios.post(apiUrl("company"), payload)
+    axios.post(apiUrl("/company"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
@@ -68,7 +68,7 @@ export function updateCompany(company) {
     payload.set("name", company.name);
     payload.set("fields", JSON.stringify(company.fields));
 
-    axios.post(apiUrl("company"), payload)
+    axios.post(apiUrl("/company"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
@@ -105,7 +105,7 @@ export function updateName(company, name) {
     payload.set("id", company);
     payload.set("name", name);
 
-    axios.post(apiUrl("company"), payload)
+    axios.post(apiUrl("/company"), payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -158,7 +158,7 @@ export function updateField(company, field) {
       value: field.value
     }));
 
-    axios.post(apiUrl("company"), payload)
+    axios.post(apiUrl("/company"), payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -208,7 +208,7 @@ export function deleteCompany(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("company"), payload)
+    axios.post(apiUrl("/company"), payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});

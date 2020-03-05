@@ -21,7 +21,7 @@ export function loadInternshipsFor(company) {
     payload.set("user", getToken());
     payload.set("company", company);
 
-    axios.post(apiUrl("internship"), payload)
+    axios.post(apiUrl("/internship"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "COMPANYR_SET_INTERNSHIPS", internships: res.data});
@@ -54,7 +54,7 @@ export function changeInternship(id, student) {
     payload.set("id", id);
     payload.set("student", student);
 
-    axios.post(apiUrl("internship"), payload)
+    axios.post(apiUrl("/internship"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -88,7 +88,7 @@ export function deleteInternship(id) {
     payload.set("user", getToken());
     payload.set("id", id);
 
-    axios.post(apiUrl("internship"), payload)
+    axios.post(apiUrl("/internship"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "COMPANYR_DELETE_INTERNSHIP", id});
@@ -123,7 +123,7 @@ export function addInternship(company, activity, student, year) {
     payload.set("student", student);
     payload.set("year", year);
 
-    axios.post(apiUrl("internship"), payload)
+    axios.post(apiUrl("/internship"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
