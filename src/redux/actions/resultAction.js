@@ -36,19 +36,13 @@ export function resultAction(arg0=null) {
       return;
     }
 
-    // let payload = new FormData();
-    // payload.set("REQUEST_METHOD", "GET");
-    // payload.set("user", getToken());
-    // payload.set("search", JSON.stringify(searchReq));
-    // payload.set("page", getState().search.page);
-
     const payload = {
       params: {
         search: JSON.stringify(searchReq),
-        page: getState().search.page
-      }
+        page: getState().search.page,
+      },
     }
-
+    
     axios.get(apiUrl("/company", getToken()), payload)
       .then((res) => {
         const {lastSearchId} = getState().search;
@@ -66,6 +60,7 @@ export function resultAction(arg0=null) {
         }
         else if(res.data.error) {
           // Handle error...
+          console.log(res.data.message);
         }
       })
       .catch((e) => {

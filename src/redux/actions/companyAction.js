@@ -22,16 +22,20 @@ export function createCompany(name) {
     }
     dispatch({type: "CHANGECOMPANYR_START", request:"add"});
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "POST");
-    payload.set("user", getToken());
-    payload.set("name", name);
-    payload.set("fields", "[]");
+    const payload = {
+      params: {
+        name,
+        fields: "[]",
+      },
+    };
 
-    axios.post(apiUrl("/company"), payload)
+    axios.post(apiUrl("/company", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
+      }
+      else if(res.status === 200 && res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {
@@ -61,14 +65,14 @@ export function updateCompany(company) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "PUT");
-    payload.set("user", getToken());
-    payload.set("id", company.id);
-    payload.set("name", company.name);
-    payload.set("fields", JSON.stringify(company.fields));
+    const payload = {
+      params: {
+        name: company.name,
+        fields: JSON.stringify(company.fields),
+      },
+    };
 
-    axios.post(apiUrl("/company"), payload)
+    axios.put(apiUrl(`/company/${company.id}`, getToken()), null, payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
@@ -99,13 +103,11 @@ export function updateName(company, name) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "PUT");
-    payload.set("user", getToken());
-    payload.set("id", company);
-    payload.set("name", name);
+    const payload = {
+      params: {name},
+    };
 
-    axios.post(apiUrl("/company"), payload)
+    axios.put(apiUrl(`/company/${company}`, getToken()), null, payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -149,16 +151,13 @@ export function updateField(company, field) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "PUT");
-    payload.set("user", getToken());
-    payload.set("id", company);
-    payload.set("field", JSON.stringify({
-      id: field.id,
-      value: field.value
-    }));
+    const payload = {
+      params: {
+        ...field,
+      },
+    };
 
-    axios.post(apiUrl("/company"), payload)
+    axios.put(apiUrl(`/company/${company}`, getToken()), null, payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -203,12 +202,7 @@ export function deleteCompany(id) {
 
     dispatch({type: "CHANGECOMPANYR_START", request:"delete"});
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "DELETE");
-    payload.set("user", getToken());
-    payload.set("id", id);
-
-    axios.post(apiUrl("/company"), payload)
+    axios.delete(apiUrl(`/company/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
