@@ -7,14 +7,14 @@ include "../auth/get.php";
 header("Access-Control-Allow-Origin: $cors");
 header('Content-Type: application/json');
 
-if(!isset($_POST["user"])) {
+if(!isset($_POST["auth"])) {
   echo json_encode(array(
     "error" => true,
     "message" => "Blocked anonymous request."
   ));
   die();
 }
-$user = intval($_POST["user"]);
+$user = intval($_POST["auth"]);
 
 switch ($_POST["REQUEST_METHOD"]) {
   case "GET":
