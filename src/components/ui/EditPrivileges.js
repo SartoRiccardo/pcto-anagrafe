@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {grantPermission, revokePermission, initPermissions} from "../../redux/actions/privilegeAction";
 // Custom components
-import PrivilegeToggler from "../forms/inline/PrivilegeToggler";
+import PrivilegeToggler from "../interactive/PrivilegeToggler";
 import SearchUser from "../forms/inline/SearchUser";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

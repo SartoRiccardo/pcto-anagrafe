@@ -28,7 +28,7 @@ class ShowSaved extends Component {
       this.props.loadSaved();
     }
 
-    document.title = "PCTOKay! Salvati";
+    document.title = "PCTOkay! Salvati";
   }
 
   render() {

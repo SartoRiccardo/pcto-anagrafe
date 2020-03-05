@@ -4,12 +4,6 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 
 class PrivilegeToggler extends Component {
-  constructor(props) {
-    super(props);
-
-    const {selected} = this.props;
-  }
-
   changeHandler = (evt) => {
     const {onChange, onSelect, onBlur, selected} = this.props;
 

@@ -31,7 +31,7 @@ class ShowActivities extends Component {
       deleting: null,
     };
 
-    document.title = "PCTOKay! Attività";
+    document.title = "PCTOkay! Attività";
   }
 
   modify = (id, type) => {

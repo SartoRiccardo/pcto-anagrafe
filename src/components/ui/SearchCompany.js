@@ -16,7 +16,7 @@ import Container from "react-bootstrap/Container";
  * @param {state.search} props  The current search's state.
  */
 function SearchCompany(props) {
-  document.title = "PCTOKay! Cerca";
+  document.title = "PCTOkay! Cerca";
 
   const {search, results, page, totalResults, loading, resultsPerPage} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
