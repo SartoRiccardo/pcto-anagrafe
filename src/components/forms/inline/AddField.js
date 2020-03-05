@@ -38,7 +38,7 @@ class AddField extends Component {
     return (
       <Card className="my-3">
         <Form onSubmit={this.handleSubmit}>
-          <Card.Header>
+          <Card.Header className="field-header">
             <Form.Control
               type="text"
               placeholder="Nome campo"

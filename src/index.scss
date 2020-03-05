@@ -14,6 +14,8 @@ $red-lighten-4: #ffcdd2;
 $grey-lighten-5: #fafafa;
 $grey: #9e9e9e;
 $brown-lighten-4: #d7ccc8;
+$grey-lighten-5: #fafafa;
+$transparent: rgba(0, 0, 0, 0);
 
 html {
   height: 100%;
@@ -26,7 +28,10 @@ body {
   padding-bottom: 6rem;
   min-height: 100%;
   height: 100%;
-  font-family: "Heebo" !important;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: Heebo !important;
 }
 
 body.overlay-open {
@@ -55,7 +60,7 @@ body.overlay-open {
 
 .toggler:active, .toggler:hover, .toggler:focus {
   background-color: inherit !important;
-  border-color: rgba(0, 0, 0, 0) !important;
+  border-color: $transparent !important;
   transition: border-color 0s !important;
 }
 
@@ -114,7 +119,7 @@ body.overlay-open {
 }
 
 .page-selector:hover, .btn-secondary {
-  border-color: rgba(0, 0, 0, 0) !important;
+  border-color: $transparent !important;
   color: black !important;
 }
 
@@ -139,7 +144,7 @@ body.overlay-open {
 }
 
 .page-selector-selected:hover, .btn-secondary.active:hover {
-  border-color: rgba(0, 0, 0, 0) !important;
+  border-color: $transparent !important;
   color: white !important;
 }
 
@@ -179,7 +184,7 @@ svg {
 }
 
 .icon-invisible {
-  color: rgba(0, 0, 0, 0);
+  color: $transparent;
 }
 
 .icon-button {
@@ -252,11 +257,19 @@ svg {
   height: 100%;
 }
 
-.field-modified.card-header {
+.field-header.card-header {
+  background-color: $grey-lighten-5;
+}
+
+.field-header.card-header.no-content {
+  border-bottom: $transparent;
+}
+
+.field-modified.field-header {
   background-color: $light-green-lighten-4;
 }
 
-.field-deleted.card-header {
+.field-deleted.field-header {
   background-color: $red-lighten-4;
 }
 
