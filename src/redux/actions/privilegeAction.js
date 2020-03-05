@@ -12,7 +12,7 @@ export function grantPermission(user, privilege) {
 
     const actionId = Math.random();
     dispatch({type: "PRIVILEGER_ADD_ACTION", id: actionId});
-    const payload = makeRequest("POST", {user, privilege});
+    const payload = makeRequest("POST", {user: user.id, privilege});
     axios.post(apiUrl("auth"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
@@ -35,7 +35,7 @@ export function revokePermission(user, privilege) {
 
     const actionId = Math.random();
     dispatch({type: "PRIVILEGER_ADD_ACTION", id: actionId});
-    const payload = makeRequest("DELETE", {user, privilege});
+    const payload = makeRequest("DELETE", {user: user.id, privilege});
     axios.post(apiUrl("auth"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
@@ -61,6 +61,26 @@ export function initPermissions() {
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "PRIVILEGER_INITIALIZE", privileges: res.data});
+      }
+    })
+    .catch((e) => {
+    });
+  }
+}
+
+export function getUserById(id) {
+  return (dispatch, getState) => {
+    if(!getToken()) {
+      // Logout
+      return;
+    }
+
+    const payload = makeRequest("GET", {id});
+    axios.post(apiUrl("user"), payload)
+    .then((res) => {
+      if(res.status === 200 && !res.data.error) {
+        const {user} = res.data;
+        dispatch({type: "PRIVILEGER_SET_USER", user});
       }
     })
     .catch((e) => {

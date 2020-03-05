@@ -4,11 +4,12 @@ const init = {
   initialized: false,
   dumping: false,
   actions: [],
+  newUser: null,
 };
 
 
 function privilegeReducer(state=init, action) {
-  let newActions, newPrivileges;
+  let newActions, newPrivileges, found;
   switch(action.type) {
     case "PRIVILEGER_START_DUMP":
       return {
@@ -45,9 +46,11 @@ function privilegeReducer(state=init, action) {
       }
 
       newPrivileges = [...state.privileges];
+      found = false;
       newPrivileges = newPrivileges.map((p) => {
         const {user, privileges} = p;
-        if(user.id === action.user) {
+        if(user.id === action.user.id) {
+          found = true;
           return {
             user,
             privileges: [...privileges, action.privilege],
@@ -55,6 +58,16 @@ function privilegeReducer(state=init, action) {
         }
         return p;
       });
+
+      if(!found) {
+        newPrivileges = [
+          ...newPrivileges,
+          {
+            user: action.user,
+            privileges: [action.privilege],
+          },
+        ];
+      }
 
       return {
         ...state,
@@ -69,7 +82,7 @@ function privilegeReducer(state=init, action) {
       newPrivileges = [...state.privileges];
       newPrivileges = newPrivileges.map((p) => {
         const {user, privileges} = p;
-        if(user.id === action.user) {
+        if(user.id === action.user.id) {
           return {
             user,
             privileges: privileges.filter((pType) => pType !== action.privilege),
@@ -81,6 +94,18 @@ function privilegeReducer(state=init, action) {
       return {
         ...state,
         privileges: newPrivileges,
+      };
+
+    case "PRIVILEGER_ADD_USER":
+      return {
+        ...state,
+        privileges: [...state.privileges, {user: action.user, privileges: action.privileges}],
+      };
+
+    case "PRIVILEGER_SET_USER":
+      return {
+        ...state,
+        newUser: action.user,
       };
 
     case "PRIVILEGER_INITIALIZE":

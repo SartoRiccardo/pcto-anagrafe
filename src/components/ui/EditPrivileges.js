@@ -1,10 +1,10 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
-import {grantPermission, revokePermission, initPermissions} from "../../redux/actions/privilegeAction";
+import {grantPermission, revokePermission, initPermissions, getUserById} from "../../redux/actions/privilegeAction";
 // Custom components
 import PrivilegeToggler from "../interactive/PrivilegeToggler";
-import SearchUser from "../forms/inline/SearchUser";
+import NumericAdder from "../forms/inline/NumericAdder";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserGraduate, faChalkboardTeacher, faSpinner} from "@fortawesome/free-solid-svg-icons";
@@ -100,14 +100,41 @@ class EditPrivileges extends Component {
 
     this.setState({
       changes: [],
+      addedUsers: [],
     });
   }
 
-  render() {
-    const {privileges, initialized, dumping, users} = this.props;
-    const {changes, showSave} = this.state;
+  handleIdChange = (evt) => {
+    const {value} = evt;
+    this.props.getUserById(value);
+  }
 
-    if(!initialized || dumping) {
+  handleIdSubmit = () => {
+    const {privileges, newUser} = this.props;
+    const {addedUsers} = this.state;
+    if(newUser) {
+      const isAlreadyIn = privileges.some(({user}) => user.id === newUser.id)
+        || addedUsers.some(({user}) => user.id === newUser.id);
+      if(!isAlreadyIn) {
+        this.setState({
+          addedUsers: [
+            ...addedUsers,
+            {
+              user: newUser,
+              privileges: [],
+            },
+          ],
+        });
+        return true;
+      }
+    }
+  }
+
+  render() {
+    const {privileges, initialized, dumping, newUser, ready, users} = this.props;
+    const {changes, showSave, addedUsers} = this.state;
+
+    if(!initialized || dumping || !(dumping || ready)) {
       return (
         <Container className="d-flex justify-content-center">
           <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
@@ -125,10 +152,11 @@ class EditPrivileges extends Component {
     ];
     const defaultIcon = faUserGraduate;
 
-    const userForms = privileges.map((p) => {
+    const allUsers = [...privileges, ...addedUsers];
+    const userForms = allUsers.map((p) => {
       const {name, surname, status, id} = p.user;
       let userPrivileges = p.privileges;
-      const userChanges = changes.filter((c) => c.user === id);
+      const userChanges = changes.filter((c) => c.user.id === id);
       for(const uc of userChanges) {
         if(uc.action === "GRANT") {
           userPrivileges = [...userPrivileges, uc.privilege];
@@ -158,17 +186,33 @@ class EditPrivileges extends Component {
       }
 
       return (
-        <Col key={id} xs={12} md={12/2} className="text-center my-2 mb-5">
+        <Col key={id} xs={12} md={12/2} className="text-center my-2 mb-3">
           <h5>{name} {surname}{icon}</h5>
           <PrivilegeToggler
             selected={userPrivileges}
             options={privilegeTypes}
-            onSelect={this.selectHandler(id)}
-            onBlur={this.blurHandler(id)}
+            onSelect={this.selectHandler(p.user)}
+            onBlur={this.blurHandler(p.user)}
           />
         </Col>
       );
     });
+
+    let newUserIcon = null;
+    if(newUser) {
+      for(const si of statusIcons) {
+        if(si.status === newUser.status) {
+          newUserIcon = si;
+          break;
+        }
+      }
+    }
+    const searchedUser = newUser ? (
+      <Fragment>
+        {newUser.name} {newUser.surname}
+        <FontAwesomeIcon className="mx-2" icon={newUserIcon ? newUserIcon.icon : defaultIcon} />
+      </Fragment>
+    ) : "Nessun utente corrisponde a quell'ID";
 
     return (
       <Container>
@@ -184,18 +228,35 @@ class EditPrivileges extends Component {
 
         <hr />
 
-        <Row>
-          <Col>
-            <SearchUser />
+        <Row className="d-flex justify-content-center my-4 text-center">
+          <Col xs={12}>
+            <h4>Aggiungi utente</h4>
+          </Col>
+
+          <Col xs={12} md={6} className="my-3">
+            <NumericAdder
+              onFinish={this.handleIdSubmit}
+              onChange={this.handleIdChange}
+            />
+          </Col>
+
+          <Col xs={12}>
+            <p className="lead text-muted">
+              {searchedUser}
+            </p>
           </Col>
         </Row>
 
         <Fade in={changes.length > 0} mountOnEnter={true} unmountOnExit={true}>
-          <Row >
-            <Col className="d-flex justify-content-center">
-              <Button onClick={this.saveChanges}>Salva</Button>
-            </Col>
-          </Row>
+          <div>
+            <hr />
+
+            <Row>
+              <Col className="d-flex justify-content-center">
+                <Button onClick={this.saveChanges}>Salva</Button>
+              </Col>
+            </Row>
+          </div>
         </Fade>
       </Container>
     );
@@ -203,11 +264,13 @@ class EditPrivileges extends Component {
 }
 
 function mapStateToProps(state) {
-  const {initialized, dumping, privileges} = state.privilege;
+  const {initialized, dumping, privileges, actions, newUser} = state.privilege;
   return {
     privileges,
     initialized,
     dumping,
+    newUser,
+    ready: actions.length === 0,
   };
 }
 
@@ -227,7 +290,10 @@ function mapDispatchToProps(dispatch) {
     },
     initPermissions: () => {
       dispatch(initPermissions());
-    }
+    },
+    getUserById: (id) => {
+      dispatch(getUserById(id));
+    },
   };
 }
 
