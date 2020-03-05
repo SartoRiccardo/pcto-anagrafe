@@ -200,6 +200,7 @@ class CompanyActivities extends Component {
 }
 
 function mapStateToProps(state) {
+  const {privileges} = state.auth;
   return {
     company: state.company.match,
     error: state.company.error,
@@ -208,7 +209,7 @@ function mapStateToProps(state) {
     privileges: state.auth.privileges,
     activities: state.activity.activities,
     initialized: state.activity.initialized,
-    canAdd: state.auth.privileges.includes("MANAGE_COMPANY"),
+    canAdd: privileges.includes("MANAGE_COMPANY") || privileges.includes("ADMIN"),
   };
 }
 

@@ -55,6 +55,7 @@ class App extends Component {
       {privilege: "BASE",             component: <Route key={6} path="/" component={SearchCompany} />},
     ];
 
+    const isAdmin = privileges.includes("ADMIN");
     let links, nav;
     if(!token) {
       links = <AnonymousPage />;
@@ -62,7 +63,7 @@ class App extends Component {
     }
     else {
       const availableRoutes = routes.map((r) => {
-        return privileges.includes(r.privilege) ? r.component : null;
+        return privileges.includes(r.privilege) || isAdmin ? r.component : null;
       });
 
       links = (

@@ -49,7 +49,8 @@ class UserNav extends Component {
   }
 
   render() {
-    const {smallNavOpen} = this.state
+    const {smallNavOpen} = this.state;
+    const {privileges} = this.props;
     const span = 4;
     const links = [
       {privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
@@ -60,16 +61,17 @@ class UserNav extends Component {
       {privilege:"ADMIN",            path:"/privileges", label:"Privilegi", icon:faUnlockAlt},
     ];
 
+    const isAdmin = privileges.includes("ADMIN");
     const mdNavLinks = links.map((l, key) => {
       const {privilege, path, label} = l;
-      return this.props.privileges.includes(privilege) ? (
+      return privileges.includes(privilege) || isAdmin ? (
         <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>
       ) : null;
     });
 
     const mobileNavLinks = links.map((l, key) => {
       const {privilege, path, label, icon} = l;
-      return this.props.privileges.includes(privilege) ? (
+      return privileges.includes(privilege) || isAdmin ? (
         <Row key={key} className="py-1 mobile-navlink">
           <Col>
             <Nav.Link className="mobile-collapse-link px-0" as={NavLink} to={path} onClick={this.hideMobile}>

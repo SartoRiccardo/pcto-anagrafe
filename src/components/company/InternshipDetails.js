@@ -191,9 +191,9 @@ class InternshipDetails extends Component {
 
 function mapStateToProps(state) {
   const {match} = state.company;
-
+  const {privileges} = state.auth;
   return {
-    canSeeInfo: state.auth.privileges.includes("MANAGE_COMPANY"),
+    canSeeInfo: privileges.includes("MANAGE_COMPANY") || privileges.includes("ADMIN"),
     companyId: match ? match.id : null,
   };
 }
