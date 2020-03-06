@@ -1,5 +1,12 @@
 <?php
-function hasPermission($id, $type) {
+/**
+ * Checks if an user has a specific permission.
+ * @param  string  $id        The identifier for the user.
+ * @param  string  $type      The privilege to check.
+ * @param  boolean $isUserId  If $id is an user ID. False if it's a token.
+ * @return boolean            If the user has the permission.
+ */
+function hasPermission($id, $type, $isUserId=false) {
   global $dbc;
 
   $q = "SELECT *
@@ -14,10 +21,21 @@ function hasPermission($id, $type) {
   return $stmt->fetch() != false;
 }
 
+/**
+ * Checks if a token corresponds to an user.
+ * @param  string  $token  The token to check.
+ * @param  int     $id     The ID of the user.
+ * @return boolean         Whether the parameters match.
+ */
 function isSameUser($token, $id) {
   return $token == $id;
 }
 
+/**
+ * Gets an user's privileges.
+ * @param  int      $id  The user ID.
+ * @return string[]      The user's privileges.
+ */
 function getPrivilegesFor($id) {
   global $dbc;
 
@@ -35,6 +53,12 @@ function getPrivilegesFor($id) {
   return $ret;
 }
 
+/**
+ * Grants a privilege to an user.
+ * @param  int    $id    The user ID.
+ * @param  string $type  The privilege type.
+ * @return array         The result of the operation.
+ */
 function grantPrivilegeTo($id, $type) {
   global $dbc;
 
@@ -48,10 +72,16 @@ function grantPrivilegeTo($id, $type) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "L'utente ora ha il privilegio $type." : "Errore nell'aggiunta del privilegio $type."
+    "message" => $success ? "" : "Errore nell'aggiunta del privilegio $type."
   );
 }
 
+/**
+ * Revokes a privilege of an user.
+ * @param  int    $id    The user ID.
+ * @param  string $type  The privilege type.
+ * @return array         The result of the operation.
+ */
 function revokePrivilegeTo($id, $type) {
   global $dbc;
 
@@ -66,7 +96,7 @@ function revokePrivilegeTo($id, $type) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "L'utente non ha più il privilegio $type" : "Errore nella revoca del privilegio $type."
+    "message" => $success ? "" : "Errore nella revoca del privilegio $type."
   );
 }
 ?>

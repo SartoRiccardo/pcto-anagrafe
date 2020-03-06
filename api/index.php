@@ -8,6 +8,7 @@ include "./structure/api.php";
 include "./activity/api.php";
 include "./saved/api.php";
 include "./internship/api.php";
+include "./auth/api.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");

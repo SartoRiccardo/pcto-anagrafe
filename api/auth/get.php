@@ -1,4 +1,8 @@
 <?php
+/**
+ * Gets users with privileges that aren't BASE.
+ * @return int[]  A list of user IDs.
+ */
 function getUsersWithPrivileges() {
   global $dbc;
 
@@ -16,6 +20,11 @@ function getUsersWithPrivileges() {
   return $ret;
 }
 
+/**
+ * Fetches an user by its ID.
+ * @param  int  $id  The user's ID.
+ * @return User      The matching user.
+ */
 function getUserById($id) {
   global $dbc;
 
@@ -39,4 +48,12 @@ function getUserById($id) {
     return null;
   }
 }
-?>
+
+/**
+ * Fetches an user by its token.
+ * @param  string  $id  The user's token.
+ * @return User         The matching user.
+ */
+function getUserByToken($token) {
+  return getUserById($token);
+}
