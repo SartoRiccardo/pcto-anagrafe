@@ -10,10 +10,11 @@
 function addInternship($company, $activity, $student, $year) {
   global $dbc;
 
-  if(getInternshipByValues($company, $activity, $student, $year) != null) {
+  if(!is_null(getInternshipByValues($company, $activity, $student, $year))) {
     return array(
       "error" => true,
-      "message" => "Esiste già un'alternanza con quei campi."
+      "message" => "Esiste già un'alternanza con quei campi.",
+      "id" => null
     );
   }
 
@@ -24,12 +25,18 @@ function addInternship($company, $activity, $student, $year) {
   $stmt->bindParam(":activity", $activity, PDO::PARAM_INT);
   $stmt->bindParam(":student", $student, PDO::PARAM_STR);
   $stmt->bindParam(":year", $year, PDO::PARAM_INT);
-  $stmt->execute();
-  $success = $stmt->rowCount() > 0;
+  $success = true;
+  try {
+    $stmt->execute();
+  } catch(Exception $e) {
+    $success = false;
+  }
+  $success = $success && $stmt->rowCount() > 0;
 
   $ret = array(
     "error" => !$success,
-    "message" => $success ? "Alternanza inserita." : "L'alternanza non è stata inserita."
+    "message" => $success ? "" : "L'alternanza non è stata inserita.",
+    "id" => null
   );
 
   if($success) {
@@ -37,7 +44,8 @@ function addInternship($company, $activity, $student, $year) {
     if($id == null) {
       return array(
         "error" => true,
-        "message" => "L'alternanza non è stata inserita."
+        "message" => "L'alternanza non è stata inserita.",
+        "id" => null
       );
     }
     $ret["id"] = $id;

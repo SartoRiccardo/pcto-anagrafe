@@ -30,12 +30,16 @@ function updateInternship($id, $internship) {
   foreach ($internship as $key => $field) {
     $stmt->bindParam(":$key", $field["value"], $field["numeric"] ? PDO::PARAM_INT : PDO::PARAM_STR);
   }
-  $stmt->execute();
-  $success = $stmt->rowCount() > 0;
+  $success = true;
+  try {
+    $stmt->execute();
+  } catch(Exception $e) {
+    $success = false;
+  }
+  $success = $success && $stmt->rowCount() > 0;
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Alternanza cambiata." : "Errore durante il cambiamento dell'alternanza."
+    "message" => $success ? "" : "Errore durante il cambiamento dell'alternanza."
   );
 }
-?>

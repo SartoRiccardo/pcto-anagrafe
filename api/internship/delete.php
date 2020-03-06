@@ -16,7 +16,7 @@ function deleteInternship($id) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Alternanza eliminata." : "Errore durante l'eliminazione dell'alternanza."
+    "message" => $success ? "" : "Errore durante l'eliminazione dell'alternanza."
   );
 }
 ?>
