@@ -19,9 +19,7 @@ function deleteSave($user, $company) {
 
   return array(
     "error" => !$success,
-    "message" => $success
-      ? "Azienda $company tolta dai preferiti di $user."
-      : "Errore nell'eliminazione dell'azienda tra i preferiti."
+    "message" => $success ? "" : "Errore nell'eliminazione dell'azienda tra i preferiti."
   );
 }
 ?>

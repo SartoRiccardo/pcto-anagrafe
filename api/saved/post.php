@@ -8,7 +8,12 @@
 function saveCompany($user, $id) {
   global $dbc;
 
-  if(in_array($id, getCompaniesSavedBy($user))) return true;
+  if(in_array($id, getCompaniesSavedBy($user))) {
+    return array(
+        "error" => true,
+        "message" => "L'azienda è già salvata."
+      );
+  }
 
   $maxSaved = 50;
   if(getNumberOfCompaniesSavedBy($user) >= $maxSaved) {
@@ -19,17 +24,19 @@ function saveCompany($user, $id) {
   }
 
 
-  $q = "INSERT INTO Saved
+  $q = "INSERT INTO Saved (student, company)
           VALUES (:user, :company)";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":user", $user, PDO::PARAM_INT);
   $stmt->bindParam(":company", $id, PDO::PARAM_INT);
-  $stmt->execute();
+  try {
+    $stmt->execute();
+  } catch (Exception $e) {}
   $success = $stmt->rowCount() > 0;
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Azienda $id salvata da $user." : "Errore nel salvataggio."
+    "message" => $success ? "" : "Errore nel salvataggio."
   );
 }
 ?>

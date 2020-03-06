@@ -14,6 +14,10 @@ function hasPermission($id, $type) {
   return $stmt->fetch() != false;
 }
 
+function isSameUser($token, $id) {
+  return $token == $id;
+}
+
 function getPrivilegesFor($id) {
   global $dbc;
 
