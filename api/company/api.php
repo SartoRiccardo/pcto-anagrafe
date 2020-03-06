@@ -1,12 +1,12 @@
 <?php
-require "./auth/privileges.php";
+require_once "./auth/privileges.php";
 
-require "./company/get.php";
-require "./company/post.php";
-require "./company/put.php";
-require "./company/delete.php";
+require_once "./company/get.php";
+require_once "./company/post.php";
+require_once "./company/put.php";
+require_once "./company/delete.php";
 
-require "./saved/get.php";
+require_once "./saved/get.php";
 
 // GET Company by ID
 Flight::route("GET /@auth/company/@id:[0-9]+", function($auth, $id){
@@ -108,7 +108,7 @@ Flight::route("POST /@auth/company", function($auth, $request) {
 }, true);
 
 // PUT Update Company
-Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
+Flight::route("PUT /@auth/company", function($auth, $request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
@@ -116,6 +116,11 @@ Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
+
+  if(!(isset($req->query["id"]) && is_numeric($req->query["id"]))) {
+    $errorMessage = "ID dell'azienda assente o invalido.";
+  }
+  $id = (int) $req->query["id"];
 
   $name = (isset($req->query["name"]) && strlen($req->query["name"]) >= 0) ? $req->query["name"] : null;
   $fields = (isset($req->query["fields"]) && !is_null(json_decode($req->query["fields"], true))) ?
@@ -149,7 +154,7 @@ Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
 }, true);
 
 // PUT Update Company Name/Field
-Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
+Flight::route("PUT /@auth/company", function($auth, $request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
@@ -157,6 +162,11 @@ Flight::route("PUT /@auth/company/@id:[0-9]+", function($auth, $id, $request) {
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
+
+  if(!(isset($req->query["id"]) && is_numeric($req->query["id"]))) {
+    $errorMessage = "ID dell'azienda assente o invalido.";
+  }
+  $id = (int) $req->query["id"];
 
   $name = (isset($req->query["name"]) && strlen($req->query["name"]) >= 0) ? $req->query["name"] : null;
   $field = null;
