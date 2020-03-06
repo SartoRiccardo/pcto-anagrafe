@@ -1,13 +1,13 @@
 Il back-end dell'applicazione sarà programmato in PHP, e si occuperà di trasferire i dati dal Server al Client tramite richieste AJAX. I dati sono restituiti sottoforma di JSON. Verrà usato il framework Flight per creare un'API RESTful.
 
 Nell'URL, prima di ogni richiesta, dovrà essere incluso un token che verrà usato per autenticare la richiesta. Una normale richiesta seguirà quindi il formato:
-`https://{{url}}/{{auth}}/endpoint`
+`https://{{url}}/{{token}}/endpoint`
 
 ## Azienda
 
 > **<span style="color: #3EB63E">GET</span> Azienda per ID**
 
-**URL:** `https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/{{token}}/company/{{id}}`
 
 Restituisce l'azienda avente l'ID fornito.
 
@@ -23,7 +23,7 @@ Restituisce l'azienda avente l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Cerca Aziende**
 
-**URL:** `https://{{url}}/company`
+**URL:** `https://{{url}}/{{token}}/company`
 
 Restituisce le aziende attinenti ai parametri di ricerca.
 
@@ -41,7 +41,7 @@ Restituisce le aziende attinenti ai parametri di ricerca.
 
 > **<span style="color: #F5A623">POST</span> Aggiungi Azienda**
 
-**URL:** `https://{{url}}/company`
+**URL:** `https://{{url}}/{{token}}/company`
 
 Crea una nuova azienda.
 
@@ -58,7 +58,7 @@ Crea una nuova azienda.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Azienda**
 
-**URL:** `https://{{url}}/company`
+**URL:** `https://{{url}}/{{token}}/company`
 
 Modifica un'azienda ai parametri forniti.
 
@@ -75,7 +75,7 @@ Modifica un'azienda ai parametri forniti.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Nome di un'Azienda**
 
-**URL:** `https://{{url}}/company`
+**URL:** `https://{{url}}/{{token}}/company`
 
 Modifica il nome di un'azienda.
 
@@ -91,7 +91,7 @@ Modifica il nome di un'azienda.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Campo di un'Azienda**
 
-**URL:** `https://{{url}}/company`
+**URL:** `https://{{url}}/{{token}}/company`
 
 Modifica il nome di un'azienda.
 
@@ -108,7 +108,7 @@ Modifica il nome di un'azienda.
 
 > **<span style="color: #ED4B48">DEL</span> Elimina Azienda**
 
-**URL:** `https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/{{token}}/company/{{id}}`
 
 Elimina l'azienda con l'ID fornito.
 
@@ -125,7 +125,7 @@ Elimina l'azienda con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Campo per ID**
 
-**URL:** `https://{{url}}/structure/{{id}}`
+**URL:** `https://{{url}}/{{token}}/structure/{{id}}`
 
 Restituisce il campo avente l'ID fornito.
 
@@ -141,7 +141,7 @@ Restituisce il campo avente l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Tutti i campi**
 
-**URL:** `https://{{url}}/structure`
+**URL:** `https://{{url}}/{{token}}/structure`
 
 Restituisce tutti i campi che può avere un'azienda.
 
@@ -154,7 +154,7 @@ Restituisce tutti i campi che può avere un'azienda.
 
 > **<span style="color: #F5A623">POST</span> Aggiungi Campo**
 
-**URL:** `https://{{url}}/structure`
+**URL:** `https://{{url}}/{{token}}/structure`
 
 Crea una nuova azienda.
 
@@ -171,7 +171,7 @@ Crea una nuova azienda.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Campo**
 
-**URL:** `https://{{url}}/structure`
+**URL:** `https://{{url}}/{{token}}/structure`
 
 Modifica un campo ai parametri forniti.
 
@@ -188,7 +188,7 @@ Modifica un campo ai parametri forniti.
 
 > **<span style="color: #ED4B48">DEL</span> Elimina Campo**
 
-**URL:** `https://{{url}}/structure/{{id}}`
+**URL:** `https://{{url}}/{{token}}/structure/{{id}}`
 
 Elimina il campo con l'ID fornito.
 
@@ -205,7 +205,7 @@ Elimina il campo con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Attività per ID**
 
-**URL:** `https://{{url}}/activity/{{id}}`
+**URL:** `https://{{url}}/{{token}}/activity/{{id}}`
 
 Restituisce l'attività avente l'ID fornito.
 
@@ -221,7 +221,7 @@ Restituisce l'attività avente l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Tutte le Attività**
 
-**URL:** `https://{{url}}/activity`
+**URL:** `https://{{url}}/{{token}}/activity`
 
 Restituisce tutte le attività.
 
@@ -234,7 +234,7 @@ Restituisce tutte le attività.
 
 > **<span style="color: #F5A623">POST</span> Aggiungi Attività**
 
-**URL:** `https://{{url}}/activity`
+**URL:** `https://{{url}}/{{token}}/activity`
 
 Crea una nuova attività.
 
@@ -251,7 +251,7 @@ Crea una nuova attività.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Nome di un'Attività**
 
-**URL:** `https://{{url}}/activity`
+**URL:** `https://{{url}}/{{token}}/activity`
 
 Modifica il nome di un'attività. Può essere mandata anche con i parametri di **<span style="color: #4A90E2">PUT</span> Modifica Descrizione di un'Attività**
 
@@ -267,7 +267,7 @@ Modifica il nome di un'attività. Può essere mandata anche con i parametri di *
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Descrizione di un'Attività**
 
-**URL:** `https://{{url}}/activity`
+**URL:** `https://{{url}}/{{token}}/activity`
 
 Modifica il nome di un'attività. Può essere mandata anche con i parametri di **<span style="color: #4A90E2">PUT</span> Modifica Nome di un'Attività**
 
@@ -283,7 +283,7 @@ Modifica il nome di un'attività. Può essere mandata anche con i parametri di *
 
 > **<span style="color: #ED4B48">DEL</span> Elimina Attività**
 
-**URL:** `https://{{url}}/activity/{{id}}`
+**URL:** `https://{{url}}/{{token}}/activity/{{id}}`
 
 Elimina l'attività con l'ID fornito.
 
@@ -300,7 +300,7 @@ Elimina l'attività con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Salvataggi di Utente**
 
-**URL:** `https://{{url}}/saved/{{id}}`
+**URL:** `https://{{url}}/{{token}}/saved/{{id}}`
 
 Restituisce le aziende salvate dall'utente che sta effettuando la richiesta.
 
@@ -316,7 +316,7 @@ Restituisce le aziende salvate dall'utente che sta effettuando la richiesta.
 
 > **<span style="color: #F5A623">POST</span> Salva Azienda**
 
-**URL:** `https://{{url}}/saved`
+**URL:** `https://{{url}}/{{token}}/saved`
 
 Salva un'azienda.
 
@@ -332,7 +332,7 @@ Salva un'azienda.
 
 > **<span style="color: #ED4B48">DEL</span> Elimina Salvataggio**
 
-**URL:** `https://{{url}}/saved`
+**URL:** `https://{{url}}/{{token}}/saved`
 
 Elimina l'attività con l'ID fornito.
 
@@ -350,7 +350,7 @@ Elimina l'attività con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Alternanza per ID**
 
-**URL:** `https://{{url}}/internship/{{id}}`
+**URL:** `https://{{url}}/{{token}}/internship/{{id}}`
 
 Restituisce l'alternanza avente l'id fornito.
 
@@ -360,13 +360,13 @@ Restituisce l'alternanza avente l'id fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-    + [`Internship`](./data_models.md) `result`: Il risultato. Può essere `null`.
+    + [`Internship`](./data_models.md) `internship`: Il risultato. Può essere `null`.
 
 ---
 
 > **<span style="color: #3EB63E">GET</span> Alternanza di Azienda**
 
-**URL:** `https://{{url}}/internship`
+**URL:** `https://{{url}}/{{token}}/internship`
 
 Restituisce l'alternanza appartenente all'Azienda fornita.
 
@@ -376,13 +376,13 @@ Restituisce l'alternanza appartenente all'Azienda fornita.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-    + [`Internship[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+    + [`Internship[]`](./data_models.md) `internships`: Il risultato. Può essere `null`.
 
 ---
 
 > **<span style="color: #F5A623">POST</span> Aggiungi Alternanza**
 
-**URL:** `https://{{url}}/internship`
+**URL:** `https://{{url}}/{{token}}/internship`
 
 Crea una nuova attività.
 
@@ -401,7 +401,7 @@ Crea una nuova attività.
 
 > **<span style="color: #4A90E2">PUT</span> Modifica Alternanza**
 
-**URL:** `https://{{url}}/activity`
+**URL:** `https://{{url}}/{{token}}/activity`
 
 Modifica un'alternanza.
 
@@ -420,7 +420,7 @@ Modifica un'alternanza.
 
 > **<span style="color: #ED4B48">DEL</span> Elimina Alternanza**
 
-**URL:** `https://{{url}}/internship/{{id}}`
+**URL:** `https://{{url}}/{{token}}/internship/{{id}}`
 
 Elimina l'alternanza con l'ID fornito.
 
@@ -437,7 +437,7 @@ Elimina l'alternanza con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Privilegi di Utente**
 
-**URL:** `https://{{url}}/privileges/{{id}}`
+**URL:** `https://{{url}}/{{token}}/privileges/{{id}}`
 
 Restituisce i privilegi dell'Utente avente l'ID fornito.
 
@@ -453,7 +453,7 @@ Restituisce i privilegi dell'Utente avente l'ID fornito.
 
 > **<span style="color: #F5A623">POST</span> Aggiungi Privilegio**
 
-**URL:** `https://{{url}}/privilege`
+**URL:** `https://{{url}}/{{token}}/privilege`
 
 Aggiunge un privilegio a un utente.
 
@@ -469,7 +469,7 @@ Aggiunge un privilegio a un utente.
 
 > **<span style="color: #ED4B48">DEL</span> Togli Privilegio**
 
-**URL:** `https://{{url}}/privilege`
+**URL:** `https://{{url}}/{{token}}/privilege`
 
 Toglie un privilegio all'utente con l'ID fornito.
 
@@ -487,7 +487,7 @@ Toglie un privilegio all'utente con l'ID fornito.
 
 > **<span style="color: #3EB63E">GET</span> Utente per ID**
 
-**URL:** `https://{{url}}/user/{{id}}`
+**URL:** `https://{{url}}/{{token}}/user/{{id}}`
 
 Restituisce l'utente con ID fornito.
 
@@ -498,3 +498,37 @@ Restituisce l'utente con ID fornito.
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
     + [`User`](./data_models.md) `privileges`: Il risultato. Può essere `null`.
+
+---
+
+## Autenticazione
+
+> **<span style="color: #3EB63E">GET</span> Autenticazione con credenziali**
+
+**URL:** `https://{{url}}/auth`
+
+Esegue il login con le credenziali fornite.
+
++ **Richiesta**
+    + `string` `login`: Il nome utente o la mail.
+    + `string` `pswd`: La password.
+
++ **Risposta**
+    + `boolean` `error`: Se sono accaduti errori durante la richiesta.
+    + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+    + [`LoginInfo`](./data_models.md) `user`: L'utente loggato. Può essere `null`.
+
+---
+
+> **<span style="color: #3EB63E">GET</span> Autenticazione con token**
+
+**URL:** `https://{{url}}/{{token}}/auth`
+
+Esegue il login con il token fornito.
+
++ **Risposta**
+    + `boolean` `error`: Se sono accaduti errori durante la richiesta.
+    + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+    + [`LoginInfo`](./data_models.md) `user`: L'utente loggato. Può essere `null`.
+
+---
