@@ -16,7 +16,7 @@ function deleteField($id) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Campo eliminato." : "Errore nell'eliminazione del campo."
+    "message" => $success ? "" : "Errore nell'eliminazione del campo."
   );
 }
 ?>
