@@ -42,7 +42,7 @@ export function resultAction(arg0=null) {
         page: getState().search.page,
       },
     }
-    
+
     axios.get(apiUrl("/company", getToken()), payload)
       .then((res) => {
         const {lastSearchId} = getState().search;

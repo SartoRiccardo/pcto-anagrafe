@@ -15,17 +15,19 @@ function sendField(field, isNew) {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", isNew ? "POST" : "PUT");
-    payload.set("user", getToken());
-    payload.set("id", field.id);
-    payload.set("name", field.name);
-    payload.set("regex", field.regex);
+    const payload = {
+      params: {...field},
+    };
 
-    axios.post(apiUrl("/structure"), payload)
+    const requestMethod = isNew ? axios.post : axios.put;
+
+    requestMethod(apiUrl("/structure", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+      }
+      if(res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {
@@ -55,15 +57,13 @@ export function deleteField(id) {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "DELETE");
-    payload.set("user", getToken());
-    payload.set("id", id);
-
-    axios.post(apiUrl("/structure"), payload)
+    axios.delete(apiUrl(`/structure/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+      }
+      if(res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {
@@ -98,25 +98,19 @@ export function reloadStructure() {
 
     dispatch({type:"STRUCTURER_RESET"});
 
-    let payload = new FormData();
-    payload.set("user", getToken());
-    payload.set("REQUEST_METHOD", "GET");
-
-    axios.post(apiUrl("/structure"), payload)
+    axios.get(apiUrl("/structure", getToken()))
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
-        const fields = res.data;
+        const {fields} = res.data;
         dispatch({
           type: "STRUCTURER_UPDATE",
           fields,
         });
       }
       else if(res.data.error) {
-        // Handle error...
+        console.log(res.data.message);
       }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   };
 }

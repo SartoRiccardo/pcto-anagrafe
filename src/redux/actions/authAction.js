@@ -9,13 +9,15 @@ import {getToken} from "../../util/tokenManager";
  * Fires AUTHR_ERROR on error.
  *
  * @param  {function} dispatch  Dispatches an action.
- * @param  {FormData} data      The data to send.
+ * @param  {Object}   data      The data to send.
  */
-function attemptLogin(dispatch, data) {
-  axios.post(apiUrl("/auth"), data)
+function attemptLogin(dispatch, data, withCredentials=false) {
+  const url = withCredentials ? apiUrl("/auth/") : apiUrl("/auth", getToken());
+
+  axios.get(url, data)
   .then((res) => {
     if(res.status === 200 && !res.data.error) {
-      const {token, user, privileges} = res.data;
+      const {token, user, privileges} = res.data.user;
 
       dispatch({
         type: "AUTHR_LOGIN",
@@ -57,10 +59,13 @@ export function startLogin() {
  */
 export function loginAction(user, pswd) {
   return (dispatch, getState) => {
-    let payload = new FormData();
-    payload.set("login", user);
-    payload.set("pswd", pswd);
-    attemptLogin(dispatch, payload);
+    const payload = {
+      params: {
+        login: user,
+        pswd,
+      },
+    };
+    attemptLogin(dispatch, payload, true);
   };
 }
 
@@ -77,9 +82,7 @@ export function initLogin() {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("auth", token);
-    attemptLogin(dispatch, payload);
+    attemptLogin(dispatch, {params: {}});
   };
 }
 

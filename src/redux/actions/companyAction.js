@@ -67,12 +67,13 @@ export function updateCompany(company) {
 
     const payload = {
       params: {
+        id: company.id,
         name: company.name,
         fields: JSON.stringify(company.fields),
       },
     };
 
-    axios.put(apiUrl(`/company/${company.id}`, getToken()), null, payload)
+    axios.put(apiUrl(`/company`, getToken()), null, payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
@@ -104,10 +105,10 @@ export function updateName(company, name) {
     }
 
     const payload = {
-      params: {name},
+      params: {id: company, name},
     };
 
-    axios.put(apiUrl(`/company/${company}`, getToken()), null, payload)
+    axios.put(apiUrl("/company", getToken()), null, payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -153,29 +154,28 @@ export function updateField(company, field) {
 
     const payload = {
       params: {
-        ...field,
+        id: company,
+        fId: field.id,
+        fValue: field.value,
       },
     };
 
-    axios.put(apiUrl(`/company/${company}`, getToken()), null, payload)
+    axios.put(apiUrl("/company/", getToken()), null, payload)
     .then((res) => {
-      const {error, message} = res.data;
-      if(res.status === 200) {
-        if(!error) {
-          dispatch({type: "COMPANYR_RESET"});
-          dispatch(resultAction());
-          dispatch(selectCompany(company));
-          dispatch({
-            type: "SAVEDR_UPDATE",
-            company: {
-              id: company,
-              fields: [field],
-            },
-          });
-        }
-        else {
-          console.log(message);
-        }
+      if(res.status === 200 && !res.data.error) {
+        dispatch({type: "COMPANYR_RESET"});
+        dispatch(resultAction());
+        dispatch(selectCompany(company));
+        dispatch({
+          type: "SAVEDR_UPDATE",
+          company: {
+            id: company,
+            fields: [field],
+          },
+        });
+      }
+      else if(res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {
@@ -204,9 +204,12 @@ export function deleteCompany(id) {
 
     axios.delete(apiUrl(`/company/${id}`, getToken()))
     .then((res) => {
-      if(res.status === 200) {
+      if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
         dispatch(loadSaved());
+      }
+      else if(res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {

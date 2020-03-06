@@ -29,7 +29,7 @@ class AddCompanyActivity extends Component {
 
   change = (evt) => {
     this.setState({
-      selected: evt.target.value,
+      selected: parseInt(evt.target.value),
     });
   }
 
@@ -62,7 +62,7 @@ class AddCompanyActivity extends Component {
     return (
       <Form.Row className="d-flex justify-content-center">
         <Col xs md={6}>
-          <Form.Control as="select" value={selected} onChange={this.change}>
+          <Form.Control as="select" value={selected === null ? undefined : selected} onChange={this.change}>
             {options}
           </Form.Control>
         </Col>
