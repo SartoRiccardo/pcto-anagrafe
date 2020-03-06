@@ -5,6 +5,7 @@ require "./config/dbconfig.php";
 
 include "./company/api.php";
 include "./structure/api.php";
+include "./activity/api.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");

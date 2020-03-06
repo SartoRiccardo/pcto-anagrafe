@@ -1,4 +1,9 @@
 <?php
+/**
+ * Creates an activity.
+ * @param string $name         The activity's name.
+ * @param string $description  The activity's description.
+ */
 function addActivity($name, $description) {
   global $dbc;
 
@@ -23,15 +28,16 @@ function addActivity($name, $description) {
   $stmt->bindParam(":name", $name, PDO::PARAM_STR);
   $stmt->execute();
 
-  $id = $stmt->rowCount() == 0 ? null : $stmt->fetch()["id"];
+  $id = $stmt->rowCount() == 0 ? null : (int) $stmt->fetch()["id"];
 
   return $id ?
     array(
-      "id" => intval($id),
+      "id" => $id,
       "error"=>false,
       "message"=>""
     ) :
     array(
+      "id" => null,
       "error"=>true,
       "message"=>"Company was not inserted."
     );

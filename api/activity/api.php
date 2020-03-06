@@ -1,62 +1,63 @@
 <?php
 require_once "./auth/privileges.php";
 
-require_once "./structure/get.php";
-require_once "./structure/post.php";
-require_once "./structure/put.php";
-require_once "./structure/delete.php";
+require_once "./activity/get.php";
+require_once "./activity/post.php";
+require_once "./activity/put.php";
+require_once "./activity/delete.php";
 
-// GET Field by ID
-Flight::route("GET /@auth/structure/@id:[0-9]+", function($auth, $id){
+// GET Activity by ID
+Flight::route("GET /@auth/activity/@id:[0-9]+", function($auth, $id){
   $errorMessage = null;
 
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
-  $field = null;
+  $activity = null;
   if(is_null($errorMessage)) {
-    $field = getFieldById($id);
-    if(is_null($field)) {
-      $errorMessage = "Il campo con ID $id non esiste.";
+    $activity = getActivity((int) $id);
+    if(is_null($activity)) {
+      $errorMessage = "Non esiste un'attività con ID $id";
     }
   }
 
   $res = array(
     "error" => !is_null($errorMessage),
     "message" => !is_null($errorMessage) ? $errorMessage : "",
-    "field" => $field
+    "activity" => $activity
   );
   echo json_encode($res);
 });
 
-// GET All Fields
-Flight::route("GET /@auth/structure", function($auth) {
+// GET All Activities
+Flight::route("GET /@auth/activity", function($auth){
   $errorMessage = null;
 
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
-  $fields = null;
+  $activities = null;
   if(is_null($errorMessage)) {
-    $fields = getStructure();
+    $activities = getActivities();
   }
 
   $res = array(
     "error" => !is_null($errorMessage),
     "message" => !is_null($errorMessage) ? $errorMessage : "",
-    "fields" => $fields
+    "activities" => $activities
   );
   echo json_encode($res);
 });
 
-// POST Create Field
-Flight::route("POST /@auth/structure", function($auth, $request) {
+// POST Create Activity
+Flight::route("POST /@auth/activity", function($auth, $request) {
   $req = Flight::request();
+  $res = array();
   $errorMessage = null;
 
-  if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
@@ -68,54 +69,59 @@ Flight::route("POST /@auth/structure", function($auth, $request) {
     $name = $req->query["name"];
   }
 
-  $regex = null;
-  if(!(isset($req->query["regex"]) && Flight::isValidRegex($req->query["regex"]))) {
-    $errorMessage = "RegExp assente o invalida.";
+  $description = null;
+  if(!isset($req->query["description"])) {
+    $errorMessage = "Descrizione assente o invalida.";
   }
   else {
-    $regex = $req->query["regex"];
+    $description = $req->query["description"];
   }
 
-  if(is_null($errorMessage)) {
-    $res = addField($name, $regex);
-    echo json_encode($res);
+  if(is_null($errorMessage) && Flight::areAllSet(array($name, $description))) {
+    echo json_encode(addActivity($name, $description));
   }
   else {
     echo json_encode(array(
-      "id" => null,
       "error" => true,
       "message" => $errorMessage
     ));
   }
 }, true);
 
-// PUT Update Field todo
-Flight::route("PUT /@auth/structure", function($auth, $request) {
+// PUT Update Activity
+Flight::route("PUT /@auth/activity", function($auth, $request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
-  if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
   $id = null;
   if(!(isset($req->query["id"]) && is_numeric($req->query["id"]))) {
-    $errorMessage = "ID del campo assente o invalido.";
+    $errorMessage = "ID dell'attività assente o invalido.";
   }
   else {
     $id = (int) $req->query["id"];
   }
 
   $name = (isset($req->query["name"]) && strlen($req->query["name"]) >= 0) ? $req->query["name"] : null;
-  $regex = (isset($req->query["regex"]) && Flight::isValidRegex($req->query["regex"])) ?
-    $req->query["regex"] : null;
+  $description = (isset($req->query["description"])) ? $req->query["description"] : null;
 
-  if(is_null($errorMessage) && Flight::areAllSet(array($id, $name, $regex))) {
-    $res = updateField($id, $name, $regex);
+  if(is_null($errorMessage)) {
+    if(!(is_null($name) && is_null($description))) {
+      $res = changeActivity($id, $name, $description);
+    }
+    else {
+      $errorMessage = "Nome o descrizione assenti o invalidi.";
+      $res = array(
+        "error" => true,
+        "message" => $errorMessage
+      );
+    }
   }
   else {
-    $errorMessage = is_null($errorMessage) ? "Regex e nome assenti o invalidi." : $errorMessage;
     $res = array(
       "error" => true,
       "message" => $errorMessage
@@ -125,17 +131,17 @@ Flight::route("PUT /@auth/structure", function($auth, $request) {
   echo json_encode($res);
 }, true);
 
-// DELETE Field
-Flight::route("DELETE /@auth/structure/@id:[0-9]+", function($auth, $id) {
+// DELETE Activity
+Flight::route("DELETE /@auth/activity/@id:[0-9]+", function($auth, $id) {
   $res = array();
   $errorMessage = null;
 
-  if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
   if(is_null($errorMessage)) {
-    echo json_encode(deleteField($id));
+    echo json_encode(deleteActivity((int) $id));
   }
   else {
     echo json_encode(array(
