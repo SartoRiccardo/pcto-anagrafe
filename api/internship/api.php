@@ -1,5 +1,5 @@
 <?php
-require_once "./auth/privileges.php";
+require_once "./authorization/privileges.php";
 
 require_once "./internship/get.php";
 require_once "./internship/post.php";

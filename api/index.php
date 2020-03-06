@@ -8,7 +8,7 @@ include "./structure/api.php";
 include "./activity/api.php";
 include "./saved/api.php";
 include "./internship/api.php";
-include "./auth/api.php";
+include "./authorization/api.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
@@ -36,7 +36,8 @@ Flight::register("db", "PDO", array("mysql:host=$dbhost;dbname=$database;charset
 $dbc = Flight::db();
 
 Flight::map('notFound', function(){
-    include './404.html';
+  // header('Content-Type: text/html; charset=UTF-8');
+  include './404.html';
 });
 
 Flight::start();

@@ -1,7 +1,7 @@
 <?php
-require_once "./auth/get.php";
-require_once "./auth/login.php";
-require_once "./auth/privileges.php";
+require_once "./authorization/get.php";
+require_once "./authorization/login.php";
+require_once "./authorization/privileges.php";
 
 // GET Login by Credentials
 Flight::route("GET /auth", function($request) {

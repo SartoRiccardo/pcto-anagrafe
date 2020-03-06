@@ -1,8 +1,8 @@
 <?php
 include "../config/authconfig.php";
 include "../database/database.php";
-include "../auth/privileges.php";
-include "../auth/get.php";
+include "../authorization/privileges.php";
+include "../authorization/get.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header('Content-Type: application/json');
