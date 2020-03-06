@@ -17,7 +17,7 @@ Restituisce l'azienda avente l'ID fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Company`](./data_models.md) `result`: Il risultato. Può essere `null`.
+    + [`Company`](./data_models.md) `result`: Il risultato. Può essere `null`.
 
 ---
 
@@ -28,14 +28,14 @@ Restituisce l'azienda avente l'ID fornito.
 Restituisce le aziende attinenti ai parametri di ricerca.
 
 + **Richiesta**
-+ [`Search`](./data_models.md) `search`: I parametri di ricerca.
+    + [`Search`](./data_models.md) `search`: I parametri di ricerca.
     + `int` `page`: La pagina su cui siamo attualmente. Ogni pagina fornisce 50 risultati. Se non specificato, verranno restituiti tutti i risultati.
 
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
     + `int` `totalResults`: I risultati totali della ricerca, includendo quelli non restituiti.
-+ [`Company[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+    + [`Company[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
 
 ---
 
@@ -47,7 +47,7 @@ Crea una nuova azienda.
 
 + **Richiesta**
     + `string` `name`: Il nome dell'azienda.
-+ [`Field[]`](./data_models.md) `fields`: I campi dell'azienda. Se omesso, l'azienda verrà creata con tutti i campi vuoti.
+    + [`Field[]`](./data_models.md) `fields`: I campi dell'azienda. Se omesso, l'azienda verrà creata con tutti i campi vuoti.
 
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
@@ -65,7 +65,7 @@ Modifica un'azienda ai parametri forniti.
 + **Richiesta**
     + `int` `id`: L'ID dell'azienda.
     + `string` `name`: Il nome dell'azienda.
-+ [`Field[]`](./data_models.md) `fields`: I campi dell'azienda.
+    + [`Field[]`](./data_models.md) `fields`: I campi dell'azienda.
 
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
@@ -135,7 +135,7 @@ Restituisce il campo avente l'ID fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Field`](./data_models.md) `field`: Il risultato. Può essere `null`.
+    + [`Field`](./data_models.md) `field`: Il risultato. Può essere `null`.
 
 ---
 
@@ -148,7 +148,7 @@ Restituisce tutti i campi che può avere un'azienda.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Field[]`](./data_models.md) `fields`: Il risultato. Può essere `null`.
+    + [`Field[]`](./data_models.md) `fields`: Il risultato. Può essere `null`.
 
 ---
 
@@ -160,7 +160,7 @@ Crea una nuova azienda.
 
 + **Richiesta**
     + `string` `name`: Il nome dell'azienda.
-    + `string` `regex`: I campi dell'azienda. Se omesso, l'azienda verrà creata con tutti i campi vuoti.
+    + `string` `regex`: I valori che può accettare il campo.
 
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
@@ -215,7 +215,20 @@ Restituisce l'attività avente l'ID fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Activity`](./data_models.md) `result`: Il risultato. Può essere `null`.
+    + [`Activity`](./data_models.md) `activity`: Il risultato. Può essere `null`.
+
+---
+
+> **<span style="color: #3EB63E">GET</span> Tutte le Attività**
+
+**URL:** `https://{{url}}/activity`
+
+Restituisce tutte le attività.
+
++ **Risposta**
+    + `boolean` `error`: Se sono accaduti errori durante la richiesta.
+    + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+    + [`Activity[]`](./data_models.md) `activities`: Il risultato. Può essere `null`.
 
 ---
 
@@ -297,7 +310,7 @@ Restituisce le aziende salvate dall'utente che sta effettuando la richiesta.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Company[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+    + `int[]` `saved`: Il risultato. Vuoto se non è andato a buon fine.
 
 ---
 
@@ -314,7 +327,6 @@ Salva un'azienda.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-    + `int` `id`: L'ID dell'attività appena creata. Può essere `null`.
 
 ---
 
@@ -348,7 +360,7 @@ Restituisce l'alternanza avente l'id fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Internship`](./data_models.md) `result`: Il risultato. Può essere `null`.
+    + [`Internship`](./data_models.md) `result`: Il risultato. Può essere `null`.
 
 ---
 
@@ -364,7 +376,7 @@ Restituisce l'alternanza appartenente all'Azienda fornita.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`Internship[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+    + [`Internship[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
 
 ---
 
@@ -485,4 +497,4 @@ Restituisce l'utente con ID fornito.
 + **Risposta**
     + `boolean` `error`: Se sono accaduti errori durante la richiesta.
     + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
-+ [`User`](./data_models.md) `privileges`: Il risultato. Può essere `null`.
+    + [`User`](./data_models.md) `privileges`: Il risultato. Può essere `null`.
