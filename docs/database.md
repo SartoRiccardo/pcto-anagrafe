@@ -4,6 +4,8 @@
 
 Il database è stato progettato in modo di essere il più possibile flessibile e di poter cambiare ogni singolo campo a proprio piacimento, mantenendo però l'integrità semantica dei dati.
 
+Per come i dati sono interpretati dall'applicazione, consultare il [Modello Dati](./data_models.md)
+
 # Struttura
 
 ## Company
