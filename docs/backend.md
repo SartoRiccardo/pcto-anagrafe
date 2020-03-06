@@ -1,15 +1,13 @@
-# Struttura
-
 Il back-end dell'applicazione sarà programmato in PHP, e si occuperà di trasferire i dati dal Server al Client tramite richieste AJAX. I dati sono restituiti sottoforma di JSON. Verrà usato il framework Flight per creare un'API RESTful.
 
 Nell'URL, prima di ogni richiesta, dovrà essere incluso un token che verrà usato per autenticare la richiesta. Una normale richiesta seguirà quindi il formato:
 `https://{{url}}/{{auth}}/endpoint`
 
-## Company
+## Azienda
 
 #### <span style="color: #3Eb63E">GET</span> Azienda per ID
 
-`https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/company/{{id}}`
 
 Restituisce l'azienda avente l'ID fornito.
 
@@ -17,7 +15,6 @@ Restituisce l'azienda avente l'ID fornito.
 + `int` `id`: L'ID dell'azienda.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 + [`Company`](./data_models.md) `result`: Il risultato. Può essere `null`.
@@ -26,7 +23,7 @@ Restituisce l'azienda avente l'ID fornito.
 
 #### <span style="color: #3Eb63E">GET</span> Cerca Aziende
 
-`https://{{url}}/company`
+**URL:** `https://{{url}}/company`
 
 Restituisce le aziende attinenti ai parametri di ricerca.
 
@@ -35,7 +32,6 @@ Restituisce le aziende attinenti ai parametri di ricerca.
 + `int` `page`: La pagina su cui siamo attualmente. Ogni pagina fornisce 50 risultati. Se non specificato, verranno restituiti tutti i risultati.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 + `int` `totalResults`: I risultati totali della ricerca, includendo quelli non restituiti.
@@ -45,7 +41,7 @@ Restituisce le aziende attinenti ai parametri di ricerca.
 
 #### <span style="color: #F5A623">POST</span> Aggiungi Azienda
 
-`https://{{url}}/company`
+**URL:** `https://{{url}}/company`
 
 Crea una nuova azienda.
 
@@ -54,16 +50,15 @@ Crea una nuova azienda.
 + [`Field[]`](./data_models.md) `fields`: I campi dell'azienda. Se omesso, l'azienda verrà creata con tutti i campi vuoti.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 + `int` `id`: L'ID dell'azienda appena creata. Può essere `null`.
 
 ---
 
-#### <span style="color: #4A90E2">PUT</span> Modifica un'azienda
+#### <span style="color: #4A90E2">PUT</span> Modifica Azienda
 
-`https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/company`
 
 Modifica un'azienda ai parametri forniti.
 
@@ -73,15 +68,14 @@ Modifica un'azienda ai parametri forniti.
 + [`Field[]`](./data_models.md) `fields`: I campi dell'azienda.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
 ---
 
-#### <span style="color: #4A90E2">PUT</span> Modifica il nome di un'azienda
+#### <span style="color: #4A90E2">PUT</span> Modifica Nome di un'Azienda
 
-`https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/company`
 
 Modifica il nome di un'azienda.
 
@@ -90,32 +84,31 @@ Modifica il nome di un'azienda.
 + `string` `name`: Il nome dell'azienda.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
 ---
 
-#### <span style="color: #4A90E2">PUT</span> Modifica un campo di un'azienda
+#### <span style="color: #4A90E2">PUT</span> Modifica Campo di un'Azienda
 
-`https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/company`
 
 Modifica il nome di un'azienda.
 
 ##### Richiesta
 + `int` `id`: L'ID dell'azienda.
-+ [`Field`](./data_models.md) `field`: Il campo da modificare.
++ `int` `fId`: L'ID del campo da modificare
++ `string` `fValue`: Il valore del campo.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
 ---
 
-#### <span style="color: #ED4B48">DEL</span> Elimina un'azienda
+#### <span style="color: #ED4B48">DEL</span> Elimina Azienda
 
-`https://{{url}}/company/{{id}}`
+**URL:** `https://{{url}}/company/{{id}}`
 
 Elimina l'azienda con l'ID fornito.
 
@@ -123,139 +116,373 @@ Elimina l'azienda con l'ID fornito.
 + `int` `id`: L'ID dell'azienda.
 
 ##### Risposta
-
 + `boolean` `error`: Se sono accaduti errori durante la richiesta.
 + `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
 ---
 
-## /api/structure
+## Struttura
 
-Gestisce tutto quello che riguarda la tabella `Field`.
+#### <span style="color: #3Eb63E">GET</span> Campo per ID
 
-### GET
+**URL:** `https://{{url}}/structure/{{id}}`
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID del campo da ottenere. |
+Restituisce il campo avente l'ID fornito.
 
-### POST
+##### Richiesta
++ `int` `id`: L'ID dell'azienda.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `name` | `string` | Il nome del campo. |
-| `regex` | `string` | La sintassi valida che il campo può accettare. |
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Field`](./data_models.md) `field`: Il risultato. Può essere `null`.
 
-### PUT
+---
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id` | `int` | L'ID del campo da modificare. |
-| `name` | `string` | Il nome del campo. |
-| `regex` | `string` | La sintassi valida che il campo può accettare. |
+#### <span style="color: #3Eb63E">GET</span> Tutti i campi
 
-### DELETE
+**URL:** `https://{{url}}/structure`
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'azienda da eliminare. |
+Restituisce tutti i campi che può avere un'azienda.
 
-## /api/activity
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Field[]`](./data_models.md) `fields`: Il risultato. Può essere `null`.
 
-Gestisce tutto quello che riguarda la tabella `Activity`.
+---
 
-### GET
+#### <span style="color: #F5A623">POST</span> Aggiungi Campo
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'attività da cercare. |
+**URL:** `https://{{url}}/structure`
 
-### POST
+Crea una nuova azienda.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `name` | `string` | Il nome della nuova attività. |
-| `description` | `string` | La descrizione della nuova attività. |
+##### Richiesta
++ `string` `name`: Il nome dell'azienda.
++ `string` `regex`: I campi dell'azienda. Se omesso, l'azienda verrà creata con tutti i campi vuoti.
 
-### PUT
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ `int` `id`: L'ID del campo appena creato. Può essere `null`.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'attività da modificare. |
-| `name` | `string` | Il nuovo nome della nuova attività. |
-| `description` | `string` | La nuova descrizione dell'attività. |
+---
 
-### DELETE
+#### <span style="color: #4A90E2">PUT</span> Modifica Campo
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'attività da eliminare. |
+**URL:** `https://{{url}}/structure`
 
-## /api/saved
+Modifica un campo ai parametri forniti.
 
-Gestisce tutto quello che riguarda le tabelle `Saved`.
+##### Richiesta
++ `int` `id`: L'ID del campo.
++ `string` `name`: Il nome del campo.
++ `string` `regex`: La sintassi valida che il campo può accettare.
 
-### GET
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
-Tutta l'informazione viene già spedita dal campo `auth`.
+---
 
-### POST
+#### <span style="color: #ED4B48">DEL</span> Elimina Campo
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id` | `int` | L'ID dell'azienda da salvare. |
+**URL:** `https://{{url}}/structure/{{id}}`
 
-### DELETE
+Elimina il campo con l'ID fornito.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id`  | `int` | L'ID dell'azienda da eliminare dai preferiti. |
+##### Richiesta
++ `int` `id`: L'ID del campo.
 
-## /api/internship
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
 
-Gestisce tutto quello che riguarda la tabella `Internship`.
+---
 
-### GET
+## Attività
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id` | `int` | L'ID dell'esperienza. |
+#### <span style="color: #3Eb63E">GET</span> Attività per ID
 
-### POST & PUT
+**URL:** `https://{{url}}/activity/{{id}}`
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `company` | `int` | L'ID dell'azienda. |
-| `activity` | `int` | L'ID dell'attività. |
-| `student` | `string` | Lo studente che sta svolgendo l'attività. |
-| `year` | `int` | L'anno in cui sta svolgendo l'attività. |
+Restituisce l'attività avente l'ID fornito.
 
-### DELETE
+##### Richiesta
++ `int` `id`: L'ID dell'azienda.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `id` | `int` | L'ID dell'esperienza. |
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Activity`](./data_models.md) `result`: Il risultato. Può essere `null`.
 
-## /api/privileges
+---
 
-Gestisce tutto quello che riguarda la tabella `Privilege`.
+#### <span style="color: #F5A623">POST</span> Aggiungi Attività
 
-### GET
+**URL:** `https://{{url}}/activity`
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `user` | `int` | L'ID dell'utente. |
+Crea una nuova attività.
 
-### POST
+##### Richiesta
++ `string` `name`: Il nome dell'attività.
++ `string` `description`: La descrizione dell'attività.
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `user` | `int` | L'ID dell'utente. |
-| `privilege` | `string` | I permessi da dare. |
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ `int` `id`: L'ID dell'attività appena creata. Può essere `null`.
 
-### DELETE
+---
 
-| Campo | Tipo | Descrizione |
-| ----- | ---- | ----------- |
-| `user` | `int` | L'ID dell'utente. |
-| `privilege` | `string` | I permessi da togliere. |
+#### <span style="color: #4A90E2">PUT</span> Modifica Nome di un'Attività
+
+**URL:** `https://{{url}}/activity`
+
+Modifica il nome di un'attività. Può essere mandata anche con i parametri di **<span style="color: #4A90E2">PUT</span> Modifica Descrizione di un'Attività**
+
+##### Richiesta
++ `int` `id`: L'ID dell'attività.
++ `string` `name`: Il nome dell'attività.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+#### <span style="color: #4A90E2">PUT</span> Modifica Descrizione di un'Attività
+
+**URL:** `https://{{url}}/activity`
+
+Modifica il nome di un'attività. Può essere mandata anche con i parametri di **<span style="color: #4A90E2">PUT</span> Modifica Nome di un'Attività**
+
+##### Richiesta
++ `int` `id`: L'ID dell'attività.
++ `string` `description`: La descrizione dell'attività.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+#### <span style="color: #ED4B48">DEL</span> Elimina Attività
+
+**URL:** `https://{{url}}/activity/{{id}}`
+
+Elimina l'attività con l'ID fornito.
+
+##### Richiesta
++ `int` `id`: L'ID dell'attività.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+## Salvataggi
+
+#### <span style="color: #3Eb63E">GET</span> Salvataggi di Utente
+
+**URL:** `https://{{url}}/saved/{{id}}`
+
+Restituisce le aziende salvate dall'utente che sta effettuando la richiesta.
+
+##### Richiesta
++ `int` `id`: L'ID dell'utente.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Company[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+
+---
+
+#### <span style="color: #F5A623">POST</span> Salva Azienda
+
+**URL:** `https://{{url}}/saved`
+
+Salva un'azienda.
+
+##### Richiesta
++ `int` `user`: L'ID dell'utente che sta salvando l'azienda.
++ `int` `company`: L'ID dell'azienda da salvare.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ `int` `id`: L'ID dell'attività appena creata. Può essere `null`.
+
+---
+
+#### <span style="color: #ED4B48">DEL</span> Elimina Salvataggio
+
+**URL:** `https://{{url}}/saved`
+
+Elimina l'attività con l'ID fornito.
+
+##### Richiesta
++ `int` `user`: L'ID dell'utente che sta eliminando il salvataggio.
++ `int` `company`: L'ID dell'azienda.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+## Alternanza
+
+#### <span style="color: #3Eb63E">GET</span> Alternanza per ID
+
+**URL:** `https://{{url}}/internship/{{id}}`
+
+Restituisce l'alternanza avente l'id fornito.
+
+##### Richiesta
++ `int` `id`: L'ID dell'alternanza.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Internship`](./data_models.md) `result`: Il risultato. Può essere `null`.
+
+---
+
+#### <span style="color: #3Eb63E">GET</span> Alternanza di Azienda
+
+**URL:** `https://{{url}}/internship`
+
+Restituisce l'alternanza appartenente all'Azienda fornita.
+
+##### Richiesta
++ `int` `azienda`: L'ID dell'azienda.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`Internship[]`](./data_models.md) `results`: Il risultato. Può essere `null`.
+
+---
+
+#### <span style="color: #F5A623">POST</span> Aggiungi Alternanza
+
+**URL:** `https://{{url}}/internship`
+
+Crea una nuova attività.
+
+##### Richiesta
++ `int` `company`: L'ID dell'azienda.
++ `int` `activity`: L'ID dell'attività.
++ `string` `student`: Lo studente che sta svolgendo l'attività.
++ `int` `year`: L'anno in cui sta svolgendo l'attività.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ `int` `id`: L'ID dell'alternanza appena creata. Può essere `null`.
+
+---
+
+#### <span style="color: #4A90E2">PUT</span> Modifica Alternanza
+
+**URL:** `https://{{url}}/activity`
+
+Modifica un'alternanza.
+
+##### Richiesta
++ `int` `id`: L'ID dell'alternanza.
++ `int` `company`: L'ID dell'azienda. Opzionale.
++ `int` `activity`: L'ID dell'attività. Opzionale.
++ `string` `student`: Lo studente che sta svolgendo l'attività. Opzionale.
++ `int` `year`: L'anno in cui sta svolgendo l'attività. Opzionale.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+#### <span style="color: #ED4B48">DEL</span> Elimina Alternanza
+
+**URL:** `https://{{url}}/internship/{{id}}`
+
+Elimina l'alternanza con l'ID fornito.
+
+##### Richiesta
++ `int` `id`: L'ID dell'alternanza.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+## Privilegi
+
+#### <span style="color: #3Eb63E">GET</span> Privilegi di Utente
+
+**URL:** `https://{{url}}/privileges/{{id}}`
+
+Restituisce i privilegi dell'Utente avente l'ID fornito.
+
+##### Richiesta
++ `int` `id`: L'ID dell'utente.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ `string[]` `privileges`: I privilegi. Può essere `null`.
+
+---
+
+#### <span style="color: #F5A623">POST</span> Aggiungi Privilegio
+
+**URL:** `https://{{url}}/privilege`
+
+Aggiunge un privilegio a un utente.
+
+##### Richiesta
++ `int` `user`: L'ID dell'utente.
++ `string` `privilege`: I permessi da dare.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+#### <span style="color: #ED4B48">DEL</span> Togli Privilegio
+
+**URL:** `https://{{url}}/privilege`
+
+Toglie un privilegio all'utente con l'ID fornito.
+
+##### Richiesta
++ `int` `user`: L'ID dell'utente.
++ `string` `privilege`: Il permesso da togliere.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
+
+---
+
+## Utenti
+
+#### <span style="color: #3Eb63E">GET</span> Utente per ID
+
+**URL:** `https://{{url}}/user/{{id}}`
+
+Restituisce l'utente con ID fornito.
+
+##### Richiesta
++ `int` `id`: L'ID dell'utente.
+
+##### Risposta
++ `boolean` `error`: Se sono accaduti errori durante la richiesta.
++ `string` `message`: Un eventuale messaggio d'errore se la richiesta non è andata a buon fine.
++ [`User`](./data_models.md) `privileges`: Il risultato. Può essere `null`.
