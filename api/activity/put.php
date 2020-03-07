@@ -1,5 +1,12 @@
 <?php
-function changeField($id, $name, $description) {
+/**
+ * Updates an activity.
+ * @param  int    $id           The ID of the activity to update.
+ * @param  string $name         The name of the activity. Can be null.
+ * @param  string $description  The description of the activity. Can be null.
+ * @return array                The result of the operation.
+ */
+function changeActivity($id, $name, $description) {
   global $dbc;
 
   $setName = $name == null ? "" : "SET name = :name";

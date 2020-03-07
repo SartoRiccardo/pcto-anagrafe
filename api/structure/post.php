@@ -1,9 +1,9 @@
 <?php
 /**
  * Adds a field to the structure.
- * @param string $name    The field name.
- * @param string $regex   The regex that validates the field.
- * @return array          If an error has happened, and an eventual error message.
+ * @param  string $name    The field name.
+ * @param  string $regex   The regex that validates the field.
+ * @return array           If an error has happened, and an eventual error message.
  */
 function addField($name, $regex) {
   global $dbc;
@@ -16,9 +16,20 @@ function addField($name, $regex) {
   $stmt->execute();
   $success = $stmt->rowCount() > 0;
 
+  $id = null;
+
+  if($success) {
+    $q = "SELECT MAX(id) AS id
+            FROM Field";
+    $stmt = $dbc->prepare($q);
+    $stmt->execute();
+    $id = (int) $stmt->fetch()["id"];
+  }
+
   return array(
+    "id" => $id,
     "error" => !$success,
-    "message" => $success ? "Aggiunto campo $name." : "Errore nell'aggiunta del campo."
+    "message" => $success ? "" : "Errore nell'aggiunta del campo."
   );
 }
 ?>

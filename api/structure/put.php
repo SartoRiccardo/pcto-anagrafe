@@ -22,7 +22,7 @@ function updateField($id, $name, $regex) {
 
   return array(
     "error" => !$success,
-    "message" => $success ? "Campo $name modificato." : "Errore nella modifica del campo $name."
+    "message" => $success ? "" : "Errore nella modifica del campo \"$name\"."
   );
 }
 ?>

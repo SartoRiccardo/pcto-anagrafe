@@ -9,8 +9,8 @@ function deleteActivity($id) {
 
   if(!getActivity($id)) {
     return array(
-      "error"=>true,
-      "message"=>"L'azienda non esiste."
+      "error" => true,
+      "message" => "L'azienda non esiste."
     );
   }
 

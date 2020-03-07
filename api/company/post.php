@@ -62,12 +62,12 @@ function insertCompany($arg0, $arg1, $arg2=null) {
       "message"=>"Company was not inserted."
     );
   }
-  $id = intval($res["id"]);
+  $id = (int) $res["id"];
 
   $q = "INSERT INTO CompanyField
           VALUES(:company, :field, :value)";
   $stmt = $dbc->prepare($q);
-  $stmt->bindParam(":company", $id);
+  $stmt->bindParam(":company", $id, PDO::PARAM_INT);
   foreach ($fields as $f) {
     $stmt->bindParam(":field", $f["id"]);
     $stmt->bindParam(":value", $f["value"]);
@@ -75,9 +75,9 @@ function insertCompany($arg0, $arg1, $arg2=null) {
   }
 
   return array(
-    "id"=>$id,
-    "error"=>false,
-    "message"=>"",
+    "id" => $id,
+    "error" => false,
+    "message" => "",
   );
 }
 
