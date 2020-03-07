@@ -36,13 +36,14 @@ export function resultAction(arg0=null) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "GET");
-    payload.set("user", getToken());
-    payload.set("search", JSON.stringify(searchReq));
-    payload.set("page", getState().search.page);
+    const payload = {
+      params: {
+        search: JSON.stringify(searchReq),
+        page: getState().search.page,
+      },
+    }
 
-    axios.post(apiUrl("company"), payload)
+    axios.get(apiUrl("/company", getToken()), payload)
       .then((res) => {
         const {lastSearchId} = getState().search;
         if(lastSearchId !== searchId) {
@@ -59,6 +60,7 @@ export function resultAction(arg0=null) {
         }
         else if(res.data.error) {
           // Handle error...
+          console.log(res.data.message);
         }
       })
       .catch((e) => {
@@ -84,25 +86,20 @@ export function selectCompany(id) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "GET");
-    payload.set("user", getToken());
-    payload.set("id", id);
-
-    axios.post(apiUrl("company"), payload)
+    axios.get(apiUrl(`/company/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
-        const match = res.data;
+        const {result} = res.data;
         dispatch({
           type: "COMPANYR_SET_MATCH",
-          match,
+          match: result,
         });
       }
       else if(res.data.error) {
-      dispatch({
-        type: "COMPANYR_ERROR",
-        error: res.data.message,
-      });
+        dispatch({
+          type: "COMPANYR_ERROR",
+          error: res.data.message,
+        });
       }
     })
     .catch((e) => {

@@ -15,9 +15,6 @@ import update from "immutability-helper";
  */
 const init = {
   saved: [],
-  totalResults: 0,
-  resultsPerPage: 50,
-  page: 0,
   initialized: false,
   status: {
     actions: [],
@@ -31,8 +28,6 @@ function savedReducer(state=init, action) {
       return {
         ...state,
         saved: [],
-        totalResults: 0,
-        page: 0,
         status: {
           ...state.status,
           dumping: true,
@@ -91,9 +86,7 @@ function savedReducer(state=init, action) {
       return {
         ...state,
         saved: [...state.saved, company],
-        totalResults: state.totalResults+1,
-        page: 0,
-      }
+      };
 
     case "SAVEDR_DELETE":
       return {
@@ -101,9 +94,7 @@ function savedReducer(state=init, action) {
         saved: state.saved.filter((s) => {
           return s.id !== action.id;
         }),
-        totalResults: state.totalResults-1,
-        page: 0,
-      }
+      };
 
     case "SAVEDR_UPDATE":
       return {
@@ -137,7 +128,7 @@ function savedReducer(state=init, action) {
 
           return newCompany;
         }),
-      }
+      };
 
     case "SAVEDR_RESET":
       return init;

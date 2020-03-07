@@ -45,11 +45,43 @@ class CompanyDetails extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+    else {
+      document.title = `PCTOkay! ${company.name}`;
+    }
 
     this.state = {
       modifying: null,
       deleteStarted: false,
+      initialized: company && company.id === id,
+      currentId: id,
     };
+  }
+
+  componentDidUpdate() {
+    const {initialized, currentId} = this.state;
+    const {company, error} = this.props;
+    const id = parseInt(this.props.match.params.id);
+    if(!initialized && company && company.id === id) {
+      this.setState({
+        initialized: true,
+      });
+      document.title = `PCTOkay! ${company.name}`;
+    }
+
+    const title404 = `PCTOkay! Azienda non trovata`;
+    if(error && document.title !== title404) {
+      document.title = title404;
+    }
+
+    if(currentId !== id) {
+      document.title = `PCTOkay!`;
+      this.setState({
+        initialized: false,
+        currentId: id,
+      });
+      this.props.resetCompany();
+      this.props.selectCompany(id);
+    }
   }
 
   handleModify = (fieldID) => {

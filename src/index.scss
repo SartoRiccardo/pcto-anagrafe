@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Heebo:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Viga&display=swap');
 
 $primary: #d32f2f;
 $secondary: #ff9800;
@@ -13,7 +13,9 @@ $light-green-lighten-4: #dcedc8;
 $red-lighten-4: #ffcdd2;
 $grey-lighten-5: #fafafa;
 $grey: #9e9e9e;
-$HEADERBORDERTEMP: #d7ccc8;
+$brown-lighten-4: #d7ccc8;
+$grey-lighten-5: #fafafa;
+$transparent: rgba(0, 0, 0, 0);
 
 html {
   height: 100%;
@@ -26,7 +28,10 @@ body {
   padding-bottom: 6rem;
   min-height: 100%;
   height: 100%;
-  font-family: "Heebo" !important;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: Heebo !important;
 }
 
 body.overlay-open {
@@ -55,18 +60,8 @@ body.overlay-open {
 
 .toggler:active, .toggler:hover, .toggler:focus {
   background-color: inherit !important;
-  border-color: rgba(0, 0, 0, 0) !important;
+  border-color: $transparent !important;
   transition: border-color 0s !important;
-}
-
-.page-selector:hover {
-  border-color: rgba(0, 0, 0, 0) !important;
-  color: black !important;
-}
-
-.page-selector-selected:hover {
-  border-color: rgba(0, 0, 0, 0) !important;
-  color: white !important;
 }
 
 .logout-btn {
@@ -77,20 +72,55 @@ body.overlay-open {
   border-color: $cyan-lighten-3 !important;
 }
 
-.form-control:focus, .btn:focus {
-  box-shadow:none !important;
+.form-control:focus, .btn:focus, .btn.focus {
+  box-shadow: none !important;
 }
 
-.page-selector-selected {
+.user-id-label {
+  font-size: 1rem !important;
+}
+
+.user-id-label.button {
+  background-color: rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+}
+
+#user-id-show:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.popover.user-info .popover-header {
+  background-color: $primary;
+  color: white;
+}
+
+.popover.user-info .popover-header::before {
+  border: none;
+}
+
+.popover.user-info .arrow::after {
+  border-bottom-color: $primary;
+}
+
+// Page selectors & secondary buttons
+
+.btn-secondary:not(:hover):not(.page-selector-selected):focus, .btn-secondary:not(:active) {
+  background-color: $secondary !important;
+  border-color: $secondary !important;
+  color: inherit !important;
+}
+
+.btn.page-selector-selected, .btn-secondary.active {
   background-color: adjust-hue($secondary, -10%) !important;
   border-color: adjust-hue($secondary, -10%) !important;
   color: black !important;
 }
 
-.btn-secondary:not(:hover):not(.page-selector-selected):focus {
-  background-color: $secondary !important;
-  border-color: $secondary !important;
-  color: inherit !important;
+.page-selector:hover, .btn-secondary {
+  border-color: $transparent !important;
+  color: black !important;
 }
 
 .page-selector.first-page {
@@ -100,6 +130,25 @@ body.overlay-open {
 .page-selector.last-page {
   border-left: 1px solid darken($secondary, 10%) !important;
 }
+
+.btn-secondary:active, .btn-secondary.active {
+  background-color: adjust-hue($secondary, -10%) !important;
+  border-color: adjust-hue($secondary, -10%) !important;
+  color: black !important;
+}
+
+.btn-secondary:hover {
+  background-color: adjust-hue($secondary, -20%) !important;
+  border-color: adjust-hue($secondary, -10%) !important;
+  color: black !important;
+}
+
+.page-selector-selected:hover, .btn-secondary.active:hover {
+  border-color: $transparent !important;
+  color: white !important;
+}
+
+// Tables
 
 .table-hover tbody tr:hover:nth-child(odd) {
   cursor: pointer;
@@ -135,7 +184,7 @@ svg {
 }
 
 .icon-invisible {
-  color: rgba(0, 0, 0, 0);
+  color: $transparent;
 }
 
 .icon-button {
@@ -144,7 +193,12 @@ svg {
 }
 
 .icon-button:hover {
-  color: rgba(0, 0, 0, 1);
+  color: black;
+}
+
+.icon-button.bordered {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.10);
 }
 
 .icon-transparent {
@@ -203,18 +257,26 @@ svg {
   height: 100%;
 }
 
-.field-modified.card-header {
+.field-header.card-header {
+  background-color: $grey-lighten-5;
+}
+
+.field-header.card-header.no-content {
+  border-bottom: $transparent;
+}
+
+.field-modified.field-header {
   background-color: $light-green-lighten-4;
 }
 
-.field-deleted.card-header {
+.field-deleted.field-header {
   background-color: $red-lighten-4;
 }
 
 .internship-box {
-  border: 1px solid $grey;
+  border: 1px solid $grey-lighten-5;
   border-radius: 1.5rem;
-  background: #fbfbfb;
+  background-color: white;
 }
 
 .py-2-5 {
@@ -227,15 +289,27 @@ svg {
 }
 
 .activity-container {
-  border: 1px solid $grey;
+  border: 1px solid $grey-lighten-5;
   height: 100%;
-  background-color: $grey-lighten-5;
+  background-color: white;
   border-radius: 1rem;
 }
 
 .internship-card .card-header {
-  background-color: saturate($HEADERBORDERTEMP, 20%);
-  border: 1px solid darken($HEADERBORDERTEMP, 10%);
+  // background-color: saturate($brown-lighten-4, 20%);
+  // border: 1px solid darken($brown-lighten-4, 10%);
+  background-color: rgba(0,0,0,0);
+  border: none;
+}
+
+.card.internship-card {
+  border: none;
+  border-radius: 0;
+}
+
+.card.internship-card .internship-card-body {
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 // Navbar
@@ -286,6 +360,12 @@ svg {
   top: 0;
   bottom: 0;
   left: 0;
+}
+
+.btn.fab {
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
 
 @import '~bootstrap/scss/bootstrap';

@@ -138,8 +138,6 @@ class FieldCard extends Component {
 
   undoChanges = (evt) => {
     const {original} = this.props;
-    console.table(original);
-    console.table(this.state.field)
     if(!original) {
       return;
     }
@@ -185,7 +183,7 @@ class FieldCard extends Component {
     );
 
     let body = (
-      <Collapse in={showing}>
+      <Collapse in={showing} mountOnEnter={true} unmountOnExit={true}>
         <div>
           <Card.Body>
             <FieldTypeSelect onChange={this.updateFieldType} value={fieldType} options={choiceNames} />
@@ -231,12 +229,15 @@ class FieldCard extends Component {
       );
     }
 
-    let headerClass = null;
-    if(hasBeenModified) {headerClass = "field-modified";}
-    if(deleted) {headerClass = "field-deleted";}
+    let headerClass = "";
+    if(hasBeenModified) {headerClass = " field-modified";}
+    if(deleted) {headerClass = " field-deleted";}
+
+    const hasContent = showing ? "" : " no-content";
+
     return (
       <Card className="my-3">
-        <Card.Header className={headerClass}>
+        <Card.Header className={`field-header${headerClass}${hasContent}`}>
           {header}
         </Card.Header>
 

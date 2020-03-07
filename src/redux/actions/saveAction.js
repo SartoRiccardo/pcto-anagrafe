@@ -21,19 +21,18 @@ export function loadSavedById(saved) {
 
     dispatch({type: "SAVEDR_START_DUMP"});
     for(let i = 0; i < saved.length; i++) {
-      let payload = new FormData();
-      payload.set("REQUEST_METHOD", "GET");
-      payload.set("user", getToken());
-      payload.set("id", saved[i]);
-
       const actionId = Math.random();
       dispatch({type: "SAVEDR_BEGIN_ACTION", actionId});
 
-      axios.post(apiUrl("company"), payload)
+      axios.get(apiUrl(`/company/${saved[i]}`, getToken()))
       .then((res) => {
-        if(res.status === 200) {
-          dispatch({type: "SAVEDR_ADD", company: res.data});
+        if(res.status === 200 && !res.data.error) {
+          const {result} = res.data;
+          dispatch({type: "SAVEDR_ADD", company: result});
           dispatch({type: "SAVEDR_END_ACTION", actionId});
+        }
+        else if(res.data.error) {
+          console.log(res.data.message);
         }
       })
       .catch((e) => {
@@ -59,19 +58,19 @@ export function loadSaved() {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "GET");
-    payload.set("user", getToken());
+    const {id} = getState().auth.user;
 
-    axios.post(apiUrl("saved"), payload)
+    axios.get(apiUrl(`/saved/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200) {
-        dispatch(loadSavedById(res.data));
+        const {saved} = res.data;
+        dispatch(loadSavedById(saved));
+      }
+      else if(res.data.error) {
+        console.log(res.data.message);
       }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   }
 }
 
@@ -82,7 +81,7 @@ export function loadSaved() {
  *
  * @author Riccardo Sartori
  *
- * @param {int} company  The ID of the company to save.
+ * @param {Company} company  The company to save.
  */
 export function saveCompany(company) {
   return (dispatch, getState) => {
@@ -91,24 +90,25 @@ export function saveCompany(company) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "POST");
-    payload.set("user", getToken());
-    payload.set("id", company.id);
+    const user = getState().auth.user.id;
+    const payload = {
+      params: {user, company: company.id},
+    };
 
-    axios.post(apiUrl("saved"), payload)
+    axios.post(apiUrl("/saved", getToken()), null, payload)
     .then((res) => {
-      if(res.status === 200) {
-        if(getState().saved.initialized) {
+      if(res.status === 200 && !res.data.error) {
+        if(getState().saved.initialized && !res.data.error) {
           dispatch({type: "SAVEDR_ADD", company});
         }
         dispatch(resultAction());
         dispatch(reloadCompany());
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   };
 }
 
@@ -119,7 +119,7 @@ export function saveCompany(company) {
  *
  * @author Riccardo Sartori
  *
- * @param {int} company  The ID of the company to unsave.
+ * @param {int} id  The ID of the company to unsave.
  */
 export function deleteSave(id) {
   return (dispatch, getState) => {
@@ -128,12 +128,12 @@ export function deleteSave(id) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "DELETE");
-    payload.set("user", getToken());
-    payload.set("id", id);
+    const user = getState().auth.user.id;
+    const payload = {
+      params: {company: id},
+    };
 
-    axios.post(apiUrl("saved"), payload)
+    axios.delete(apiUrl(`/saved/${user}`, getToken()), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {
@@ -142,9 +142,10 @@ export function deleteSave(id) {
         dispatch(resultAction());
         dispatch(reloadCompany());
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   };
 }

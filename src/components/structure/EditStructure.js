@@ -34,6 +34,8 @@ class EditStructure extends Component {
       initialized,
       dumping,
     };
+
+    document.title = "PCTOkay! Struttura";
   }
 
   componentDidUpdate() {

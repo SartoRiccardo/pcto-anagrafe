@@ -1,10 +1,13 @@
 import React, {Component, Fragment} from "react";
 import {NavLink} from "react-router-dom";
+// HOCs and actions
 import {connect} from "react-redux";
 import {logoutAction} from "../../redux/actions/authAction";
+// Custom components
+import UserInfo from "./UserInfo";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase} from "@fortawesome/free-solid-svg-icons";
+import {faClipboardCheck, faBars, faSearch, faStar, faTable, faPlusCircle, faSuitcase, faUnlockAlt} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
@@ -49,26 +52,29 @@ class UserNav extends Component {
   }
 
   render() {
-    const {smallNavOpen} = this.state
+    const {smallNavOpen} = this.state;
+    const {privileges} = this.props;
     const span = 4;
     const links = [
-      {key:0, privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
-      {key:1, privilege:"BASE",             path:"/saved",      label:"Salvati",   icon:faStar},
-      {key:2, privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
-      {key:3, privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
-      {key:4, privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
+      {privilege:"BASE",             path:"/search",     label:"Cerca",     icon:faSearch},
+      {privilege:"BASE",             path:"/saved",      label:"Salvati",   icon:faStar},
+      {privilege:"MANAGE_STRUCTURE", path:"/structure",  label:"Struttura", icon:faTable},
+      {privilege:"MANAGE_COMPANY",   path:"/add",        label:"Aggiungi",  icon:faPlusCircle},
+      {privilege:"MANAGE_STRUCTURE", path:"/activities", label:"Attività",  icon:faSuitcase},
+      {privilege:"ADMIN",            path:"/privileges", label:"Privilegi", icon:faUnlockAlt},
     ];
 
-    const mdNavLinks = links.map((l) => {
-      const {key, privilege, path, label} = l;
-      return this.props.privileges.includes(privilege) ? (
+    const isAdmin = privileges.includes("ADMIN");
+    const mdNavLinks = links.map((l, key) => {
+      const {privilege, path, label} = l;
+      return privileges.includes(privilege) || isAdmin ? (
         <Nav.Link as={NavLink} key={key} to={path}>{label}</Nav.Link>
       ) : null;
     });
 
-    const mobileNavLinks = links.map((l) => {
-      const {key, privilege, path, label, icon} = l;
-      return this.props.privileges.includes(privilege) ? (
+    const mobileNavLinks = links.map((l, key) => {
+      const {privilege, path, label, icon} = l;
+      return privileges.includes(privilege) || isAdmin ? (
         <Row key={key} className="py-1 mobile-navlink">
           <Col>
             <Nav.Link className="mobile-collapse-link px-0" as={NavLink} to={path} onClick={this.hideMobile}>
@@ -102,7 +108,7 @@ class UserNav extends Component {
               </Col>
 
               <Col className="px-0 px-md-3" xs={{order:3, span}} md={{order:3}}>
-                <Button className="logout-btn float-right float-md-right" as={NavLink} to="/" onClick={this.props.logout}>Logout</Button>
+                <UserInfo className="float-right float-md-right" />
               </Col>
             </Row>
           </Container>

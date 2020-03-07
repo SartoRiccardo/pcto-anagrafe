@@ -1,4 +1,6 @@
-import React, {Component} from "react";
+import React from "react";
+// Custom components
+import GenericAdder from "./GenericAdder";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -7,28 +9,12 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-/**
- * An input field to add something on the fly.
- *
- * @author Riccardo Sartori
- *
- * @param {function} props.onFinish   Is fired when the user is finished.
- * @param {function} props.onChange   Is fired when the state changes.
- */
-class GenericAdder extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: "",
-    };
-  }
-
+class NumericAdder extends GenericAdder {
   changeHandler = (evt) => {
     this.setState({
       value: evt.target.value,
     }, () => {
-      const value = this.state.value;
+      const value = parseInt(this.state.value);
       if(this.props.onChange) {
         this.props.onChange({value});
       }
@@ -38,13 +24,15 @@ class GenericAdder extends Component {
   finish = (evt) => {
     evt.preventDefault();
 
-    const value = this.state.value;
+    const value = parseInt(this.state.value);
     if(this.props.onFinish) {
-      this.props.onFinish({value});
+      const success = this.props.onFinish({value});
+      if(success) {
+        this.setState({
+          value: "",
+        });
+      }
     }
-    this.setState({
-      value: "",
-    });
   }
 
   render() {
@@ -53,10 +41,10 @@ class GenericAdder extends Component {
         <Form.Row>
           <Col>
             <Form.Control
-              type="text"
+              type="number"
               value={this.state.value}
               onChange={this.changeHandler}
-              placeholder="Aggiungi"
+              placeholder={1234}
             />
           </Col>
 
@@ -71,4 +59,4 @@ class GenericAdder extends Component {
   }
 }
 
-export default GenericAdder;
+export default NumericAdder;

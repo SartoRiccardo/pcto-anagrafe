@@ -14,20 +14,17 @@ export function loadActivities() {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("user", getToken());
-    payload.set("REQUEST_METHOD", "GET");
-
-    axios.post(apiUrl("activity"), payload)
+    axios.get(apiUrl("/activity", getToken()))
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
-        const activities = res.data;
+        const {activities} = res.data;
         dispatch({type:"ACTIVITYR_INITIALIZE", activities});
       }
+      if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   }
 }
 
@@ -47,18 +44,18 @@ function changeActivity(id, name, description) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("user", getToken());
-    payload.set("REQUEST_METHOD", "PUT");
-    payload.set("id", id);
+    let payload = {
+      params: {id},
+    };
+
     if(name) {
-      payload.set("name", name);
+      payload.params = {...payload.params, name};
     }
     if(description) {
-      payload.set("description", description);
+      payload.params = {...payload.params, description};
     }
 
-    axios.post(apiUrl("activity"), payload)
+    axios.put(apiUrl("/activity", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -68,10 +65,11 @@ function changeActivity(id, name, description) {
           description
         });
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   }
 }
 
@@ -114,13 +112,11 @@ export function addActivity(name, description) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("user", getToken());
-    payload.set("REQUEST_METHOD", "POST");
-    payload.set("name", name);
-    payload.set("description", description);
+    const payload = {
+      params: {name, description},
+    };
 
-    axios.post(apiUrl("activity"), payload)
+    axios.post(apiUrl("/activity", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {id} = res.data;
@@ -129,10 +125,11 @@ export function addActivity(name, description) {
           activity: {id, name, description}
         });
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    });
+    .catch((e) => {});
   }
 }
 
@@ -150,15 +147,13 @@ export function deleteActivity(id) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("user", getToken());
-    payload.set("REQUEST_METHOD", "DELETE");
-    payload.set("id", id);
-
-    axios.post(apiUrl("activity"), payload)
+    axios.delete(apiUrl(`/activity/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type:"ACTIVITYR_DELETE", id});
+      }
+      else if(res.data.error) {
+        console.log(res.data.message);
       }
     })
     .catch((e) => {

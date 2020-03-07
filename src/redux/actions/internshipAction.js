@@ -16,20 +16,21 @@ export function loadInternshipsFor(company) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "GET");
-    payload.set("user", getToken());
-    payload.set("company", company);
+    const payload = {
+      params: {company},
+    };
 
-    axios.post(apiUrl("internship"), payload)
+    axios.get(apiUrl("/internship", getToken()), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
-        dispatch({type: "COMPANYR_SET_INTERNSHIPS", internships: res.data});
+        const {internships} = res.data;
+        dispatch({type: "COMPANYR_SET_INTERNSHIPS", internships});
+      }
+      else if(res.data.error) {
+        console.log(res.data.message);
       }
     })
-    .catch((e) => {
-
-    })
+    .catch((e) => {})
   };
 }
 
@@ -48,13 +49,11 @@ export function changeInternship(id, student) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "PUT");
-    payload.set("user", getToken());
-    payload.set("id", id);
-    payload.set("student", student);
+    const payload = {
+      params: {id, student},
+    };
 
-    axios.post(apiUrl("internship"), payload)
+    axios.put(apiUrl("/internship", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -63,9 +62,7 @@ export function changeInternship(id, student) {
         });
       }
     })
-    .catch((e) => {
-
-    })
+    .catch((e) => {})
   };
 }
 
@@ -83,20 +80,16 @@ export function deleteInternship(id) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "DELETE");
-    payload.set("user", getToken());
-    payload.set("id", id);
-
-    axios.post(apiUrl("internship"), payload)
+    axios.delete(apiUrl(`/internship/${id}`, getToken()))
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "COMPANYR_DELETE_INTERNSHIP", id});
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    })
+    .catch((e) => {})
   };
 }
 
@@ -115,15 +108,11 @@ export function addInternship(company, activity, student, year) {
       return;
     }
 
-    let payload = new FormData();
-    payload.set("REQUEST_METHOD", "POST");
-    payload.set("user", getToken());
-    payload.set("company", company);
-    payload.set("activity", activity);
-    payload.set("student", student);
-    payload.set("year", year);
+    const payload = {
+      params: {company, activity, student, year},
+    };
 
-    axios.post(apiUrl("internship"), payload)
+    axios.post(apiUrl("/internship", getToken()), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -134,9 +123,10 @@ export function addInternship(company, activity, student, year) {
           }
         });
       }
+      else if(res.data.error) {
+        console.log(res.data.message);
+      }
     })
-    .catch((e) => {
-
-    })
+    .catch((e) => {})
   };
 }

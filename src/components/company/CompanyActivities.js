@@ -25,16 +25,49 @@ class CompanyActivities extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+    else {
+      document.title = `PCTOkay! Attività di ${company.name}`;
+    }
+
     if(!internships || company.id !== id) {
       this.props.loadInternships(id);
     }
+
     if(!initialized) {
       this.props.loadActivities();
     }
 
     this.state = {
       addedInternships: [],
+      initialized: company && company.id === id,
+      currentId: id,
     };
+  }
+
+  componentDidUpdate() {
+    const {company, internships, loadInternships} = this.props;
+    const {initialized, currentId} = this.state;
+    const id = parseInt(this.props.match.params.id);
+    if(internships === null && company !== null) {
+      loadInternships(id);
+    }
+
+    if(!initialized && company && company.id === id) {
+      this.setState({
+        initialized: true,
+      });
+      document.title = `PCTOkay! Attività di ${company.name}`;
+    }
+
+    if(currentId !== id) {
+      this.setState({
+        initialized: false,
+        currentId: id,
+      });
+      this.props.resetCompany();
+      this.props.selectCompany(id);
+      document.title = `PCTOkay!`;
+    }
   }
 
   selectInternship = (evt) => {
@@ -167,6 +200,7 @@ class CompanyActivities extends Component {
 }
 
 function mapStateToProps(state) {
+  const {privileges} = state.auth;
   return {
     company: state.company.match,
     error: state.company.error,
@@ -175,7 +209,7 @@ function mapStateToProps(state) {
     privileges: state.auth.privileges,
     activities: state.activity.activities,
     initialized: state.activity.initialized,
-    canAdd: state.auth.privileges.includes("MANAGE_COMPANY"),
+    canAdd: privileges.includes("MANAGE_COMPANY") || privileges.includes("ADMIN"),
   };
 }
 

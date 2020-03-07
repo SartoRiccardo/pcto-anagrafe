@@ -149,9 +149,12 @@ class InternshipDetails extends Component {
               <Card.Header className="text-center">
                 {`${year}/${nextYear}`}
               </Card.Header>
-              <ListGroup variant="flush">
-                {listItems}
-              </ListGroup>
+
+              <div className="internship-card-body">
+                <ListGroup variant="flush">
+                  {listItems}
+                </ListGroup>
+              </div>
             </Card>
           </Col>
         );
@@ -160,10 +163,10 @@ class InternshipDetails extends Component {
 
     const isNewTooltip = <Tooltip>L'attività è nuova. Verrà eliminata automaticamente se nessun valore verrà inserito.</Tooltip>;
     return (
-      <div className="internship-box my-3 p-3 shadow-sm">
+      <div className="internship-box my-3 p-3 shadow">
         <Row>
           <Col>
-            <h3 className="text-center">
+            <h4 className="text-center">
               {activity.name}
               {isNew && internships.length === 0 ? (
                 <Fragment>
@@ -173,7 +176,7 @@ class InternshipDetails extends Component {
                   </OverlayTrigger>
                 </Fragment>
               ) : null}
-            </h3>
+            </h4>
             <p className="text-justify">{activity.description}</p>
           </Col>
         </Row>
@@ -188,9 +191,9 @@ class InternshipDetails extends Component {
 
 function mapStateToProps(state) {
   const {match} = state.company;
-
+  const {privileges} = state.auth;
   return {
-    canSeeInfo: state.auth.privileges.includes("MANAGE_COMPANY"),
+    canSeeInfo: privileges.includes("MANAGE_COMPANY") || privileges.includes("ADMIN"),
     companyId: match ? match.id : null,
   };
 }
