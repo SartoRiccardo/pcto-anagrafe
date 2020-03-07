@@ -1,3 +1,12 @@
+# 2020-03-07: 0.8.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/76a710e7ecee13783f02bd04df9e624c4e3d1fde) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/01acd3a43897c4bd68826b78652a2c303d03809c)
+
+## Aggiunte
++ Un amministratore può dare privilegi a degli utenti
++ Aggiunto un piccolo menù utente al posto del bottone di Logout
+
+## Modifiche
++ Cambiamenti negli endpoint della API
+
 # 2020-02-20: 0.7.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/2905f4258dea83732ba081ac657a67a67d1ab33e) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/143da124ac5a011108d460f72014a762e34522ec)
 
 ## Aggiunte
