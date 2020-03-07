@@ -123,12 +123,9 @@ export function getUserById(id) {
 
     axios.get(apiUrl(`/user/${id}`, getToken()))
     .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      if(res.status === 200) {
         const {user} = res.data;
         dispatch({type: "PRIVILEGER_SET_USER", user});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
       }
     })
     .catch((e) => {});
