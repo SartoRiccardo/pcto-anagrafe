@@ -1,4 +1,4 @@
-# 2020-03-12: 0.9.0 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/9763817b1318dd9d8e348d54279e8e7a18af3858) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
+# 2020-03-12: 0.9.1 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/6fd973a1197bfd8f730e4499c8e3dfb0fafad69b) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
 
 ## Sicurezza
 + I token d'accesso ora sono criptati
