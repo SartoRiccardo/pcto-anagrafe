@@ -14,7 +14,8 @@ import {getToken} from "../../util/tokenManager";
 function attemptLogin(dispatch, data, withCredentials=false) {
   const headers = {
     headers: {
-      "X-Authentication": withCredentials ? `login=${data.login}&pswd=${data.pswd}` : getToken(),
+      "X-Authentication": withCredentials ?
+        `login=${encodeURIComponent(data.login)}&pswd=${encodeURIComponent(data.pswd)}` : getToken(),
     }
   };
 
