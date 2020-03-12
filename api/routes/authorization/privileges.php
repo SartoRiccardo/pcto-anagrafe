@@ -1,13 +1,22 @@
 <?php
 /**
  * Checks if an user has a specific permission.
- * @param  string  $id        The identifier for the user.
+ * @param  string  $token     The user's token.
  * @param  string  $type      The privilege to check.
  * @param  boolean $isUserId  If $id is an user ID. False if it's a token.
  * @return boolean            If the user has the permission.
  */
-function hasPermission($id, $type, $isUserId=false) {
+function hasPermission($token, $type, $isUserId=false) {
   global $dbc;
+
+  $id = $token;
+  if(!$isUserId) {
+    $user = getUserByToken($token);
+    if(!$user) {
+      return false;
+    }
+    $id = $user["id"];
+  }
 
   $q = "SELECT *
           FROM Privilege
@@ -28,13 +37,14 @@ function hasPermission($id, $type, $isUserId=false) {
  * @return boolean         Whether the parameters match.
  */
 function isSameUser($token, $id) {
-  return $token == $id;
+  $user = getUserByToken($token);
+  return $user && $user["id"] == $id;
 }
 
 /**
  * Gets an user's privileges.
- * @param  int      $id  The user ID.
- * @return string[]      The user's privileges.
+ * @param  int      $id     The user ID.
+ * @return string[]         The user's privileges.
  */
 function getPrivilegesFor($id) {
   global $dbc;
@@ -50,6 +60,7 @@ function getPrivilegesFor($id) {
   while($res = $stmt->fetch()) {
     array_push($ret, $res["type"]);
   }
+
   return $ret;
 }
 

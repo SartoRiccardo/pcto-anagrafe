@@ -55,5 +55,44 @@ function getUserById($id) {
  * @return User         The matching user.
  */
 function getUserByToken($token) {
-  return getUserById($token);
+  global $dbc;
+
+  $q = "SELECT user
+          FROM Salt
+          WHERE SHA2(user + salt, 512) = :token";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":token", $token, PDO::PARAM_STR);
+  $stmt->execute();
+
+  $res = $stmt->fetch();
+  if($res) {
+    return getUserById((int) $res["user"]);
+  }
+  else {
+    return null;
+  }
+}
+
+/**
+ * Generates a hashed token for an user.
+ * @param  int    $id  The user's ID.
+ * @return string      The generated token.
+ */
+function generateUserToken($id) {
+  global $dbc;
+
+  $q = "SELECT SHA2(user + salt, 512) AS token
+          FROM Salt
+          where user = :id";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->execute();
+
+  $res = $stmt->fetch();
+  if($res) {
+    return $res["token"];
+  }
+  else {
+    return null;
+  }
 }

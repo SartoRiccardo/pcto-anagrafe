@@ -1,21 +1,28 @@
 <?php
-require_once "./authorization/get.php";
-require_once "./authorization/login.php";
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/get.php";
+require_once "./routes/authorization/login.php";
+require_once "./routes/authorization/privileges.php";
 
 // GET Login by Credentials
 Flight::route("GET /auth", function($request) {
   global $INVALID_LOGIN, $CONNECTION_ERR;
 
-  $req = Flight::request();
+  $auth = isset(apache_request_headers()["X-Authentication"])
+    ? apache_request_headers()["X-Authentication"] : null;
+  $params = array();
+  parse_str($auth, $params);
+  if(count($params) == 1) {
+    return true;
+  }
+
   $errorMessage = null;
 
   $login = null;
   $pswd = null;
-  if(isset($req->query["login"]) && strlen($req->query["login"]) > 0
-      && isset($req->query["pswd"]) && strlen($req->query["pswd"]) > 0) {
-    $login = $req->query["login"];
-    $pswd = $req->query["pswd"];
+  if(isset($params["login"]) && isset($params["pswd"]) &&
+      strlen($params["login"]) > 0 && strlen($params["pswd"]) > 0) {
+    $login = $params["login"];
+    $pswd = $params["pswd"];
   }
   else {
     $errorMessage = "Credenziali assenti.";
@@ -41,10 +48,10 @@ Flight::route("GET /auth", function($request) {
     }
     else {
       $id = $loginRes->id;
-      $user = array(
-        "token"=>intval($id)
-      );
       register($id, $loginRes->nome, $loginRes->cognome, $loginRes->account_type);
+      $user = array(
+        "token" => generateUserToken($id)
+      );
 
       $user["privileges"] = getPrivilegesFor($id);
       $user["user"] = getUserById($id);
@@ -59,13 +66,15 @@ Flight::route("GET /auth", function($request) {
 }, true);
 
 // GET Login by Token
-Flight::route("GET /@auth/auth", function($auth) {
+Flight::route("GET /auth", function() {
   $errorMessage = null;
 
-  $user = null;
-  if(isRegistered($auth)) {
-    $permissions = getPrivilegesFor($auth);
-    $userData = getUserById($auth);
+  $auth = isset(apache_request_headers()["X-Authentication"])
+    ? apache_request_headers()["X-Authentication"] : null;
+  $user = getUserByToken($auth);
+  if($user && isRegistered($user["id"])) {
+    $permissions = getPrivilegesFor($user["id"]);
+    $userData = $user;
     $user = array(
       "token" => $auth,
       "privileges" => $permissions,
@@ -84,9 +93,11 @@ Flight::route("GET /@auth/auth", function($auth) {
 });
 
 // GET User Privileges
-Flight::route("GET /@auth/privilege/@id:[0-9]+", function($auth, $id) {
+Flight::route("GET /privilege/@id:[0-9]+", function($id) {
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!(isSameUser($auth, $id) || hasPermission($auth, "ADMIN"))) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -102,9 +113,11 @@ Flight::route("GET /@auth/privilege/@id:[0-9]+", function($auth, $id) {
 });
 
 // Get Users with special privileges
-Flight::route("GET /@auth/privilege", function($auth) {
+Flight::route("GET /privilege", function() {
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -131,10 +144,12 @@ Flight::route("GET /@auth/privilege", function($auth) {
 });
 
 // POST Grant
-Flight::route("POST /@auth/privilege", function($auth, $request) {
+Flight::route("POST /privilege", function($request) {
   $req = Flight::request();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -171,10 +186,12 @@ Flight::route("POST /@auth/privilege", function($auth, $request) {
 }, true);
 
 // DELETE Revoke
-Flight::route("DELETE /@auth/privilege/@id:[0-9]+", function($auth, $id) {
+Flight::route("DELETE /privilege/@id:[0-9]+", function($id) {
   $req = Flight::request();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -205,9 +222,11 @@ Flight::route("DELETE /@auth/privilege/@id:[0-9]+", function($auth, $id) {
 /* User */
 
 // GET User by ID
-Flight::route("GET /@auth/user/@id:[0-9]+", function($auth, $id) {
+Flight::route("GET /user/@id:[0-9]+", function($id) {
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!(isSameUser($auth, $id) || hasPermission($auth, "ADMIN"))) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -225,9 +244,11 @@ Flight::route("GET /@auth/user/@id:[0-9]+", function($auth, $id) {
 });
 
 // GET Currently logged User
-Flight::route("GET /@auth/user", function($auth) {
+Flight::route("GET /user", function() {
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   $user = getUserByToken($auth);
   if(is_null($user) && is_null($errorMessage)) {
     $errorMessage = "Non esiste un utente con token $auth.";

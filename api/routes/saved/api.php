@@ -1,14 +1,16 @@
 <?php
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/privileges.php";
 
-require_once "./saved/get.php";
-require_once "./saved/post.php";
-require_once "./saved/delete.php";
+require_once "./routes/saved/get.php";
+require_once "./routes/saved/post.php";
+require_once "./routes/saved/delete.php";
 
 // GET Saved by User
-Flight::route("GET /@auth/saved/@id:[0-9]+", function($auth, $id){
+Flight::route("GET /saved/@id:[0-9]+", function($id){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!(isSameUser($auth, $id) && hasPermission($auth, "BASE")) && !hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -27,7 +29,7 @@ Flight::route("GET /@auth/saved/@id:[0-9]+", function($auth, $id){
 });
 
 // POST Create Saved
-Flight::route("POST /@auth/saved", function($auth, $request) {
+Flight::route("POST /saved", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
@@ -40,6 +42,8 @@ Flight::route("POST /@auth/saved", function($auth, $request) {
     $user = $req->query["user"];
   }
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(is_null($errorMessage) && !(isSameUser($auth, $user) && hasPermission($auth, "BASE")) && !hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -64,11 +68,13 @@ Flight::route("POST /@auth/saved", function($auth, $request) {
 }, true);
 
 // DELETE Saved
-Flight::route("DELETE /@auth/saved/@user:[0-9]+", function($auth, $user, $request) {
+Flight::route("DELETE /saved/@user:[0-9]+", function($user, $request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!(isSameUser($auth, $user) && hasPermission($auth, "BASE")) && !hasPermission($auth, "ADMIN")) {
     $errorMessage = "Privilegi insufficienti.";
   }

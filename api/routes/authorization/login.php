@@ -61,6 +61,20 @@ function register($id, $name, $surname, $status) {
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
+
+  $salt = "";
+  for($i = 0; $i < 256; $i++) {
+    $characters = "QWERTYUIOPLKJHGFDSAZXCVBNMpoiuytrewqasdfghjklmnbvcxz1234567890";
+    $strIndex = rand(0, strlen($characters) - 1);
+    $salt .= substr($characters, $strIndex, 1);
+  }
+
+  $q = "INSERT INTO Salt
+          VALUES (:id, :salt)";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+  $stmt->bindParam(":salt", $salt, PDO::PARAM_STR);
+  $stmt->execute();
 }
 
 /**

@@ -1,17 +1,19 @@
 <?php
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/privileges.php";
 
-require_once "./internship/get.php";
-require_once "./internship/post.php";
-require_once "./internship/put.php";
-require_once "./internship/delete.php";
+require_once "./routes/internship/get.php";
+require_once "./routes/internship/post.php";
+require_once "./routes/internship/put.php";
+require_once "./routes/internship/delete.php";
 
-require_once "./company/get.php";
+require_once "./routes/company/get.php";
 
 // GET Internship by ID
-Flight::route("GET /@auth/internship/@id:[0-9]+", function($auth, $id){
+Flight::route("GET /internship/@id:[0-9]+", function($id){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -33,10 +35,12 @@ Flight::route("GET /@auth/internship/@id:[0-9]+", function($auth, $id){
 });
 
 // GET Company Internships
-Flight::route("GET /@auth/internship", function($auth, $request) {
+Flight::route("GET /internship", function($request) {
   $req = Flight::request();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -72,10 +76,12 @@ Flight::route("GET /@auth/internship", function($auth, $request) {
 }, true);
 
 // POST Create Internship
-Flight::route("POST /@auth/internship", function($auth, $request) {
+Flight::route("POST /internship", function($request) {
   $req = Flight::request();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -119,11 +125,13 @@ Flight::route("POST /@auth/internship", function($auth, $request) {
 }, true);
 
 // PUT Update Internship
-Flight::route("PUT /@auth/internship", function($auth, $request) {
+Flight::route("PUT /internship", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -175,10 +183,12 @@ Flight::route("PUT /@auth/internship", function($auth, $request) {
 }, true);
 
 // DELETE Internship
-Flight::route("DELETE /@auth/internship/@id:[0-9]+", function($auth, $id) {
+Flight::route("DELETE /internship/@id:[0-9]+", function($id) {
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }

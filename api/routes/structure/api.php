@@ -1,15 +1,17 @@
 <?php
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/privileges.php";
 
-require_once "./structure/get.php";
-require_once "./structure/post.php";
-require_once "./structure/put.php";
-require_once "./structure/delete.php";
+require_once "./routes/structure/get.php";
+require_once "./routes/structure/post.php";
+require_once "./routes/structure/put.php";
+require_once "./routes/structure/delete.php";
 
 // GET Field by ID
-Flight::route("GET /@auth/structure/@id:[0-9]+", function($auth, $id){
+Flight::route("GET /structure/@id:[0-9]+", function($id){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -31,9 +33,11 @@ Flight::route("GET /@auth/structure/@id:[0-9]+", function($auth, $id){
 });
 
 // GET All Fields
-Flight::route("GET /@auth/structure", function($auth) {
+Flight::route("GET /structure", function() {
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -52,10 +56,12 @@ Flight::route("GET /@auth/structure", function($auth) {
 });
 
 // POST Create Field
-Flight::route("POST /@auth/structure", function($auth, $request) {
+Flight::route("POST /structure", function($request) {
   $req = Flight::request();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -90,11 +96,13 @@ Flight::route("POST /@auth/structure", function($auth, $request) {
 }, true);
 
 // PUT Update Field todo
-Flight::route("PUT /@auth/structure", function($auth, $request) {
+Flight::route("PUT /structure", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -126,10 +134,12 @@ Flight::route("PUT /@auth/structure", function($auth, $request) {
 }, true);
 
 // DELETE Field
-Flight::route("DELETE /@auth/structure/@id:[0-9]+", function($auth, $id) {
+Flight::route("DELETE /structure/@id:[0-9]+", function($id) {
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_STRUCTURE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
