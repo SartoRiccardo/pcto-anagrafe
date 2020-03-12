@@ -27,9 +27,10 @@ export function createCompany(name) {
         name,
         fields: "[]",
       },
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.post(apiUrl("/company", getToken()), null, payload)
+    axios.post(apiUrl("/company"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
@@ -71,9 +72,10 @@ export function updateCompany(company) {
         name: company.name,
         fields: JSON.stringify(company.fields),
       },
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.put(apiUrl(`/company`, getToken()), null, payload)
+    axios.put(apiUrl(`/company`), null, payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type: "COMPANYR_RESET"});
@@ -106,9 +108,10 @@ export function updateName(company, name) {
 
     const payload = {
       params: {id: company, name},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.put(apiUrl("/company", getToken()), null, payload)
+    axios.put(apiUrl("/company"), null, payload)
     .then((res) => {
       const {error, message} = res.data;
       if(res.status === 200) {
@@ -158,9 +161,10 @@ export function updateField(company, field) {
         fId: field.id,
         fValue: field.value,
       },
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.put(apiUrl("/company/", getToken()), null, payload)
+    axios.put(apiUrl("/company/"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "COMPANYR_RESET"});
@@ -202,7 +206,11 @@ export function deleteCompany(id) {
 
     dispatch({type: "CHANGECOMPANYR_START", request:"delete"});
 
-    axios.delete(apiUrl(`/company/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.delete(apiUrl(`/company/${id}`), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});

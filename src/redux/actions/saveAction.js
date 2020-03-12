@@ -24,7 +24,11 @@ export function loadSavedById(saved) {
       const actionId = Math.random();
       dispatch({type: "SAVEDR_BEGIN_ACTION", actionId});
 
-      axios.get(apiUrl(`/company/${saved[i]}`, getToken()))
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
+
+      axios.get(apiUrl(`/company/${saved[i]}`), headers)
       .then((res) => {
         if(res.status === 200 && !res.data.error) {
           const {result} = res.data;
@@ -60,7 +64,11 @@ export function loadSaved() {
 
     const {id} = getState().auth.user;
 
-    axios.get(apiUrl(`/saved/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl(`/saved/${id}`), headers)
     .then((res) => {
       if(res.status === 200) {
         const {saved} = res.data;
@@ -93,9 +101,10 @@ export function saveCompany(company) {
     const user = getState().auth.user.id;
     const payload = {
       params: {user, company: company.id},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.post(apiUrl("/saved", getToken()), null, payload)
+    axios.post(apiUrl("/saved"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         if(getState().saved.initialized && !res.data.error) {
@@ -131,9 +140,10 @@ export function deleteSave(id) {
     const user = getState().auth.user.id;
     const payload = {
       params: {company: id},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.delete(apiUrl(`/saved/${user}`, getToken()), payload)
+    axios.delete(apiUrl(`/saved/${user}`), payload)
     .then((res) => {
       if(res.status === 200) {
         if(getState().saved.initialized) {

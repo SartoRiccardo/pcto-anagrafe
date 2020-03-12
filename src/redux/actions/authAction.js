@@ -12,9 +12,13 @@ import {getToken} from "../../util/tokenManager";
  * @param  {Object}   data      The data to send.
  */
 function attemptLogin(dispatch, data, withCredentials=false) {
-  const url = withCredentials ? apiUrl("/auth/") : apiUrl("/auth", getToken());
+  const headers = {
+    headers: {
+      "X-Authentication": withCredentials ? `login=${data.login}&pswd=${data.pswd}` : getToken(),
+    }
+  };
 
-  axios.get(url, data)
+  axios.get(apiUrl("/auth"), headers)
   .then((res) => {
     if(res.status === 200 && !res.data.error) {
       const {token, user, privileges} = res.data.user;
@@ -59,13 +63,11 @@ export function startLogin() {
  */
 export function loginAction(user, pswd) {
   return (dispatch, getState) => {
-    const payload = {
-      params: {
-        login: user,
-        pswd,
-      },
+    const data = {
+      login: user,
+      pswd,
     };
-    attemptLogin(dispatch, payload, true);
+    attemptLogin(dispatch, data, true);
   };
 }
 

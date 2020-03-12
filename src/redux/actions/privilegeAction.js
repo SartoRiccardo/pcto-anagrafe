@@ -25,9 +25,10 @@ export function grantPermission(user, privilege) {
         user: user.id,
         privilege,
       },
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.post(apiUrl("/privilege", getToken()), null, payload)
+    axios.post(apiUrl("/privilege"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "PRIVILEGER_ADD_PRIVILEGE", user, privilege});
@@ -63,9 +64,10 @@ export function revokePermission(user, privilege) {
 
     const payload = {
       params: {privilege},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.delete(apiUrl(`/privilege/${user.id}`, getToken()), payload)
+    axios.delete(apiUrl(`/privilege/${user.id}`), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "PRIVILEGER_REVOKE_PRIVILEGE", user, privilege});
@@ -93,7 +95,11 @@ export function initPermissions() {
       return;
     }
 
-    axios.get(apiUrl("/privilege", getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl("/privilege"), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {users} = res.data;
@@ -121,7 +127,11 @@ export function getUserById(id) {
       return;
     }
 
-    axios.get(apiUrl(`/user/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl(`/user/${id}`), headers)
     .then((res) => {
       if(res.status === 200) {
         const {user} = res.data;

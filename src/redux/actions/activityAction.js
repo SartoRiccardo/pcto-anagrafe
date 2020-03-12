@@ -14,7 +14,11 @@ export function loadActivities() {
       return;
     }
 
-    axios.get(apiUrl("/activity", getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl("/activity"), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {activities} = res.data;
@@ -46,6 +50,7 @@ function changeActivity(id, name, description) {
 
     let payload = {
       params: {id},
+      headers: {"X-Authorization": getToken()},
     };
 
     if(name) {
@@ -55,7 +60,7 @@ function changeActivity(id, name, description) {
       payload.params = {...payload.params, description};
     }
 
-    axios.put(apiUrl("/activity", getToken()), null, payload)
+    axios.put(apiUrl("/activity"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -114,9 +119,10 @@ export function addActivity(name, description) {
 
     const payload = {
       params: {name, description},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.post(apiUrl("/activity", getToken()), null, payload)
+    axios.post(apiUrl("/activity"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {id} = res.data;
@@ -147,7 +153,11 @@ export function deleteActivity(id) {
       return;
     }
 
-    axios.delete(apiUrl(`/activity/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.delete(apiUrl(`/activity/${id}`), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type:"ACTIVITYR_DELETE", id});
