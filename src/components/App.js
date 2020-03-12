@@ -34,12 +34,14 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    this.props.initStructure();
+    if(this.props.shouldReload) {
+      this.props.initStructure();
+    }
   }
 
   render() {
-    const {initialized, privileges, token} = this.props;
-    if(!initialized) {
+    const {authInitialized, privileges, token} = this.props;
+    if(!authInitialized) {
       return null;
     }
 
@@ -91,7 +93,8 @@ function mapStateToProps(state) {
   return {
     privileges: state.auth.privileges,
     token: state.auth.token,
-    initialized: state.auth.initialized,
+    authInitialized: state.auth.initialized,
+    shouldReload: !(state.structure.initialized || state.structure.actions.length > 0),
   };
 }
 

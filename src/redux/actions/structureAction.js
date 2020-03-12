@@ -101,7 +101,9 @@ export function reloadStructure() {
       return;
     }
 
+    const actionId = Math.random();
     dispatch({type:"STRUCTURER_RESET"});
+    dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
     const headers = {
       headers: {"X-Authorization": getToken()},
@@ -119,7 +121,10 @@ export function reloadStructure() {
       else if(res.data.error) {
         console.log(res.data.message);
       }
+      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
     })
-    .catch((e) => {});
+    .catch((e) => {
+      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+    });
   };
 }
