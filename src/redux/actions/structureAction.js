@@ -17,11 +17,12 @@ function sendField(field, isNew) {
 
     const payload = {
       params: {...field},
+      headers: {"X-Authorization": getToken()},
     };
 
     const requestMethod = isNew ? axios.post : axios.put;
 
-    requestMethod(apiUrl("/structure", getToken()), null, payload)
+    requestMethod(apiUrl("/structure"), null, payload)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
@@ -57,7 +58,11 @@ export function deleteField(id) {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    axios.delete(apiUrl(`/structure/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.delete(apiUrl(`/structure/${id}`), headers)
     .then((res) => {
       if(res.status === 200) {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
@@ -96,9 +101,15 @@ export function reloadStructure() {
       return;
     }
 
+    const actionId = Math.random();
     dispatch({type:"STRUCTURER_RESET"});
+    dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    axios.get(apiUrl("/structure", getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl("/structure"), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {fields} = res.data;
@@ -110,7 +121,10 @@ export function reloadStructure() {
       else if(res.data.error) {
         console.log(res.data.message);
       }
+      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
     })
-    .catch((e) => {});
+    .catch((e) => {
+      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+    });
   };
 }

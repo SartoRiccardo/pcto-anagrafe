@@ -8,8 +8,6 @@ import update from "immutability-helper";
  * @author Riccardo Sartori
  *
  * @param {Company[]} saved           The saved companies.
- * @param {int}       totalResults    The total saved companies.
- * @param {int}       resultsPerPage  The results to show per page.
  * @param {int}       page            The current page number.
  * @param {boolean}   initialized     If the saved companies have been retrieved yet.
  */
@@ -132,6 +130,13 @@ function savedReducer(state=init, action) {
 
     case "SAVEDR_RESET":
       return init;
+
+    case "SAVEDR_SET_SAVED":
+      return {
+        ...state,
+        saved: action.saved,
+        initialized: true,
+      };
 
     default:
       return state;

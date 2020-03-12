@@ -52,6 +52,7 @@ function companyReducer(state=init, action) {
         user: null,
         error: action.error,
         loading: false,
+        initialized: true,
       };
 
     case "AUTHR_LOGOUT":

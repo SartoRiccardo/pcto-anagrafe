@@ -18,9 +18,10 @@ export function loadInternshipsFor(company) {
 
     const payload = {
       params: {company},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.get(apiUrl("/internship", getToken()), payload)
+    axios.get(apiUrl("/internship"), payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {internships} = res.data;
@@ -51,9 +52,10 @@ export function changeInternship(id, student) {
 
     const payload = {
       params: {id, student},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.put(apiUrl("/internship", getToken()), null, payload)
+    axios.put(apiUrl("/internship"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({
@@ -80,7 +82,11 @@ export function deleteInternship(id) {
       return;
     }
 
-    axios.delete(apiUrl(`/internship/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.delete(apiUrl(`/internship/${id}`), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({type: "COMPANYR_DELETE_INTERNSHIP", id});
@@ -110,9 +116,10 @@ export function addInternship(company, activity, student, year) {
 
     const payload = {
       params: {company, activity, student, year},
+      headers: {"X-Authorization": getToken()},
     };
 
-    axios.post(apiUrl("/internship", getToken()), null, payload)
+    axios.post(apiUrl("/internship"), null, payload)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         dispatch({

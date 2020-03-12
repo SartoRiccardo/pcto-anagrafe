@@ -41,9 +41,10 @@ export function resultAction(arg0=null) {
         search: JSON.stringify(searchReq),
         page: getState().search.page,
       },
+      headers: {"X-Authorization": getToken()},
     }
 
-    axios.get(apiUrl("/company", getToken()), payload)
+    axios.get(apiUrl("/company"), payload)
       .then((res) => {
         const {lastSearchId} = getState().search;
         if(lastSearchId !== searchId) {
@@ -86,7 +87,11 @@ export function selectCompany(id) {
       return;
     }
 
-    axios.get(apiUrl(`/company/${id}`, getToken()))
+    const headers = {
+      headers: {"X-Authorization": getToken()},
+    };
+
+    axios.get(apiUrl(`/company/${id}`), headers)
     .then((res) => {
       if(res.status === 200 && !res.data.error) {
         const {result} = res.data;

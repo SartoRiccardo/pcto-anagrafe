@@ -10,12 +10,14 @@ export const nameField = {id:0, name:"Nome", regex:".+"};
  *
  * @param {Field[]} fields       The table structure's fields.
  * @param {boolean} initialized  If the fields have already been loaded.
+ * @param {boolean} loading      If a request to get the data has been sent.
  * @param {boolean} dumping      If a process is starting actions.
  * @param {int[]}   actions      The actions that have started but haven't finished.
  */
 const init = {
   fields: [nameField],
   initialized: false,
+  loading: false,
   dumping: false,
   actions: [],
 }
