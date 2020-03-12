@@ -72,7 +72,7 @@ export function loadSaved() {
     .then((res) => {
       if(res.status === 200) {
         const {saved} = res.data;
-        dispatch(loadSavedById(saved));
+        dispatch({type:"SAVEDR_SET_SAVED", saved});
       }
       else if(res.data.error) {
         console.log(res.data.message);
