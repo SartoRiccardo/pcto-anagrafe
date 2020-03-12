@@ -3,16 +3,16 @@ require 'flight/Flight.php';
 require "./config/authconfig.php";
 require "./config/dbconfig.php";
 
-include "./company/api.php";
-include "./structure/api.php";
-include "./activity/api.php";
-include "./saved/api.php";
-include "./internship/api.php";
-include "./authorization/api.php";
+include "./routes/company/api.php";
+include "./routes/structure/api.php";
+include "./routes/activity/api.php";
+include "./routes/saved/api.php";
+include "./routes/internship/api.php";
+include "./routes/authorization/api.php";
 
 header("Access-Control-Allow-Origin: $cors");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Headers: X-Authentication, X-Authorization");
 header('Content-Type: application/json');
 
 Flight::map("isValidRegex", function($string) {
@@ -36,7 +36,8 @@ Flight::register("db", "PDO", array("mysql:host=$dbhost;dbname=$database;charset
 $dbc = Flight::db();
 
 Flight::map('notFound', function(){
-  // header('Content-Type: text/html; charset=UTF-8');
+  header('Content-Type: text/html; charset=UTF-8');
+  http_response_code(404);
   include './404.html';
 });
 

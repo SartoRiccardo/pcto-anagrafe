@@ -39,7 +39,7 @@ function isSavedBy($user, $company) {
   $stmt->bindParam(":user", $user, PDO::PARAM_INT);
   $stmt->execute();
 
-  return $stmt->fetch() != false;
+  return $stmt->rowCount() > 0;
 }
 
 /**

@@ -1,28 +1,31 @@
 <?php
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/privileges.php";
 
-require_once "./company/get.php";
-require_once "./company/post.php";
-require_once "./company/put.php";
-require_once "./company/delete.php";
+require_once "./routes/company/get.php";
+require_once "./routes/company/post.php";
+require_once "./routes/company/put.php";
+require_once "./routes/company/delete.php";
 
-require_once "./saved/get.php";
+require_once "./routes/saved/get.php";
 
 // GET Company by ID
-Flight::route("GET /@auth/company/@id:[0-9]+", function($auth, $id){
+Flight::route("GET /company/@id:[0-9]+", function($id){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
 
+  $company = null;
   if(is_null($errorMessage)) {
     $company = getCompanyById($id);
     if(is_null($company)) {
       $errorMessage = "L'azienda di ID $id non esiste.";
     }
     else {
-      $company["saved"] = isSavedBy($auth, $company["id"]);
+      $company["saved"] = isSavedBy(getUserByToken($auth)["id"], $company["id"]);
     }
   }
 
@@ -35,13 +38,15 @@ Flight::route("GET /@auth/company/@id:[0-9]+", function($auth, $id){
 });
 
 // GET Company by search
-Flight::route("GET /@auth/company", function($auth, $request){
+Flight::route("GET /company", function($request){
   global $NO_PAGE;
 
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -66,7 +71,7 @@ Flight::route("GET /@auth/company", function($auth, $request){
     $res["results"] = getCompaniesBySearch($search, $page);
     for($i=0; $i < count($res["results"]); $i++) {
       $company = $res["results"][$i];
-      $res["results"][$i]["saved"] = isSavedBy($auth, $company["id"]);
+      $res["results"][$i]["saved"] = isSavedBy(getUserByToken($auth)["id"], $company["id"]);
     }
   }
 
@@ -74,11 +79,13 @@ Flight::route("GET /@auth/company", function($auth, $request){
 }, true);
 
 // POST Create Company
-Flight::route("POST /@auth/company", function($auth, $request) {
+Flight::route("POST /company", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -108,11 +115,13 @@ Flight::route("POST /@auth/company", function($auth, $request) {
 }, true);
 
 // PUT Update Company
-Flight::route("PUT /@auth/company", function($auth, $request) {
+Flight::route("PUT /company", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -165,11 +174,13 @@ Flight::route("PUT /@auth/company", function($auth, $request) {
 }, true);
 
 // PUT Update Company Name/Field
-Flight::route("PUT /@auth/company", function($auth, $request) {
+Flight::route("PUT /company", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -217,10 +228,12 @@ Flight::route("PUT /@auth/company", function($auth, $request) {
 }, true);
 
 // DELETE Company
-Flight::route("DELETE /@auth/company/@id:[0-9]+", function($auth, $id) {
+Flight::route("DELETE /company/@id:[0-9]+", function($id) {
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }

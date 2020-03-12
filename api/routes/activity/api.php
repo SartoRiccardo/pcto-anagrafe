@@ -1,15 +1,17 @@
 <?php
-require_once "./authorization/privileges.php";
+require_once "./routes/authorization/privileges.php";
 
-require_once "./activity/get.php";
-require_once "./activity/post.php";
-require_once "./activity/put.php";
-require_once "./activity/delete.php";
+require_once "./routes/activity/get.php";
+require_once "./routes/activity/post.php";
+require_once "./routes/activity/put.php";
+require_once "./routes/activity/delete.php";
 
 // GET Activity by ID
-Flight::route("GET /@auth/activity/@id:[0-9]+", function($auth, $id){
+Flight::route("GET /activity/@id:[0-9]+", function($id){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -31,9 +33,11 @@ Flight::route("GET /@auth/activity/@id:[0-9]+", function($auth, $id){
 });
 
 // GET All Activities
-Flight::route("GET /@auth/activity", function($auth){
+Flight::route("GET /activity", function(){
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "BASE")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -52,11 +56,13 @@ Flight::route("GET /@auth/activity", function($auth){
 });
 
 // POST Create Activity
-Flight::route("POST /@auth/activity", function($auth, $request) {
+Flight::route("POST /activity", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -89,11 +95,13 @@ Flight::route("POST /@auth/activity", function($auth, $request) {
 }, true);
 
 // PUT Update Activity
-Flight::route("PUT /@auth/activity", function($auth, $request) {
+Flight::route("PUT /activity", function($request) {
   $req = Flight::request();
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
@@ -132,10 +140,12 @@ Flight::route("PUT /@auth/activity", function($auth, $request) {
 }, true);
 
 // DELETE Activity
-Flight::route("DELETE /@auth/activity/@id:[0-9]+", function($auth, $id) {
+Flight::route("DELETE /activity/@id:[0-9]+", function($id) {
   $res = array();
   $errorMessage = null;
 
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
     $errorMessage = "Privilegi insufficienti.";
   }
