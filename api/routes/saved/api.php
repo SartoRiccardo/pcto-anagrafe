@@ -17,7 +17,13 @@ Flight::route("GET /saved/@id:[0-9]+", function($id){
 
   $saved = null;
   if(is_null($errorMessage)) {
-    $saved = getCompaniesSavedBy((int) $id);
+    $savedIds = getCompaniesSavedBy((int) $id);
+    $saved = array();
+    foreach($savedIds as $companyId) {
+      $c = getCompanyById($companyId);
+      $c["saved"] = true;
+      array_push($saved, $c);
+    }
   }
 
   $res = array(
