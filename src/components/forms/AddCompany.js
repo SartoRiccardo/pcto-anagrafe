@@ -16,11 +16,7 @@ import Button from "react-bootstrap/Button";
 /**
  * A form to add a company.
  *
- * @author Riccardo Sartori
- *
- * @param {state.changeCompany} props                The state of the add action.
- * @param {function}            props.createCompany  Creates a company with the given name.
- * @param {function}            props.acknowledge    Notifies the reducer that the addition has been carried out.
+ * Fetches data from and interacts with the company state.
  */
 class AddCompany extends Component {
   constructor(props) {

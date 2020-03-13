@@ -1,4 +1,15 @@
 
+/**
+ * This state records the privileges of other users.
+ *
+ * @param {Object[]} privileges             All users with specific privileges.
+ * @param {User}     privileges.user        The user who has the privileges.
+ * @param {string[]} privileges.privileges  The user's privileges.
+ * @param {boolean}  initialized            Whether the state has been initialized.
+ * @param {boolean}  dumping                Whether someone keeps starting actions.
+ * @param {float[]}  actions                Actions that have started but haven't resolved.
+ * @param {User}     newUser                A new user to give privileges to.
+ */
 const init = {
   privileges: [],
   initialized: false,

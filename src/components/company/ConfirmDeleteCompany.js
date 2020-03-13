@@ -10,15 +10,10 @@ import ConfirmDeleteModal from "../interactive/ConfirmDeleteModal";
 /**
  * A modal to ask confirmation.
  *
- * @author Riccardo Sartori
+ * Fetches data from and interacts with the company state.
  *
- * @param {Company}             props.company         The company to delete.
- * @param {state.changeCompany} props.deleteStatus    The status of the deletion.
- * @param {function}            props.onCancel        A handler for when the deletion is cancelled.
- * @param {function}            props.deleteCompany   Deletes a company.
- * @param {function}            props.acknowledge     Notifies the reducer that the deletion has been carried out.
- * @param {function}            props.resetCompany    Resets the currently selected company.
- * @param {function}            props.reloadSearches  Reloads the current results.
+ * @param {Company}  props.company   The company to delete.
+ * @param {Function} props.onCancel  A handler for when the deletion is cancelled.
  */
 class ConfirmDeleteCompany extends Component {
   cancelDelete = () => {

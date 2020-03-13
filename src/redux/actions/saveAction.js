@@ -7,10 +7,6 @@ import {resultAction, reloadCompany} from "./resultAction";
 /**
  * An action creator to update the current saved companies.
  *
- * Dispatches loadSavedById on success.
- *
- * @author Riccardo Sartori
- *
  */
 export function loadSaved() {
   return protectFunction(async (dispatch, getState) => {
@@ -37,10 +33,6 @@ export function loadSaved() {
 
 /**
  * An action creator to save a company.
- *
- * Dispatches resultAction and reloadCompany on success.
- *
- * @author Riccardo Sartori
  *
  * @param {Company} company  The company to save.
  */
@@ -69,10 +61,6 @@ export function saveCompany(company) {
 
 /**
  * An action creator to unsave a company.
- *
- * Fires SAVEDR_DELETE and dispatches resultAction and reloadCompany on success.
- *
- * @author Riccardo Sartori
  *
  * @param {int} id  The ID of the company to unsave.
  */

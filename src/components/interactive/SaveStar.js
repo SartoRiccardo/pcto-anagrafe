@@ -10,13 +10,11 @@ import {faStar as empty} from "@fortawesome/free-regular-svg-icons";
 /**
  * A star to save companies.
  *
- * @author Riccardo Sartori
+ * Interacts with the saved state.
  *
- * @param {Company}  props.company      The ID of the company to handle.
- * @param {boolean}  props.status       Whether the company is saved or not.
- * @param {function} props.onClick      A handler for when the component is clicked.
- * @param {function} props.saveCompany  Save the current company.
- * @param {function} props.deleteSave   Unsave the current company.
+ * @param {Company}  props.company  The ID of the company to handle.
+ * @param {boolean}  props.status   Whether the company is saved or not.
+ * @param {function} props.onClick  A handler for when the component is clicked.
  */
 class SaveStar extends Component {
   saveHandler = (evt) => {

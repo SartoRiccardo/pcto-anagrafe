@@ -12,10 +12,9 @@ import Col from "react-bootstrap/Col";
 /**
  * A table of CompanySummary.
  *
- * @author Riccardo Sartori
- *
- * @param {Company[]} props.results A list of companies.
- * @param {Search[]}  props.search  The parameters in the search.
+ * @param {Company[]} props.results  A list of companies.
+ * @param {Search[]}  props.search   The parameters in the search.
+ * @param {boolean}   props.loading  Whether the results are still loading.
  */
 function CompanyResults(props) {
   const {results, loading, search} = props;
@@ -39,7 +38,7 @@ function CompanyResults(props) {
     let uniqueFields = [];
     if(search) {
       for (let i = 0; i < search.length; i++) {
-        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id > 0) {
           uniqueFields.push(search[i].field.id);
         }
       }

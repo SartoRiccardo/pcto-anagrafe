@@ -11,8 +11,6 @@ import Col from "react-bootstrap/Col";
 /**
  * A component to build a simple regex.
  *
- * @author Riccardo Sartori
- *
  * @param {Field}    props.field     The field to represent.
  * @param {function} props.onChange  A handler for when the field is changed.
  */

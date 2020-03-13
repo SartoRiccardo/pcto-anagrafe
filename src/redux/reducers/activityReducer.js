@@ -4,10 +4,12 @@
  *
  * @param {Activity[]} activities   The loaded activity types.
  * @param {boolean}    initialized  If the state was initialized.
+ * @param {float[]}    actions      The actions that started and haven't finished.
  */
 const init = {
   activities: [],
   initialized: false,
+  actions: [],
 };
 
 function activityReducer(state=init, action) {
@@ -53,6 +55,18 @@ function activityReducer(state=init, action) {
         activities: state.activities.filter((a) => {
           return a.id !== action.id;
         }),
+      };
+
+    case "ACTIVITYR_BEGIN_ACTION":
+      return {
+        ...state,
+        actions: [state.actions, action.actionId],
+      };
+
+    case "ACTIVITYR_FINISH_ACTION":
+      return {
+        ...state,
+        actions: state.actions.filter((a) => a.id !== action.actionId),
       };
 
     default:

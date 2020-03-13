@@ -10,8 +10,6 @@ import Button from "react-bootstrap/Button";
 /**
  * An input field to add something on the fly.
  *
- * @author Riccardo Sartori
- *
  * @param {function} props.onFinish   Is fired when the user is finished.
  * @param {function} props.onChange   Is fired when the state changes.
  */

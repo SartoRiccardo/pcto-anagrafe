@@ -1,9 +1,15 @@
 import React, {Component} from "react";
-
+// Bootstrap
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A form to add a field to the table structure.
+ *
+ * @param {int}      props.id        The newly created field's ID.
+ * @param {Function} props.onSubmit  A callback for when the user submitted the field.
+ */
 class AddField extends Component {
   constructor(props) {
     super(props);

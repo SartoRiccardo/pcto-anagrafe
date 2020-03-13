@@ -17,6 +17,11 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Fade from "react-bootstrap/Fade";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A page where an admin can edit other users' privileges.
+ *
+ * Fetches data from and interacts with the privilege state.
+ */
 class EditPrivileges extends Component {
   constructor(props) {
     super(props);

@@ -7,6 +7,11 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Toast from "react-bootstrap/Toast";
 
+/**
+ * A small toast to show when an error appears.
+ *
+ * Fetches data from the error state.
+ */
 class ErrorToast extends Component {
   constructor(props) {
     super(props);

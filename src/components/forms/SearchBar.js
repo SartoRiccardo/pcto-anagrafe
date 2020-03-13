@@ -1,8 +1,11 @@
 import React, {Component} from "react";
-import SearchField from "./SearchField";
-import {resultAction} from "../../redux/actions/resultAction";
+// HOCs and actions
 import {connect} from "react-redux";
-
+import {resultAction} from "../../redux/actions/resultAction";
+import {activityField} from "../../redux/reducers/structureReducer";
+// Custom components
+import SearchField from "./SearchField";
+// Bootstrap
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,16 +15,7 @@ import Button from "react-bootstrap/Button";
  * A list of SearchField.
  *
  * This component coordinates its children and sends all their data to their respective reducers.
- *
- * @author Riccardo Sartori
- *
- * @param {Field[]}  props.options            A list of searchable fields.
- * @param {Search[]} props.search             The current search terms.
- * @param {function} props.onChange           A handler for when the bar's state changes.
- * @param {function} props.addSearchField     Adds a search field.
- * @param {function} props.deleteSearchField  Deletes a search field.
- * @param {function} props.updateSearchField  Updates a search field.
- * @param {function} props.updateResults      Updates the search results.
+ * Fetches data from and interacts with the search state.
  */
 class SearchBar extends Component {
   constructor(props) {
@@ -103,12 +97,14 @@ class SearchBar extends Component {
   }
 
   render() {
-    const {fields} = this.state;
+    let {fields} = this.state;
+    let {options, search} = this.props;
+    options = [...options, activityField];
     const sFields = fields.map((f) => {
       return (
         <Form.Row key={f.id} className="justify-content-center my-3 my-sm-2">
           <SearchField
-            options={this.props.options}
+            options={options}
             initState={f}
             onChange={this.handleChange}
             onDelete={this.handleDelete}
@@ -116,7 +112,7 @@ class SearchBar extends Component {
         </Form.Row>
       );
     });
-    const buttonText = this.props.search.length === 0 ? "Cerca" : "Aggiungi";
+    const buttonText = search.length === 0 ? "Cerca" : "Aggiungi";
 
     return (
       <form onSubmit={(evt) => evt.preventDefault()} className="my-3">

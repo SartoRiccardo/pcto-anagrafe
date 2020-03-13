@@ -5,11 +5,12 @@ import {protectFunction, callIfSuccessful} from "../../util/action";
 
 /**
  * Loads the activities.
- *
- * Fires ACTIVITYR_INITIALIZE on success.
  */
 export function loadActivities() {
   return protectFunction(async (dispatch, getState) => {
+    const actionId = Math.random();
+    dispatch({type:"ACTIVITYR_BEGIN_ACTION", actionId});
+
     try {
       const {status, data} = await axios.get(apiUrl("/activity"), {headers: {"X-Authorization": getToken()}});
 
@@ -22,13 +23,13 @@ export function loadActivities() {
       });
     }
     catch(e) {}
+
+    dispatch({type:"ACTIVITYR_FINISH_ACTION", actionId});
   });
 }
 
 /**
  * An action to change an activity's fields.
- *
- * Fires ACTIVITYR_UPDATE on success.
  *
  * @param  {int}    id           The activity's ID.
  * @param  {string} name  The activity's name.
@@ -84,8 +85,6 @@ export function changeName(id, name) {
 /**
  * Adds an activity.
  *
- * Fires ACTIVITYR_ADD on success.
- *
  * @param {string} name         The activity's name.
  * @param {string} description  The activity's description.
  */
@@ -113,8 +112,6 @@ export function addActivity(name, description) {
 
 /**
  * Deletes an activity.
- *
- * Fires ACTIVITYR_DELETE on success.
  *
  * @param {int} id  The activity's id.
  */

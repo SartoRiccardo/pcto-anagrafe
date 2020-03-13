@@ -9,6 +9,9 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A generic adder, but only accepts numeric input.
+ */
 class NumericAdder extends GenericAdder {
   changeHandler = (evt) => {
     this.setState({

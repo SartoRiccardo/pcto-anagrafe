@@ -1,9 +1,7 @@
 import React from "react";
 
 /**
- * Footer.
- *
- * @author Riccardo Sartori
+ * It's just a footer.
  */
 function Footer() {
   return (

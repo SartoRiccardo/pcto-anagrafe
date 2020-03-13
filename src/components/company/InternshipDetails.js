@@ -21,7 +21,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
  *
  * @param {Activity}     props.activity     The activity to show.
  * @param {Internship[]} props.internships  The internships to show.
- * @param {string[]}     props.privileges   The user's privileges.
+ * @param {boolean}      props.isNew        Whether the internship was not saved from the database.
  */
 class InternshipDetails extends Component {
   constructor(props) {

@@ -6,8 +6,6 @@ import {apiUrl} from "./url";
 /**
  * Loads all of a company's internships.
  *
- * Fires COMPANYR_SET_INTERNSHIPS on success.
- *
  * @param {int} company  The company's ID.
  */
 export function loadInternshipsFor(company) {
@@ -35,8 +33,6 @@ export function loadInternshipsFor(company) {
 /**
  * Updates a company's student value.
  *
- * Fires COMPANYR_UPDATE_INTERNSHIP on success.
- *
  * @param {int}    id       The company's ID.
  * @param {string} student  The new student value.
  */
@@ -62,8 +58,6 @@ export function changeInternship(id, student) {
 
 /**
  * Deletes an internship.
- *
- * Fires COMPANYR_DELETE_INTERNSHIP on success.
  *
  * @param {int} id  The ID of the internshipt to delete.
  */

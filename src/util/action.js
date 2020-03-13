@@ -2,6 +2,7 @@ import {getToken} from "./tokenManager";
 
 /**
  * Logs an user out if it doesn't have a token.
+ *
  * @param  {function} callback  The callback if the user has a token.
  * @return {function}           The callback if the controls pass, or a function that does nothing.
  */
@@ -16,6 +17,7 @@ export function protectFunction(callback) {
 
 /**
  * Executes a function if the conditions are correct, or logs an error.
+ * 
  * @param  {int}      status   The request's response code.
  * @param  {Object}   data     The resulting data.
  * @param  {Function} dispatch The function to dispatch a redux action.

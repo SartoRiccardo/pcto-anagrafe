@@ -6,8 +6,6 @@ import {protectFunction, callIfSuccessful} from "../../util/action";
 /**
  * Grants a permission to an user.
  *
- * Fires PRIVILEGER_ADD_PRIVILEGE on success.
- *
  * @param  {int}    user       The user to grant the privilege to.
  * @param  {String} privilege  The privilege to grant.
  */
@@ -39,8 +37,6 @@ export function grantPermission(user, privilege) {
 /**
  * Revokes a user's permission.
  *
- * Fires PRIVILEGER_REVOKE_PRIVILEGE on success.
- *
  * @param  {int}    user       The user to revoke the privilege from.
  * @param  {String} privilege  The privilege to revoke.
  */
@@ -69,8 +65,6 @@ export function revokePermission(user, privilege) {
 
 /**
  * Initializes the logged user's permissions.
- *
- * Fires PRIVILEGER_INITIALIZE on success.
  */
 export function initPermissions() {
   return protectFunction(async (dispatch, getState) => {
@@ -95,8 +89,6 @@ export function initPermissions() {
 
 /**
  * Gets an user by its ID.
- *
- * Fires PRIVILEGER_SET_USER on success.
  *
  * @param {int} id  The user's ID.
  */

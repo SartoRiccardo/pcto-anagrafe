@@ -7,6 +7,12 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A select to add an activity to a company's page.
+ *
+ * @param {Activity[]} props.activities  The activities the user can choose from.
+ * @param {Function}   props.onSubmit    The callback for when the user submits an activity.
+ */
 class AddCompanyActivity extends Component {
   constructor(props) {
     super(props);

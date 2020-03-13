@@ -15,6 +15,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/**
+ * A component that shows all of a company's activities.
+ *
+ * Fetches data from the result search, internship and activity states.
+ */
 class CompanyActivities extends Component {
   constructor(props) {
     super(props);

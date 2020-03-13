@@ -1,6 +1,4 @@
 import React, {Component} from "react";
-// HOCs and actions
-
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
@@ -10,8 +8,6 @@ import Button from "react-bootstrap/Button";
 
 /**
  * A modal to ask confirmation.
- *
- * @author Riccardo Sartori
  *
  * @param {boolean}  props.show       If the modal is showing.
  * @param {string}   props.name       The thing to delete.

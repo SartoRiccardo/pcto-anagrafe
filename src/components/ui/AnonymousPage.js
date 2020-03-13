@@ -6,8 +6,6 @@ import Container from "react-bootstrap/Container";
 
 /**
  * The page users see when they are not logged in.
- *
- * @author Riccardo Sartori
  */
 function AnonymousPage() {
   document.title = "PCTOkay!";

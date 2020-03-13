@@ -10,10 +10,7 @@ import Container from "react-bootstrap/Container";
  * A component to search companies and visualize the results.
  *
  * Server as a wrapper for the Route component.
- *
- * @author Riccardo Sartori
- *
- * @param {state.search} props  The current search's state.
+ * Fetches data from the search state.
  */
 function SearchCompany(props) {
   document.title = "PCTOkay! Cerca";
