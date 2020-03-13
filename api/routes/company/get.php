@@ -63,7 +63,11 @@ function getCompaniesBySearch($search, $page=null) {
     foreach ($uf["values"] as $v) {
       if($uf["id"] == 0 && strlen($v) > 0) {
         array_push($newParams, "%". $v ."%");
-      } else if(strlen($v) > 0) {
+      }
+      else if($uf["id"] == -1) {
+        array_push($newParams, $v);
+      }
+      else if(strlen($v) > 0) {
         array_push($newParams, $uf["id"]);
         array_push($newParams, "%". $v ."%");
       }
@@ -107,9 +111,13 @@ function getCompanyNumberBySearch($search) {
   foreach ($uniqueFields as $uf) {
     $newParams = array();
     foreach ($uf["values"] as $v) {
-      if($uf["id"] == 0 && strlen($v) > 0) {
+      if(($uf["id"] == 0 && strlen($v) > 0)) {
         array_push($newParams, "%". $v ."%");
-      } else if(strlen($v) > 0) {
+      }
+      else if($uf["id"] == -1) {
+        array_push($newParams, $v);
+      }
+      else if(strlen($v) > 0) {
         array_push($newParams, $uf["id"]);
         array_push($newParams, "%". $v ."%");
       }
@@ -137,7 +145,7 @@ function generateSearchQuery($search) {
   $q = "";
   for($i=0; $i < count($uniqueFields); $i++) {
     $uf = $uniqueFields[$i];
-    if($uf["id"] == 0) {  // Name attribute is treated specially
+    if($uf["id"] == 0) {  // ID == 0 is search by name
       $selectors = array();
       for($j=0; $j < count($uf["values"]); $j++) {
         if(strlen($uf["values"][$j]) > 0) {
@@ -158,6 +166,27 @@ function generateSearchQuery($search) {
           $condition
       ");
     }
+    else if($uf["id"] == -1) {  // ID == -1 is search by internships
+      $selectors = array();
+      for($j=0; $j < count($uf["values"]); $j++) {
+        if(strlen($uf["values"][$j]) > 0) {
+          array_push($selectors, "activity = ?");
+        }
+      }
+      $condition = join(" OR ", $selectors);
+      $condition = strlen($condition) == 0 ? $condition : "WHERE $condition";
+
+      $q = $i == 0 ? ("
+        SELECT DISTINCT i.company
+          FROM Internship i
+          $condition
+      ") : ("
+        SELECT DISTINCT i.company
+          FROM Internship c JOIN ($q) prev
+            ON i.company = prev.company
+          $condition
+      ");
+    }
     else {
       $selectors = array();
       for($j=0; $j < count($uf["values"]); $j++) {
@@ -169,16 +198,14 @@ function generateSearchQuery($search) {
       $condition = strlen($condition) == 0 ? $condition : "WHERE $condition";
 
       $q = $i == 0 ? ("
-        SELECT c.company
+        SELECT DISTINCT c.company
           FROM CompanyField c
           $condition
-          GROUP BY (c.company)
       ") : ("
-        SELECT c.company
+        SELECT DISTINCT c.company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
           $condition
-          GROUP BY (c.company)
       ");
     }
   }
