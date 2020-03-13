@@ -1,4 +1,6 @@
 import React, {Component, Fragment} from "react";
+// Custom components
+import StructureEnumField from "../structure/StructureEnumField";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMinus} from "@fortawesome/free-solid-svg-icons";
@@ -79,6 +81,20 @@ class SearchField extends Component {
     const optionsUi = options.map((o) => {
       return <option key={o.id} value={o.id}>{o.name}</option>;
     });
+
+    const fixedValues = StructureEnumField.regex.test(field.regex);
+    const input = fixedValues ? (
+      <FormControl as="select" name="value" className="my-2 my-md-0" value={value} onChange={this.changeHandler}>
+        {
+          field.regex.substring(1, field.regex.length-1).split("|").map((opt) => {
+            return <option key={opt} value={opt}>{opt}</option>
+          })
+        }
+      </FormControl>
+    ) : (
+        <FormControl name="value" className="my-2 my-md-0" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
+    );
+
     return (
       <Fragment>
         <Col xs={{order:1}} md={{order: 1, span:"auto"}}>
@@ -88,7 +104,7 @@ class SearchField extends Component {
         </Col>
 
         <Col xs={{order:3, span:12}} md={{order:2, span:5}}>
-          <FormControl name="value" className="my-2 my-md-0" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
+          {input}
         </Col>
 
         <Col xs={{order:2, span:"auto"}} md={{order:3, span:"auto"}}>
