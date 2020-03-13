@@ -1,4 +1,6 @@
 import React, {Component, Fragment} from "react";
+// HOCs and actions
+import {connect} from "react-redux";
 // Custom components
 import StructureEnumField from "../structure/StructureEnumField";
 // Icons
@@ -79,23 +81,44 @@ class SearchField extends Component {
 
   render() {
     const {field, value} = this.state;
-    const {options} = this.props;
+    const {options, activities} = this.props;
     const optionsUi = options.map((o) => {
       return <option key={o.id} value={o.id}>{o.name}</option>;
     });
 
     const fixedValues = StructureEnumField.regex.test(field.regex);
-    const input = fixedValues ? (
-      <FormControl as="select" name="value" className="my-2 my-md-0" value={value} onChange={this.changeHandler}>
-        {
-          field.regex.substring(1, field.regex.length-1).split("|").map((opt) => {
-            return <option key={opt} value={opt}>{opt}</option>
-          })
-        }
-      </FormControl>
-    ) : (
-        <FormControl name="value" className="my-2 my-md-0" placeholder="Cerca..." value={value} onChange={this.changeHandler} />
-    );
+    let input = null;
+    if(field.id === -1) {
+      const formOptions = activities.map((a) => {
+        return <option key={a.id} value={a.id}>{a.name}</option>
+      });
+      input = (
+        <FormControl as="select" name="value" className="my-2 my-md-0" value={value} onChange={this.changeHandler}>
+          {formOptions}
+        </FormControl>
+      );
+    }
+    else if(fixedValues) {
+      const formOptions = field.regex.substring(1, field.regex.length-1).split("|").map((opt) => {
+        return <option key={opt} value={opt}>{opt}</option>
+      });
+      input = (
+        <FormControl as="select" name="value" className="my-2 my-md-0" value={value} onChange={this.changeHandler}>
+          {formOptions}
+        </FormControl>
+      );
+    }
+    else {
+      input = (
+        <FormControl
+          name="value"
+          className="my-2 my-md-0"
+          placeholder="Cerca..."
+          value={value}
+          onChange={this.changeHandler}
+        />
+      );
+    }
 
     return (
       <Fragment>
@@ -119,4 +142,10 @@ class SearchField extends Component {
   }
 }
 
-export default SearchField;
+function mapStateToProps(state) {
+  return {
+    activities: state.activity.activities,
+  };
+}
+
+export default connect(mapStateToProps)(SearchField);

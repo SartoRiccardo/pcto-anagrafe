@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 // HOCs and actions
 import {connect} from "react-redux";
 import {reloadStructure} from "../redux/actions/structureAction";
+import {loadActivities} from "../redux/actions/activityAction";
 import {initLogin} from "../redux/actions/authAction";
 // Custom Components
 import AnonymousPage from "./ui/AnonymousPage";
@@ -32,11 +33,15 @@ class App extends Component {
 
     this.props.initLogin();
     this.props.initStructure();
+    this.props.initActivities();
   }
 
   componentDidUpdate() {
-    if(this.props.shouldReload) {
+    if(this.props.shouldReloadStructure) {
       this.props.initStructure();
+    }
+    if(this.props.shouldReloadActivities) {
+      this.props.initActivities();
     }
   }
 
@@ -97,7 +102,8 @@ function mapStateToProps(state) {
     privileges: state.auth.privileges,
     token: state.auth.token,
     authInitialized: state.auth.initialized,
-    shouldReload: !(state.structure.initialized || state.structure.actions.length > 0),
+    shouldReloadStructure: !(state.structure.initialized || state.structure.actions.length > 0),
+    shouldReloadActivities: !(state.activity.initialized || state.activity.actions.length > 0),
   };
 }
 
@@ -105,6 +111,9 @@ function mapDispatchToProps(dispatch) {
   return {
     initStructure: () => {
       dispatch(reloadStructure());
+    },
+    initActivities: () => {
+      dispatch(loadActivities());
     },
     initLogin: () => {
       dispatch(initLogin());

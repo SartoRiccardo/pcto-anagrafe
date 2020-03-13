@@ -103,12 +103,18 @@ class SearchBar extends Component {
   }
 
   render() {
-    const {fields} = this.state;
+    let {fields} = this.state;
+    let {options, search} = this.props;
+    options = [...options, {
+      id: -1,
+      name: "Esperienze",
+      regex: "\\d+",
+    }];
     const sFields = fields.map((f) => {
       return (
         <Form.Row key={f.id} className="justify-content-center my-3 my-sm-2">
           <SearchField
-            options={this.props.options}
+            options={options}
             initState={f}
             onChange={this.handleChange}
             onDelete={this.handleDelete}
@@ -116,7 +122,7 @@ class SearchBar extends Component {
         </Form.Row>
       );
     });
-    const buttonText = this.props.search.length === 0 ? "Cerca" : "Aggiungi";
+    const buttonText = search.length === 0 ? "Cerca" : "Aggiungi";
 
     return (
       <form onSubmit={(evt) => evt.preventDefault()} className="my-3">

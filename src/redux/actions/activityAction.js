@@ -10,6 +10,9 @@ import {protectFunction, callIfSuccessful} from "../../util/action";
  */
 export function loadActivities() {
   return protectFunction(async (dispatch, getState) => {
+    const actionId = Math.random();
+    dispatch({type:"ACTIVITYR_BEGIN_ACTION", actionId});
+
     try {
       const {status, data} = await axios.get(apiUrl("/activity"), {headers: {"X-Authorization": getToken()}});
 
@@ -22,6 +25,8 @@ export function loadActivities() {
       });
     }
     catch(e) {}
+
+    dispatch({type:"ACTIVITYR_FINISH_ACTION", actionId});
   });
 }
 
