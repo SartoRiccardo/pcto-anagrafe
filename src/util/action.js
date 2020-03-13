@@ -18,10 +18,11 @@ export function protectFunction(callback) {
  * Executes a function if the conditions are correct, or logs an error.
  * @param  {int}      status   The request's response code.
  * @param  {Object}   data     The resulting data.
+ * @param  {Function} dispatch The function to dispatch a redux action.
  * @param  {Function} callback The function to call.
  * @param  {Function} onError  What happens in case of error.
  */
-export function callIfSuccessful(status, data, callback, onError=null) {
+export function callIfSuccessful(status, data, dispatch, callback, onError=null) {
   // Successful HTTP codes start with 2xx
   if(200 <= status && status < 300) {
     if(!data.error) {
@@ -30,8 +31,12 @@ export function callIfSuccessful(status, data, callback, onError=null) {
     else {
       if(onError) onError();
       else {
-        // LOG ERROR
-        console.log(data.message);
+        const error = data.message;
+        const lastErrorId = Math.random();
+        dispatch({
+          type: "ERRORR_SET_ERROR",
+          error, lastErrorId
+        });
       }
     }
   }

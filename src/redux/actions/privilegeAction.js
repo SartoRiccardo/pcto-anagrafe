@@ -26,7 +26,7 @@ export function grantPermission(user, privilege) {
       };
 
       const {status, data} = await axios.post(apiUrl("/privilege"), null, payload);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "PRIVILEGER_ADD_PRIVILEGE", user, privilege});
       });
     }
@@ -57,7 +57,7 @@ export function revokePermission(user, privilege) {
 
       const {status, data} = await axios.delete(apiUrl(`/privilege/${user.id}`), payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "PRIVILEGER_REVOKE_PRIVILEGE", user, privilege});
       });
     }
@@ -81,7 +81,7 @@ export function initPermissions() {
 
       const {status, data} = await axios.get(apiUrl("/privilege"), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {users} = data;
         dispatch({
           type: "PRIVILEGER_INITIALIZE",

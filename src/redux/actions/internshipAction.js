@@ -20,7 +20,7 @@ export function loadInternshipsFor(company) {
 
       const {status, data} = await axios.get(apiUrl("/internship"), payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {internships} = data;
         dispatch({
           type: "COMPANYR_SET_INTERNSHIPS",
@@ -49,7 +49,7 @@ export function changeInternship(id, student) {
       };
 
       const {status, data} = await axios.put(apiUrl("/internship"), null, payload);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({
           type: "COMPANYR_UPDATE_INTERNSHIP",
           internship: {id, student},
@@ -76,7 +76,7 @@ export function deleteInternship(id) {
 
       const {status, data} = await axios.delete(apiUrl(`/internship/${id}`), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "COMPANYR_DELETE_INTERNSHIP", id});
       });
     }
@@ -102,7 +102,7 @@ export function addInternship(company, activity, student, year) {
 
       const {status, data} = await axios.post(apiUrl("/internship"), null, payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({
           type: "COMPANYR_ADD_INTERNSHIP",
           internship: {

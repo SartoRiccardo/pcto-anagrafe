@@ -23,7 +23,7 @@ export function loadSaved() {
 
       const {status, data} = await axios.get(apiUrl(`/saved/${id}`), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {saved} = data;
         dispatch({
           type: "SAVEDR_SET_SAVED",
@@ -55,7 +55,7 @@ export function saveCompany(company) {
 
       const {status, data} = await axios.post(apiUrl("/saved"), null, payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         if(getState().saved.initialized) {
           dispatch({type: "SAVEDR_ADD", company});
         }
@@ -87,7 +87,7 @@ export function deleteSave(id) {
 
       const {status, data} = await axios.delete(apiUrl(`/saved/${user}`), payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         if(getState().saved.initialized) {
           dispatch({type: "SAVEDR_DELETE", id});
         }

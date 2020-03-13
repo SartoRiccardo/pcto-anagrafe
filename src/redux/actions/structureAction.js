@@ -26,7 +26,7 @@ function sendField(field, isNew) {
       const {status, data} = await requestMethod(apiUrl("/structure"), null, payload);
 
       // Just log errors if any
-      callIfSuccessful(status, data, () => {});
+      callIfSuccessful(status, data, dispatch, () => {});
     }
     catch(e) {}
 
@@ -62,7 +62,7 @@ export function deleteField(id) {
 
       const {status, data} = await axios.delete(apiUrl(`/structure/${id}`), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
       });
     }
@@ -103,7 +103,7 @@ export function reloadStructure() {
 
       const {status, data} = await axios.get(apiUrl("/structure"), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {fields} = data;
         dispatch({
           type: "STRUCTURER_UPDATE",

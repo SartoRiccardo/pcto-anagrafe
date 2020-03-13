@@ -30,7 +30,7 @@ export function createCompany(name) {
 
       const {status, data} = await axios.post(apiUrl("/company"), null, payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({
           type: "CHANGECOMPANYR_END",
           request: "add",
@@ -71,7 +71,7 @@ export function updateCompany(company) {
       };
 
       const {status, data} = await axios.put(apiUrl(`/company`), null, payload);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(id));
@@ -100,7 +100,7 @@ export function updateName(company, name) {
       };
 
       const {status, data} = await axios.put(apiUrl("/company"), null, payload);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(company));
@@ -140,7 +140,7 @@ export function updateField(company, field) {
       };
 
       const {status, data} = await axios.put(apiUrl("/company/"), null, payload);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(company));
@@ -176,7 +176,7 @@ export function deleteCompany(id) {
       };
 
       const {status, data} = await axios.delete(apiUrl(`/company/${id}`), headers);
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
         dispatch(loadSaved());
       });

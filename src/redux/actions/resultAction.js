@@ -48,7 +48,7 @@ export function resultAction(arg0=null) {
         return;
       }
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {totalResults, results} = data;
         dispatch({
           type: "SEARCHR_UPDATE_RESULTS",
@@ -80,7 +80,7 @@ export function selectCompany(id) {
 
       const {status, data} = await axios.get(apiUrl(`/company/${id}`), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {result} = data;
         dispatch({
           type: "COMPANYR_SET_MATCH",

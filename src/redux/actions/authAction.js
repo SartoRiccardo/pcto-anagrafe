@@ -24,7 +24,7 @@ async function attemptLogin(dispatch, sendData, withCredentials=false) {
 
     const {status, data} = await axios.get(apiUrl("/auth"), headers);
 
-    callIfSuccessful(status, data, () => {
+    callIfSuccessful(status, data, dispatch, () => {
       const {token, user, privileges} = data.user;
       dispatch({
         type: "AUTHR_LOGIN",

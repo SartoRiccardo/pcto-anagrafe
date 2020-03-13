@@ -16,6 +16,7 @@ import ShowActivities from "./activity/ShowActivities";
 import EditPrivileges from "./ui/EditPrivileges";
 import ShowSaved from "./ui/ShowSaved";
 import Footer from "./ui/Footer";
+import ErrorToast from "./ui/ErrorToast";
 
 /**
  * The application wrapper.
@@ -84,6 +85,8 @@ class App extends Component {
           {links}
         </div>
         <Footer />
+
+        <ErrorToast />
       </BrowserRouter>
     );
   }

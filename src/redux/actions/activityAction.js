@@ -13,7 +13,7 @@ export function loadActivities() {
     try {
       const {status, data} = await axios.get(apiUrl("/activity"), {headers: {"X-Authorization": getToken()}});
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {activities} = data;
         dispatch({
           type:"ACTIVITYR_INITIALIZE",
@@ -46,7 +46,7 @@ function changeActivity(id, name, description) {
 
       const {status, data} = await axios.put(apiUrl("/activity"), null, payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({
           type:"ACTIVITYR_UPDATE",
           id, name, description
@@ -99,7 +99,7 @@ export function addActivity(name, description) {
 
       const {status, data} = await axios.post(apiUrl("/activity"), null, payload);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         const {id} = data;
         dispatch({
           type:"ACTIVITYR_ADD",
@@ -127,7 +127,7 @@ export function deleteActivity(id) {
 
       const {status, data} = await axios.delete(apiUrl(`/activity/${id}`), headers);
 
-      callIfSuccessful(status, data, () => {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type:"ACTIVITYR_DELETE", id});
       })
     }
