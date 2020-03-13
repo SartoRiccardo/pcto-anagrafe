@@ -1,9 +1,14 @@
+# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/e8da6e672a51b7343df2b969bfa4973adad16790) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
+
+## Aggiunte
++ Quando accade un errore, questo viene visualizzato in un toast
+
 # 2020-03-12: 0.9.1 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/6fd973a1197bfd8f730e4499c8e3dfb0fafad69b) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
 
 ## Sicurezza
 + I token d'accesso ora sono criptati
 
-# Bug
+## Bug
 + La pagina non si bloccherà se un utente avrà un token invalido salvato tra i cookie
 + L'applicazione non ricaricherà la struttura delle tabelle più del necessario
 
