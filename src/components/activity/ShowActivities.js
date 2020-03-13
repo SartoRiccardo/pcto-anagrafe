@@ -47,15 +47,25 @@ class ShowActivities extends Component {
   }
 
   finishHandler = (evt) => {
+    const {activities} = this.props;
     const {id, type} = this.state.modifying;
-    const {value} = evt;
+    const {value, cancelled} = evt;
+
+    let matchingActivity = null;
+    for(const a of activities) {
+      if(a.id === id) {
+        matchingActivity = a;
+        break;
+      }
+    }
+
     switch (type) {
       case "NAME":
-        this.props.changeName(id, value);
+        if(matchingActivity.name !== value) this.props.changeName(id, value);
         break;
 
       case "DESCRIPTION":
-        this.props.changeDescription(id, value);
+        if(matchingActivity.description !== value) this.props.changeDescription(id, value);
         break;
 
       default:
