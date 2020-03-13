@@ -29,9 +29,9 @@ Documentazione sui modelli usati nell'applicazione. La colonna **Backend** è se
 
 | Campo | Tipo | Descrizione | Backend |
 |-|-|-|-|
-| `id` | `int` | L'ID della ricerca | :heavy_check_mark: |
+| `id` | `int` | L'ID della ricerca | :x: |
 | `value` | `String` | La ricerca | :heavy_check_mark: |
-| `field` | `String` | Il campo da ricercare | :x: |
+| `field` | `String` | Il campo da ricercare | :heavy_check_mark: |
 
 # User
 

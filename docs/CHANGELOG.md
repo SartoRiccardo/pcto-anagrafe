@@ -1,7 +1,8 @@
-# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/e8da6e672a51b7343df2b969bfa4973adad16790) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
+# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
 
 ## Aggiunte
 + Quando accade un errore, questo viene visualizzato in un toast
++ Possibilità di cercare aziende per tipo di esperienza fatta
 
 # 2020-03-12: 0.9.1 [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/6fd973a1197bfd8f730e4499c8e3dfb0fafad69b) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/7b08ec395e975ab7fd0cedf76a27136666ca7c04)
 
