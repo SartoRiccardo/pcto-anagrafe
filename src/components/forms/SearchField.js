@@ -43,8 +43,10 @@ class SearchField extends Component {
       }
     }
 
+    const fixedValues = StructureEnumField.regex.test(newField.regex);
     this.setState({
       field: newField,
+      value: fixedValues ? newField.regex.substring(1, newField.regex.length-1).split("|")[0]: this.state.value,
     }, () => {
       this.notifyChange();
     })
