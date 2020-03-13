@@ -1,5 +1,6 @@
 import axios from "axios";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 import {apiUrl} from "./url";
 
 /**
@@ -10,29 +11,25 @@ import {apiUrl} from "./url";
  * @param {int} company  The company's ID.
  */
 export function loadInternshipsFor(company) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {company},
+        headers: {"X-Authorization": getToken()},
+      };
+
+      const {status, data} = await axios.get(apiUrl("/internship"), payload);
+
+      callIfSuccessful(status, data, () => {
+        const {internships} = data;
+        dispatch({
+          type: "COMPANYR_SET_INTERNSHIPS",
+          internships,
+        });
+      });
     }
-
-    const payload = {
-      params: {company},
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.get(apiUrl("/internship"), payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {internships} = res.data;
-        dispatch({type: "COMPANYR_SET_INTERNSHIPS", internships});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {})
-  };
+    catch(e) {}
+  });
 }
 
 /**
@@ -44,28 +41,23 @@ export function loadInternshipsFor(company) {
  * @param {string} student  The new student value.
  */
 export function changeInternship(id, student) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {id, student},
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const payload = {
-      params: {id, student},
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.put(apiUrl("/internship"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      const {status, data} = await axios.put(apiUrl("/internship"), null, payload);
+      callIfSuccessful(status, data, () => {
         dispatch({
           type: "COMPANYR_UPDATE_INTERNSHIP",
           internship: {id, student},
         });
-      }
-    })
-    .catch((e) => {})
-  };
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -76,27 +68,20 @@ export function changeInternship(id, student) {
  * @param {int} id  The ID of the internshipt to delete.
  */
 export function deleteInternship(id) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.delete(apiUrl(`/internship/${id}`), headers);
 
-    axios.delete(apiUrl(`/internship/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      callIfSuccessful(status, data, () => {
         dispatch({type: "COMPANYR_DELETE_INTERNSHIP", id});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {})
-  };
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -108,32 +93,25 @@ export function deleteInternship(id) {
  * @param {int}    year      The year the internship was made in.
  */
 export function addInternship(company, activity, student, year) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {company, activity, student, year},
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const payload = {
-      params: {company, activity, student, year},
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.post(apiUrl("/internship"), null, payload);
 
-    axios.post(apiUrl("/internship"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      callIfSuccessful(status, data, () => {
         dispatch({
           type: "COMPANYR_ADD_INTERNSHIP",
           internship: {
-            id: res.data.id,
-            company, activity, student, year
-          }
+            id: data.id,
+            company, activity, student, year,
+          },
         });
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {})
-  };
+      });
+    }
+    catch(e) {}
+  });
 }

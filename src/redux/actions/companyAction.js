@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 import {resultAction, selectCompany} from "./resultAction";
 import {loadSaved} from "./saveAction";
 
@@ -15,37 +16,35 @@ import {loadSaved} from "./saveAction";
  * @param {String} name  The name of the company to create.
  */
 export function createCompany(name) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      dispatch({type: "CHANGECOMPANYR_START", request:"add"});
+
+      const payload = {
+        params: {
+          name,
+          fields: "[]",
+        },
+        headers: {"X-Authorization": getToken()},
+      };
+
+      const {status, data} = await axios.post(apiUrl("/company"), null, payload);
+
+      callIfSuccessful(status, data, () => {
+        dispatch({
+          type: "CHANGECOMPANYR_END",
+          request: "add",
+          payload: {id: data.id},
+        });
+      });
     }
-    dispatch({type: "CHANGECOMPANYR_START", request:"add"});
-
-    const payload = {
-      params: {
-        name,
-        fields: "[]",
-      },
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.post(apiUrl("/company"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        dispatch({type: "CHANGECOMPANYR_END", request:"add", payload: {id: res.data.id}});
-      }
-      else if(res.status === 200 && res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
+    catch(e) {
       dispatch({
         type: "CHANGECOMPANYR_END_ERROR", request:"add",
         error: "Errore di connessione.",
       });
-    });
-  };
+    }
+  });
 }
 
 /**
@@ -58,35 +57,28 @@ export function createCompany(name) {
  * @param {Company} company  The updated company.
  */
 export function updateCompany(company) {
-  return (dispatch, getState) => {
-    const id = getState().company.match.id;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const id = getState().company.match.id;
 
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+      const payload = {
+        params: {
+          id: company.id,
+          name: company.name,
+          fields: JSON.stringify(company.fields),
+        },
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const payload = {
-      params: {
-        id: company.id,
-        name: company.name,
-        fields: JSON.stringify(company.fields),
-      },
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.put(apiUrl(`/company`), null, payload)
-    .then((res) => {
-      if(res.status === 200) {
+      const {status, data} = await axios.put(apiUrl(`/company`), null, payload);
+      callIfSuccessful(status, data, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(id));
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+      })
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -100,42 +92,29 @@ export function updateCompany(company) {
  * @param {string} name     The new name of the company.
  */
 export function updateName(company, name) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {id: company, name},
+        headers: {"X-Authorization": getToken()},
+      };
+
+      const {status, data} = await axios.put(apiUrl("/company"), null, payload);
+      callIfSuccessful(status, data, () => {
+        dispatch({type: "COMPANYR_RESET"});
+        dispatch(resultAction());
+        dispatch(selectCompany(company));
+        dispatch({
+          type: "SAVEDR_UPDATE",
+          company: {
+            id: company,
+            name,
+          },
+        });
+      });
     }
-
-    const payload = {
-      params: {id: company, name},
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.put(apiUrl("/company"), null, payload)
-    .then((res) => {
-      const {error, message} = res.data;
-      if(res.status === 200) {
-        if(!error) {
-          dispatch({type: "COMPANYR_RESET"});
-          dispatch(resultAction());
-          dispatch(selectCompany(company));
-          dispatch({
-            type: "SAVEDR_UPDATE",
-            company: {
-              id: company,
-              name,
-            },
-          });
-        }
-        else {
-          console.log(message);
-        }
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+    catch(e) {}
+  });
 }
 
 /**
@@ -149,24 +128,19 @@ export function updateName(company, name) {
  * @param {Field}  field    The updated field.
  */
 export function updateField(company, field) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {
+          id: company,
+          fId: field.id,
+          fValue: field.value,
+        },
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const payload = {
-      params: {
-        id: company,
-        fId: field.id,
-        fValue: field.value,
-      },
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.put(apiUrl("/company/"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      const {status, data} = await axios.put(apiUrl("/company/"), null, payload);
+      callIfSuccessful(status, data, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
         dispatch(selectCompany(company));
@@ -177,15 +151,10 @@ export function updateField(company, field) {
             fields: [field],
           },
         });
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -198,30 +167,20 @@ export function updateField(company, field) {
  * @param {int} id  The ID of the company to delete.
  */
 export function deleteCompany(id) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      dispatch({type: "CHANGECOMPANYR_START", request:"delete"});
 
-    dispatch({type: "CHANGECOMPANYR_START", request:"delete"});
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.delete(apiUrl(`/company/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      const {status, data} = await axios.delete(apiUrl(`/company/${id}`), headers);
+      callIfSuccessful(status, data, () => {
         dispatch({type: "CHANGECOMPANYR_END", request:"delete", payload: {id}});
         dispatch(loadSaved());
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+      });
+    }
+    catch(e) {}
+  });
 }

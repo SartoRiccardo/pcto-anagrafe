@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {callIfSuccessful} from "../../util/action";
 
 /**
  * Sends the AJAX request to log in.
@@ -11,39 +12,32 @@ import {getToken} from "../../util/tokenManager";
  * @param  {function} dispatch  Dispatches an action.
  * @param  {Object}   data      The data to send.
  */
-function attemptLogin(dispatch, data, withCredentials=false) {
-  const headers = {
-    headers: {
-      "X-Authentication": withCredentials ?
-        `login=${encodeURIComponent(data.login)}&pswd=${encodeURIComponent(data.pswd)}` : getToken(),
-    }
-  };
+async function attemptLogin(dispatch, sendData, withCredentials=false) {
+  try {
+    const headers = {
+      headers: {
+        "X-Authentication": withCredentials
+          ? `login=${encodeURIComponent(sendData.login)}&pswd=${encodeURIComponent(sendData.pswd)}`
+          : getToken(),
+      },
+    };
 
-  axios.get(apiUrl("/auth"), headers)
-  .then((res) => {
-    if(res.status === 200 && !res.data.error) {
-      const {token, user, privileges} = res.data.user;
+    const {status, data} = await axios.get(apiUrl("/auth"), headers);
 
+    callIfSuccessful(status, data, () => {
+      const {token, user, privileges} = data.user;
       dispatch({
         type: "AUTHR_LOGIN",
-        token,
-        user,
-        privileges,
+        token, user, privileges,
       });
-    }
-    else if(res.data.error) {
-      dispatch({
-        type: "AUTHR_ERROR",
-        error: res.data.message,
-      });
-    }
-  })
-  .catch((e) => {
+    });
+  }
+  catch(e) {
     dispatch({
       type: "AUTHR_ERROR",
       error: "Errore di connessione.",
     });
-  });
+  }
 }
 
 /**
@@ -63,12 +57,12 @@ export function startLogin() {
  * @author Riccardo Sartori
  */
 export function loginAction(user, pswd) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const data = {
       login: user,
       pswd,
     };
-    attemptLogin(dispatch, data, true);
+    await attemptLogin(dispatch, data, true);
   };
 }
 
@@ -78,14 +72,14 @@ export function loginAction(user, pswd) {
  * @author Riccardo Sartori
  */
 export function initLogin() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const token = getToken();
     if(token === null) {
       dispatch({type: "AUTHR_ANONYMOUS"});
       return;
     }
 
-    attemptLogin(dispatch, {params: {}});
+    await attemptLogin(dispatch, {params: {}});
   };
 }
 
