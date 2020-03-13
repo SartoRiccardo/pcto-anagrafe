@@ -1,4 +1,4 @@
-# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/6f5c5f72b3c1b58f40b996a959815890654cff30) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
+# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
 
 ## Aggiunte
 + Quando accade un errore, questo viene visualizzato in un toast
