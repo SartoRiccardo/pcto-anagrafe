@@ -71,6 +71,7 @@ class ChangePage extends Component {
     const pageNum = Math.ceil(totalResults/resultsPerPage);
     const renderMd = this.renderRange(page, 2, pageNum);
     const renderXs = this.renderRange(page, 1, pageNum);
+    
     let buttons = [];
     for (let i = 0; i < pageNum; i++) {
       if(i === 0 || i === pageNum-1 || renderMd.includes(i)) {
@@ -78,7 +79,7 @@ class ChangePage extends Component {
         if(i === page) {
           className += "-selected";
         }
-        if(!renderXs.includes(i) && renderMd.includes(i)) {
+        if(!renderXs.includes(i) && renderMd.includes(i) && i !== 0 && i !== pageNum-1) {
           className += " d-none d-md-block";
         }
         if(!renderMd.includes(i)) {

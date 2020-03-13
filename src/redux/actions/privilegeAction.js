@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 
 /**
  * Grants a permission to an user.
@@ -11,37 +12,28 @@ import {getToken} from "../../util/tokenManager";
  * @param  {String} privilege  The privilege to grant.
  */
 export function grantPermission(user, privilege) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
-
+  return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
     dispatch({type: "PRIVILEGER_ADD_ACTION", id: actionId});
 
-    const payload = {
-      params: {
-        user: user.id,
-        privilege,
-      },
-      headers: {"X-Authorization": getToken()},
-    };
+    try {
+      const payload = {
+        params: {
+          user: user.id,
+          privilege,
+        },
+        headers: {"X-Authorization": getToken()},
+      };
 
-    axios.post(apiUrl("/privilege"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      const {status, data} = await axios.post(apiUrl("/privilege"), null, payload);
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "PRIVILEGER_ADD_PRIVILEGE", user, privilege});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-      dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
-    })
-    .catch((e) => {
-      dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
-    });
-  };
+      });
+    }
+    catch(e) {}
+
+    dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
+  });
 }
 
 /**
@@ -53,34 +45,26 @@ export function grantPermission(user, privilege) {
  * @param  {String} privilege  The privilege to revoke.
  */
 export function revokePermission(user, privilege) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
-
+  return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
     dispatch({type: "PRIVILEGER_ADD_ACTION", id: actionId});
 
-    const payload = {
-      params: {privilege},
-      headers: {"X-Authorization": getToken()},
-    };
+    try {
+      const payload = {
+        params: {privilege},
+        headers: {"X-Authorization": getToken()},
+      };
 
-    axios.delete(apiUrl(`/privilege/${user.id}`), payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      const {status, data} = await axios.delete(apiUrl(`/privilege/${user.id}`), payload);
+
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "PRIVILEGER_REVOKE_PRIVILEGE", user, privilege});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-      dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
-    })
-    .catch((e) => {
-      dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
-    });
-  };
+      });
+    }
+    catch(e) {}
+
+    dispatch({type: "PRIVILEGER_FINISH_ACTION", id: actionId});
+  });
 }
 
 /**
@@ -89,28 +73,24 @@ export function revokePermission(user, privilege) {
  * Fires PRIVILEGER_INITIALIZE on success.
  */
 export function initPermissions() {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
+
+      const {status, data} = await axios.get(apiUrl("/privilege"), headers);
+
+      callIfSuccessful(status, data, dispatch, () => {
+        const {users} = data;
+        dispatch({
+          type: "PRIVILEGER_INITIALIZE",
+          privileges: users
+        });
+      });
     }
-
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.get(apiUrl("/privilege"), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {users} = res.data;
-        dispatch({type: "PRIVILEGER_INITIALIZE", privileges: users});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {});
-  }
+    catch(e) {}
+  });
 }
 
 /**
@@ -121,23 +101,18 @@ export function initPermissions() {
  * @param {int} id  The user's ID.
  */
 export function getUserById(id) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.get(apiUrl(`/user/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200) {
-        const {user} = res.data;
+      const {status, data} = await axios.get(apiUrl(`/user/${id}`), headers);
+      if(200 <= status && status < 300) {
+        const {user} = data;
         dispatch({type: "PRIVILEGER_SET_USER", user});
-      }
-    })
-    .catch((e) => {});
-  };
+      };
+    }
+    catch(e) {}
+  });
 }

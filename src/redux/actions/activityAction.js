@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 
 /**
  * Loads the activities.
@@ -8,28 +9,20 @@ import {getToken} from "../../util/tokenManager";
  * Fires ACTIVITYR_INITIALIZE on success.
  */
 export function loadActivities() {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const {status, data} = await axios.get(apiUrl("/activity"), {headers: {"X-Authorization": getToken()}});
+
+      callIfSuccessful(status, data, dispatch, () => {
+        const {activities} = data;
+        dispatch({
+          type:"ACTIVITYR_INITIALIZE",
+          activities,
+        });
+      });
     }
-
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
-
-    axios.get(apiUrl("/activity"), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {activities} = res.data;
-        dispatch({type:"ACTIVITYR_INITIALIZE", activities});
-      }
-      if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {});
-  }
+    catch(e) {}
+  });
 }
 
 /**
@@ -42,40 +35,26 @@ export function loadActivities() {
  * @param  {string} description  The activity's description.
  */
 function changeActivity(id, name, description) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      let payload = {
+        params: {id},
+        headers: {"X-Authorization": getToken()},
+      };
+      if(name) payload.params.name = name;
+      if(description) payload.params.description = description;
 
-    let payload = {
-      params: {id},
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.put(apiUrl("/activity"), null, payload);
 
-    if(name) {
-      payload.params = {...payload.params, name};
-    }
-    if(description) {
-      payload.params = {...payload.params, description};
-    }
-
-    axios.put(apiUrl("/activity"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({
           type:"ACTIVITYR_UPDATE",
-          id,
-          name,
-          description
+          id, name, description
         });
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {});
-  }
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -111,32 +90,25 @@ export function changeName(id, name) {
  * @param {string} description  The activity's description.
  */
 export function addActivity(name, description) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const payload = {
+        params: {name, description},
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const payload = {
-      params: {name, description},
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.post(apiUrl("/activity"), null, payload);
 
-    axios.post(apiUrl("/activity"), null, payload)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {id} = res.data;
+      callIfSuccessful(status, data, dispatch, () => {
+        const {id} = data;
         dispatch({
           type:"ACTIVITYR_ADD",
           activity: {id, name, description}
         });
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {});
-  }
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -147,27 +119,18 @@ export function addActivity(name, description) {
  * @param {int} id  The activity's id.
  */
 export function deleteActivity(id) {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.delete(apiUrl(`/activity/${id}`), headers);
 
-    axios.delete(apiUrl(`/activity/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type:"ACTIVITYR_DELETE", id});
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+      })
+    }
+    catch(e) {}
+  });
 }

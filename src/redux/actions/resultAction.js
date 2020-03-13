@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 
 /**
  * Loads all companies that match the given search.
@@ -13,20 +14,15 @@ import {getToken} from "../../util/tokenManager";
  * @param {Search[]} arg0  The search.
  */
 export function resultAction(arg0=null) {
-  return (dispatch, getState) => {
-    let search = arg0 === null ? getState().search.search : arg0;
+  return protectFunction(async (dispatch, getState) => {
 
+    let search = arg0 === null ? getState().search.search : arg0;
     const searchReq = search.map((s) => {
       return {
         id: s.field.id,
         value: s.value
       };
     });
-
-    if(!getToken()) {
-      // Logout
-      return;
-    }
 
     const searchId = Math.random();
     dispatch({type: "SEARCHR_NOTIFY_BEGIN_SEARCH", searchId});
@@ -36,38 +32,33 @@ export function resultAction(arg0=null) {
       return;
     }
 
-    const payload = {
-      params: {
-        search: JSON.stringify(searchReq),
-        page: getState().search.page,
-      },
-      headers: {"X-Authorization": getToken()},
-    }
+    try {
+      const payload = {
+        params: {
+          search: JSON.stringify(searchReq),
+          page: getState().search.page,
+        },
+        headers: {"X-Authorization": getToken()},
+      }
 
-    axios.get(apiUrl("/company"), payload)
-      .then((res) => {
-        const {lastSearchId} = getState().search;
-        if(lastSearchId !== searchId) {
-          return;
-        }
+      const {status, data} = await axios.get(apiUrl("/company"), payload);
 
-        if(res.status === 200 && !res.data.error) {
-          const {totalResults, results} = res.data;
-          dispatch({
-            type: "SEARCHR_UPDATE_RESULTS",
-            results,
-            totalResults
-          });
-        }
-        else if(res.data.error) {
-          // Handle error...
-          console.log(res.data.message);
-        }
-      })
-      .catch((e) => {
+      const {lastSearchId} = getState().search;
+      if(lastSearchId !== searchId) {
+        return;
+      }
 
+      callIfSuccessful(status, data, dispatch, () => {
+        const {totalResults, results} = data;
+        dispatch({
+          type: "SEARCHR_UPDATE_RESULTS",
+          results,
+          totalResults,
+        });
       });
-  }
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -81,36 +72,29 @@ export function resultAction(arg0=null) {
  * @param {int} id  The ID of the company to load.
  */
 export function selectCompany(id) {
-  return (dispatch, getState) => {
-    if(getToken() === null) {
-      // Logout
-      return;
-    }
+  return protectFunction(async (dispatch, getState) => {
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
+      const {status, data} = await axios.get(apiUrl(`/company/${id}`), headers);
 
-    axios.get(apiUrl(`/company/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {result} = res.data;
+      callIfSuccessful(status, data, dispatch, () => {
+        const {result} = data;
         dispatch({
           type: "COMPANYR_SET_MATCH",
           match: result,
         });
-      }
-      else if(res.data.error) {
+      }, () => {
         dispatch({
           type: "COMPANYR_ERROR",
-          error: res.data.message,
+          error: data.message,
         });
-      }
-    })
-    .catch((e) => {
-
-    });
-  };
+      });
+    }
+    catch(e) {}
+  });
 }
 
 /**
@@ -121,18 +105,14 @@ export function selectCompany(id) {
  * @author Riccardo Sartori
  */
 export function reloadCompany() {
-  return (dispatch, getState) => {
-    if(getToken() === null) {
-      // Logout...
-      return;
-    }
+  return protectFunction((dispatch, getState) => {
     let {id} = getState().company.match;
     if(id === null) {
       return;
     }
 
     dispatch(selectCompany(id));
-  };
+  });
 }
 
 /**
@@ -141,9 +121,7 @@ export function reloadCompany() {
  * @author Riccardo Sartori
  */
 export function resetCompany() {
-  return {
-    type:"COMPANYR_RESET"
-  };
+  return {type:"COMPANYR_RESET"};
 }
 
 /**

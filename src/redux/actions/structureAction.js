@@ -1,6 +1,7 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {protectFunction, callIfSuccessful} from "../../util/action";
 
 /**
  * Either modifies or adds a new field.
@@ -11,30 +12,26 @@ import {getToken} from "../../util/tokenManager";
  * @param  {boolean} isNew  If the field is new.
  */
 function sendField(field, isNew) {
-  return (dispatch, getState) => {
+  return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    const payload = {
-      params: {...field},
-      headers: {"X-Authorization": getToken()},
-    };
+    try {
+      const payload = {
+        params: {...field},
+        headers: {"X-Authorization": getToken()},
+      };
 
-    const requestMethod = isNew ? axios.post : axios.put;
+      const requestMethod = isNew ? axios.post : axios.put;
+      const {status, data} = await requestMethod(apiUrl("/structure"), null, payload);
 
-    requestMethod(apiUrl("/structure"), null, payload)
-    .then((res) => {
-      if(res.status === 200) {
-        dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-      }
-      if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
-      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-    });
-  };
+      // Just log errors if any
+      callIfSuccessful(status, data, dispatch, () => {});
+    }
+    catch(e) {}
+
+    dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+  });
 }
 
 /**
@@ -54,27 +51,25 @@ export function updateField(field) {
  * @param {Field} field  The field to update.
  */
 export function deleteField(id) {
-  return (dispatch, getState) => {
+  return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    axios.delete(apiUrl(`/structure/${id}`), headers)
-    .then((res) => {
-      if(res.status === 200) {
+      const {status, data} = await axios.delete(apiUrl(`/structure/${id}`), headers);
+
+      callIfSuccessful(status, data, dispatch, () => {
         dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-      }
-      if(res.data.error) {
-        console.log(res.data.message);
-      }
-    })
-    .catch((e) => {
-      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-    });
-  };
+      });
+    }
+    catch(e) {}
+
+    dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+  });
 }
 
 /**
@@ -96,35 +91,28 @@ export function createField(field) {
  * @author Riccardo Sartori
  */
 export function reloadStructure() {
-  return (dispatch, getState) => {
-    if(!getToken()) {
-      return;
-    }
-
+  return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
     dispatch({type:"STRUCTURER_RESET"});
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
-    const headers = {
-      headers: {"X-Authorization": getToken()},
-    };
+    try {
+      const headers = {
+        headers: {"X-Authorization": getToken()},
+      };
 
-    axios.get(apiUrl("/structure"), headers)
-    .then((res) => {
-      if(res.status === 200 && !res.data.error) {
-        const {fields} = res.data;
+      const {status, data} = await axios.get(apiUrl("/structure"), headers);
+
+      callIfSuccessful(status, data, dispatch, () => {
+        const {fields} = data;
         dispatch({
           type: "STRUCTURER_UPDATE",
           fields,
         });
-      }
-      else if(res.data.error) {
-        console.log(res.data.message);
-      }
-      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-    })
-    .catch((e) => {
-      dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
-    });
-  };
+      });
+    }
+    catch(e) {}
+
+    dispatch({type:"STRUCTURER_FINISH_ACTION", actionId});
+  });
 }
