@@ -36,7 +36,7 @@ class SearchField extends Component {
   }
 
   changeField = (evt) => {
-    const {options} = this.props;
+    const {options, activities} = this.props;
     let newField = null;
     for (let i = 0; i < options.length; i++) {
       if (options[i].id === parseInt(evt.target.value)) {
@@ -45,10 +45,18 @@ class SearchField extends Component {
       }
     }
 
+    let newValue = this.state.value;
     const fixedValues = StructureEnumField.regex.test(newField.regex);
+    if(fixedValues) {
+      newValue = newField.regex.substring(1, newField.regex.length-1).split("|")[0];
+    }
+    else if(newField.id === -1) {
+      newValue = activities[0].id;
+    }
+
     this.setState({
       field: newField,
-      value: fixedValues ? newField.regex.substring(1, newField.regex.length-1).split("|")[0]: this.state.value,
+      value: newValue,
     }, () => {
       this.notifyChange();
     })

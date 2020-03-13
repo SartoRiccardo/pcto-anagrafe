@@ -39,7 +39,7 @@ function CompanyResults(props) {
     let uniqueFields = [];
     if(search) {
       for (let i = 0; i < search.length; i++) {
-        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id !== 0) {
+        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id > 0) {
           uniqueFields.push(search[i].field.id);
         }
       }
