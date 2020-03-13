@@ -152,7 +152,9 @@ class SearchField extends Component {
 
 function mapStateToProps(state) {
   return {
-    activities: state.activity.activities,
+    activities: state.activity.activities.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    }),
   };
 }
 

@@ -54,7 +54,7 @@ class ShowActivities extends Component {
   finishHandler = (evt) => {
     const {activities} = this.props;
     const {id, type} = this.state.modifying;
-    const {value, cancelled} = evt;
+    const {value} = evt;
 
     let matchingActivity = null;
     for(const a of activities) {
