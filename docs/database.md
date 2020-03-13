@@ -23,7 +23,8 @@ Per come i dati sono interpretati dall'applicazione, consultare il [Modello Dati
 CREATE TABLE Company (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id, name)
+  PRIMARY KEY(id),
+  UNIQUE(name),
 )
 ```
 
@@ -71,7 +72,8 @@ CREATE TABLE Field (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   regex VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+  UNIQUE(name)
 )
 ```
 
@@ -161,7 +163,8 @@ CREATE TABLE Internship (
   activity INT NOT NULL,
   company INT NOT NULL,
   year INT NOT NULL,
-  PRIMARY KEY (id, student, activity, company, year),
+  PRIMARY KEY (id),
+  UNIQUE (student, activity, company, year),
   FOREIGN KEY (activity) REFERENCES Activity(id) ON DELETE CASCADE,
   FOREIGN KEY (company) REFERENCES Company(id) ON DELETE CASCADE
 )
@@ -184,6 +187,7 @@ CREATE TABLE Activity (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id, name),
+  PRIMARY KEY (id),
+  UNIQUE (name)
 )
 ```
