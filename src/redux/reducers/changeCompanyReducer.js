@@ -1,10 +1,6 @@
 
 /**
- * The initial state of the changeCompanyReducer store.
- *
  * This store checks the status on add and delete actions.
- *
- * @author Riccardo Sartori
  *
  * @param {boolean} submitted  If the action has started.
  * @param {boolean} finished   If the action has finished.

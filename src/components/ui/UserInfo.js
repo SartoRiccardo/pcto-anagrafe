@@ -14,6 +14,11 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/**
+ * A FAB to show the user's info.
+ *
+ * Fetches data from the auth state.
+ */
 class UserInfo extends Component {
   copyId = () => {
     const userId = document.getElementById("user-id-show");

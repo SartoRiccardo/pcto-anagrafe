@@ -15,6 +15,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/**
+ * A page to show activities.
+ *
+ * Fetches data from and interacts with the activity state.
+ */
 class ShowActivities extends Component {
   constructor(props) {
     super(props);

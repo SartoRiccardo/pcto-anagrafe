@@ -14,10 +14,10 @@ import Button from "react-bootstrap/Button";
 /**
  * A single field to write a query for an attribute.
  *
- * @author Riccardo Sartori
+ * Fetches data from the activity state.
  *
- * @param {Search}   props.initState  The state to initialize the component.
  * @param {int}      props.id         The component ID, redundant if initState is present.
+ * @param {Search}   props.initState  The state to initialize the component.
  * @param {Field[]}  props.options    A list of searchable fields.
  * @param {function} props.onDelete   A handler for when the field gets deleted.
  * @param {function} props.onChange   A handler for when the field state changes.

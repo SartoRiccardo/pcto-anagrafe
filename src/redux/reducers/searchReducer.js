@@ -1,11 +1,7 @@
 import update from "immutability-helper";
 
 /**
- * The initial state of the searchReducer store.
- *
  * This store provides access to the data fetched while making searches on the /search route.
- *
- * @author Riccardo Sartori
  *
  * @param {Search[]}  search
  * @param {Company[]} results

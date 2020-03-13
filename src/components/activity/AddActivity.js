@@ -7,6 +7,11 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+/**
+ * A Form to add an Activity.
+ *
+ * Interacts with the activity state.
+ */
 class AddActivity extends Component {
   constructor(props) {
     super(props);

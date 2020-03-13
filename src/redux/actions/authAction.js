@@ -6,10 +6,7 @@ import {callIfSuccessful} from "../../util/action";
 /**
  * Sends the AJAX request to log in.
  *
- * Fires AUTHR_LOGIN on success.
- * Fires AUTHR_ERROR on error.
- *
- * @param  {function} dispatch  Dispatches an action.
+ * @param  {Function} dispatch  Dispatches an action.
  * @param  {Object}   data      The data to send.
  */
 async function attemptLogin(dispatch, sendData, withCredentials=false) {
@@ -41,20 +38,14 @@ async function attemptLogin(dispatch, sendData, withCredentials=false) {
 }
 
 /**
- * An action creator to fire AUTHR_START_LOGIN
- *
- * @author Riccardo Sartori
+ * An action creator to fire AUTHR_START_LOGIN.
  */
 export function startLogin() {
-  return {
-    type:"AUTHR_START_LOGIN"
-  };
+  return {type: "AUTHR_START_LOGIN"};
 }
 
 /**
  * An action creator to login.
- *
- * @author Riccardo Sartori
  */
 export function loginAction(user, pswd) {
   return async (dispatch, getState) => {
@@ -68,8 +59,6 @@ export function loginAction(user, pswd) {
 
 /**
  * An action creator to fetch the login data.
- *
- * @author Riccardo Sartori
  */
 export function initLogin() {
   return async (dispatch, getState) => {
@@ -85,8 +74,6 @@ export function initLogin() {
 
 /**
  * An action creator to completely logout.
- *
- * @author Riccardo Sartori
  */
 export function logoutAction() {
   return (dispatch, getState) => {

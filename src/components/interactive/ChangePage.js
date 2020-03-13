@@ -13,16 +13,12 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 /**
  * A component to change the result page
  *
- * @author Riccardo Sartori
+ * Fetches data from and interacts with the search and searchPage states.
  *
  * @param {int}      props.page           The current page.
  * @param {int}      props.totalResults   The results of the search.
  * @param {boolean}  props.multiplePages  If there are multiple result pages.
  * @param {String}   props.reducer        The reducer that must handler the page change events.
- * @param {function} props.updatePage     Jumps to the given page.
- * @param {function} props.decreasePage   Decreases the page by 1.
- * @param {function} props.increasePage   Increases the page by 1.
- * @param {function} props.updateResults  Updates the current search results.
  */
 class ChangePage extends Component {
   jumpToPage = (evt) => {
@@ -71,7 +67,7 @@ class ChangePage extends Component {
     const pageNum = Math.ceil(totalResults/resultsPerPage);
     const renderMd = this.renderRange(page, 2, pageNum);
     const renderXs = this.renderRange(page, 1, pageNum);
-    
+
     let buttons = [];
     for (let i = 0; i < pageNum; i++) {
       if(i === 0 || i === pageNum-1 || renderMd.includes(i)) {

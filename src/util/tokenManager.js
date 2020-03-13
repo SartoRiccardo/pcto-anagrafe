@@ -1,8 +1,6 @@
 
 /**
- * Deletes the token, DOES NOT WORK ON BRAVE.
- *
- * @author Riccardo Sartori
+ * Deletes the token.
  */
 export function deleteToken() {
   document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
@@ -10,8 +8,6 @@ export function deleteToken() {
 
 /**
  * Saves the token.
- *
- * @author Riccardo Sartori
  *
  * @param {int} token  The token to save.
  */
@@ -22,8 +18,6 @@ export function saveToken(token) {
 
 /**
  * Gets the token.
- *
- * @author Riccardo Sartori
  *
  * @return {int} The user's token.
  */

@@ -6,8 +6,6 @@ import {protectFunction, callIfSuccessful} from "../../util/action";
 /**
  * Either modifies or adds a new field.
  *
- * Fires STRUCTURER_ADD_ACTION on start and STRUCTURER_FINISH_ACTION on finish.
- *
  * @param  {Field}   field  The field to send.
  * @param  {boolean} isNew  If the field is new.
  */
@@ -85,10 +83,6 @@ export function createField(field) {
 
 /**
  * An action creator to reload the current table structure.
- *
- * Fires STRUCTURER_UPDATE on success.
- *
- * @author Riccardo Sartori
  */
 export function reloadStructure() {
   return protectFunction(async (dispatch, getState) => {

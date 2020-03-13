@@ -14,11 +14,7 @@ import Button from "react-bootstrap/Button";
 /**
  * A simple login form.
  *
- * @author Riccardo Sartori
- *
- * @param {string}   props.error    An error message if the login doesn't work.
- * @param {booelean} props.loading  If a request has been sent but there has been no answer yet.
- * @param {function} props.login    Attempts to log in the user.
+ * Fetches data from and interacts with the auth state.
  */
 class Login extends Component {
   constructor(props) {

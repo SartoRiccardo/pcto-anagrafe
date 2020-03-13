@@ -17,11 +17,6 @@ import Button from "react-bootstrap/Button";
 
 /**
  * A form to edit the virtual table storing the companies' data.
- *
- * @author Riccardo Sartori
- *
- * @param {Field[]}  props.fields           The current table structure.
- * @param {function} props.updateStructure  Updates the current table structure.
  */
 class EditStructure extends Component {
   constructor(props) {

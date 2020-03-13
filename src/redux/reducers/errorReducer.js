@@ -1,4 +1,10 @@
 
+/**
+ * This state records the lastest error.
+ *
+ * @param {string} error        The error that occurred.
+ * @param {float}  lastErrorId  The error ID. This is not an error code, just a value that updates when there is a new error.
+ */
 const init = {
   error: null,
   lastErrorId: null,

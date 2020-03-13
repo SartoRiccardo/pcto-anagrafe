@@ -1,10 +1,6 @@
 
 /**
- * The initial state of the companyReducer store.
- *
  * This store fetches a specific company's data for the /company/:id route.
- *
- * @author Riccardo Sartori
  *
  * @param {Company}      match        A single company object.
  * @param {Internship[]} internships  The company's internships.

@@ -15,10 +15,7 @@ import Col from "react-bootstrap/Col";
 /**
  * A component that shows an user's saved companies.
  *
- * @author Riccardo Sartori
- *
- * @param {state.saved} props              The saved section of the store.
- * @param {function}    props.loadSaved  Refreshes the currently saved companies
+ * Fetches data from and interacts with the saved state.
  */
 class ShowSaved extends Component {
   constructor(props) {

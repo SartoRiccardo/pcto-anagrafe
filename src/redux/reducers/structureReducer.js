@@ -1,12 +1,9 @@
 
 export const nameField = {id:0, name:"Nome", regex:".+"};
+export const activityField = {id:-1, name:"Esperienze", regex:"\\d+"};
 
 /**
- * The initial state of the structureReducer store.
- *
  * This store describes the attributes of the virtual table containing company data.
- *
- * @author Riccardo Sartori
  *
  * @param {Field[]} fields       The table structure's fields.
  * @param {boolean} initialized  If the fields have already been loaded.

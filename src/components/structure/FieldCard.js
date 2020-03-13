@@ -20,12 +20,13 @@ import Card from "react-bootstrap/Card";
 import Collapse from "react-bootstrap/Collapse";
 
 /**
- * A section where you can edit a column.
+ * A section where you can edit a column of the table.
  *
- * @author Riccardo Sartori
- *
- * @param {Field} props.field  The field's initial state.
- * @param {} props.original  ???
+ * @param {Field}    props.field      The field's current state.
+ * @param {Field}    props.original   The field's initial state.
+ * @param {Function} props.onChange   A callback for when the field is modified.
+ * @param {Function} props.onDelete   A callback for when the field is deleted.
+ * @param {Function} props.onRestore  A callback for when the field is un-deleted.
  */
 class FieldCard extends Component {
   constructor(props) {

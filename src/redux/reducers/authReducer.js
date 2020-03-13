@@ -1,11 +1,7 @@
 import {saveToken, deleteToken} from "../../util/tokenManager";
 
 /**
- * The initial state of the authReducer store.
- *
  * This store manages the authorization part of the application.
- *
- * @author Riccardo Sartori
  *
  * @param {String[]} privileges  The privileges the user has.
  * @param {int}      token       The user's identifier.

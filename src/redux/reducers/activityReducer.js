@@ -4,6 +4,7 @@
  *
  * @param {Activity[]} activities   The loaded activity types.
  * @param {boolean}    initialized  If the state was initialized.
+ * @param {float[]}    actions      The actions that started and haven't finished.
  */
 const init = {
   activities: [],

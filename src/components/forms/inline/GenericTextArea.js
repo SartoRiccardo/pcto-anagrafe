@@ -9,7 +9,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 
-
+/**
+ * A generic modifier, but it's a <textarea> instead.
+ */
 class GenericTextArea extends GenericModifier {
   render() {
     const {validator, rows} = this.props;

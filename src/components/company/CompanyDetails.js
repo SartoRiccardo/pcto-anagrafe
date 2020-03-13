@@ -24,16 +24,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
  *
  * The component shows every possible field type, even if there is nothing to show
  * for it (eg: the value is null).
- *
- * @author Riccardo Sartori
- *
- * @param {Company}  props.company        A single company object.
- * @param {String}   props.error          An eventual error.
- * @param {Field[]}  props.fields         The table structure's fields.
- * @param {String[]} props.privileges     The privileges the logged user has.
- * @param {function} props.updateCompany  Updates the currently selected company.
- * @param {function} props.selectCompany  Selects a company.
- * @param {function} props.resetCompany   Unmatches the currently selected company.
+ * Fetches data from and interacts with the company, structure and auth states.
  */
 class CompanyDetails extends Component {
   constructor(props) {

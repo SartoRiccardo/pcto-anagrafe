@@ -11,8 +11,6 @@ import {combineReducers} from "redux";
 
 /**
  * A reducer that packs all other reducers.
- *
- * @author Riccardo Sartori
  */
 const rootReducer = combineReducers({
   search: searchReducer,

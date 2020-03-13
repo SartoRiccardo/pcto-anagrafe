@@ -3,8 +3,6 @@ import React, {Component} from "react";
 /**
  * Represents a simple field with a constant RegExp.
  *
- * @author Riccardo Sartori
- *
  * @abstract
  */
 class StructureSimpleField extends Component {
@@ -17,8 +15,6 @@ class StructureSimpleField extends Component {
 
 /**
  * Represents an E-Mail field.
- *
- * @author Riccardo Sartori
  *
  * @extends StructureSimpleField
  */
@@ -37,8 +33,6 @@ StructureEmailField.fieldTypeName = "E-Mail";
 /**
  * Represents a field where anything goes.
  *
- * @author Riccardo Sartori
- *
  * @extends StructureSimpleField
  */
 export class StructureAllField extends StructureSimpleField {
@@ -55,8 +49,6 @@ StructureAllField.fieldTypeName = "Qualsiasi";
 
 /**
  * Represents a telephone number field.
- *
- * @author Riccardo Sartori
  *
  * @extends StructureSimpleField
  */
@@ -78,8 +70,6 @@ StructureNumberField.fieldTypeName = "Numero di telefono";
 
 /**
  * Represents a website link field.
- *
- * @author Riccardo Sartori
  *
  * @extends StructureSimpleField
  */
@@ -117,8 +107,6 @@ StructureWebsiteField.fieldTypeName = "Sito Web";
 /**
  * Represents a date field.
  *
- * @author Riccardo Sartori
- *
  * @extends StructureSimpleField
  */
 export class StructureDateField extends StructureSimpleField {
@@ -141,8 +129,6 @@ StructureDateField.fieldTypeName = "Data";
 
 /**
  * Represents a numeric field.
- *
- * @author Riccardo Sartori
  *
  * @extends StructureSimpleField
  */

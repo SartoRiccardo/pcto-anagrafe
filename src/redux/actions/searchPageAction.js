@@ -2,10 +2,6 @@
 /**
  * An action creator to decrease the current page.
  *
- * Fires a SET_PAGE action on success, depending on the given reducer.
- *
- * @author Riccardo Sartori
- *
  * @param {String} reducer  The reducer to call.
  */
 export function decreasePage(reducer) {
@@ -17,10 +13,6 @@ export function decreasePage(reducer) {
 /**
  * An action creator to increase the current page.
  *
- * Fires a SET_PAGE action on success, depending on the given reducer.
- *
- * @author Riccardo Sartori
- *
  * @param {String} reducer  The reducer to call.
  */
 export function increasePage(reducer) {
@@ -31,10 +23,6 @@ export function increasePage(reducer) {
 
 /**
  * An action creator to set the current page.
- *
- * Fires a SET_PAGE action on success, depending on the given reducer.
- *
- * @author Riccardo Sartori
  *
  * @param {String} reducer  The reducer to call.
  * @param {int}    page     The page to jump to.

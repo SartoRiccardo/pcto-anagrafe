@@ -13,12 +13,10 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
  * A short table row describing certain company attributes.
  *
  * The attributes shown are chosen with the current search terms.
- *
- * @author Riccardo Sartori
+ * Inteacts with the search state.
  *
  * @param {Company}  props.data      A single company object.
  * @param {Search[]} props.search    The parameters in the search.
- * @param {function} props.setMatch  Sets the currently active company.
  */
 class CompanySummary extends Component {
   constructor(props) {

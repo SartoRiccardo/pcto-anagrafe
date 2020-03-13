@@ -18,11 +18,7 @@ import Row from "react-bootstrap/Row";
 import Fade from "react-bootstrap/Fade";
 
 /**
- * A navbar for users without particular privileges.
- *
- * @author Riccardo Sartori
- *
- * @param {function} logout  Logs out the user.
+ * It's the navbar.
  */
 class UserNav extends Component {
   constructor(props) {

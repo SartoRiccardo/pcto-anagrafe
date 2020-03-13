@@ -10,8 +10,6 @@ import Col from "react-bootstrap/Col";
 /**
  * An input field to modify a field on the fly.
  *
- * @author Riccardo Sartori
- *
  * @param {string}   props.value      The value before it was modified.
  * @param {function} props.validator  Validates the input if needed.
  * @param {function} props.onFinish   Is fired when the user is finished.

@@ -20,12 +20,9 @@ import Footer from "./ui/Footer";
 import ErrorToast from "./ui/ErrorToast";
 
 /**
- * The application wrapper.
+ * The application.
  *
- * @author Riccardo Sartori
- *
- * @param {function} props.initLogin      Fetches the current login data.
- * @param {function} props.initStructure  Fetches the company's data structure.
+ * Fetches data from and interacts with the auth, activity and structure states.
  */
 class App extends Component {
   constructor(props) {

@@ -12,10 +12,9 @@ import Col from "react-bootstrap/Col";
 /**
  * A table of CompanySummary.
  *
- * @author Riccardo Sartori
- *
- * @param {Company[]} props.results A list of companies.
- * @param {Search[]}  props.search  The parameters in the search.
+ * @param {Company[]} props.results  A list of companies.
+ * @param {Search[]}  props.search   The parameters in the search.
+ * @param {boolean}   props.loading  Whether the results are still loading.
  */
 function CompanyResults(props) {
   const {results, loading, search} = props;

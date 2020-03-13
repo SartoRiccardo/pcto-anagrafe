@@ -3,6 +3,14 @@ import React, {Component} from "react";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 
+/**
+ * A couple of buttons to toggle privileges for certain users.
+ *
+ * @param {string[]} props.select    The list of privileges to show.
+ * @param {Function} props.onChange  A callback for when the state changes.
+ * @param {Function} props.onSelect  A callback for when a privilege is given.
+ * @param {Function} props.onBlur    A callback for when a privilege is taken out.
+ */
 class PrivilegeToggler extends Component {
   changeHandler = (evt) => {
     const {onChange, onSelect, onBlur, selected} = this.props;
