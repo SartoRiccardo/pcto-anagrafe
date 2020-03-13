@@ -169,9 +169,7 @@ function generateSearchQuery($search) {
     else if($uf["id"] == -1) {  // ID == -1 is search by internships
       $selectors = array();
       for($j=0; $j < count($uf["values"]); $j++) {
-        if(strlen($uf["values"][$j]) > 0) {
-          array_push($selectors, "activity = ?");
-        }
+        array_push($selectors, "activity = ?");
       }
       $condition = join(" OR ", $selectors);
       $condition = strlen($condition) == 0 ? $condition : "WHERE $condition";
