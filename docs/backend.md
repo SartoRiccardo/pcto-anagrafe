@@ -22,10 +22,16 @@ Restituisce l'azienda avente l'ID fornito.
 
 **URL:** `https://{{url}}/company`
 
-Restituisce le aziende attinenti ai parametri di ricerca.
+Restituisce le aziende attinenti ai parametri di ricerca. Gli ID minori di 0 cercano campi speciali:
+
+| ID | Campo | Descrizione |
+|-|-|-|
+| 0 | Nome | Il nome dell'azienda. |
+| -1 | Attività | Le attività svolte dall'azienda. |
+| -2 | Tag | I tag dell'azienda. Il valore sarà un array di tag. |
 
 + **Richiesta**
-    + [`Search`](./data_models.md) `search`: I parametri di ricerca. Il campo con ID `0` si riferirà al nome dell'azienda, quello con ID `-1` alle Attività che ha svolto l'azienda.
+    + [`Search`](./data_models.md) `search`: I parametri di ricerca
     + `int` `page`: La pagina su cui siamo attualmente. Ogni pagina fornisce 50 risultati. Se non specificato, verranno restituiti tutti i risultati.
 
 + **Risposta**

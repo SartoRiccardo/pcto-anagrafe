@@ -191,3 +191,23 @@ CREATE TABLE Activity (
   UNIQUE (name)
 )
 ```
+
+## Tag
+
+### Modello Logico
+
+| Campo | Descrizione |
+| ----- | ----------- |
+| `company` | L'ID dell'azienda a cui è associato il tag. |
+| `tag` | Il tag in sè. |
+
+### Modello Fisico
+
+```SQL
+CREATE TABLE Tag (
+  company INT NOT NULL AUTO_INCREMENT,
+  tag VARCHAR(255) NOT NULL,
+  FOREIGN KEY (company) REFERENCES Company(id),
+  PRIMARY KEY (id, tag),
+)
+```

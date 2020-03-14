@@ -1,4 +1,9 @@
-# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
+# 2020-03-14: [1.0.1](https://github.com/SartoRiccardo/pcto-anagrafe/tree/0bfd3ede1fb74c1464dc3b7be2dc5bb29eb4830c)
+
+## Aggiunte
++ Quando l'applicazione non riesce a caricare delle risorse, aspetta qualche secondo e fa vedere un messaggio all'utente.
+
+# 2020-03-13: Release [1.0.0]() [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
 
 ## Aggiunte
 + Quando accade un errore, questo viene visualizzato in un toast
