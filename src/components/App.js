@@ -77,12 +77,6 @@ class App extends Component {
       return null;
     }
 
-    if(!structureStatus.initialized || !activityStatus.initialized) {
-      return firstLoad ? null : (
-        <ErrorLoading reloadIn={reloadTime} reload={this.reload} reloading={reloading} />
-      );
-    }
-
     const routes = [
       {privilege: "BASE",             component: <Route key={0} path="/search" component={SearchCompany} />},
       {privilege: "MANAGE_STRUCTURE", component: <Route key={1} path="/structure" component={EditStructure} />},
@@ -102,6 +96,12 @@ class App extends Component {
       nav = null;
     }
     else {
+      if(!structureStatus.initialized || !activityStatus.initialized) {
+        return firstLoad ? null : (
+          <ErrorLoading reloadIn={reloadTime} reload={this.reload} reloading={reloading} />
+        );
+      }
+
       const availableRoutes = routes.map((r) => {
         return privileges.includes(r.privilege) || isAdmin ? r.component : null;
       });
