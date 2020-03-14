@@ -27,6 +27,12 @@ async function attemptLogin(dispatch, sendData, withCredentials=false) {
         type: "AUTHR_LOGIN",
         token, user, privileges,
       });
+    }, () => {
+      const error = data.message;
+      dispatch({
+        type: "AUTHR_ERROR",
+        error,
+      });
     });
   }
   catch(e) {

@@ -81,7 +81,7 @@ class App extends Component {
 
     const display = token ? "flex" : "block";
     return(
-      <BrowserRouter>
+      <BrowserRouter basename="/pctokay">
           {nav}
         <div className={"content d-" + display}>
           {links}
