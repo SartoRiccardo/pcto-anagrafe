@@ -226,7 +226,7 @@ class CompanyDetails extends Component {
         if(cellText && StructureWebsiteField.regex.test(f.regex)) {
           const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
           cellText = (
-            <a target="_blank" href={href}>
+            <a target="_blank" rel="noopener noreferrer" href={href}>
               {cellText}
               <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
             </a>
@@ -234,7 +234,7 @@ class CompanyDetails extends Component {
         }
         else if(cellText && StructureEmailField.regex.test(f.regex)) {
           cellText = (
-            <a target="_blank" href={`mailto: ${cellText}`}>
+            <a href={`mailto: ${cellText}`}>
               {cellText}
               <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
             </a>

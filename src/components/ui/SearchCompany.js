@@ -19,7 +19,7 @@ function SearchCompany(props) {
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const resultsNumber = totalResults > 0 ? (
-    <p className="text-center lead">Risultat{totalResults == 1 ? "o" : "i"}: {totalResults}</p>
+    <p className="text-center lead">Risultat{totalResults === 1 ? "o" : "i"}: {totalResults}</p>
   ) : null;
 
   const pageSwitcher = <ChangePage
