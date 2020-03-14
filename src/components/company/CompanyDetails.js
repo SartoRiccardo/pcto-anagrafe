@@ -9,9 +9,11 @@ import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
+import {StructureEmailField, StructureWebsiteField} from "../structure/StructureSpecificField";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrashAlt, faSpinner, faExclamationTriangle, faUserTie} from "@fortawesome/free-solid-svg-icons";
+import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
+  faUserTie, faExternalLinkAlt, faEnvelope} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -220,9 +222,28 @@ class CompanyDetails extends Component {
           </OverlayTrigger>
         ) : null;
 
+        let cellText = match ? match.value : null;
+        if(cellText && StructureWebsiteField.regex.test(f.regex)) {
+          const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
+          cellText = (
+            <a target="_blank" href={href}>
+              {cellText}
+              <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
+            </a>
+          );
+        }
+        else if(cellText && StructureEmailField.regex.test(f.regex)) {
+          cellText = (
+            <a target="_blank" href={`mailto: ${cellText}`}>
+              {cellText}
+              <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
+            </a>
+          );
+        }
+
         cellContent = (
           <Fragment>
-            {(match ? match.value : "") + " "}
+            {cellText}{" "}
             {warning}
             {canModify ?
               <FontAwesomeIcon
