@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from "react";
+import {Link} from "react-router-dom";
 // HOCs and actions
 import {connect} from "react-redux";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
@@ -132,8 +133,8 @@ class CompanyActivities extends Component {
           <Container>
             <Row>
               <Col className="text-center">
-                <h1>Nessuna attività trovata</h1>
-                <p className="lead">Non esistono esperienze per questa azienda.</p>
+                <h1>Azienda non trovata</h1>
+                <p className="lead">L'azienda che stai cercando non esiste o è stata eliminata.</p>
               </Col>
             </Row>
           </Container>
@@ -175,6 +176,12 @@ class CompanyActivities extends Component {
       );
     }
 
+    if(internShow.length === 0) {
+      internShow = (
+        <p className="text-center lead">Questa azienda non ha fatto attività</p>
+      );
+    }
+
     const activitiesMissing = this.missingActivities();
     const addActivityForm = activitiesMissing.length > 0 ? (
       <Fragment>
@@ -194,7 +201,8 @@ class CompanyActivities extends Component {
 
     return (
       <Container>
-        <h2 className="m-3 text-center">Attività di {company.name}</h2>
+        <p className="m-3">&laquo; Torna a <Link to={`/company/${company.id}`}>{company.name}</Link></p>
+        <h2 className="text-center">Attività di {company.name}</h2>
 
         {internShow}
 

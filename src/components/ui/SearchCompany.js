@@ -18,6 +18,10 @@ function SearchCompany(props) {
   const {search, results, page, totalResults, loading, resultsPerPage} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
+  const resultsNumber = totalResults > 0 ? (
+    <p className="text-center lead">Risultat{totalResults === 1 ? "o" : "i"}: {totalResults}</p>
+  ) : null;
+
   const pageSwitcher = <ChangePage
     page={page}
     totalResults={totalResults}
@@ -28,6 +32,7 @@ function SearchCompany(props) {
   return (
     <Container>
       <SearchBar />
+      {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
       <CompanyResults search={search} results={results} loading={loading} />
       {resultsPresent ? pageSwitcher : null}

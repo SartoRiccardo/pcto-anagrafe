@@ -18,6 +18,7 @@ import EditPrivileges from "./ui/EditPrivileges";
 import ShowSaved from "./ui/ShowSaved";
 import Footer from "./ui/Footer";
 import ErrorToast from "./ui/ErrorToast";
+import ErrorLoading from "./ui/ErrorLoading";
 
 /**
  * The application.
@@ -28,24 +29,58 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.props.initLogin();
-    this.props.initStructure();
-    this.props.initActivities();
+    props.initLogin();
+    this.initFunctions = [
+      props.initStructure,
+      props.initActivities
+    ];
+    for(const ifunc of this.initFunctions) {
+      ifunc(() => this.setState({firstLoad: this.state.firstLoad-1}));
+    }
+
+    this.state = {
+      reloadTime: 5,
+      reloading: false,
+      firstLoad: this.initFunctions.length,
+    };
   }
 
   componentDidUpdate() {
-    if(this.props.shouldReloadStructure) {
-      this.props.initStructure();
-    }
-    if(this.props.shouldReloadActivities) {
-      this.props.initActivities();
+    const {structureStatus, activityStatus} = this.props;
+    const {reloading} = this.state;
+    if(reloading
+        && ((!structureStatus.initialized && structureStatus.actions.length === 0)
+        || (!activityStatus.initialized && activityStatus.actions.length === 0))) {
+      this.setState({
+        reloading: false,
+      });
     }
   }
 
+  reload = (evt) => {
+    const {forced} = evt;
+
+    for(const ifunc of this.initFunctions) {
+      ifunc();
+    }
+
+    this.setState({
+      reloadTime: forced ? 5 : this.state.reloadTime + 5,
+      reloading: true,
+    });
+  }
+
   render() {
-    const {authInitialized, privileges, token} = this.props;
+    const {authInitialized, privileges, token, structureStatus, activityStatus} = this.props;
+    const {reloadTime, reloading, firstLoad} = this.state;
     if(!authInitialized) {
       return null;
+    }
+
+    if(!structureStatus.initialized || !activityStatus.initialized) {
+      return firstLoad ? null : (
+        <ErrorLoading reloadIn={reloadTime} reload={this.reload} reloading={reloading} />
+      );
     }
 
     const routes = [
@@ -53,8 +88,8 @@ class App extends Component {
       {privilege: "MANAGE_STRUCTURE", component: <Route key={1} path="/structure" component={EditStructure} />},
       {privilege: "MANAGE_STRUCTURE", component: <Route key={8} path="/activities" component={ShowActivities} />},
       {privilege: "ADMIN",            component: <Route key={9} path="/privileges" component={EditPrivileges} />},
-      {privilege: "BASE",             component: <Route key={7} path="/company/:id/projects" component={CompanyActivities} />},
-      {privilege: "BASE",             component: <Route key={2} path="/company/:id" component={CompanyDetails} />},
+      {privilege: "BASE",             component: <Route key={7} path="/company/:id([0-9]+)/projects" component={CompanyActivities} />},
+      {privilege: "BASE",             component: <Route key={2} path="/company/:id([0-9]+)" component={CompanyDetails} />},
       {privilege: "BASE",             component: <Route key={3} path="/saved" component={ShowSaved} />},
       {privilege: "MANAGE_COMPANY",   component: <Route key={4} path="/add" component={AddCompany} />},
       {privilege: "BASE",             component: <Route key={6} path="/" component={SearchCompany} />},
@@ -99,18 +134,28 @@ function mapStateToProps(state) {
     privileges: state.auth.privileges,
     token: state.auth.token,
     authInitialized: state.auth.initialized,
-    shouldReloadStructure: !(state.structure.initialized || state.structure.actions.length > 0),
-    shouldReloadActivities: !(state.activity.initialized || state.activity.actions.length > 0),
+    structureStatus: {
+      initialized: state.structure.initialized,
+      actions: state.structure.actions,
+    },
+    activityStatus: {
+      initialized: state.activity.initialized,
+      actions: state.activity.actions,
+    },
+    // shouldReloadStructure: !(state.structure.initialized || state.structure.actions.length > 0),
+    // shouldReloadActivities: !(state.activity.initialized || state.activity.actions.length > 0),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    initStructure: () => {
-      dispatch(reloadStructure());
+    initStructure: async (callback) => {
+      await dispatch(reloadStructure());
+      if(callback) callback();
     },
-    initActivities: () => {
-      dispatch(loadActivities());
+    initActivities: async (callback) => {
+      await dispatch(loadActivities());
+      if(callback) callback();
     },
     initLogin: () => {
       dispatch(initLogin());

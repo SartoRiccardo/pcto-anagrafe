@@ -60,13 +60,13 @@ function activityReducer(state=init, action) {
     case "ACTIVITYR_BEGIN_ACTION":
       return {
         ...state,
-        actions: [state.actions, action.actionId],
+        actions: [...state.actions, action.actionId],
       };
 
     case "ACTIVITYR_FINISH_ACTION":
       return {
         ...state,
-        actions: state.actions.filter((a) => a.id !== action.actionId),
+        actions: state.actions.filter((id) => id !== action.actionId),
       };
 
     default:
