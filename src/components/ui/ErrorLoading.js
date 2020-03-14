@@ -13,6 +13,7 @@ import Button from "react-bootstrap/Button";
  * @param {int}      props.reloadIn   The number of seconds to reload the component.
  * @param {Function} props.reload     A callback to be called when the countdown reaches 0.
  * @param {boolean}  props.reloading  Whether the App is reloading.
+ * @param {boolean}  props.firstLoad  Whether or not it's the first time loading the resources.
  */
 class ErrorLoading extends Component {
   constructor(props) {
@@ -55,7 +56,8 @@ class ErrorLoading extends Component {
   componentDidMount() {
     this.update = setInterval(() => {
       const {time} = this.state;
-      if(time > 0) {
+      const {firstTime} = this.props;
+      if(time > 0 && !firstTime) {
         this.setState({
           time: time-1
         });
@@ -76,11 +78,12 @@ class ErrorLoading extends Component {
 
   render() {
     const {time} = this.state;
+    const {firstTime} = this.props;
 
     return (
       <Container className="c-error-container d-flex justify-content-center text-center">
         {
-          time > 0 ? (
+          time > 0 && !firstTime ? (
             <div className="c-error-view align-self-center w-100">
               <FontAwesomeIcon className="background-icon" icon={faPlug} />
               <div className="c-error-message w-100">
