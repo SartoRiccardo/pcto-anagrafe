@@ -30,18 +30,27 @@ class App extends Component {
     super(props);
 
     props.initLogin();
-    this.initFunctions = [
-      props.initStructure,
-      props.initActivities
-    ];
-    for(const ifunc of this.initFunctions) {
-      ifunc(() => this.setState({firstLoad: this.state.firstLoad-1}));
-    }
+    this.initFunctions = {
+      "structure": props.initStructure,
+      "activity": props.initActivities
+    };
+
+    this.loadInit();
 
     this.state = {
       reloadTime: 5,
       reloading: false,
-      firstLoad: this.initFunctions.length,
+      firstLoad: Object.keys(this.initFunctions).length,
+      hasToken: props.token !== null,
+    };
+  }
+
+  loadCallback = () => {
+    return () => {
+      const {firstLoad} = this.state;
+      if(this.props.token && firstLoad) {
+        this.setState({firstLoad: firstLoad - 1});
+      }
     };
   }
 
@@ -55,14 +64,34 @@ class App extends Component {
         reloading: false,
       });
     }
+
+    if((this.props.token !== null) !== this.state.hasToken) {
+      let otherParams = {};
+      if(this.props.token) {
+        this.loadInit();
+      }
+      else {
+        otherParams = {
+          firstLoad: Object.keys(this.initFunctions).length,
+        };
+      }
+
+      this.setState({
+        hasToken: this.props.token !== null,
+        ...otherParams,
+      });
+    }
+  }
+
+  loadInit = () => {
+    for(const state of Object.keys(this.initFunctions)) {
+      this.initFunctions[state](this.loadCallback(state));
+    }
   }
 
   reload = (evt) => {
     const {forced} = evt;
-
-    for(const ifunc of this.initFunctions) {
-      ifunc();
-    }
+    this.loadInit();
 
     this.setState({
       reloadTime: forced ? 5 : this.state.reloadTime + 5,
@@ -74,7 +103,7 @@ class App extends Component {
     const {authInitialized, privileges, token, structureStatus, activityStatus} = this.props;
     const {reloadTime, reloading, firstLoad} = this.state;
     if(!authInitialized) {
-      return null;
+      return <ErrorLoading firstTime={firstLoad} />;
     }
 
     const routes = [
@@ -97,8 +126,13 @@ class App extends Component {
     }
     else {
       if(!structureStatus.initialized || !activityStatus.initialized) {
-        return firstLoad ? null : (
-          <ErrorLoading reloadIn={reloadTime} reload={this.reload} reloading={reloading} />
+        return (
+          <ErrorLoading
+            reloadIn={reloadTime}
+            reload={this.reload}
+            reloading={reloading}
+            firstTime={firstLoad}
+          />
         );
       }
 
@@ -142,8 +176,6 @@ function mapStateToProps(state) {
       initialized: state.activity.initialized,
       actions: state.activity.actions,
     },
-    // shouldReloadStructure: !(state.structure.initialized || state.structure.actions.length > 0),
-    // shouldReloadActivities: !(state.activity.initialized || state.activity.actions.length > 0),
   };
 }
 
