@@ -1,4 +1,11 @@
 import React, {Component} from "react";
+// Icons
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner, faPlug} from "@fortawesome/free-solid-svg-icons";
+// Bootstrap
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+
 
 /**
  * A component that executes an action in a set amount of time.
@@ -15,11 +22,12 @@ class ErrorLoading extends Component {
       time: props.reloadIn,
       reloading: props.reloading,
       called: false,
+      forced: false,
     };
   }
 
   componentDidUpdate() {
-    const {time, called, reloading} = this.state;
+    const {time, called, reloading, forced} = this.state;
 
     if(!this.props.reloading && reloading) {
       this.setState({
@@ -36,9 +44,10 @@ class ErrorLoading extends Component {
     }
 
     if(!called && time === 0 && this.props.reload) {
-      this.props.reload();
+      this.props.reload({forced});
       this.setState({
         called: true,
+        forced: false,
       });
     }
   }
@@ -58,12 +67,34 @@ class ErrorLoading extends Component {
     clearInterval(this.update);
   }
 
+  forceReload = () => {
+    this.setState({
+      time: 0,
+      forced: true,
+    });
+  }
+
   render() {
     const {time} = this.state;
 
-    const text = time === 0 ? "Caricando..." : `Errore riprovare in ${time}`;
-
-    return <p>{text}</p>;
+    return (
+      <Container className="c-error-container d-flex justify-content-center text-center">
+        {
+          time > 0 ? (
+            <div className="c-error-view align-self-center w-100">
+              <FontAwesomeIcon className="background-icon" icon={faPlug} />
+              <div className="c-error-message w-100">
+                <h1>Errore di connessione</h1>
+                <p className="lead">Nuovo tentativo in {time}</p>
+                <Button onClick={this.forceReload}>Riprova</Button>
+              </div>
+            </div>
+          ) : (
+            <FontAwesomeIcon icon={faSpinner} className="align-self-center" size="10x" pulse />
+          )
+        }
+      </Container>
+    );
   }
 }
 

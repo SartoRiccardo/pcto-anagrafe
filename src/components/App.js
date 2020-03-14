@@ -57,13 +57,15 @@ class App extends Component {
     }
   }
 
-  reload = () => {
+  reload = (evt) => {
+    const {forced} = evt;
+
     for(const ifunc of this.initFunctions) {
       ifunc();
     }
 
     this.setState({
-      reloadTime: this.state.reloadTime+5,
+      reloadTime: forced ? 5 : this.state.reloadTime + 5,
       reloading: true,
     });
   }
