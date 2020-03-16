@@ -87,7 +87,6 @@ export function createField(field) {
 export function reloadStructure() {
   return protectFunction(async (dispatch, getState) => {
     const actionId = Math.random();
-    dispatch({type:"STRUCTURER_RESET"});
     dispatch({type:"STRUCTURER_ADD_ACTION", actionId});
 
     try {
@@ -99,6 +98,7 @@ export function reloadStructure() {
 
       callIfSuccessful(status, data, dispatch, () => {
         const {fields} = data;
+        dispatch({type:"STRUCTURER_RESET"});
         dispatch({
           type: "STRUCTURER_UPDATE",
           fields,

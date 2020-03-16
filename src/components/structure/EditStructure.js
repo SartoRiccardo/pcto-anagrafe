@@ -197,7 +197,8 @@ class EditStructure extends Component {
 
   render() {
     const {fields, lastTempId, initialized, dumping} = this.state;
-    if(!initialized || dumping) {
+    const {actions} = this.props;
+    if(!initialized || dumping || actions.length > 0) {
       return (
         <Container className="d-flex justify-content-center">
           <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" pulse />
