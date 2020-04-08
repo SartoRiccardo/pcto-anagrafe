@@ -8,6 +8,10 @@ import SaveStar from "../interactive/SaveStar";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
+// Bootstrap
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 /**
  * A short table row describing certain company attributes.
@@ -41,7 +45,8 @@ class CompanySummary extends Component {
   }
 
   render() {
-    const {data, search} = this.props;
+    let {data, search, structure} = this.props;
+    search = search.sort((a, b) => a.field.id - b.field.id);
 
     let uniqueFields = [];
     if(search) {
@@ -54,30 +59,56 @@ class CompanySummary extends Component {
 
     const information = uniqueFields.map((id) => {
       let value = null;
+      let field = null;
       for (let i = 0; i < data.fields.length; i++) {
         if(data.fields[i].id === id) {
           value = data.fields[i].value;
+          field = data.fields[i];
         }
       }
+
+      if(field === null) {
+        for(const structureField of structure.fields) {
+          if(structureField.id === id) {
+            field = structureField;
+            break;
+          }
+        }
+      }
+
       return (
-        <td key={id} className={value ? "" : "text-center"}>
-          {value
-            ? value
-            : <FontAwesomeIcon icon={faTimes} className="icon-transparent" />}
-        </td>
+        <p key={id} className="company-summary-field">
+          <b>{field.name}: </b>
+          {value || <FontAwesomeIcon icon={faTimes} className="icon-transparent ml-2" />}
+        </p>
       );
     });
 
-    return(
-      <tr className="company-summary" onClick={this.handleClick}>
-        <td>
-          <SaveStar onClick={this.handleSave} className="mr-2" company={data} status={data.saved} />
-          <b>{data.name}</b>
-        </td>
-        {information}
-      </tr>
+    return (
+      <Container onClick={this.handleClick} className="my-3 company-summary pt-3">
+        <Row>
+          <Col>
+            <h4>
+              <SaveStar onClick={this.handleSave} className="mr-2" company={data} status={data.saved} />
+              {data.name}
+            </h4>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col className="pl-5">
+            {information}
+          </Col>
+        </Row>
+      </Container>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    structure: state.structure,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -88,4 +119,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(withRouter(CompanySummary));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CompanySummary));

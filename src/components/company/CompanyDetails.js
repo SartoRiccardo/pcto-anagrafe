@@ -287,7 +287,7 @@ class CompanyDetails extends Component {
               <Fragment>
                 {cellText}
                 <OverlayTrigger placement="top" overlay={atecoDescriptionTooltip}>
-                  <FontAwesomeIcon icon={faInfoCircle} className="mx-2" />
+                  <FontAwesomeIcon icon={faInfoCircle} className="mx-2 text-info" />
                 </OverlayTrigger>
               </Fragment>
             );

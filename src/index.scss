@@ -171,6 +171,26 @@ body.overlay-open {
 
 // Tables
 
+.company-summary-container {
+
+}
+
+.company-summary {
+  background-color: $grey-lighten-5;
+  transition: background-color 0.5s;
+}
+
+.company-summary:hover {
+  background-color: darken($grey-lighten-5, 3%);
+  cursor: pointer;
+  // transition: background-color 0.5s;
+}
+
+.company-summary-field::before {
+  content: "•";
+  margin-right: 0.3rem;
+}
+
 .table-hover tbody tr:hover:nth-child(odd) {
   cursor: pointer;
   background-color: $table-selected !important;
