@@ -183,7 +183,6 @@ class CompanyDetails extends Component {
   }
 
   fetchAtecoDescription = async (fieldID, ateco) => {
-    console.log(this.state);
     const {atecoDescriptions} = this.state;
     const description = await getAtecoDescription(ateco);
     if(description) {
