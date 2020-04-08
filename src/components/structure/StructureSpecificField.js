@@ -143,3 +143,17 @@ export class StructureNumericField extends StructureSimpleField {
 StructureNumericField.default = "\\d+";
 StructureNumericField.regex = /^\\d\+$/;
 StructureNumericField.fieldTypeName = "Numero";
+
+
+export class StructureAtecoField extends StructureSimpleField {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: "Esempio: 10.72",
+    };
+  }
+}
+StructureAtecoField.default = "\\d{2}(?:\\.\\d{1,2}(?:\\.\\d{1,2})?)?";
+StructureAtecoField.regex = /^\\d\{2}\(\?:\\\.\\d\{1,2}\(\?:\\\.\\d\{1,2}\)\?\)\?$/;
+StructureAtecoField.fieldTypeName = "Codice Ateco";

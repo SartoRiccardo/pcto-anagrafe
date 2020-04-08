@@ -10,6 +10,7 @@ import {
   StructureWebsiteField,
   StructureDateField,
   StructureNumericField,
+  StructureAtecoField,
 } from "./StructureSpecificField";
 import StructureCustomField from "./StructureCustomField";
 // Icons
@@ -41,6 +42,7 @@ class FieldCard extends Component {
       StructureNumberField,
       StructureEmailField,
       StructureEnumField,
+      StructureAtecoField,
       StructureCustomField,
       StructureAllField,
     ];

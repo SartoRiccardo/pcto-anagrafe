@@ -4,16 +4,19 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateName, updateField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
+import {getAtecoDescription} from "../../util/requests";
 // Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
-import {StructureEmailField, StructureWebsiteField} from "../structure/StructureSpecificField";
+import {StructureEmailField, StructureWebsiteField,
+    StructureAtecoField} from "../structure/StructureSpecificField";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
-  faUserTie, faExternalLinkAlt, faEnvelope} from "@fortawesome/free-solid-svg-icons";
+  faUserTie, faExternalLinkAlt, faEnvelope, faInfoCircle}
+  from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -47,7 +50,20 @@ class CompanyDetails extends Component {
       deleteStarted: false,
       initialized: company && company.id === id,
       currentId: id,
+      atecoDescriptions: [],
     };
+  }
+
+  componentDidMount() {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+    if(company && company.id === id) {
+      for(const field of company.fields) {
+        if(StructureAtecoField.regex.test(field.regex)) {
+          this.fetchAtecoDescription(field.id, field.value);
+        }
+      }
+    }
   }
 
   componentDidUpdate() {
@@ -59,6 +75,11 @@ class CompanyDetails extends Component {
         initialized: true,
       });
       document.title = `PCTOkay! ${company.name}`;
+      for(const field of company.fields) {
+        if(StructureAtecoField.regex.test(field.regex)) {
+          this.fetchAtecoDescription(field.id, field.value);
+        }
+      }
     }
 
     const title404 = `PCTOkay! Azienda non trovata`;
@@ -161,6 +182,17 @@ class CompanyDetails extends Component {
     this.props.history.push(link);
   }
 
+  fetchAtecoDescription = async (fieldID, ateco) => {
+    console.log(this.state);
+    const {atecoDescriptions} = this.state;
+    const description = await getAtecoDescription(ateco);
+    if(description) {
+      this.setState({
+        atecoDescriptions: [...atecoDescriptions, {id: fieldID, description}],
+      });
+    }
+  }
+
   render() {
     const {company, error, fields} = this.props;
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
@@ -217,28 +249,50 @@ class CompanyDetails extends Component {
         const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
         const regex = new RegExp("^" + f.regex + "$");
         const warning = match && canModify && !regex.exec(match.value) ? (
-          <OverlayTrigger placement="right" overlay={tooltip}>
+          <OverlayTrigger placement="top" overlay={tooltip}>
             <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
           </OverlayTrigger>
         ) : null;
 
         let cellText = match ? match.value : null;
-        if(cellText && StructureWebsiteField.regex.test(f.regex)) {
-          const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
-          cellText = (
-            <a target="_blank" rel="noopener noreferrer" href={href}>
-              {cellText}
-              <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
-            </a>
-          );
-        }
-        else if(cellText && StructureEmailField.regex.test(f.regex)) {
-          cellText = (
-            <a href={`mailto: ${cellText}`}>
-              {cellText}
-              <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
-            </a>
-          );
+        if(cellText) {
+          if(StructureWebsiteField.regex.test(f.regex)) {
+            const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
+            cellText = (
+              <a target="_blank" rel="noopener noreferrer" href={href}>
+                {cellText}
+                <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
+              </a>
+            );
+          }
+          else if(StructureEmailField.regex.test(f.regex)) {
+            cellText = (
+              <a href={`mailto: ${cellText}`}>
+                {cellText}
+                <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
+              </a>
+            );
+          }
+          else if(StructureAtecoField.regex.test(f.regex) &&
+              this.state.atecoDescriptions.some((descriptions) => descriptions.id === f.id)) {
+            let match = null;
+            for(const description of this.state.atecoDescriptions) {
+              if(description.id === f.id) {
+                match = description.description;
+                break;
+              }
+            }
+
+            const atecoDescriptionTooltip = (<Tooltip>{match}</Tooltip>);
+            cellText = (
+              <Fragment>
+                {cellText}
+                <OverlayTrigger placement="top" overlay={atecoDescriptionTooltip}>
+                  <FontAwesomeIcon icon={faInfoCircle} className="mx-2" />
+                </OverlayTrigger>
+              </Fragment>
+            );
+          }
         }
 
         cellContent = (
