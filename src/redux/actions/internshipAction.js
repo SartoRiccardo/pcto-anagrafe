@@ -16,7 +16,7 @@ export function loadInternshipsFor(company) {
         headers: {"X-Authorization": getToken()},
       };
 
-      const {status, data} = await axios.get(apiUrl("/internship"), payload);
+      const {status, data} = await axios.get(apiUrl(`/company/${company}/internship`), payload);
 
       callIfSuccessful(status, data, dispatch, () => {
         const {internships} = data;
@@ -90,11 +90,11 @@ export function addInternship(company, activity, student, year) {
   return protectFunction(async (dispatch, getState) => {
     try {
       const payload = {
-        params: {company, activity, student, year},
+        params: {activity, student, year},
         headers: {"X-Authorization": getToken()},
       };
 
-      const {status, data} = await axios.post(apiUrl("/internship"), null, payload);
+      const {status, data} = await axios.post(apiUrl(`/company/${company}/internship`), null, payload);
 
       callIfSuccessful(status, data, dispatch, () => {
         dispatch({
