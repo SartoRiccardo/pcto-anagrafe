@@ -6,6 +6,8 @@ require_once "./routes/company/post.php";
 require_once "./routes/company/put.php";
 require_once "./routes/company/delete.php";
 
+require_once "./routes/internship/get.php";
+require_once "./routes/internship/post.php";
 require_once "./routes/saved/get.php";
 
 // GET Company by ID
@@ -252,3 +254,85 @@ Flight::route("DELETE /company/@id:[0-9]+", function($id) {
     ));
   }
 });
+
+// GET Company Internships
+Flight::route("GET /company/@company:[0-9]+/internship", function($company, $request) {
+  $req = Flight::request();
+  $errorMessage = null;
+
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
+  if(!hasPermission($auth, "BASE")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $internships = null;
+  if(is_null($errorMessage)) {
+    if(is_null(getCompanyById($company))) {
+      $errorMessage = "Non esiste un'Azienda con ID $company.";
+    }
+    else {
+      $internshipIds = getCompanyInternships(intval($company));
+      $internships = array();
+      for ($i=0; $i < count($internshipIds); $i++) {
+        array_push($internships, getInternship($internshipIds[$i], hasPermission($auth, "MANAGE_COMPANY")));
+      }
+    }
+  }
+
+  $res = array(
+    "error" => !is_null($errorMessage),
+    "message" => !is_null($errorMessage) ? $errorMessage : "",
+    "internships" => $internships
+  );
+  echo json_encode($res);
+}, true);
+
+// POST Create Internship
+Flight::route("POST /company/@company:[0-9]+/internship", function($company, $request) {
+  $req = Flight::request();
+  $errorMessage = null;
+
+  $auth = isset(apache_request_headers()["X-Authorization"])
+    ? apache_request_headers()["X-Authorization"] : null;
+  if(!hasPermission($auth, "MANAGE_COMPANY")) {
+    $errorMessage = "Privilegi insufficienti.";
+  }
+
+  $keysToCheck = array("activity", "student", "year");
+  $numericKeys = array("activity", "year");
+  $params = array();
+  foreach($keysToCheck as $ktc) {
+    if(!is_null($errorMessage)) {
+      break;
+    }
+
+    $params[$ktc] = isset($req->query[$ktc]) ? $req->query[$ktc] : null;
+    if(is_null($params[$ktc])) {
+      $errorMessage = "Parametro $ktc assente.";
+    }
+  }
+  foreach($numericKeys as $nk) {
+    if(!is_null($errorMessage)) {
+      break;
+    }
+
+    $current = $params[$nk];
+    $params[$nk] = is_numeric($current) ? (int) $current : null;
+    if(is_null($params[$nk])) {
+      $errorMessage = "Parametro $nk invalido.";
+    }
+  }
+
+  if(is_null($errorMessage)) {
+    $res = addInternship($company, $params["activity"], $params["student"], $params["year"]);
+    echo json_encode($res);
+  }
+  else {
+    echo json_encode(array(
+      "id" => null,
+      "error" => true,
+      "message" => $errorMessage
+    ));
+  }
+}, true);
