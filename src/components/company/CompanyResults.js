@@ -29,9 +29,16 @@ function CompanyResults(props) {
 
   let content;
   if(results.length > 0) {
-    content = results.map((res) => {
+    content = results.map((res, i) => {
+      let nullifyMargin = "";
+      if(i === 0) {
+        nullifyMargin += " first";
+      }
+      if(i === results.length-1) {
+        nullifyMargin += " last";
+      }
       return (
-        <CompanySummary key={res.id} data={res} search={search} />
+        <CompanySummary key={res.id} data={res} search={search} className={nullifyMargin} />
       );
     });
   }

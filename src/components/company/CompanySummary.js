@@ -45,7 +45,7 @@ class CompanySummary extends Component {
   }
 
   render() {
-    let {data, search, structure} = this.props;
+    let {data, search, structure, className} = this.props;
 
     let uniqueFields = [];
     if(search) {
@@ -85,7 +85,7 @@ class CompanySummary extends Component {
     });
 
     return (
-      <Container onClick={this.handleClick} className="my-3 company-summary pt-3">
+      <Container onClick={this.handleClick} className={`my-3 company-summary pt-3 ${className}`}>
         <Row>
           <Col>
             <h4>

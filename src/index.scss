@@ -178,6 +178,14 @@ body.overlay-open {
   transition: background-color 0.5s;
 }
 
+.company-summary.first {
+  margin-top: 0 !important;
+}
+
+.company-summary.last {
+  margin-bottom: 0 !important;
+}
+
 .company-summary:hover {
   background-color: darken($grey-lighten-5, 3%);
   cursor: pointer;
