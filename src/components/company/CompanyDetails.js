@@ -92,6 +92,7 @@ class CompanyDetails extends Component {
       this.setState({
         initialized: false,
         currentId: id,
+        atecoDescriptions: [],
       });
       this.props.resetCompany();
       this.props.selectCompany(id);
@@ -183,9 +184,11 @@ class CompanyDetails extends Component {
   }
 
   fetchAtecoDescription = async (fieldID, ateco) => {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
     const {atecoDescriptions} = this.state;
     const description = await getAtecoDescription(ateco);
-    if(description) {
+    if(description && company && id === company.id) {
       this.setState({
         atecoDescriptions: [...atecoDescriptions, {id: fieldID, description}],
       });
