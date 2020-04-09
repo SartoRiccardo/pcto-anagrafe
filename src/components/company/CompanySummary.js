@@ -46,10 +46,10 @@ class CompanySummary extends Component {
 
   render() {
     let {data, search, structure} = this.props;
-    search = search.sort((a, b) => a.field.id - b.field.id);
 
     let uniqueFields = [];
     if(search) {
+      search = search.sort((a, b) => a.field.id - b.field.id);
       for (let i = 0; i < search.length; i++) {
         if(!uniqueFields.includes(search[i].field.id) && search[i].field.id > 0) {
           uniqueFields.push(search[i].field.id);
