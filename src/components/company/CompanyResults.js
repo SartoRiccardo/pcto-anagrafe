@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 // Custom Components
 import CompanySummary from "./CompanySummary";
+import InfiniteLoadingBar from "../ui/InfiniteLoadingBar";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
@@ -18,14 +19,12 @@ import Col from "react-bootstrap/Col";
 function CompanyResults(props) {
   const {results, loading, search} = props;
 
-  const loadingComponent = results.length > 0 ? (
-    <div className="table-overlay d-flex justify-content-center">
-      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
-    </div>
-  ) : (
-    <div className="d-flex justify-content-center">
-      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
-    </div>
+  const loadingBar = (
+    <Row>
+      <Col className="mb-3">
+        <InfiniteLoadingBar speed={200} />
+      </Col>
+    </Row>
   );
 
   let content;
@@ -35,15 +34,6 @@ function CompanyResults(props) {
         <CompanySummary key={res.id} data={res} search={search} />
       );
     });
-  }
-  else if(loading) {
-    return (
-      <Row>
-        <Col>
-          {loadingComponent}
-        </Col>
-      </Row>
-    );
   }
   else if(loading) {
     content = null;
@@ -61,13 +51,18 @@ function CompanyResults(props) {
       </Fragment>
     );
   }
+
   return (
-    <Row>
-      <Col>
-        {content}
-        {loading ? loadingComponent : null}
-      </Col>
-    </Row>
+    <Fragment>
+      {loading && loadingBar}
+
+      <Row>
+        <Col>
+          {content}
+          {loading && <div className="table-overlay d-flex justify-content-center" />}
+        </Col>
+      </Row>
+    </Fragment>
   );
 }
 

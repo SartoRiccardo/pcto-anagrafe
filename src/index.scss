@@ -437,12 +437,14 @@ svg {
 
 
 .infinite-loader-container {
+  background-color: lighten($secondary, 20%);
   position: relative;
   overflow: hidden;
   width: 100%;
 }
 
 .infinite-loader {
+  background-color: darken($secondary, 7%);
   position: absolute;
   height: 100%;
   top: 0;
