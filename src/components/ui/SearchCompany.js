@@ -18,8 +18,14 @@ function SearchCompany(props) {
   const {search, results, page, totalResults, loading, resultsPerPage} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
+  const maxResultNumber = (page+1)*resultsPerPage < totalResults ?
+      (page+1)*resultsPerPage : totalResults;
   const resultsNumber = totalResults > 0 ? (
-    <p className="text-center lead">Risultat{totalResults === 1 ? "o" : "i"}: {totalResults}</p>
+    <p className="text-right my-1">
+      Mostrando da {}
+      {page*resultsPerPage+1} a {}
+      {maxResultNumber} di {totalResults} aziende
+    </p>
   ) : null;
 
   const pageSwitcher = <ChangePage
@@ -32,9 +38,10 @@ function SearchCompany(props) {
   return (
     <Container>
       <SearchBar />
-      {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
+      {resultsNumber}
       <CompanyResults search={search} results={results} loading={loading} />
+      {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
     </Container>
   );

@@ -2,9 +2,6 @@ import React, {Fragment} from "react";
 // Custom Components
 import CompanySummary from "./CompanySummary";
 import InfiniteLoadingBar from "../ui/InfiniteLoadingBar";
-// Icons
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
