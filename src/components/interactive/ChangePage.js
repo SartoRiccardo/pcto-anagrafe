@@ -2,13 +2,9 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {setPage, increasePage, decreasePage} from "../../redux/actions/searchPageAction";
 import {resultAction} from "../../redux/actions/resultAction";
-// Icons
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleLeft as leftArrow, faAngleRight as rightArrow} from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 /**
  * A component to change the result page
@@ -73,7 +69,7 @@ class ChangePage extends Component {
       if(i === 0 || i === pageNum-1 || renderMd.includes(i)) {
         let className = "page-selector";
         if(i === page) {
-          className += "-selected";
+          className += " page-selected";
         }
         if(!renderXs.includes(i) && renderMd.includes(i) && i !== 0 && i !== pageNum-1) {
           className += " d-none d-md-block";
@@ -83,32 +79,42 @@ class ChangePage extends Component {
         }
 
         buttons.push(
-          <Button key={i} onClick={this.jumpToPage} className={className} value={i} variant="secondary">{i+1}</Button>
+          <Button
+            key={i}
+            onClick={this.jumpToPage}
+            className={className}
+            value={i}
+            variant="secondary"
+          >
+            {i+1}
+          </Button>
         );
       }
     }
 
     const leftButton = (
-      <ButtonGroup className="mx-2">
-        <Button onClick={this.changePageBuilder("decrease")} className="page-selector" variant="secondary">
-          <FontAwesomeIcon icon={leftArrow} />
-        </Button>
-      </ButtonGroup>
+      <Button
+        onClick={this.changePageBuilder("decrease")}
+        className="mx-2 page-selector page-selector-arrow"
+        variant="secondary"
+      >
+        &laquo;
+      </Button>
     );
     const rightButton = (
-      <ButtonGroup className="mx-2">
-        <Button onClick={this.changePageBuilder("increase")} className="page-selector" variant="secondary">
-          <FontAwesomeIcon icon={rightArrow} />
-        </Button>
-      </ButtonGroup>
+      <Button
+        onClick={this.changePageBuilder("increase")}
+        className="mx-2 page-selector page-selector-arrow"
+        variant="secondary"
+      >
+        &raquo;
+      </Button>
     );
 
     return (
       <Row className="justify-content-center my-3">
         {multiplePages && page > 0 ? leftButton : null}
-        <ButtonGroup>
           {buttons}
-        </ButtonGroup>
         {multiplePages && page < pageNum-1 ? rightButton : null}
       </Row>
     );

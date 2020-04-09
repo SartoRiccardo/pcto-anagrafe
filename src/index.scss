@@ -12,6 +12,9 @@ $cyan-lighten-3: #80deea;
 $light-green-lighten-4: #dcedc8;
 $red-lighten-4: #ffcdd2;
 $red-lighten-2: #e57373;
+$grey-lighten-2: #e0e0e0;
+$grey-lighten-3: #eeeeee;
+$grey-lighten-4: #f5f5f5;
 $grey-lighten-5: #fafafa;
 $grey: #9e9e9e;
 $brown-lighten-4: #d7ccc8;
@@ -127,46 +130,41 @@ body.overlay-open {
 
 // Page selectors & secondary buttons
 
-.btn-secondary:not(:hover):not(.page-selector-selected):focus, .btn-secondary:not(:active) {
-  background-color: $secondary !important;
-  border-color: $secondary !important;
+.page-selector {
+  background-color: $transparent !important;
+  border-color: $transparent !important;
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+.page-selector:hover {
+  background-color: $grey-lighten-3 !important;
+}
+
+.page-selector:hover, .page-selector:focus, .page-selector:active {
   color: inherit !important;
 }
 
-.btn.page-selector-selected, .btn-secondary.active {
-  background-color: adjust-hue($secondary, -10%) !important;
-  border-color: adjust-hue($secondary, -10%) !important;
-  color: black !important;
+.page-selector.page-selector-arrow,
+.page-selector.page-selected {
+  background-color: $secondary !important;
 }
 
-.page-selector:hover, .btn-secondary {
-  border-color: $transparent !important;
-  color: black !important;
+.page-selector.page-selector-arrow:hover,
+.page-selector.page-selected:hover {
+  color: white !important;
+}
+
+.btn {
+  border-radius: 0 !important;
 }
 
 .page-selector.first-page {
-  border-right: 1.5px solid darken($secondary, 10%) !important;
+  border-right: 1px solid $grey-lighten-2 !important;
 }
 
 .page-selector.last-page {
-  border-left: 1px solid darken($secondary, 10%) !important;
-}
-
-.btn-secondary:active, .btn-secondary.active {
-  background-color: adjust-hue($secondary, -10%) !important;
-  border-color: adjust-hue($secondary, -10%) !important;
-  color: black !important;
-}
-
-.btn-secondary:hover {
-  background-color: adjust-hue($secondary, -20%) !important;
-  border-color: adjust-hue($secondary, -10%) !important;
-  color: black !important;
-}
-
-.page-selector-selected:hover, .btn-secondary.active:hover {
-  border-color: $transparent !important;
-  color: white !important;
+  border-left: 1px solid $grey-lighten-2 !important;
 }
 
 // Tables
@@ -434,5 +432,25 @@ svg {
   color: rgba(0, 0, 0, 0.25);
   font-size: 20rem;
 }
+
+// Material loading
+
+
+.infinite-loader-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.infinite-loader {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  transition-property: left, right;
+  transition-duration: 0.5s, 0.5s;
+  transition-timing-function: linear;
+}
+
 
 @import '~bootstrap/scss/bootstrap';
