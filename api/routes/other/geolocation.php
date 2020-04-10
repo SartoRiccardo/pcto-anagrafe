@@ -17,8 +17,8 @@ function getCachedGeolocation($address) {
 
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   return array(
-    "lat" => (real) $result["lat"],
-    "lng" => (real) $result["lng"]
+    "lat" => is_numeric($result["lat"]) ? (real) $result["lat"] : null,
+    "lng" => is_numeric($result["lng"]) ? (real) $result["lng"] : null
   );
 }
 
