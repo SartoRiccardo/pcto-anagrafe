@@ -198,7 +198,11 @@ class CompanyDetails extends Component {
     const id = parseInt(this.props.match.params.id);
     const {company} = this.props;
 
-    const coords = await getLocationCoords(company.name, address);
+    let coords = await getLocationCoords(company.name, address);
+    if(coords && (!coords.lat || !coords.lng)) {
+      coords = await getLocationCoords(address);
+    }
+
     if(coords && company && id === company.id) {
       this.setState((state) => ({
         coords: [

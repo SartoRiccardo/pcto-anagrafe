@@ -10,9 +10,19 @@ export async function getAtecoDescription(ateco) {
   catch(e) {}
 }
 
-export async function getLocationCoords(companyName, address) {
+export async function getLocationCoords(arg0, arg1=null) {
   if(!getToken()) {
     return;
+  }
+
+  let companyName, address;
+  if(arg1) {
+    companyName = arg0;
+    address = arg1;
+  }
+  else {
+    companyName = "";
+    address = arg0;
   }
 
   try {

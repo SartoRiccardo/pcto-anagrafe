@@ -7,7 +7,7 @@ function Map(props) {
   const defaultCenter = [45.4275166, 10.9718752];  // Marconi
 
   return (
-    <LeafletMap center={center || defaultCenter} zoom={zoom || 10} style={size}>
+    <LeafletMap center={center || defaultCenter} zoom={zoom || 15} style={size}>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
