@@ -11,6 +11,7 @@ import {
   StructureDateField,
   StructureNumericField,
   StructureAtecoField,
+  StructureAddressField,
 } from "./StructureSpecificField";
 import StructureCustomField from "./StructureCustomField";
 // Icons
@@ -44,6 +45,7 @@ class FieldCard extends Component {
       StructureEnumField,
       StructureAtecoField,
       StructureCustomField,
+      StructureAddressField,
       StructureAllField,
     ];
     this.defaultType = this.choices.length-1;

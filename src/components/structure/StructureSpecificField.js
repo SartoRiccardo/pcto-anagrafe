@@ -144,7 +144,11 @@ StructureNumericField.default = "\\d+";
 StructureNumericField.regex = /^\\d\+$/;
 StructureNumericField.fieldTypeName = "Numero";
 
-
+/**
+ * Represents an ateco code.
+ *
+ * @extends StructureSimpleField
+ */
 export class StructureAtecoField extends StructureSimpleField {
   constructor(props) {
     super(props);
@@ -157,3 +161,21 @@ export class StructureAtecoField extends StructureSimpleField {
 StructureAtecoField.default = "\\d{2}(?:\\.\\d{1,2}(?:\\.\\d{1,2})?)?";
 StructureAtecoField.regex = /^\\d\{2}\(\?:\\\.\\d\{1,2}\(\?:\\\.\\d\{1,2}\)\?\)\?$/;
 StructureAtecoField.fieldTypeName = "Codice Ateco";
+
+/**
+ * Represents an address.
+ *
+ * @extends StructureSimpleField
+ */
+export class StructureAddressField extends StructureSimpleField {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: "Esempio: Via Mazzini",
+    };
+  }
+}
+StructureAddressField.default = "(?:address){0}^.+";
+StructureAddressField.regex = /^\(\?:address\)\{0\}\^\.\+$/;
+StructureAddressField.fieldTypeName = "Indirizzo";
