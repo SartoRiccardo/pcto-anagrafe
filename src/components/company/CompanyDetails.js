@@ -4,14 +4,16 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateName, updateField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
-import {getAtecoDescription} from "../../util/requests";
+import {getAtecoDescription, getLocationCoords} from "../../util/requests";
 // Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 import {StructureEmailField, StructureWebsiteField,
-    StructureAtecoField} from "../structure/StructureSpecificField";
+    StructureAtecoField, StructureAddressField} from "../structure/StructureSpecificField";
+import Map from "../interactive/Map";
+import CompanyMarker from "../interactive/CompanyMarker";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
@@ -51,6 +53,7 @@ class CompanyDetails extends Component {
       initialized: company && company.id === id,
       currentId: id,
       atecoDescriptions: [],
+      coords: [],
     };
   }
 
@@ -58,11 +61,7 @@ class CompanyDetails extends Component {
     const id = parseInt(this.props.match.params.id);
     const {company} = this.props;
     if(company && company.id === id) {
-      for(const field of company.fields) {
-        if(StructureAtecoField.regex.test(field.regex)) {
-          this.fetchAtecoDescription(field.id, field.value);
-        }
-      }
+      this.onCompanyInit();
     }
   }
 
@@ -75,11 +74,7 @@ class CompanyDetails extends Component {
         initialized: true,
       });
       document.title = `PCTOkay! ${company.name}`;
-      for(const field of company.fields) {
-        if(StructureAtecoField.regex.test(field.regex)) {
-          this.fetchAtecoDescription(field.id, field.value);
-        }
-      }
+      this.onCompanyInit();
     }
 
     const title404 = `PCTOkay! Azienda non trovata`;
@@ -93,6 +88,7 @@ class CompanyDetails extends Component {
         initialized: false,
         currentId: id,
         atecoDescriptions: [],
+        coords: [],
       });
       this.props.resetCompany();
       this.props.selectCompany(id);
@@ -186,12 +182,43 @@ class CompanyDetails extends Component {
   fetchAtecoDescription = async (fieldID, ateco) => {
     const id = parseInt(this.props.match.params.id);
     const {company} = this.props;
-    const {atecoDescriptions} = this.state;
+
     const description = await getAtecoDescription(ateco);
     if(description && company && id === company.id) {
-      this.setState({
-        atecoDescriptions: [...atecoDescriptions, {id: fieldID, description}],
-      });
+      this.setState((state) => ({
+        atecoDescriptions: [
+          ...state.atecoDescriptions,
+          { id: fieldID, description },
+        ],
+      }));
+    }
+  }
+
+  fetchLocation = async (fieldID, address) => {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+
+    const coords = await getLocationCoords(company.name, address);
+    if(coords && company && id === company.id) {
+      this.setState((state) => ({
+        coords: [
+          ...state.coords,
+          { id: fieldID, coords },
+        ],
+      }));
+    }
+  }
+
+  onCompanyInit = () => {
+    const {company} = this.props;
+
+    for(const field of company.fields) {
+      if(StructureAtecoField.regex.test(field.regex)) {
+        this.fetchAtecoDescription(field.id, field.value);
+      }
+      else if(StructureAddressField.regex.test(field.regex)) {
+        this.fetchLocation(field.id, field.value);
+      }
     }
   }
 
@@ -339,6 +366,40 @@ class CompanyDetails extends Component {
       </h1>
     );
 
+    const addressesPresent = company.fields.some(
+      (f) => StructureAddressField.regex.test(f.regex)
+    );
+    const markers = this.state.coords.map((coords) =>
+      <CompanyMarker key={coords.id} position={[coords.coords.lat, coords.coords.lng]} />
+    );
+
+    const mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
+    let companyMap;
+    if(!addressesPresent) {
+      companyMap = null;
+    }
+    else if(markers.length === 0) {
+      companyMap = (
+          <Row>
+            <Col>
+              <div className="map company-details loading" />
+            </Col>
+          </Row>
+      );
+    }
+    else {
+      companyMap = (
+        <Row>
+          <Col>
+            <div className="map company-details">
+              <Map center={mapCenter}>{markers}</Map>
+            </div>
+          </Col>
+        </Row>
+
+      );
+    }
+
     return(
       <Container>
         <ConfirmDeleteCompany
@@ -379,6 +440,8 @@ class CompanyDetails extends Component {
             </Table>
           </Col>
         </Row>
+
+        {companyMap}
       </Container>
     );
   }

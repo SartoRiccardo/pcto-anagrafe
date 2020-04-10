@@ -443,7 +443,6 @@ svg {
 
 // Material loading
 
-
 .infinite-loader-container {
   background-color: lighten($secondary, 20%);
   position: relative;
@@ -462,5 +461,15 @@ svg {
   transition-timing-function: linear;
 }
 
+// Maps
+
+.map.company-details {
+  width: 100%;
+  height: 50vh;
+}
+
+.map.loading {
+  background-color: $grey-lighten-3;
+}
 
 @import '~bootstrap/scss/bootstrap';
