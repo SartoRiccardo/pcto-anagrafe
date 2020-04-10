@@ -37,7 +37,7 @@ function requestGeolocation($address) {
   curl_setopt_array($session, $options);
   $response = json_decode(curl_exec($session), true);
   if(curl_error($session) || count($response["results"]) === 0) {
-    throw new Exception(curl_error($session));
+    return array("lat" => null, "lng" => null);
   }
   curl_close($session);
 
@@ -81,8 +81,8 @@ Flight::route("GET /geolocation", function() {
       }
     }
   }
-  catch(Exception $e) {
-    $errorMessage = "Non è stato possibile determinare le coordinate.";
+  catch(Exception $exc) {
+    $errorMessage = $exc->getMessage();//"Non è stato possibile determinare le coordinate.";
   }
 
   Flight::json(array(
