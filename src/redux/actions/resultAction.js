@@ -56,6 +56,7 @@ export function resultAction(arg0=null) {
         });
 
         if(getState().search.usingMap) {
+          dispatch(resetLocations());
           dispatch(loadMapLocations(results, searchId));
         }
       });
@@ -72,6 +73,7 @@ export function resultAction(arg0=null) {
  */
 function loadMapLocations(companies, searchId) {
   return protectFunction(async (dispatch, getState) => {
+
     const companiesWithAddress = companies.filter(
       (company) => company.fields.some(
         (field) => StructureAddressField.regex.test(field.regex)
@@ -101,6 +103,23 @@ function loadMapLocations(companies, searchId) {
       catch(e) {}
     }));
   });
+}
+
+/**
+ * loadMapLocations, but from the state.
+ */
+export function loadResultsMapLocations() {
+  return (dispatch, getState) => {
+    const { results, lastSearchId } = getState().search;
+    dispatch(loadMapLocations(results, lastSearchId));
+  }
+}
+
+/**
+ * An action creator that fires SEARCHR_RESET_LOCATIONS.
+ */
+export function resetLocations() {
+  return {type: "SEARCHR_RESET_LOCATIONS"};
 }
 
 /**

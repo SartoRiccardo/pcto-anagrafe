@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {turnMapOn, turnMapOff} from "../../redux/actions/resultAction";
+import {turnMapOn, turnMapOff, loadResultsMapLocations} from "../../redux/actions/resultAction";
 import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
@@ -48,7 +48,7 @@ function SearchCompany(props) {
         break;
       }
     }
-    if(!match) {
+    if(!match || lat === null || lng === null) {
       return null;
     }
 
@@ -58,9 +58,9 @@ function SearchCompany(props) {
   });
 
   const map = (
-    <div className="map search">
+    <div id="search-map" className="map search mb-3">
       <hr />
-      <Map>
+      <Map zoom={10}>
         {markers}
       </Map>
       {
@@ -81,7 +81,13 @@ function SearchCompany(props) {
       <SearchBar />
       {resultsPresent ? pageSwitcher : null}
       {resultsNumber}
-      <CompanyResults search={search} results={results} loading={loading} />
+      <CompanyResults
+        search={search}
+        results={results}
+        loading={loading}
+        usingMap={usingMap}
+        coordinates={coordinates}
+      />
       {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
 
@@ -96,7 +102,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    turnMapOn: () => dispatch(turnMapOn()),
+    turnMapOn: () => {
+      dispatch(turnMapOn());
+      dispatch(loadResultsMapLocations());
+    },
     turnMapOff: () => dispatch(turnMapOff()),
   };
 }

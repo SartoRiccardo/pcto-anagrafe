@@ -9,12 +9,14 @@ import Col from "react-bootstrap/Col";
 /**
  * A table of CompanySummary.
  *
- * @param {Company[]} props.results  A list of companies.
- * @param {Search[]}  props.search   The parameters in the search.
- * @param {boolean}   props.loading  Whether the results are still loading.
+ * @param {Company[]}       props.results     A list of companies.
+ * @param {Search[]}        props.search      The parameters in the search.
+ * @param {boolean}         props.loading     Whether the results are still loading.
+ * @param {boolean}         props.usingMap    Whether there is a map feature active.
+ * @param {CompanyCoords[]} props.coordinates The company's coordinates.
  */
 function CompanyResults(props) {
-  const {results, loading, search} = props;
+  const {results, loading, search, coordinates, usingMap} = props;
 
   const loadingBar = (
     <Row>
