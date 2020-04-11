@@ -1,10 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
+import {turnMapOn, turnMapOff} from "../../redux/actions/resultAction";
 import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
+import Map from "../interactive/Map";
+import CompanyMarker from "../interactive/CompanyMarker";
 
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 
 /**
  * A component to search companies and visualize the results.
@@ -15,7 +19,8 @@ import Container from "react-bootstrap/Container";
 function SearchCompany(props) {
   document.title = "PCTOkay! Cerca";
 
-  const {search, results, page, totalResults, loading, resultsPerPage} = props;
+  const {search, results, page, totalResults, loading, resultsPerPage,
+      usingMap, coordinates} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const maxResultNumber = (page+1)*resultsPerPage < totalResults ?
@@ -35,6 +40,42 @@ function SearchCompany(props) {
     reducer="SEARCH"
   />;
 
+  const markers = coordinates.map(({ company, lat, lng }) => {
+    let match = null;
+    for(const resultedCompany of results) {
+      if(resultedCompany.id === company) {
+        match = resultedCompany;
+        break;
+      }
+    }
+    if(!match) {
+      return null;
+    }
+
+    return (
+      <CompanyMarker key={match.id} company={match} position={{lat, lng}} />
+    );
+  });
+
+  const map = (
+    <div className="map search">
+      <hr />
+      <Map>
+        {markers}
+      </Map>
+      {
+        !usingMap && (
+          <div className="overlay text-white">
+            <div className="text-center map-overlay-content">
+              <p className="h1">Attiva la mappa</p>
+              <Button onClick={props.turnMapOn}>ATTIVA</Button>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  );
+
   return (
     <Container>
       <SearchBar />
@@ -43,6 +84,8 @@ function SearchCompany(props) {
       <CompanyResults search={search} results={results} loading={loading} />
       {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
+
+      {resultsPresent && map}
     </Container>
   );
 }
@@ -51,4 +94,11 @@ function mapStateToProps(state) {
   return {...state.search};
 }
 
-export default connect(mapStateToProps)(SearchCompany);
+function mapDispatchToProps(dispatch) {
+  return {
+    turnMapOn: () => dispatch(turnMapOn()),
+    turnMapOff: () => dispatch(turnMapOff()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchCompany);

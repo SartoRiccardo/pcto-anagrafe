@@ -3,13 +3,15 @@ import update from "immutability-helper";
 /**
  * This store provides access to the data fetched while making searches on the /search route.
  *
- * @param {Search[]}  search
- * @param {Company[]} results
- * @param {int}       page            The current page number.
- * @param {int}       resultsPerPage  The results to show per page.
- * @param {int}       totalResults    The total results the search generated.
- * @param {float}     lastSearchId    The ID of the last search that was made, useful for bad connection.
- * @param {boolean}   loading         If the search has started, but no result has been communicated yet.
+ * @param {Search[]}      search
+ * @param {Company[]}     results
+ * @param {int}           page            The current page number.
+ * @param {int}           resultsPerPage  The results to show per page.
+ * @param {int}           totalResults    The total results the search generated.
+ * @param {float}         lastSearchId    The ID of the last search that was made, useful for bad connection.
+ * @param {boolean}       loading         If the search has started, but no result has been communicated yet.
+ * @param {boolean}       usingMap        Whether the user turned the map on.
+ * @param {CompanyCoords} coordinates     A series of company IDs and their coordinates.
  */
 const init = {
   search: [],
@@ -19,6 +21,8 @@ const init = {
   totalResults: 0,
   lastSearchId: 0,
   loading: false,
+  usingMap: false,
+  coordinates: [],
 };
 
 function searchReducer(state=init, action) {
@@ -99,6 +103,36 @@ function searchReducer(state=init, action) {
         ...state,
         lastSearchId: action.searchId,
         loading: true,
+      };
+
+    case "SEARCHR_TURN_MAP_ON":
+      return {
+        ...state,
+        usingMap: true,
+      };
+
+    case "SEARCHR_TURN_MAP_OFF":
+      return {
+        ...state,
+        usingMap: false,
+      };
+
+    case "SEARCHR_SET_LOCATIONS":
+      return {
+        ...state,
+        coordinates: action.coordinates,
+      };
+
+    case "SEARCHR_RESET_LOCATIONS":
+      return {
+        ...state,
+        coordinates: [],
+      };
+
+    case "SEARCHR_ADD_LOCATION":
+      return {
+        ...state,
+        coordinates: [...state.coordinates, action.coordinates],
       };
 
     default:

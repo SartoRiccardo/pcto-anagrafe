@@ -1,7 +1,9 @@
 import axios from "axios";
 import {apiUrl} from "./url";
 import {getToken} from "../../util/tokenManager";
+import {getLocationCoords} from "../../util/requests";
 import {protectFunction, callIfSuccessful} from "../../util/action";
+import {StructureAddressField} from "../../components/structure/StructureSpecificField";
 
 /**
  * Loads all companies that match the given search.
@@ -52,9 +54,52 @@ export function resultAction(arg0=null) {
           results,
           totalResults,
         });
+
+        if(getState().search.usingMap) {
+          dispatch(loadMapLocations(results, searchId));
+        }
       });
     }
     catch(e) {}
+  });
+}
+
+/**
+ * Requests and stores a series of company coordinates.
+ *
+ * @param {Company[]} companies  The companies whose locations shall be loaded.
+ * @param {float}     searchId   The ID of the search that was just conducted.
+ */
+function loadMapLocations(companies, searchId) {
+  return protectFunction(async (dispatch, getState) => {
+    const companiesWithAddress = companies.filter(
+      (company) => company.fields.some(
+        (field) => StructureAddressField.regex.test(field.regex)
+      )
+    );
+
+    let companyAddresses = [];
+    for(const company of companiesWithAddress) {
+      for(const field of company.fields) {
+        if(StructureAddressField.regex.test(field.regex)) {
+          companyAddresses.push({company, field});
+        }
+      }
+    }
+
+    await Promise.all(companyAddresses.map(async (obj) => {
+      const {company, field} = obj;
+      try {
+        const coordinates = {
+          company: company.id,
+          ...(await getLocationCoords(company.name, field.value)),
+        };
+        if(getState().search.lastSearchId === searchId) {
+          dispatch({type: "SEARCHR_ADD_LOCATION", coordinates});
+        }
+      }
+      catch(e) {}
+    }));
   });
 }
 
@@ -117,4 +162,18 @@ export function resetCompany() {
  */
 export function setMatchCompany(company) {
   return {type: "COMPANYR_SET_MATCH", match: company};
+}
+
+/**
+ * An action creator that fires SEARCHR_TURN_MAP_ON.
+ */
+export function turnMapOn() {
+  return {type: "SEARCHR_TURN_MAP_ON"};
+}
+
+/**
+ * An action creator that fires SEARCHR_TURN_MAP_OFF.
+ */
+export function turnMapOff(company) {
+  return {type: "SEARCHR_TURN_MAP_OFF"};
 }
