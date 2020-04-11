@@ -20,7 +20,7 @@ function SearchCompany(props) {
   document.title = "PCTOkay! Cerca";
 
   const {search, results, page, totalResults, loading, resultsPerPage,
-      usingMap, coordinates} = props;
+      usingMap, coordinates, filteredCoords} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const maxResultNumber = (page+1)*resultsPerPage < totalResults ?
@@ -48,7 +48,10 @@ function SearchCompany(props) {
         break;
       }
     }
-    if(!match || lat === null || lng === null) {
+
+    const isFiltered = filteredCoords.length > 0 && match &&
+        !filteredCoords.includes(match.id);
+    if(!match || lat === null || lng === null || isFiltered) {
       return null;
     }
 

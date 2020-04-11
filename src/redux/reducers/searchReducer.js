@@ -11,7 +11,8 @@ import update from "immutability-helper";
  * @param {float}         lastSearchId    The ID of the last search that was made, useful for bad connection.
  * @param {boolean}       loading         If the search has started, but no result has been communicated yet.
  * @param {boolean}       usingMap        Whether the user turned the map on.
- * @param {CompanyCoords} coordinates     A series of company IDs and their coordinates.
+ * @param {CompanyCoords} coordinates     A list of company IDs and their coordinates.
+ * @param {int}           filteredCoords  A list of company IDs. Only these companies' coordinates will be shown.
  */
 const init = {
   search: [],
@@ -23,6 +24,7 @@ const init = {
   loading: false,
   usingMap: false,
   coordinates: [],
+  filteredCoords: [],
 };
 
 function searchReducer(state=init, action) {
@@ -127,6 +129,7 @@ function searchReducer(state=init, action) {
       return {
         ...state,
         coordinates: [],
+        filteredCoords: [],
       };
 
     case "SEARCHR_ADD_LOCATION":
@@ -134,6 +137,20 @@ function searchReducer(state=init, action) {
         ...state,
         coordinates: [...state.coordinates, action.coordinates],
       };
+
+    case "SEARCHR_ADD_MAP_FILTER":
+      return {
+        ...state,
+        filteredCoords: [...state.filteredCoords, action.company],
+      }
+
+    case "SEARCHR_REMOVE_MAP_FILTER":
+      return {
+        ...state,
+        filteredCoords: state.filteredCoords.filter(
+          (company) => company !== action.company
+        ),
+      }
 
     default:
       return state;

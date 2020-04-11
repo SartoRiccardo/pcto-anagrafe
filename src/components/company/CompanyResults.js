@@ -37,7 +37,11 @@ function CompanyResults(props) {
         nullifyMargin += " last";
       }
       return (
-        <CompanySummary key={res.id} data={res} search={search} className={nullifyMargin} />
+        <CompanySummary key={res.id} data={res} search={search}
+            hasCoordinates={usingMap && coordinates.some(
+              ({ company, lat, lng }) => company === res.id && lat !== null && lng !== null
+            )}
+            className={nullifyMargin} />
       );
     });
   }

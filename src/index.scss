@@ -6,6 +6,7 @@ $secondary: #ff9800;
 $enable-responsive-font-sizes: true;
 
 $table-selected: #ffecb3;
+$light-blue: #03a9f4;
 $yellow-darken-3: #f9a825;
 $deep-orange-darken-2: #e64a19;
 $cyan-lighten-3: #80deea;
@@ -250,6 +251,23 @@ svg {
 
 .icon-transparent {
   color: rgba(0, 0, 0, 0.25);
+}
+
+.location-filterer {
+  color: rgba(0, 0, 0, 0.2);
+  transition: color 0.25s;
+}
+
+.location-filterer:not(.active):hover {
+  color: #81d4fa;
+}
+
+.location-filterer.active {
+  color: $light-blue;
+}
+
+.location-filterer.active:hover {
+  color: #01579b;
 }
 
 .saved-star {

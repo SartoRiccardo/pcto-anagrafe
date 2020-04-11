@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {setMatchCompany} from "../../redux/actions/resultAction";
 // Custom components
 import SaveStar from "../interactive/SaveStar";
+import LocationFilterer from "../interactive/LocationFilterer";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
@@ -19,8 +20,9 @@ import Col from "react-bootstrap/Col";
  * The attributes shown are chosen with the current search terms.
  * Inteacts with the search state.
  *
- * @param {Company}  props.data      A single company object.
- * @param {Search[]} props.search    The parameters in the search.
+ * @param {Company}  props.data            A single company object.
+ * @param {Search[]} props.search          The parameters in the search.
+ * @param {boolean}  props.hasCoordinates  Whether the company has coordinates in a map.
  */
 class CompanySummary extends Component {
   constructor(props) {
@@ -44,8 +46,12 @@ class CompanySummary extends Component {
     this.redirect = false;
   }
 
+  filterLocations = (evt) => {
+    evt.stopPropagation();
+  }
+
   render() {
-    let {data, search, structure, className} = this.props;
+    let {data, search, structure, className, hasCoordinates} = this.props;
 
     let uniqueFields = [];
     if(search) {
@@ -91,6 +97,7 @@ class CompanySummary extends Component {
             <h4>
               <SaveStar onClick={this.handleSave} className="mr-2" company={data} status={data.saved} />
               {data.name}
+              {hasCoordinates && <LocationFilterer company={data} className="float-right" />}
             </h4>
           </Col>
         </Row>
