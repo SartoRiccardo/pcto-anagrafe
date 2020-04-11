@@ -25,7 +25,7 @@ function getCachedGeolocation($address) {
 function requestGeolocation($address) {
   global $mapsToken;
 
-  $url = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s";
+  $url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=geometry&key=%s";
   $options = array(
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HEADER         => false,
@@ -36,12 +36,12 @@ function requestGeolocation($address) {
   $session = curl_init(sprintf($url, urlencode($address), $mapsToken));
   curl_setopt_array($session, $options);
   $response = json_decode(curl_exec($session), true);
-  if(curl_error($session) || count($response["results"]) === 0) {
+  if(curl_error($session) || count($response["candidates"]) === 0) {
     return array("lat" => null, "lng" => null);
   }
   curl_close($session);
 
-  return $response["results"][0]["geometry"]["location"];
+  return $response["candidates"][0]["geometry"]["location"];
 }
 
 function cacheGeolocation($address, $lat, $lng) {
