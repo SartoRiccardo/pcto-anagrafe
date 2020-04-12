@@ -7,6 +7,7 @@ import changeCompanyReducer from "./changeCompanyReducer";
 import activityReducer from "./activityReducer";
 import privilegeReducer from "./privilegeReducer";
 import errorReducer from "./errorReducer";
+import mapReducer from "./mapReducer";
 import {combineReducers} from "redux";
 
 /**
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   activity: activityReducer,
   privilege: privilegeReducer,
   error: errorReducer,
+  map: mapReducer,
 });
 
 export default rootReducer;

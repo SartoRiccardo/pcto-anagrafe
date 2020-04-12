@@ -5,7 +5,9 @@ import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
 import Map from "../interactive/Map";
-import CompanyMarker from "../interactive/CompanyMarker";
+import {CompanyMarker, userMarkerIcon} from "../interactive/Markers";
+import {Marker} from "react-leaflet";
+import GeolocationRequest from "../interactive/GeolocationRequest";
 
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -20,7 +22,7 @@ function SearchCompany(props) {
   document.title = "PCTOkay! Cerca";
 
   const {search, results, page, totalResults, loading, resultsPerPage,
-      usingMap, coordinates, filteredCoords} = props;
+      usingMap, coordinates, filteredCoords, userLocation} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const maxResultNumber = (page+1)*resultsPerPage < totalResults ?
@@ -60,23 +62,33 @@ function SearchCompany(props) {
     );
   });
 
+  if(userLocation) {
+    markers.push(
+      <Marker key={"user-icon"} icon={userMarkerIcon} position={userLocation} />
+    );
+  }
+
   const map = (
-    <div id="search-map" className="map search mb-3">
+    <React.Fragment>
       <hr />
-      <Map zoom={10}>
-        {markers}
-      </Map>
-      {
-        !usingMap && (
-          <div className="overlay text-white">
-            <div className="text-center map-overlay-content">
-              <p className="h1">Attiva la mappa</p>
-              <Button onClick={props.turnMapOn}>ATTIVA</Button>
+      <div id="search-map" className="map search">
+        <Map zoom={10}>
+          {markers}
+        </Map>
+        {
+          !usingMap && (
+            <div className="overlay text-white">
+              <div className="text-center map-overlay-content">
+                <p className="h1">Attiva la mappa</p>
+                <Button onClick={props.turnMapOn}>ATTIVA</Button>
+              </div>
             </div>
-          </div>
-        )
-      }
-    </div>
+          )
+        }
+      </div>
+
+      { usingMap && <GeolocationRequest className="mt-3" /> }
+    </React.Fragment>
   );
 
   return (
@@ -100,7 +112,10 @@ function SearchCompany(props) {
 }
 
 function mapStateToProps(state) {
-  return {...state.search};
+  return {
+    ...state.search,
+    userLocation: state.map.geolocation,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

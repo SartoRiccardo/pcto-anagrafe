@@ -4,13 +4,13 @@ import {Marker, Popup} from "react-leaflet";
 import L from "leaflet";
 import orangeMarker from "../../img/orange-marker.png";
 
-const userMarkerIcon = L.icon({
+export const userMarkerIcon = L.icon({
   ...L.Icon.Default.prototype.options,
   iconUrl: orangeMarker,
 });
 
-function CompanyMarker(props) {
-  const {position, company, isUser} = props;
+export function CompanyMarker(props) {
+  const { position, company } = props;
 
   const popup = company && (
     <Popup>
@@ -18,12 +18,7 @@ function CompanyMarker(props) {
     </Popup>
   );
 
-  return isUser ? (
-    <Marker icon={isUser && userMarkerIcon}
-        position={position}>{popup}</Marker>
-  ) : (
+  return (
     <Marker position={position}>{popup}</Marker>
   );
 }
-
-export default CompanyMarker;

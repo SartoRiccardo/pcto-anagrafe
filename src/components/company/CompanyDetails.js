@@ -13,7 +13,7 @@ import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 import {StructureEmailField, StructureWebsiteField,
     StructureAtecoField, StructureAddressField} from "../structure/StructureSpecificField";
 import Map from "../interactive/Map";
-import CompanyMarker from "../interactive/CompanyMarker";
+import {CompanyMarker} from "../interactive/Markers";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
