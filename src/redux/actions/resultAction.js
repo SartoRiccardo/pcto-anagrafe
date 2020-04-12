@@ -92,9 +92,13 @@ function loadMapLocations(companies, searchId) {
     await Promise.all(companyAddresses.map(async (obj) => {
       const {company, field} = obj;
       try {
+        let location = await getLocationCoords(company.name, field.value);
+        if(location.lat === null || location.lng === null) {
+          location = await getLocationCoords(field.value);
+        }
         const coordinates = {
           company: company.id,
-          ...(await getLocationCoords(company.name, field.value)),
+          ...location,
         };
         if(getState().search.lastSearchId === searchId) {
           dispatch({type: "SEARCHR_ADD_LOCATION", coordinates});
