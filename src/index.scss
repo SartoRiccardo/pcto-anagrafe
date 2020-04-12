@@ -558,13 +558,13 @@ input[type=range]::-ms-thumb {
 
 // Fake links
 
-span.fake-link {
+span.leaflet.fake-link {
      cursor: pointer;
-     color: $light-blue;
+     color: #0078A8;
      text-decoration: underline;
 }
 
-span.fake-link:hover {
+span.leaflet.fake-link:hover {
      text-decoration:none;
 }
 
