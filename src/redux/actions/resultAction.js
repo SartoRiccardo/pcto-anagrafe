@@ -196,3 +196,7 @@ export function turnMapOn() {
 export function turnMapOff(company) {
   return {type: "SEARCHR_TURN_MAP_OFF"};
 }
+
+export function setRange(range) {
+  return { type: "SEARCHR_SET_RANGE", range };
+}

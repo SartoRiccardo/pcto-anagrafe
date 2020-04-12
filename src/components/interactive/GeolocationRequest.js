@@ -27,6 +27,7 @@ class GeolocationRequest extends React.Component {
   }
 
   onRequestFailure = (error) => {
+    // eslint-disable-next-line
     switch(error.code) {
       case window.GeolocationPositionError.PERMISSION_DENIED:
         this.props.notifyError("Non possiamo determinare la tua posizione perché non ci hai dato il permesso");

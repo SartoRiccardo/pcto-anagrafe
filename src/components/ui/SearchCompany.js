@@ -1,16 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
-import {turnMapOn, turnMapOff, loadResultsMapLocations} from "../../redux/actions/resultAction";
 import SearchBar from "../forms/SearchBar";
 import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
-import Map from "../interactive/Map";
-import {CompanyMarker, userMarkerIcon} from "../interactive/Markers";
-import {Marker, Circle} from "react-leaflet";
-import GeolocationRequest from "../interactive/GeolocationRequest";
+import SearchMap from "../interactive/SearchMap";
 
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
 
 /**
  * A component to search companies and visualize the results.
@@ -22,7 +17,7 @@ function SearchCompany(props) {
   document.title = "PCTOkay! Cerca";
 
   const {search, results, page, totalResults, loading, resultsPerPage,
-      usingMap, coordinates, filteredCoords, userLocation} = props;
+      usingMap, coordinates} = props;
   const resultsPresent = search.length > 0 && results.length > 0;
 
   const maxResultNumber = (page+1)*resultsPerPage < totalResults ?
@@ -42,71 +37,6 @@ function SearchCompany(props) {
     reducer="SEARCH"
   />;
 
-  const range = 20;
-  const markers = coordinates.map(({ company, lat, lng }) => {
-    let match = null;
-    for(const resultedCompany of results) {
-      if(resultedCompany.id === company) {
-        match = resultedCompany;
-        break;
-      }
-    }
-
-    const isFiltered = filteredCoords.length > 0 && match &&
-        !filteredCoords.includes(match.id);
-    if(!match || lat === null || lng === null || isFiltered) {
-      return null;
-    }
-
-    let outOfRange = false;
-    if(userLocation) {
-      const companyDistanceY = lat*110.574 - userLocation.lat*110.574;
-      const companyDistanceX = Math.cos(lat*(Math.PI / 180)) * 111.320 * lng -
-          Math.cos(userLocation.lat*(Math.PI / 180)) * 111.320 * userLocation.lng;
-      const companyDistance = Math.sqrt(
-        Math.pow(companyDistanceX, 2) + Math.pow(companyDistanceY, 2)
-      );
-      outOfRange = companyDistance > range;
-    }
-
-    return (
-      <CompanyMarker key={match.id} company={match} position={{lat, lng}}
-          outOfRange={outOfRange} />
-    );
-  });
-
-  if(userLocation) {
-    markers.push(
-      <React.Fragment key={"user-icon"}>
-        <Marker icon={userMarkerIcon} position={userLocation} />
-        <Circle color="orange" center={userLocation} radius={range * 1000} />
-      </React.Fragment>
-    );
-  }
-
-  const map = (
-    <React.Fragment>
-      <hr />
-      <div id="search-map" className="map search">
-        <Map center={userLocation} zoom={10}>
-          {markers}
-        </Map>
-        {
-          !usingMap && (
-            <div className="overlay text-white">
-              <div className="text-center map-overlay-content">
-                <p className="h1">Attiva la mappa</p>
-                <Button onClick={props.turnMapOn}>ATTIVA</Button>
-              </div>
-            </div>
-          )
-        }
-      </div>
-
-      { usingMap && <GeolocationRequest className="mt-3" /> }
-    </React.Fragment>
-  );
-
   return (
     <Container>
       <SearchBar />
@@ -122,7 +52,7 @@ function SearchCompany(props) {
       {resultsNumber}
       {resultsPresent ? pageSwitcher : null}
 
-      {resultsPresent && map}
+      {resultsPresent && <SearchMap />}
     </Container>
   );
 }
@@ -134,14 +64,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    turnMapOn: () => {
-      dispatch(turnMapOn());
-      dispatch(loadResultsMapLocations());
-    },
-    turnMapOff: () => dispatch(turnMapOff()),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchCompany);
+export default connect(mapStateToProps)(SearchCompany);

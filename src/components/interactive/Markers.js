@@ -15,6 +15,8 @@ export const outOfRangeIcon = L.icon({
   iconUrl: outOfRangeMarker,
 });
 
+export const defaultIcon = new L.Icon.Default();
+
 export function CompanyMarker(props) {
   const { position, company, outOfRange } = props;
 
@@ -24,9 +26,8 @@ export function CompanyMarker(props) {
     </Popup>
   );
 
-  return outOfRange ? (
-    <Marker icon={outOfRangeIcon} position={position}>{popup}</Marker>
-  ) : (
-    <Marker position={position}>{popup}</Marker>
+  return (
+    <Marker icon={outOfRange ? outOfRangeIcon : defaultIcon}
+        position={position}>{popup}</Marker>
   );
 }

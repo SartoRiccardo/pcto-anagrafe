@@ -26,7 +26,7 @@ class LocationFilterer extends React.Component {
   }
 
   render() {
-    const { company, filteredCoords, className } = this.props;
+    const { className } = this.props;
 
     return (
       <FontAwesomeIcon

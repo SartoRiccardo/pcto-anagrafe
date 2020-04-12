@@ -503,4 +503,45 @@ body.overlay-open {
   transform: translate(-50%, -50%);
 }
 
+// Slider
+.slider {
+  width: 100%;
+}
+
+input[type=range] {
+  appearance: none;
+  background-color: $grey-lighten-3;
+  width: 100%;
+  height: 10px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: $secondary;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: $secondary;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: $secondary;
+  cursor: pointer;
+}
+
 @import '~bootstrap/scss/bootstrap';

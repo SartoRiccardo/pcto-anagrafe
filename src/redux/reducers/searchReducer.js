@@ -13,6 +13,7 @@ import update from "immutability-helper";
  * @param {boolean}       usingMap        Whether the user turned the map on.
  * @param {CompanyCoords} coordinates     A list of company IDs and their coordinates.
  * @param {int}           filteredCoords  A list of company IDs. Only these companies' coordinates will be shown.
+ * @param {int}           range           The geolocation search range, in pixels.
  */
 const init = {
   search: [],
@@ -25,6 +26,7 @@ const init = {
   usingMap: false,
   coordinates: [],
   filteredCoords: [],
+  range: 0,
 };
 
 function searchReducer(state=init, action) {
@@ -150,7 +152,13 @@ function searchReducer(state=init, action) {
         filteredCoords: state.filteredCoords.filter(
           (company) => company !== action.company
         ),
-      }
+      };
+
+    case "SEARCHR_SET_RANGE":
+      return {
+        ...state,
+        range: action.range,
+      };
 
     default:
       return state;
