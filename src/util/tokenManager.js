@@ -3,7 +3,7 @@
  * Deletes the token.
  */
 export function deleteToken() {
-  sessionStorage.removeItem("token");
+  localStorage.removeItem("token");
 }
 
 /**
@@ -13,7 +13,7 @@ export function deleteToken() {
  */
 export function saveToken(token) {
   deleteToken();
-  sessionStorage.setItem("token", token);
+  localStorage.setItem("token", token);
 }
 
 /**
@@ -22,7 +22,7 @@ export function saveToken(token) {
  * @return {int} The user's token.
  */
 export function getToken() {
-  const ret = sessionStorage.getItem("token");
+  const ret = localStorage.getItem("token");
 
   return ret;
 }
