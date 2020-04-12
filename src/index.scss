@@ -556,4 +556,16 @@ input[type=range]::-ms-thumb {
   cursor: pointer;
 }
 
+// Fake links
+
+span.fake-link {
+     cursor: pointer;
+     color: $light-blue;
+     text-decoration: underline;
+}
+
+span.fake-link:hover {
+     text-decoration:none;
+}
+
 @import '~bootstrap/scss/bootstrap';

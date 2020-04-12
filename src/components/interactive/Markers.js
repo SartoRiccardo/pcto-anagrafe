@@ -1,6 +1,8 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {Marker, Popup} from "react-leaflet";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { setMatchCompany } from "../../redux/actions/resultAction";
+import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import orangeMarker from "../../img/orange-marker.png";
 import outOfRangeMarker from "../../img/out-of-range-marker.png";
@@ -17,12 +19,21 @@ export const outOfRangeIcon = L.icon({
 
 export const defaultIcon = new L.Icon.Default();
 
-export function CompanyMarker(props) {
+function CompanyMarkerUi(props) {
   const { position, company, outOfRange } = props;
+
+  const goToPage = () => {
+    props.setMatch(company);
+    props.history.push(`/company/${company.id}`);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
 
   const popup = company && (
     <Popup>
-      <Link to={`/company/${company.id}`}><b>{company.name}</b></Link>
+      <span className="leaflet fake-link" onClick={goToPage}>
+        <b>{company.name}</b>
+      </span>
     </Popup>
   );
 
@@ -31,3 +42,11 @@ export function CompanyMarker(props) {
         position={position}>{popup}</Marker>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setMatch: (company) => dispatch(setMatchCompany(company)),
+  };
+}
+
+export const CompanyMarker = connect(null, mapDispatchToProps)(withRouter(CompanyMarkerUi));
