@@ -503,7 +503,19 @@ body.overlay-open {
   transform: translate(-50%, -50%);
 }
 
+.km-range-display {
+  position: relative;
+  margin-bottom: 0;
+  color: white;
+  border-top-right-radius: 1rem;
+  display: inline-block;
+  transform: translate3d(0, -100%, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
 // Slider
+
 .slider {
   width: 100%;
 }

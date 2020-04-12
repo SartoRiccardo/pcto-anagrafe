@@ -79,6 +79,11 @@ function SearchMap(props) {
             </div>
           )
         }
+        {
+          usingMap && range > 0 && (
+            <p className="km-range-display p-1 pl-2 pr-3 lead">{range} km</p>
+          )
+        }
       </div>
 
       { usingMap && <GeolocationRequest className="mt-3" /> }
