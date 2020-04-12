@@ -13,7 +13,9 @@ import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
 import {StructureEmailField, StructureWebsiteField,
     StructureAtecoField, StructureAddressField} from "../structure/StructureSpecificField";
 import Map from "../interactive/Map";
-import {CompanyMarker} from "../interactive/Markers";
+import {Marker} from "react-leaflet";
+import GeolocationRequest from "../interactive/GeolocationRequest";
+import {CompanyMarker, userMarkerIcon} from "../interactive/Markers";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
@@ -227,7 +229,7 @@ class CompanyDetails extends Component {
   }
 
   render() {
-    const {company, error, fields} = this.props;
+    const {company, error, fields, userLocation} = this.props;
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
 
     if(company === null) {
@@ -377,7 +379,15 @@ class CompanyDetails extends Component {
       <CompanyMarker key={coords.id} position={[coords.coords.lat, coords.coords.lng]} />
     );
 
-    const mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
+    if(userLocation) {
+      markers.push(
+        <Marker key="user-location" icon={userMarkerIcon} position={userLocation} />
+      );
+    }
+
+    let mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
+    mapCenter = userLocation || mapCenter;
+    
     let companyMap;
     if(!addressesPresent) {
       companyMap = null;
@@ -398,6 +408,7 @@ class CompanyDetails extends Component {
             <div className="map company-details">
               <Map center={mapCenter}>{markers}</Map>
             </div>
+            <GeolocationRequest className="mt-3" />
           </Col>
         </Row>
 
@@ -457,6 +468,7 @@ function mapStateToProps(state) {
     error: state.company.error,
     fields: state.structure.fields,
     privileges: state.auth.privileges,
+    userLocation: state.map.geolocation,
   };
 }
 
