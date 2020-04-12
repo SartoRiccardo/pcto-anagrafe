@@ -6,7 +6,7 @@ import CompanyResults from "../company/CompanyResults";
 import ChangePage from "../interactive/ChangePage";
 import Map from "../interactive/Map";
 import {CompanyMarker, userMarkerIcon} from "../interactive/Markers";
-import {Marker} from "react-leaflet";
+import {Marker, Circle} from "react-leaflet";
 import GeolocationRequest from "../interactive/GeolocationRequest";
 
 import Container from "react-bootstrap/Container";
@@ -42,6 +42,7 @@ function SearchCompany(props) {
     reducer="SEARCH"
   />;
 
+  const range = 20;
   const markers = coordinates.map(({ company, lat, lng }) => {
     let match = null;
     for(const resultedCompany of results) {
@@ -57,14 +58,29 @@ function SearchCompany(props) {
       return null;
     }
 
+    let outOfRange = false;
+    if(userLocation) {
+      const companyDistanceY = lat*110.574 - userLocation.lat*110.574;
+      const companyDistanceX = Math.cos(lat*(Math.PI / 180)) * 111.320 * lng -
+          Math.cos(userLocation.lat*(Math.PI / 180)) * 111.320 * userLocation.lng;
+      const companyDistance = Math.sqrt(
+        Math.pow(companyDistanceX, 2) + Math.pow(companyDistanceY, 2)
+      );
+      outOfRange = companyDistance > range;
+    }
+
     return (
-      <CompanyMarker key={match.id} company={match} position={{lat, lng}} />
+      <CompanyMarker key={match.id} company={match} position={{lat, lng}}
+          outOfRange={outOfRange} />
     );
   });
 
   if(userLocation) {
     markers.push(
-      <Marker key={"user-icon"} icon={userMarkerIcon} position={userLocation} />
+      <React.Fragment key={"user-icon"}>
+        <Marker icon={userMarkerIcon} position={userLocation} />
+        <Circle color="orange" center={userLocation} radius={range * 1000} />
+      </React.Fragment>
     );
   }
 
@@ -72,7 +88,7 @@ function SearchCompany(props) {
     <React.Fragment>
       <hr />
       <div id="search-map" className="map search">
-        <Map zoom={10}>
+        <Map center={userLocation} zoom={10}>
           {markers}
         </Map>
         {
