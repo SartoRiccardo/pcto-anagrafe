@@ -48,7 +48,7 @@ class GeolocationRequest extends React.Component {
     const { geolocation, error, loading } = this.props.map;
 
     const body = error ? (
-      <p>{error}</p>
+      <p className="text-muted">{error}</p>
     ) : (
       <React.Fragment>
         <h4>Attiva geolocalizzazione</h4>
