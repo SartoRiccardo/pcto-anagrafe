@@ -27,6 +27,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import ListGroup from "react-bootstrap/ListGroup";
 
 /**
  * A table showing all of a company's information.
@@ -330,27 +331,31 @@ class CompanyDetails extends Component {
           }
         }
 
-        cellContent = (
+        cellContent = (cellText || canModify) && (
           <Fragment>
             {cellText}{" "}
             {warning}
-            {canModify ?
-              <FontAwesomeIcon
-                icon={faPen}
-                className="icon-button ml-1"
-                onClick={this.onClickConstructor(f.id)}
-              /> : null}
+            {
+              canModify &&
+              <span className="float-right">
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className="icon-button"
+                  onClick={this.onClickConstructor(f.id)}
+                />
+              </span>
+            }
           </Fragment>
         );
       }
 
-      return (
-        <tr key={f.id}>
-          <td><b>{f.name}</b></td>
-          <td>
-            {cellContent}
-          </td>
-        </tr>
+      return cellContent && (
+        <Col xs={12} md={12/2} key={f.id} className="my-2">
+          <ListGroup>
+            <ListGroup.Item><h4 className="mb-0">{f.name}</h4></ListGroup.Item>
+            <ListGroup.Item>{cellContent}</ListGroup.Item>
+          </ListGroup>
+        </Col>
       );
     });
 
@@ -361,14 +366,23 @@ class CompanyDetails extends Component {
         onFinish={this.modifyFinishHandler}
       />
     ) : (
-      <h1 className="text-center" xs={12} md="auto">
-        {company.name + " "}
-        {canModify ?
-          <FontAwesomeIcon
-            icon={faPen}
-            className="icon-button d-none d-md-inline-block"
-            onClick={this.onClickConstructor(0)}
-          /> : null}
+      <h1 xs={12} md="auto" className="ml-md-3">
+        {company.name}{" "}
+        {
+          canModify &&
+          <Fragment>
+            <FontAwesomeIcon
+              icon={faPen}
+              className="icon-button d-none d-md-inline-block"
+              onClick={this.onClickConstructor(0)}
+            />{" "}
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              className="icon-button d-none d-md-inline-block"
+              onClick={this.startDelete}
+            />
+          </Fragment>
+        }
       </h1>
     );
 
@@ -387,7 +401,7 @@ class CompanyDetails extends Component {
 
     let mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
     mapCenter = userLocation || mapCenter;
-    
+
     let companyMap;
     if(!addressesPresent) {
       companyMap = null;
@@ -403,7 +417,7 @@ class CompanyDetails extends Component {
     }
     else {
       companyMap = (
-        <Row>
+        <Row className="mt-4">
           <Col>
             <div className="map company-details">
               <Map center={mapCenter}>{markers}</Map>
@@ -424,36 +438,35 @@ class CompanyDetails extends Component {
         />
 
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="text-center text-md-left" xs={12} md="auto">
-            <h1>
-              <SaveStar company={company} status={company.saved} />
-              <FontAwesomeIcon icon={faUserTie} className="icon-button mx-2" onClick={this.redirectToProjects} />
-              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.startDelete} /> : null}
-              {canModify ? <FontAwesomeIcon icon={faPen} className="icon-button d-inline-block d-md-none" onClick={this.onClickConstructor(0)} /> : null}
-            </h1>
-          </Col>
-
-          <Col>
+          <Col className="text-center text-md-left" xs={{order: 2}} md={{order: 1}}>
             {title}
           </Col>
 
-          <Col xs={12} md="auto" className="d-none d-md-block">
+          <Col className="text-center text-md-left" xs={{order: 1, span: 12}}
+              md={{order: 2, span: "auto"}}>
             <h1>
-              <FontAwesomeIcon icon={faUserTie} className="icon-invisible" />
-              <FontAwesomeIcon icon={faUserTie} className="icon-invisible mx-2" />
-              {canModify ? <FontAwesomeIcon icon={faUserTie} className="icon-invisible mr-2" /> : null}
+              <SaveStar company={company} status={company.saved} />
+              <FontAwesomeIcon icon={faUserTie} className="icon-button ml-2"
+                  onClick={this.redirectToProjects} />
+              <FontAwesomeIcon icon={faPen} className="icon-button mx-2 d-md-none d-inline-block"
+                onClick={this.onClickConstructor(0)}
+              />
+              <FontAwesomeIcon icon={faTrashAlt} className="icon-button d-md-none d-inline-block"
+                onClick={this.startDelete}
+              />
             </h1>
           </Col>
         </Row>
 
         <Row>
-          <Col>
-            <Table responsive bordered striped className="details-table">
+          {data}
+          {false && <Col>
+             <Table responsive bordered striped className="details-table">
               <tbody>
                 {data}
               </tbody>
             </Table>
-          </Col>
+          </Col>}
         </Row>
 
         {companyMap}
