@@ -381,7 +381,6 @@ body.overlay-open {
 
 .internship-box {
   border: 1px solid $grey-lighten-5;
-  border-radius: 1.5rem;
   background-color: white;
 }
 
@@ -398,14 +397,23 @@ body.overlay-open {
   border: 1px solid $grey-lighten-5;
   height: 100%;
   background-color: white;
-  border-radius: 1rem;
+}
+
+.activity-container h4 {
+  word-wrap: break-word;
 }
 
 .internship-card .card-header {
-  // background-color: saturate($brown-lighten-4, 20%);
-  // border: 1px solid darken($brown-lighten-4, 10%);
-  background-color: rgba(0,0,0,0);
+  background-color: $grey-lighten-4;
+  transition: background-color 0.25s;
   border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.internship-card .card-header:hover {
+  background-color: $grey-lighten-2;
+  transition: background-color 0.25s;
 }
 
 .card.internship-card {
@@ -414,8 +422,8 @@ body.overlay-open {
 }
 
 .card.internship-card .internship-card-body {
-  border-radius: 0.25rem;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid $grey-lighten-3;
+  border-top: none;
 }
 
 // Navbar

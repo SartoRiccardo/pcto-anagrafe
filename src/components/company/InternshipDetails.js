@@ -15,6 +15,7 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Accordion from "react-bootstrap/Accordion";
 
 /**
  * Shows all internships of a specific activity a company did in detail.
@@ -145,17 +146,22 @@ class InternshipDetails extends Component {
         const nextYear = year%100 + 1;
         return (
           <Col sm={12} md={12/2} lg={12/3} key={year}>
-            <Card className="internship-card my-3">
-              <Card.Header className="text-center">
-                {`${year}/${nextYear}`}
-              </Card.Header>
+            <Accordion>
+              <Card className="internship-card my-3">
+                <Accordion.Toggle as={Card.Header} className="text-center"
+                    eventKey={year}>
+                  {`${year}/${nextYear}`}
+                </Accordion.Toggle>
 
-              <div className="internship-card-body">
-                <ListGroup variant="flush">
-                  {listItems}
-                </ListGroup>
-              </div>
-            </Card>
+                <Accordion.Collapse eventKey={year}>
+                  <div className="internship-card-body">
+                    <ListGroup variant="flush">
+                      {listItems}
+                    </ListGroup>
+                  </div>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
           </Col>
         );
       });
