@@ -149,8 +149,14 @@ class StructureEnumField extends Component {
           return (
             <ListGroup.Item key={i}>
               {o}
-              {modifying ? null : <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.createModifyHandler(i)} />}
-              {modifying ? null : <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.createDeleteHandler(i)} />}
+              {
+                modifying ? null : (
+                  <span className="float-right">
+                    <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.createModifyHandler(i)} />
+                    <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.createDeleteHandler(i)} />
+                  </span>
+                )
+              }
             </ListGroup.Item>
           );
         }

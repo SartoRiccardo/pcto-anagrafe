@@ -3,6 +3,8 @@ import React, {Component} from "react";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 /**
  * A form to add a field to the table structure.
@@ -42,21 +44,26 @@ class AddField extends Component {
 
   render() {
     return (
-      <Card className="my-3">
-        <Form onSubmit={this.handleSubmit}>
-          <Card.Header className="field-header">
-            <Form.Control
-              type="text"
-              placeholder="Nome campo"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </Card.Header>
+      <Card className="my-3 field-card">
+        <Card.Header className="field-header form">
+          <Form onSubmit={this.handleSubmit} className="text-center">
+            <Form.Row>
+              <Col>
+                <Form.Control
+                  className="field-card input" 
+                  type="text"
+                  placeholder="Nome campo"
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                />
+              </Col>
 
-          <Card.Body className="d-flex justify-content-center">
-            <Button type="submit">Aggiungi</Button>
-          </Card.Body>
-        </Form>
+              <Col xs="auto">
+                <Button className="field-card input" type="submit" className="float-right">Aggiungi</Button>
+              </Col>
+            </Form.Row>
+          </Form>
+        </Card.Header>
       </Card>
     );
   }

@@ -209,7 +209,7 @@ class FieldCard extends Component {
     else if(deleted) {
       header = (
         <Fragment>
-          <FontAwesomeIcon icon={faUndo} className="icon-button mr-2" onClick={this.restoreSelf} />
+          <FontAwesomeIcon fixedWidth icon={faUndo} className="icon-button mr-1" onClick={this.restoreSelf} />
           {name}
         </Fragment>
       );
@@ -217,19 +217,23 @@ class FieldCard extends Component {
     }
     else {
       const caret = showing ? (
-        <FontAwesomeIcon icon={faCaretUp} className="icon-button mr-2" onClick={this.collapseField} />
+        <FontAwesomeIcon fixedWidth icon={faCaretUp} className="icon-button mr-1" onClick={this.collapseField} />
       ) : (
-        <FontAwesomeIcon icon={faCaretDown} className="icon-button mr-2" onClick={this.expandField} />
+        <FontAwesomeIcon fixedWidth icon={faCaretDown} className="icon-button mr-1" onClick={this.expandField} />
       );
       header = (
         <Fragment>
           {caret}
           {name}
-          <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
-          <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.deleteSelf} />
-          {!isNew && hasBeenModified
-            ? <FontAwesomeIcon icon={faUndo} className="icon-button" onClick={this.undoChanges} />
-            : null}
+          <span className="float-right">
+            {
+              !isNew && hasBeenModified
+              ? <FontAwesomeIcon icon={faUndo} className="icon-button" onClick={this.undoChanges} />
+              : null
+            }
+            <FontAwesomeIcon icon={faPen} className="icon-button mx-2" onClick={this.startChangingName} />
+            <FontAwesomeIcon icon={faTrashAlt} className="icon-button" onClick={this.deleteSelf} />
+          </span>
         </Fragment>
       );
     }
@@ -241,7 +245,7 @@ class FieldCard extends Component {
     const hasContent = showing ? "" : " no-content";
 
     return (
-      <Card className="my-3">
+      <Card className="my-3 field-card">
         <Card.Header className={`field-header${headerClass}${hasContent}`}>
           {header}
         </Card.Header>

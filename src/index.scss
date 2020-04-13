@@ -333,12 +333,46 @@ body.overlay-open {
   z-index: 9999;
 }
 
-.field-header.card-header {
-  background-color: $grey-lighten-5;
+// Field accordions
+
+.field-card:not(.input) {
+  border: none !important;
 }
 
-.field-header.card-header.no-content {
+.field-card .card-body {
+  border: 1px solid $grey-lighten-3;
+  border-top: none;
+}
+
+.field-header.card-header {
+  background-color: $grey-lighten-4;
+  border: none;
+}
+
+.field-header.card-header:not(.form) {
+  padding-left: 0.75rem;
+}
+
+.field-header.form {
+  height: 3rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.field-header.form form {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.field-card.input {
+  // height: 1rem;
+}
+
+.field-header.card-header {
   border-bottom: $transparent;
+  border-radius: 0 !important;
 }
 
 .field-modified.field-header {
