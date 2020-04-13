@@ -46,7 +46,11 @@ class PrivilegeToggler extends Component {
     const {selected, options} = this.props;
 
     const buttons = options.map((o) => {
-      return <ToggleButton key={o} variant="secondary" value={o}>{o.replace("_", " ")}</ToggleButton>
+      return (
+        <ToggleButton key={o} variant="secondary" value={o} className="privilege-toggler">
+          {o.replace("_", " ")}
+        </ToggleButton>
+      );
     });
 
     return (

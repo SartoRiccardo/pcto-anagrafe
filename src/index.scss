@@ -131,28 +131,33 @@ body.overlay-open {
 
 // Page selectors & secondary buttons
 
-.page-selector {
+.page-selector,
+.privilege-toggler {
   background-color: $transparent !important;
   border-color: $transparent !important;
   border-radius: 0 !important;
   transition: none !important;
 }
 
-.page-selector:hover {
+.page-selector:hover, .privilege-toggler:hover {
   background-color: $grey-lighten-3 !important;
 }
 
-.page-selector:hover, .page-selector:focus, .page-selector:active {
+.page-selector:hover, .page-selector:focus, .page-selector:active,
+.privilege-toggler.active, .privilege-toggler:hover, .privilege-toggler:focus,
+.privilege-toggler.focus {
   color: inherit !important;
 }
 
 .page-selector.page-selector-arrow,
-.page-selector.page-selected {
+.page-selector.page-selected,
+.privilege-toggler.active {
   background-color: $secondary !important;
 }
 
 .page-selector.page-selector-arrow:hover,
-.page-selector.page-selected:hover {
+.page-selector.page-selected:hover,
+.privilege-toggler.active:hover {
   color: white !important;
 }
 
@@ -434,9 +439,14 @@ body.overlay-open {
 }
 
 .btn.fab {
-  border-radius: 50%;
+  border-radius: 50% !important;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   background-color: rgba(0, 0, 0, 0.15) !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  font-size: 2rem;
+  overflow: hidden;
+  // border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
 
 // Error page
