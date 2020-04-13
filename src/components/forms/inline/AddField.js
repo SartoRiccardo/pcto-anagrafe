@@ -50,7 +50,7 @@ class AddField extends Component {
             <Form.Row>
               <Col>
                 <Form.Control
-                  className="field-card input" 
+                  className="field-card input"
                   type="text"
                   placeholder="Nome campo"
                   value={this.state.value}
@@ -59,7 +59,7 @@ class AddField extends Component {
               </Col>
 
               <Col xs="auto">
-                <Button className="field-card input" type="submit" className="float-right">Aggiungi</Button>
+                <Button className="field-card input" type="submit">Aggiungi</Button>
               </Col>
             </Form.Row>
           </Form>
