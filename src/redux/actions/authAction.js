@@ -27,6 +27,8 @@ async function attemptLogin(dispatch, sendData, withCredentials=false) {
         type: "AUTHR_LOGIN",
         token, user, privileges,
       });
+    }, () => {
+      dispatch({ type: "AUTHR_ERROR", error: data.message });
     });
   }
   catch(e) {
@@ -75,11 +77,14 @@ export function initLogin() {
 /**
  * An action creator to completely logout.
  */
-export function logoutAction() {
+export function logoutAction(error=null) {
   return (dispatch, getState) => {
     dispatch({type: "SEARCHR_RESET_SEARCH"});
     dispatch({type: "SAVEDR_RESET"});
     dispatch({type: "COMPANYR_RESET"});
     dispatch({type: "AUTHR_LOGOUT"});
+    if(error) {
+      dispatch({ type: "AUTHR_ERROR", error });
+    }
   };
 }

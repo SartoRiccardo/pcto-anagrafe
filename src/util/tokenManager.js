@@ -1,4 +1,6 @@
 
+const expireIn = 7 * (24*60*60*1000); // x days
+
 /**
  * Deletes the token.
  */
@@ -13,7 +15,7 @@ export function deleteToken() {
  */
 export function saveToken(token) {
   deleteToken();
-  localStorage.setItem("token", token);
+  localStorage.setItem("token", `${Date.now() + expireIn};${token}`);
 }
 
 /**
@@ -22,7 +24,11 @@ export function saveToken(token) {
  * @return {int} The user's token.
  */
 export function getToken() {
-  const ret = localStorage.getItem("token");
+  const tokenPayload = localStorage.getItem("token");
+  if(!tokenPayload) {
+    return null;
+  }
 
-  return ret;
+  const [ expire, token ] = tokenPayload.split(";");
+  return parseInt(expire) > Date.now() ? token : null;
 }

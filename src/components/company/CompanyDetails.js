@@ -50,6 +50,7 @@ class CompanyDetails extends Component {
       document.title = `PCTOkay! ${company.name}`;
     }
 
+    this.mounted = true;
     this.state = {
       modifying: null,
       deleteStarted: false,
@@ -72,7 +73,7 @@ class CompanyDetails extends Component {
     const {initialized, currentId} = this.state;
     const {company, error} = this.props;
     const id = parseInt(this.props.match.params.id);
-    if(!initialized && company && company.id === id) {
+    if(this.mounted && !initialized && company && company.id === id) {
       this.setState({
         initialized: true,
       });
@@ -96,6 +97,10 @@ class CompanyDetails extends Component {
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   handleModify = (fieldID) => {
