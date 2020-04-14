@@ -36,7 +36,10 @@ function requestGeolocation($address) {
   $session = curl_init(sprintf($url, urlencode($address), $mapsToken));
   curl_setopt_array($session, $options);
   $response = json_decode(curl_exec($session), true);
-  if(curl_error($session) || count($response["candidates"]) === 0) {
+  if(curl_error($session)) {
+    return null;
+  }
+  if(count($response["candidates"]) === 0) {
     return array("lat" => null, "lng" => null);
   }
   curl_close($session);
@@ -77,7 +80,9 @@ Flight::route("GET /geolocation", function() {
       $response = getCachedGeolocation($address);
       if($response === null) {
         $response = requestGeolocation($address);
-        cacheGeolocation($address, $response["lat"], $response["lng"]);
+        if($response !== null) {
+          cacheGeolocation($address, $response["lat"], $response["lng"]);
+        }
       }
     }
   }
