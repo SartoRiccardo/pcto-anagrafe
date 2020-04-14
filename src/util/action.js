@@ -1,4 +1,6 @@
 import {getToken} from "./tokenManager";
+import {logoutAction} from "../redux/actions/authAction";
+let currentToken = null;
 
 /**
  * Logs an user out if it doesn't have a token.
@@ -7,17 +9,20 @@ import {getToken} from "./tokenManager";
  * @return {function}           The callback if the controls pass, or a function that does nothing.
  */
 export function protectFunction(callback) {
-  if(!getToken()) {
-    // Logout
-    return function() {};
+  const token = getToken()
+  if(!token) {
+    const message = currentToken && "Sessione scaduta";
+    currentToken = null;
+    return logoutAction(message);
   }
 
+  currentToken = token;
   return callback;
 }
 
 /**
  * Executes a function if the conditions are correct, or logs an error.
- * 
+ *
  * @param  {int}      status   The request's response code.
  * @param  {Object}   data     The resulting data.
  * @param  {Function} dispatch The function to dispatch a redux action.

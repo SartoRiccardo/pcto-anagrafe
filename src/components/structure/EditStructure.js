@@ -14,6 +14,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Fade from "react-bootstrap/Fade";
 
 /**
  * A form to edit the virtual table storing the companies' data.
@@ -197,7 +198,8 @@ class EditStructure extends Component {
 
   render() {
     const {fields, lastTempId, initialized, dumping} = this.state;
-    if(!initialized || dumping) {
+    const {actions} = this.props;
+    if(!initialized || dumping || actions.length > 0) {
       return (
         <Container className="d-flex justify-content-center">
           <FontAwesomeIcon icon={faSpinner} size="10x" className="align-self-center" pulse />
@@ -210,6 +212,9 @@ class EditStructure extends Component {
     // Matches the state fields with the props fields.
     // If a match isn't found, it's set to null.
     let matches = this.groupFields(fields, original);
+    const changeHasBeenMade = !matches.every(([ curr, orig ]) =>
+      curr && orig && curr.name === orig.name && curr.regex === orig.regex
+    );
 
     const list = matches.map((m) => {
       const id = m[0] ? m[0].id : m[1].id;
@@ -245,12 +250,16 @@ class EditStructure extends Component {
           </Col>
         </Row>
 
-        <hr />
-        <Row>
-          <Col className="d-flex justify-content-center">
-            <Button onClick={this.saveChanges}>Salva</Button>
-          </Col>
-        </Row>
+        <Fade in={changeHasBeenMade} mountOnEnter={true} unmountOnExit={true}>
+          <div>
+            <hr />
+            <Row>
+              <Col className="d-flex justify-content-center">
+                <Button onClick={this.saveChanges}>Salva</Button>
+              </Col>
+            </Row>
+          </div>
+        </Fade>
       </Container>
     );
   }

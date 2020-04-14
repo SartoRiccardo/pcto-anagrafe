@@ -1,105 +1,78 @@
 import React, {Fragment} from "react";
 // Custom Components
 import CompanySummary from "./CompanySummary";
-// Icons
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import InfiniteLoadingBar from "../ui/InfiniteLoadingBar";
 // Bootstrap
-import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 /**
  * A table of CompanySummary.
  *
- * @param {Company[]} props.results  A list of companies.
- * @param {Search[]}  props.search   The parameters in the search.
- * @param {boolean}   props.loading  Whether the results are still loading.
+ * @param {Company[]}       props.results     A list of companies.
+ * @param {Search[]}        props.search      The parameters in the search.
+ * @param {boolean}         props.loading     Whether the results are still loading.
+ * @param {boolean}         props.usingMap    Whether there is a map feature active.
+ * @param {CompanyCoords[]} props.coordinates The company's coordinates.
  */
 function CompanyResults(props) {
-  const {results, loading, search} = props;
+  const {results, loading, search, coordinates, usingMap} = props;
 
-  const loadingComponent = results.length > 0 ? (
-    <div className="table-overlay d-flex justify-content-center">
-      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
-    </div>
-  ) : (
-    <div className="d-flex justify-content-center">
-      <FontAwesomeIcon icon={faSpinner} pulse className="loading-table-overlay my-2" />
-    </div>
+  const loadingBar = (
+    <Row>
+      <Col className="mb-3">
+        <InfiniteLoadingBar speed={200} />
+      </Col>
+    </Row>
   );
 
-  let table;
+  let content;
   if(results.length > 0) {
-    const summaries = results.map((res) => {
-      return <CompanySummary key={res.id} data={res} search={search} />;
-    });
-
-    let uniqueFields = [];
-    if(search) {
-      for (let i = 0; i < search.length; i++) {
-        if(!uniqueFields.includes(search[i].field.id) && search[i].field.id > 0) {
-          uniqueFields.push(search[i].field.id);
-        }
+    content = results.map((res, i) => {
+      let nullifyMargin = "";
+      if(i === 0) {
+        nullifyMargin += " first";
       }
-    }
-
-    const header = uniqueFields.map((id) => {
-      let value = null;
-      for (let i = 0; i < search.length; i++) {
-        if(search[i].field.id === id) {
-          value = search[i].field.name;
-        }
+      if(i === results.length-1) {
+        nullifyMargin += " last";
       }
-      return <th key={id}>{value ? value : "N/A"}</th>;
+      return (
+        <CompanySummary key={res.id} data={res} search={search}
+            hasCoordinates={usingMap && coordinates.some(
+              ({ company, lat, lng }) => company === res.id && lat !== null && lng !== null
+            )}
+            className={nullifyMargin} />
+      );
     });
-
-    table = (
-      <Table responsive striped bordered hover className="results-table">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            {header}
-          </tr>
-        </thead>
-        <tbody>
-          {summaries}
-        </tbody>
-      </Table>
-    );
   }
   else if(loading) {
-    return (
-      <Row>
-        <Col>
-          {loadingComponent}
-        </Col>
-      </Row>
-    );
-  }
-  else if(loading) {
-    table = null;
+    content = null;
   }
   else if(search.length === 0) {
-    table = (
+    content = (
       <h1 className="text-center">Inizia a cercare aziende</h1>
     );
   }
   else {
-    table = (
+    content = (
       <Fragment>
         <h1 className="text-center">Nessun risultato</h1>
         <p className="lead text-center">Prova a restringere i campi di ricerca</p>
       </Fragment>
     );
   }
+
   return (
-    <Row>
-      <Col>
-        {table}
-        {loading ? loadingComponent : null}
-      </Col>
-    </Row>
+    <Fragment>
+      {loading && loadingBar}
+
+      <Row>
+        <Col>
+          {content}
+          {loading && <div className="table-overlay d-flex justify-content-center" />}
+        </Col>
+      </Row>
+    </Fragment>
   );
 }
 

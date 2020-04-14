@@ -1,9 +1,11 @@
 
+const expireIn = 7 * (24*60*60*1000); // x days
+
 /**
  * Deletes the token.
  */
 export function deleteToken() {
-  document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+  localStorage.removeItem("token");
 }
 
 /**
@@ -13,7 +15,7 @@ export function deleteToken() {
  */
 export function saveToken(token) {
   deleteToken();
-  if(token) document.cookie = "token=" + token;
+  localStorage.setItem("token", `${Date.now() + expireIn};${token}`);
 }
 
 /**
@@ -22,17 +24,11 @@ export function saveToken(token) {
  * @return {int} The user's token.
  */
 export function getToken() {
-  let ret = null;
-
-  const cookies = document.cookie;
-  for(let i = 0; i < cookies.split(";").length; i++) {
-    let c = cookies.split(";")[i];
-    if(c.includes("=")) {
-      if(c.trim().split("=")[0] === "token") {
-        ret = c.trim().split("=")[1];
-      }
-    }
+  const tokenPayload = localStorage.getItem("token");
+  if(!tokenPayload) {
+    return null;
   }
 
-  return ret;
+  const [ expire, token ] = tokenPayload.split(";");
+  return parseInt(expire) > Date.now() ? token : null;
 }

@@ -4,22 +4,30 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {updateName, updateField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
+import {getAtecoDescription, getLocationCoords} from "../../util/requests";
 // Custom components
 import Table from "react-bootstrap/Table";
 import SaveStar from "../interactive/SaveStar";
 import GenericModifier from "../forms/inline/GenericModifier";
 import ConfirmDeleteCompany from "./ConfirmDeleteCompany";
-import {StructureEmailField, StructureWebsiteField} from "../structure/StructureSpecificField";
+import {StructureEmailField, StructureWebsiteField,
+    StructureAtecoField, StructureAddressField} from "../structure/StructureSpecificField";
+import Map from "../interactive/Map";
+import {Marker} from "react-leaflet";
+import GeolocationRequest from "../interactive/GeolocationRequest";
+import {CompanyMarker, userMarkerIcon} from "../interactive/Markers";
 // Icons
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPen, faTrashAlt, faSpinner, faExclamationTriangle,
-  faUserTie, faExternalLinkAlt, faEnvelope} from "@fortawesome/free-solid-svg-icons";
+  faUserTie, faExternalLinkAlt, faEnvelope, faInfoCircle}
+  from "@fortawesome/free-solid-svg-icons";
 // Bootstrap
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import ListGroup from "react-bootstrap/ListGroup";
 
 /**
  * A table showing all of a company's information.
@@ -42,23 +50,35 @@ class CompanyDetails extends Component {
       document.title = `PCTOkay! ${company.name}`;
     }
 
+    this.mounted = true;
     this.state = {
       modifying: null,
       deleteStarted: false,
       initialized: company && company.id === id,
       currentId: id,
+      atecoDescriptions: [],
+      coords: [],
     };
+  }
+
+  componentDidMount() {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+    if(company && company.id === id) {
+      this.onCompanyInit();
+    }
   }
 
   componentDidUpdate() {
     const {initialized, currentId} = this.state;
     const {company, error} = this.props;
     const id = parseInt(this.props.match.params.id);
-    if(!initialized && company && company.id === id) {
+    if(this.mounted && !initialized && company && company.id === id) {
       this.setState({
         initialized: true,
       });
       document.title = `PCTOkay! ${company.name}`;
+      this.onCompanyInit();
     }
 
     const title404 = `PCTOkay! Azienda non trovata`;
@@ -71,10 +91,16 @@ class CompanyDetails extends Component {
       this.setState({
         initialized: false,
         currentId: id,
+        atecoDescriptions: [],
+        coords: [],
       });
       this.props.resetCompany();
       this.props.selectCompany(id);
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   handleModify = (fieldID) => {
@@ -161,8 +187,55 @@ class CompanyDetails extends Component {
     this.props.history.push(link);
   }
 
+  fetchAtecoDescription = async (fieldID, ateco) => {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+
+    const description = await getAtecoDescription(ateco);
+    if(description && company && id === company.id) {
+      this.setState((state) => ({
+        atecoDescriptions: [
+          ...state.atecoDescriptions,
+          { id: fieldID, description },
+        ],
+      }));
+    }
+  }
+
+  fetchLocation = async (fieldID, address) => {
+    const id = parseInt(this.props.match.params.id);
+    const {company} = this.props;
+
+    let coords = await getLocationCoords(company.name, address);
+    if(coords && (!coords.lat || !coords.lng)) {
+      coords = await getLocationCoords(address);
+    }
+
+    if(coords && company && id === company.id) {
+      this.setState((state) => ({
+        coords: [
+          ...state.coords,
+          { id: fieldID, coords },
+        ],
+      }));
+    }
+  }
+
+  onCompanyInit = () => {
+    const {company} = this.props;
+
+    for(const field of company.fields) {
+      if(StructureAtecoField.regex.test(field.regex)) {
+        this.fetchAtecoDescription(field.id, field.value);
+      }
+      else if(StructureAddressField.regex.test(field.regex)) {
+        this.fetchLocation(field.id, field.value);
+      }
+    }
+  }
+
   render() {
-    const {company, error, fields} = this.props;
+    const {company, error, fields, userLocation} = this.props;
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
 
     if(company === null) {
@@ -217,51 +290,77 @@ class CompanyDetails extends Component {
         const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
         const regex = new RegExp("^" + f.regex + "$");
         const warning = match && canModify && !regex.exec(match.value) ? (
-          <OverlayTrigger placement="right" overlay={tooltip}>
+          <OverlayTrigger placement="top" overlay={tooltip}>
             <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
           </OverlayTrigger>
         ) : null;
 
         let cellText = match ? match.value : null;
-        if(cellText && StructureWebsiteField.regex.test(f.regex)) {
-          const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
-          cellText = (
-            <a target="_blank" rel="noopener noreferrer" href={href}>
-              {cellText}
-              <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
-            </a>
-          );
-        }
-        else if(cellText && StructureEmailField.regex.test(f.regex)) {
-          cellText = (
-            <a href={`mailto: ${cellText}`}>
-              {cellText}
-              <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
-            </a>
-          );
+        if(cellText) {
+          if(StructureWebsiteField.regex.test(f.regex)) {
+            const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
+            cellText = (
+              <a target="_blank" rel="noopener noreferrer" href={href}>
+                {cellText}
+                <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
+              </a>
+            );
+          }
+          else if(StructureEmailField.regex.test(f.regex)) {
+            cellText = (
+              <a href={`mailto: ${cellText}`}>
+                {cellText}
+                <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
+              </a>
+            );
+          }
+          else if(StructureAtecoField.regex.test(f.regex) &&
+              this.state.atecoDescriptions.some((descriptions) => descriptions.id === f.id)) {
+            let match = null;
+            for(const description of this.state.atecoDescriptions) {
+              if(description.id === f.id) {
+                match = description.description;
+                break;
+              }
+            }
+
+            const atecoDescriptionTooltip = (<Tooltip>{match}</Tooltip>);
+            cellText = (
+              <Fragment>
+                {cellText}
+                <OverlayTrigger placement="top" overlay={atecoDescriptionTooltip}>
+                  <FontAwesomeIcon icon={faInfoCircle} className="mx-2 text-info" />
+                </OverlayTrigger>
+              </Fragment>
+            );
+          }
         }
 
-        cellContent = (
+        cellContent = (cellText || canModify) && (
           <Fragment>
             {cellText}{" "}
             {warning}
-            {canModify ?
-              <FontAwesomeIcon
-                icon={faPen}
-                className="icon-button ml-1"
-                onClick={this.onClickConstructor(f.id)}
-              /> : null}
+            {
+              canModify &&
+              <span className="float-right">
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className="icon-button"
+                  onClick={this.onClickConstructor(f.id)}
+                />
+              </span>
+            }
           </Fragment>
         );
       }
 
-      return (
-        <tr key={f.id}>
-          <td><b>{f.name}</b></td>
-          <td>
-            {cellContent}
-          </td>
-        </tr>
+      return cellContent && (
+        <Col xs={12} md={12/2} key={f.id} className="my-2">
+          <ListGroup>
+            <ListGroup.Item><h4 className="mb-0">{f.name}</h4></ListGroup.Item>
+            <ListGroup.Item>{cellContent}</ListGroup.Item>
+          </ListGroup>
+        </Col>
       );
     });
 
@@ -272,16 +371,68 @@ class CompanyDetails extends Component {
         onFinish={this.modifyFinishHandler}
       />
     ) : (
-      <h1 className="text-center" xs={12} md="auto">
-        {company.name + " "}
-        {canModify ?
-          <FontAwesomeIcon
-            icon={faPen}
-            className="icon-button d-none d-md-inline-block"
-            onClick={this.onClickConstructor(0)}
-          /> : null}
+      <h1 xs={12} md="auto" className="ml-md-3">
+        {company.name}{" "}
+        {
+          canModify &&
+          <Fragment>
+            <FontAwesomeIcon
+              icon={faPen}
+              className="icon-button d-none d-md-inline-block"
+              onClick={this.onClickConstructor(0)}
+            />{" "}
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              className="icon-button d-none d-md-inline-block"
+              onClick={this.startDelete}
+            />
+          </Fragment>
+        }
       </h1>
     );
+
+    const addressesPresent = company.fields.some(
+      (f) => StructureAddressField.regex.test(f.regex)
+    );
+    const markers = this.state.coords.map((coords) =>
+      <CompanyMarker key={coords.id} position={[coords.coords.lat, coords.coords.lng]} />
+    );
+
+    if(userLocation) {
+      markers.push(
+        <Marker key="user-location" icon={userMarkerIcon} position={userLocation} />
+      );
+    }
+
+    let mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
+    mapCenter = userLocation || mapCenter;
+
+    let companyMap;
+    if(!addressesPresent) {
+      companyMap = null;
+    }
+    else if(markers.length === 0) {
+      companyMap = (
+          <Row>
+            <Col>
+              <div className="map company-details loading" />
+            </Col>
+          </Row>
+      );
+    }
+    else {
+      companyMap = (
+        <Row className="mt-4">
+          <Col>
+            <div className="map company-details">
+              <Map center={mapCenter}>{markers}</Map>
+            </div>
+            <GeolocationRequest className="mt-3" />
+          </Col>
+        </Row>
+
+      );
+    }
 
     return(
       <Container>
@@ -292,37 +443,38 @@ class CompanyDetails extends Component {
         />
 
         <Row className="my-3 d-flex justify-content-center">
-          <Col className="text-center text-md-left" xs={12} md="auto">
-            <h1>
-              <SaveStar company={company} status={company.saved} />
-              <FontAwesomeIcon icon={faUserTie} className="icon-button mx-2" onClick={this.redirectToProjects} />
-              {canModify ? <FontAwesomeIcon icon={faTrashAlt} className="icon-button mr-2" onClick={this.startDelete} /> : null}
-              {canModify ? <FontAwesomeIcon icon={faPen} className="icon-button d-inline-block d-md-none" onClick={this.onClickConstructor(0)} /> : null}
-            </h1>
-          </Col>
-
-          <Col>
+          <Col className="text-center text-md-left" xs={{order: 2}} md={{order: 1}}>
             {title}
           </Col>
 
-          <Col xs={12} md="auto" className="d-none d-md-block">
+          <Col className="text-center text-md-left" xs={{order: 1, span: 12}}
+              md={{order: 2, span: "auto"}}>
             <h1>
-              <FontAwesomeIcon icon={faUserTie} className="icon-invisible" />
-              <FontAwesomeIcon icon={faUserTie} className="icon-invisible mx-2" />
-              {canModify ? <FontAwesomeIcon icon={faUserTie} className="icon-invisible mr-2" /> : null}
+              <SaveStar company={company} status={company.saved} />
+              <FontAwesomeIcon icon={faUserTie} className="icon-button ml-2"
+                  onClick={this.redirectToProjects} />
+              <FontAwesomeIcon icon={faPen} className="icon-button mx-2 d-md-none d-inline-block"
+                onClick={this.onClickConstructor(0)}
+              />
+              <FontAwesomeIcon icon={faTrashAlt} className="icon-button d-md-none d-inline-block"
+                onClick={this.startDelete}
+              />
             </h1>
           </Col>
         </Row>
 
         <Row>
-          <Col>
-            <Table responsive bordered striped className="details-table">
+          {data}
+          {false && <Col>
+             <Table responsive bordered striped className="details-table">
               <tbody>
                 {data}
               </tbody>
             </Table>
-          </Col>
+          </Col>}
         </Row>
+
+        {companyMap}
       </Container>
     );
   }
@@ -334,6 +486,7 @@ function mapStateToProps(state) {
     error: state.company.error,
     fields: state.structure.fields,
     privileges: state.auth.privileges,
+    userLocation: state.map.geolocation,
   };
 }
 

@@ -17,7 +17,9 @@ function activityReducer(state=init, action) {
     case "ACTIVITYR_INITIALIZE":
       return {
         ...state,
-        activities: action.activities,
+        activities: action.activities.sort(
+          (act1, act2) => act1.name.localeCompare(act2.name)
+        ),
         initialized: true,
       };
 

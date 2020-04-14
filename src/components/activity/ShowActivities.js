@@ -138,16 +138,18 @@ class ShowActivities extends Component {
         ) : (
           <h4>
             {a.name}
-            <FontAwesomeIcon
-              icon={faPen}
-              className="icon-button mx-2"
-              onClick={this.createModify(a.id, "NAME")}
-            />
-            <FontAwesomeIcon
-              icon={faTrashAlt}
-              className="icon-button"
-              onClick={this.createDelete(a)}
-            />
+            <span className="float-right">
+              <FontAwesomeIcon
+                icon={faPen}
+                className="icon-button mx-2"
+                onClick={this.createModify(a.id, "NAME")}
+              />
+              <FontAwesomeIcon
+                icon={faTrashAlt}
+                className="icon-button"
+                onClick={this.createDelete(a)}
+              />
+            </span>
           </h4>
         );
 
