@@ -550,6 +550,13 @@ body.overlay-open {
   background-color: $grey-lighten-3;
 }
 
+.map.failure {
+  border-left: 10px solid $red-lighten-2;
+  border-radius: 5px 0 0 5px;
+  padding: 0.5rem 0 0.5rem 1rem;
+  background-color: $red-lighten-4;
+}
+
 .map-overlay-content {
   position: absolute;
   top: 50%;

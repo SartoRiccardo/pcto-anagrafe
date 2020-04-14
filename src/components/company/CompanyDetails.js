@@ -391,10 +391,11 @@ class CompanyDetails extends Component {
       </h1>
     );
 
-    const addressesPresent = company.fields.some(
-      (f) => StructureAddressField.regex.test(f.regex)
-    );
+    const addressFieldCount = company.fields.filter(
+      (field) => StructureAddressField.regex.test(field.regex)
+    ).length;
     const markers = this.state.coords.map((coords) =>
+      coords.coords.lat && coords.coords.lng &&
       <CompanyMarker key={coords.id} position={[coords.coords.lat, coords.coords.lng]} />
     );
 
@@ -404,12 +405,32 @@ class CompanyDetails extends Component {
       );
     }
 
-    let mapCenter = this.state.coords.length > 0 ? this.state.coords[0].coords : null;
+    let mapCenter = null;
+    for(const coord of this.state.coords) {
+      if(coord.coords.lat && coord.coords.lng) {
+        mapCenter = coord.coords;
+        break;
+      }
+    }
     mapCenter = userLocation || mapCenter;
 
+    const failedCoordCount = this.state.coords.filter(
+      (coords) => !(coords.coords.lat && coords.coords.lng)
+    ).length;
+
     let companyMap;
-    if(!addressesPresent) {
+    if(addressFieldCount.length === 0) {
       companyMap = null;
+    }
+    else if(addressFieldCount === failedCoordCount) {
+      companyMap = (
+        <div className="map failure">
+          <h3>Spiacenti</h3>
+          <p className="lead mb-0">
+            Non è stato localizzare l'azienda sulla mappa
+          </p>
+        </div>
+      );
     }
     else if(markers.length === 0) {
       companyMap = (
