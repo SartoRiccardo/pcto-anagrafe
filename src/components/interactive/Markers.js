@@ -7,14 +7,16 @@ import L from "leaflet";
 
 export const userMarkerIcon = new L.Icon({
   ...L.Icon.Default.prototype.options,
-  iconUrl: require("../../img/orange-marker.png"),
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconUrl: `${process.env.PUBLIC_URL}/img/orange-marker.png`,
+  iconRetinaUrl: `${process.env.PUBLIC_URL}/img/orange-marker.png`,
+  shadowUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-shadow.png',
 });
 
 export const outOfRangeIcon = new L.Icon({
   ...L.Icon.Default.prototype.options,
-  iconUrl: require("../../img/out-of-range-marker.png"),
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconUrl: `${process.env.PUBLIC_URL}/img/out-of-range-marker.png`,
+  iconRetinaUrl: `${process.env.PUBLIC_URL}/img/out-of-range-marker.png`,
+  shadowUrl: 'https://unpkg.com/leaflet@1.6.0/dist/images/marker-shadow.png',
 });
 
 export const defaultIcon = new L.Icon.Default();
