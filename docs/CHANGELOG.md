@@ -1,4 +1,4 @@
-# 2020-04-14: 1.1.0
+# 2020-04-14: [1.1.0](https://github.com/SartoRiccardo/pcto-anagrafe/tree/a9d269e2fed1c7a8a3f94d2d51984d988f15e6b2)
 
 ## Aggiunte
 + Aggiunta una mappa per localizzare le aziende
