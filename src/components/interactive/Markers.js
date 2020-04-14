@@ -4,18 +4,16 @@ import { connect } from "react-redux";
 import { setMatchCompany } from "../../redux/actions/resultAction";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import orangeMarker from "../../img/orange-marker.png";
-import outOfRangeMarker from "../../img/out-of-range-marker.png";
 
 export const userMarkerIcon = new L.Icon({
   ...L.Icon.Default.prototype.options,
-  iconUrl: orangeMarker,
+  iconUrl: require("../../img/orange-marker.png"),
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 });
 
 export const outOfRangeIcon = new L.Icon({
   ...L.Icon.Default.prototype.options,
-  iconUrl: outOfRangeMarker,
+  iconUrl: require("../../img/out-of-range-marker.png"),
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 });
 
