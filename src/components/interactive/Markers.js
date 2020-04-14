@@ -10,11 +10,13 @@ import outOfRangeMarker from "../../img/out-of-range-marker.png";
 export const userMarkerIcon = L.icon({
   ...L.Icon.Default.prototype.options,
   iconUrl: orangeMarker,
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 });
 
 export const outOfRangeIcon = L.icon({
   ...L.Icon.Default.prototype.options,
   iconUrl: outOfRangeMarker,
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 });
 
 export const defaultIcon = new L.Icon.Default();
