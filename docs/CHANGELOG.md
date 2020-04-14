@@ -1,4 +1,21 @@
-# 2020-03-13: 1.0.0 Initial Release [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
+# 2020-04-14: [1.1.0](https://github.com/SartoRiccardo/pcto-anagrafe/tree/a9d269e2fed1c7a8a3f94d2d51984d988f15e6b2)
+
+## Aggiunte
++ Aggiunta una mappa per localizzare le aziende
++ Aggiunto il tipo di campo "Indirizzo", che verrà mostrato (se possibile) nella mappina
++ Modifiche all'UI, soprattutto le pagine di ricerca e dell'azienda
+
+## Bug
++ La sessione ha una durata di 7g, e non si resetta una volta chiusa la tab
++ Risolto un bug dove l'azienda mostrava ancora i dati vecchi nonostante venisse aggiornata
++ La lista delle esperienze dovrebbe ora essere sempre in ordine alfabetico
+
+# 2020-03-14: [1.0.1](https://github.com/SartoRiccardo/pcto-anagrafe/tree/0bfd3ede1fb74c1464dc3b7be2dc5bb29eb4830c)
+
+## Aggiunte
++ Quando l'applicazione non riesce a caricare delle risorse, aspetta qualche secondo e fa vedere un messaggio all'utente
+
+# 2020-03-13: Release [1.0.0]() [*(F)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/68d66ac3f0f139b9728738bb64f406b278b49053) [*(B)*](https://github.com/SartoRiccardo/pcto-anagrafe/tree/3226f0b5d3a61f047460b246826418d5c1f9ec0f)
 
 ## Aggiunte
 + Quando accade un errore, questo viene visualizzato in un toast
