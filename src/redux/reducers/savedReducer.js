@@ -95,31 +95,38 @@ function savedReducer(state=init, action) {
     case "SAVEDR_UPDATE":
       return {
         ...state,
-        saved: state.saved.map((s) => {
-          let newCompany = {...s};
-          if(s.id === action.company.id) {
-            const {name, fields} = action.company;
+        saved: state.saved.map((savedCompany) => {
+          if(savedCompany.id !== action.company.id) {
+            return savedCompany;
+          }
 
-            if(name) {
-              newCompany.name = name;
-            }
+          let newCompany = {...savedCompany};
+          const {name, fields} = action.company;
+          if(name) {
+            newCompany.name = name;
+          }
 
-            if(fields) {
-              newCompany.fields = newCompany.fields.map((f) => {
-                for (let i = 0; i < fields.length; i++) {
-                  if(fields[i].id === f.id) {
-                    if(fields[i].value.length === 0) {
-                      return null;
-                    }
-                    else {
-                      return fields[i];
-                    }
-                  }
+          if(fields) {
+            const oldFieldIds = newCompany.fields.map(f => f.id);
+            const newFields = fields.filter(
+              (updatedField) => !oldFieldIds.includes(updatedField.id)
+            );
+
+            newCompany.fields = [ ...newCompany.fields, ...newFields ];
+            newCompany.fields = newCompany.fields.map((oldField) => {
+              for(const newField of fields) {
+                if(newField.id === oldField.id) {
+                  return {
+                    ...oldField,
+                    value: newField.value.length === 0 ? null : newField.value,
+                  };
                 }
-                return f;
-              });
-              newCompany.fields = newCompany.fields.filter((f) => f !== null);
-            }
+              }
+              return oldField;
+            })
+            .sort((field1, field2) => field1.id - field2.id);
+
+            newCompany.fields = newCompany.fields.filter((f) => f.value !== null);
           }
 
           return newCompany;
