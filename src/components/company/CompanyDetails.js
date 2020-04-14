@@ -427,7 +427,7 @@ class CompanyDetails extends Component {
         <div className="map failure">
           <h3>Spiacenti</h3>
           <p className="lead mb-0">
-            Non è stato localizzare l'azienda sulla mappa
+            Non è stato possibile localizzare l'azienda sulla mappa
           </p>
         </div>
       );
