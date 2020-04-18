@@ -432,10 +432,10 @@ class CompanyDetails extends Component {
     ).length;
 
     let companyMap;
-    if(addressFieldCount.length === 0) {
+    if(addressFieldCount === 0) {
       companyMap = null;
     }
-    else if(addressFieldCount === failedCoordCount && addressFieldCount > 0) {
+    else if(addressFieldCount === failedCoordCount) {
       companyMap = (
         <div className="map failure">
           <h3>Spiacenti</h3>
