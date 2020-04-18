@@ -204,9 +204,24 @@ body.overlay-open {
   // transition: background-color 0.5s;
 }
 
-.company-summary-field::before {
+.company-summary-field p::before {
   content: "•";
   margin-right: 0.3rem;
+}
+
+.company-summary-field.multiple-values p {
+  margin-bottom: 0;
+}
+
+.company-summary-field ul {
+  list-style: none;
+  padding-left: 1.5em;
+}
+
+.company-summary-field ul li::before {
+  content: "•";
+  display: inline-block;
+  width: 1em;
 }
 
 .table-hover tbody tr:hover:nth-child(odd) {

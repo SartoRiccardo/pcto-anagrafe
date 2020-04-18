@@ -64,29 +64,46 @@ class CompanySummary extends Component {
     }
 
     const information = uniqueFields.map((id) => {
-      let value = null;
-      let field = null;
-      for (let i = 0; i < data.fields.length; i++) {
-        if(data.fields[i].id === id) {
-          value = data.fields[i].value;
-          field = data.fields[i];
-        }
-      }
+      let currentField = null;
 
-      if(field === null) {
+      const matchingFields = data.fields.filter(
+        ({ field }) => field.id === id
+      );
+
+      if(matchingFields.length === 0) {
         for(const structureField of structure.fields) {
           if(structureField.id === id) {
-            field = structureField;
+            currentField = structureField;
             break;
           }
         }
       }
+      else {
+        currentField = matchingFields[0].field;
+      }
 
       return (
-        <p key={id} className="company-summary-field">
-          <b>{field.name}: </b>
-          {value || <FontAwesomeIcon icon={faTimes} className="icon-transparent ml-2" />}
-        </p>
+        <div key={id} className={`company-summary-field
+              ${matchingFields.length > 1 && "multiple-values"}`}>
+            <p>
+              <b>{currentField.name}: </b>
+              {
+                matchingFields.length === 1 ? (matchingFields[0].value
+                || <FontAwesomeIcon icon={faTimes} className="icon-transparent ml-2" />)
+                : null
+              }
+            </p>
+            {
+              matchingFields.length > 1 &&
+              <ul>
+                {
+                  matchingFields.map(
+                    matchingField => <li key={matchingField.id}>{matchingField.value}</li>
+                  )
+                }
+              </ul>
+            }
+        </div>
       );
     });
 
