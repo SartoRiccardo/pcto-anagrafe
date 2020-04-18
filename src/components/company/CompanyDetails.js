@@ -104,26 +104,16 @@ class CompanyDetails extends Component {
     this.mounted = false;
   }
 
-  handleModify = (fieldID) => {
-    this.setState({
-      modifying: fieldID,
-    });
-  }
-
   onClickConstructor = (id) => {
-    return () => {
-      this.handleModify(id);
-    };
+    return () => this.setState({ modifying: id });
   }
 
   modifyFinishHandler = (evt) => {
-    const {modifying} = this.state;
-    const {fields, id, name} = this.props.company;
-    const {value} = evt;
+    const { modifying } = this.state;
+    const { fields, id, name } = this.props.company;
+    const { value } = evt;
 
-    this.setState({
-      modifying: null,
-    });
+    this.setState({ modifying: null });
 
     if(modifying === 0) {
       if(name !== value) {
@@ -133,34 +123,40 @@ class CompanyDetails extends Component {
     else {
       let isDifferent = true;
       let found = false;
-      for (let i = 0; i < fields.length; i++) {
-        const f = fields[i];
-        found = found || f.id === modifying;
-        if(f.id === modifying && f.value === value) {
+      for(const field of fields) {
+        found = found || field.id === modifying;
+        if(field.id === modifying && field.value === value) {
           isDifferent = false;
           break;
         }
       }
 
       if(isDifferent && (found || value.length > 0)) {
-        const updatedField = {id: modifying, value};
+        const updatedField = { id: modifying, value };
         this.props.updateField(id, updatedField);
       }
     }
   }
 
   modifyValidator = (value) => {
-    const {modifying} = this.state;
-    const {fields} = this.props;
+    const { modifying } = this.state;
+    const { fields, company } = this.props;
 
-    if(value.length === 0) {
-      return modifying !== 0;
+    if(modifying === 0) {
+      return value.length > 0;
     }
 
-    for(let i = 0; i < fields.length; i++) {
-      if(fields[i].id === modifying) {
+    let matchingField = null;
+    for(const companyField of company.fields) {
+      if(companyField.id === modifying) {
+        matchingField = companyField.field.id;
+      }
+    }
+
+    for(const structureField of fields) {
+      if(structureField.id === matchingField) {
         try {
-          let reg = new RegExp("^" + fields[i].regex + "$");
+          let reg = new RegExp("^" + structureField.regex + "$");
           return reg.test(value);
         } catch(e) {
           return false;
@@ -238,7 +234,7 @@ class CompanyDetails extends Component {
   formatField = (companyField) => {
     const canModify = this.props.privileges.includes("MANAGE_COMPANY");
     const { field, value } = companyField;
-    const { id, regex, name } = field;
+    const { regex } = field;
 
     const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
     const validator = new RegExp("^" + regex + "$");
@@ -301,7 +297,7 @@ class CompanyDetails extends Component {
             <FontAwesomeIcon
               icon={faPen}
               className="icon-button"
-              onClick={this.onClickConstructor(id)}
+              onClick={this.onClickConstructor(companyField.id)}
             />
           </span>
         }
@@ -347,7 +343,7 @@ class CompanyDetails extends Component {
       );
 
       const listItems = matches.map(match => {
-        const { id, field, value } = match;
+        const { id, value } = match;
         let itemContent = null;
         if(this.state.modifying === id && canModify) {
           itemContent = (

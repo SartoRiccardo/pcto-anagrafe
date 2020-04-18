@@ -82,11 +82,11 @@ export function updateName(company, name) {
   return protectFunction(async (dispatch, getState) => {
     try {
       const payload = {
-        params: {id: company, name},
+        params: { name },
         headers: {"X-Authorization": getToken()},
       };
 
-      const {status, data} = await axios.put(apiUrl("/company"), null, payload);
+      const {status, data} = await axios.put(apiUrl(`/company/${company}`), null, payload);
       callIfSuccessful(status, data, dispatch, () => {
         dispatch({type: "COMPANYR_RESET"});
         dispatch(resultAction());
@@ -114,17 +114,14 @@ export function updateField(company, field) {
   return protectFunction(async (dispatch, getState) => {
     try {
       const payload = {
-        params: {
-          id: company,
-          fId: field.id,
-          fValue: field.value,
-        },
+        params: { value: field.value },
         headers: {"X-Authorization": getToken()},
       };
 
-      const {status, data} = await axios.put(apiUrl("/company/"), null, payload);
+      const url = apiUrl(`/company/${company}/field/${field.id}`);
+      const {status, data} = await axios.put(url, null, payload);
       callIfSuccessful(status, data, dispatch, () => {
-        dispatch({type: "COMPANYR_RESET"});
+        dispatch({ type: "COMPANYR_RESET" });
         dispatch(resultAction());
         dispatch(selectCompany(company));
         dispatch({
