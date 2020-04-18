@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {updateName, updateField} from "../../redux/actions/companyAction";
+import {updateName, updateField, addField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import {getAtecoDescription, getLocationCoords} from "../../util/requests";
 // Custom components
@@ -165,6 +165,47 @@ class CompanyDetails extends Component {
     }
 
     return false;
+  }
+
+  newFieldValidator = (structureFieldId) => {
+    return value => {
+      const { fields, company } = this.props;
+
+      if(value.length === 0) {
+        return true;
+      }
+
+      for(const structureField of fields) {
+        if(structureField.id === structureFieldId) {
+          try {
+            let reg = new RegExp("^" + structureField.regex + "$");
+            if(!reg.test(value)) {
+              return false;
+            }
+          } catch(e) {
+            return false;
+          }
+        }
+      }
+
+      const sameTypeFields = company.fields.filter(
+        ({field}) => field.id === structureFieldId
+      );
+
+      return sameTypeFields.every(
+        (field) => field.value !== value
+      );
+    }
+  }
+
+  newFieldFinishHandler = (structureFieldId) => {
+    return ({ valid, value }) => {
+      const { company } = this.props;
+
+      if(valid && value.length > 0) {
+        this.props.addField(company.id, { field: structureFieldId, value });
+      }
+    }
   }
 
   startDelete = (evt) => {
@@ -369,7 +410,10 @@ class CompanyDetails extends Component {
             {
               canModify &&
               <ListGroup.Item>
-                <GenericAdder />
+                <GenericAdder
+                  validator={this.newFieldValidator(structureField.id)}
+                  onFinish={this.newFieldFinishHandler(structureField.id)}
+                />
               </ListGroup.Item>
             }
           </ListGroup>
@@ -537,7 +581,8 @@ function mapDispatchToProps(dispatch) {
     },
     updateName: (companyId, name) => {
       dispatch(updateName(companyId, name));
-    }
+    },
+    addField: (companyId, field) => dispatch(addField(companyId, field)),
   };
 }
 

@@ -138,6 +138,37 @@ export function updateField(company, field) {
 }
 
 /**
+ * Adds a field to a company.
+ *
+ * @param {int}    company  The company's ID.
+ * @param {Field}  field    The new field.
+ */
+export function addField(company, field) {
+  return protectFunction(async (dispatch) => {
+    try {
+      const payload = {
+        headers: {"X-Authorization": getToken()},
+      }
+
+      const { status, data } = await axios.post(apiUrl(`/company/${company}/field`), field, payload);
+      callIfSuccessful(status, data, dispatch, () => {
+        dispatch({ type: "COMPANYR_RESET" });
+        dispatch(resultAction());
+        dispatch(selectCompany(company));
+        dispatch({
+          type: "SAVEDR_UPDATE",
+          company: {
+            id: company,
+            fields: [ field ],
+          },
+        });
+      });
+    }
+    catch(e) {}
+  });
+}
+
+/**
  * Deletes a company.
  *
  * @param {int} id  The ID of the company to delete.

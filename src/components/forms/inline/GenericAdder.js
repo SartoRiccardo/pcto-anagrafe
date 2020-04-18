@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 /**
  * An input field to add something on the fly.
  *
+ * @param {function} props.validator  A function that checks whether the input is valid or not.
  * @param {function} props.onFinish   Is fired when the user is finished.
  * @param {function} props.onChange   Is fired when the state changes.
  */
@@ -27,8 +28,12 @@ class GenericAdder extends Component {
       value: evt.target.value,
     }, () => {
       const value = this.state.value;
+      let valid = true;
+      if(this.props.validator) {
+        valid = this.props.validator(value);
+      }
       if(this.props.onChange) {
-        this.props.onChange({value});
+        this.props.onChange({ value, valid });
       }
     });
   }
@@ -37,15 +42,24 @@ class GenericAdder extends Component {
     evt.preventDefault();
 
     const value = this.state.value;
-    if(this.props.onFinish) {
-      this.props.onFinish({value});
+    let valid = true;
+    if(this.props.validator) {
+      valid = this.props.validator(value);
     }
-    this.setState({
-      value: "",
-    });
+    if(this.props.onFinish) {
+      this.props.onFinish({ value, valid });
+    }
+    if(valid) {
+      this.setState({
+        value: "",
+      });
+    }
   }
 
   render() {
+    const { validator } = this.props;
+    const inputIsValid = validator ? validator(this.state.value) : true;
+
     return (
       <Form onSubmit={this.finish}>
         <Form.Row>
@@ -55,6 +69,7 @@ class GenericAdder extends Component {
               value={this.state.value}
               onChange={this.changeHandler}
               placeholder="Aggiungi"
+              className={`${inputIsValid ? "input-field" : "input-field-invalid"}`}
             />
           </Col>
 
