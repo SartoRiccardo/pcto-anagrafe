@@ -439,7 +439,7 @@ class CompanyDetails extends Component {
     if(addressFieldCount.length === 0) {
       companyMap = null;
     }
-    else if(addressFieldCount === failedCoordCount) {
+    else if(addressFieldCount === failedCoordCount && addressFieldCount > 0) {
       companyMap = (
         <div className="map failure">
           <h3>Spiacenti</h3>
