@@ -21,4 +21,24 @@ function deleteCompanyById($id) {
   $stmt->execute();
   return $stmt->rowCount() > 0;
 }
-?>
+
+/**
+ * Deletes a company's field
+ * @param  int   $fieldId   The field's ID
+ * @return array            Deletion info.
+ */
+function deleteCompanyField($fieldId) {
+  global $dbc;
+
+  $q = "DELETE FROM CompanyField
+          WHERE id = :fieldId";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
+  $stmt->execute();
+  $success = $stmt->rowCount() > 0;
+
+  return array(
+    "error" => !$success,
+    "message" => $success ? "" : "Errore nell'eliminazione del campo."
+  );
+}

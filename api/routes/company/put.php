@@ -81,63 +81,50 @@ function updateCompanyName($id, $name) {
 }
 
 /**
- * Updates a company's name.
+ * Updates a company's field.
  *
- * @param  int   $companyid   The ID of the company to update.
- * @param  int   $fieldId     The company to update.
+ * @param  int   $fieldId     The ID of the field to update.
  * @param  int   $fieldValue  The new value.
  * @return array              Whether there were any errors and an eventual message.
  */
-function updateCompanyField($companyId, $fieldId, $fieldValue) {
+function updateCompanyField($fieldId, $fieldValue) {
   global $dbc;
 
-  if(!fieldExists($fieldId)) {
+  $q = "SELECT field
+          FROM CompanyField
+          WHERE id = :fieldId";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
+  $stmt->execute();
+  if(!($res = $stmt->fetch())) {
     return array(
       "error" => true,
       "message" => "Non esiste un campo con ID $fieldId."
     );
   }
 
-  if(strlen($fieldValue) > 0 && !fieldIsValid($fieldId, $fieldValue)) {
+  if(strlen($fieldValue) > 0 && !fieldIsValid($res["field"], $fieldValue)) {
     return array(
       "error" => true,
       "message" => "Il valore $fieldValue non è valido per $fieldId."
     );
   }
 
-  $success = null;
-  if(strlen($fieldValue) == 0) {
-    $q = "DELETE FROM CompanyField
-            WHERE company = :companyId
-              AND field = :fieldId";
+  $success = false;
+  try {
+    $q = "UPDATE CompanyField
+            SET value = :value
+            WHERE id = :id";
     $stmt = $dbc->prepare($q);
-    $stmt->bindParam(":companyId", $companyId, PDO::PARAM_INT);
-    $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
-    $stmt->execute();
-    $success = $stmt->rowCount() > 0;
-  }
-  else {
-    if(companyHasField($companyId, $fieldId)) {
-      $q = "UPDATE CompanyField
-              SET value = :value
-              WHERE company = :companyId
-                AND field = :fieldId";
-    }
-    else {
-      $q = "INSERT INTO CompanyField (company, field, value)
-              VALUES (:companyId, :fieldId, :value)";
-    }
-    $stmt = $dbc->prepare($q);
-    $stmt->bindParam(":companyId", $companyId, PDO::PARAM_INT);
-    $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
+    $stmt->bindParam(":id", $fieldId, PDO::PARAM_INT);
     $stmt->bindParam(":value", $fieldValue, PDO::PARAM_STR);
     $stmt->execute();
     $success = $stmt->rowCount() > 0;
   }
+  catch(Exception $e) {}
 
   return array(
     "error" => !$success,
     "message" => $success ? "" : "Errore nell'aggiornamento del campo."
   );
 }
-?>

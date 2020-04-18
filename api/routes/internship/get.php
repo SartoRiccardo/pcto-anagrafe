@@ -31,9 +31,10 @@ function getCompanyInternships($company) {
 function getInternship($id, $full=true) {
   global $dbc;
 
-  $q = "SELECT id, student, activity, company, year
-          FROM Internship
-          WHERE id = :id";
+  $q = "SELECT *, i.id AS internshipId, a.id AS activityId
+          FROM Internship i
+            JOIN Activity a ON i.activity = a.id
+          WHERE i.id = :id";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
@@ -42,8 +43,12 @@ function getInternship($id, $full=true) {
   if($stmt->rowCount() > 0) {
     $res = $stmt->fetch();
     $ret = array(
-      "id" => intval($res["id"]),
-      "activity" => intval($res["activity"]),
+      "id" => intval($res["internshipId"]),
+      "activity" => array(
+        "id" => intval($res["activityId"]),
+        "name" => $res["name"],
+        "description" => $res["description"],
+      ),
       "company" => intval($res["company"]),
     );
     if($full) {

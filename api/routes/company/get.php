@@ -3,10 +3,11 @@ $NO_PAGE = -1;
 
 /**
  * Gets a company by its ID.
- * @param  int     $id  The company's ID.
- * @return Company      The matching company.
+ * @param  int     $id    The company's ID.
+ * @param  boolean $full  Whether the user has the permissions to view all of a company's internships.
+ * @return Company        The matching company.
  */
-function getCompanyById($id) {
+function getCompanyById($id, $full=false) {
   global $dbc;
 
   $q = "SELECT name
@@ -19,7 +20,7 @@ function getCompanyById($id) {
   }
   $name = utf8_encode($res["name"]);
 
-  $q = "SELECT ft.id, ft.name, ft.regex, cf.value
+  $q = "SELECT *
           FROM CompanyField cf JOIN Field ft
             ON cf.field = ft.id
           WHERE cf.company = ?";
@@ -29,18 +30,21 @@ function getCompanyById($id) {
   $fields = array();
   while($res = $stmt->fetch()) {
     $f = array(
-      "id"=>intval($res["id"]),
-      "name"=>utf8_encode($res["name"]),
-      "regex"=>utf8_encode($res["regex"]),
-      "value"=>utf8_encode($res["value"]),
+      "id" => intval($res["id"]),
+      "field" => array(
+        "id" => intval($res["field"]),
+        "name" => $res["name"],
+        "regex" => $res["regex"],
+      ),
+      "value" => $res["value"]
     );
     array_push($fields, $f);
   }
 
   return array(
-    "id"=>intval($id),
-    "name"=>$name,
-    "fields"=>$fields
+    "id" => intval($id),
+    "name" => $name,
+    "fields" => $fields,
   );
 }
 
@@ -257,7 +261,7 @@ function fieldExists($id) {
   $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
 
-  return $stmt->fetch() != false;
+  return $stmt->fetch() !== false;
 }
 
 /**
@@ -273,7 +277,7 @@ function companyHasField($companyId, $fieldId) {
   $q = "SELECT *
           FROM CompanyField
           WHERE company = :companyId
-            AND field = :fieldId";
+            AND id = :fieldId";
   $stmt = $dbc->prepare($q);
   $stmt->bindParam(":companyId", $companyId, PDO::PARAM_INT);
   $stmt->bindParam(":fieldId", $fieldId, PDO::PARAM_INT);
@@ -296,7 +300,7 @@ function fieldIsValid($id, $value) {
           FROM Field
           WHERE id = :id";
   $stmt = $dbc->prepare($q);
-  $stmt->bindParam(":id", $id);
+  $stmt->bindParam(":id", $id, PDO::PARAM_INT);
   $stmt->execute();
 
   if(!($ret = $stmt->fetch())) {

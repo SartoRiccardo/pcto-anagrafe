@@ -32,6 +32,7 @@ Flight::map("areAllSet", function($values) {
 Flight::register("db", "PDO", array("mysql:host=$dbhost;dbname=$database;charset=utf8", $dbuser, $dbpswd),
   function($dbc){
     $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbc->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   }
 );
 $dbc = Flight::db();

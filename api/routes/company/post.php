@@ -126,4 +126,42 @@ function companyIsValid($name, $fields) {
     "message"=>""
   );
 }
-?>
+
+function addCompanyField($companyId, $fieldId, $value) {
+  global $dbc;
+
+  $success = false;
+  try {
+    $q = "INSERT INTO CompanyField (company, field, value)
+            VALUES (:company, :field, :value)";
+    $stmt = $dbc->prepare($q);
+    $stmt->bindParam(":company", $companyId, PDO::PARAM_INT);
+    $stmt->bindParam(":field", $fieldId, PDO::PARAM_INT);
+    $stmt->bindParam(":value", $value, PDO::PARAM_STR);
+    $stmt->execute();
+    $success = $stmt->rowCount() > 0;
+  }
+  catch(Exception $e) {}
+
+  if(!$success) {
+    return [
+      "error" => true,
+      "message" => "Errore nell'inserimento del campo",
+    ];
+  }
+
+  $q = "SELECT id FROM CompanyField
+          WHERE company = :company
+            AND field = :field
+            ORDER BY id DESC
+            LIMIT 1";
+  $stmt = $dbc->prepare($q);
+  $stmt->bindParam(":company", $companyId, PDO::PARAM_INT);
+  $stmt->bindParam(":field", $fieldId, PDO::PARAM_INT);
+  $stmt->execute();
+  return [
+    "error" => false,
+    "message" => "",
+    "id" => $stmt->fetch()["id"],
+  ];
+}
