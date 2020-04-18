@@ -226,17 +226,17 @@ class CompanyDetails extends Component {
     const {company} = this.props;
 
     for(const field of company.fields) {
-      if(StructureAtecoField.regex.test(field.regex)) {
+      if(StructureAtecoField.regex.test(field.field.regex)) {
         this.fetchAtecoDescription(field.id, field.value);
       }
-      else if(StructureAddressField.regex.test(field.regex)) {
+      else if(StructureAddressField.regex.test(field.field.regex)) {
         this.fetchLocation(field.id, field.value);
       }
     }
   }
 
   formatField = (companyField) => {
-    const { canModify } = this.props;
+    const canModify = this.props.privileges.includes("MANAGE_COMPANY");
     const { field, value } = companyField;
     const { id, regex, name } = field;
 
@@ -269,11 +269,11 @@ class CompanyDetails extends Component {
       }
       else if(StructureAtecoField.regex.test(regex) &&
           this.state.atecoDescriptions.some(
-            (descriptions) => descriptions.id === id
+            (descriptions) => descriptions.id === companyField.id
           )) {
         let match = null;
         for(const description of this.state.atecoDescriptions) {
-          if(description.id === id) {
+          if(description.id === companyField.id) {
             match = description.description;
             break;
           }
@@ -365,93 +365,17 @@ class CompanyDetails extends Component {
         return ( <ListGroup.Item key={id}>{itemContent}</ListGroup.Item> );
       });
 
-      // let cellContent = null;
-      // if(this.state.modifying === f.id && canModify) {
-      //   const value = match ? match.value : "";
-      //   cellContent = (
-      //     <GenericModifier
-      //       value={value}
-      //       validator={this.modifyValidator}
-      //       onFinish={this.modifyFinishHandler}
-      //     />
-      //   );
-      // }
-      // else {
-      //   const tooltip = <Tooltip>Valore non ammesso</Tooltip>;
-      //   const regex = new RegExp("^" + f.regex + "$");
-      //   const warning = match && canModify && !regex.exec(match.value) ? (
-      //     <OverlayTrigger placement="top" overlay={tooltip}>
-      //       <FontAwesomeIcon icon={faExclamationTriangle} className="warning-icon" />
-      //     </OverlayTrigger>
-      //   ) : null;
-      //
-      //   let cellText = match ? match.value : null;
-      //   if(cellText) {
-      //     if(StructureWebsiteField.regex.test(f.regex)) {
-      //       const href = cellText.startsWith("http") ? cellText : "https://" + cellText;
-      //       cellText = (
-      //         <a target="_blank" rel="noopener noreferrer" href={href}>
-      //           {cellText}
-      //           <FontAwesomeIcon icon={faExternalLinkAlt} className="mx-2" />
-      //         </a>
-      //       );
-      //     }
-      //     else if(StructureEmailField.regex.test(f.regex)) {
-      //       cellText = (
-      //         <a href={`mailto: ${cellText}`}>
-      //           {cellText}
-      //           <FontAwesomeIcon icon={faEnvelope} className="mx-2" />
-      //         </a>
-      //       );
-      //     }
-      //     else if(StructureAtecoField.regex.test(f.regex) &&
-      //         this.state.atecoDescriptions.some((descriptions) => descriptions.id === f.id)) {
-      //       let match = null;
-      //       for(const description of this.state.atecoDescriptions) {
-      //         if(description.id === f.id) {
-      //           match = description.description;
-      //           break;
-      //         }
-      //       }
-      //
-      //       const atecoDescriptionTooltip = (<Tooltip>{match}</Tooltip>);
-      //       cellText = (
-      //         <Fragment>
-      //           {cellText}
-      //           <OverlayTrigger placement="top" overlay={atecoDescriptionTooltip}>
-      //             <FontAwesomeIcon icon={faInfoCircle} className="mx-2 text-info" />
-      //           </OverlayTrigger>
-      //         </Fragment>
-      //       );
-      //     }
-      //   }
-      //
-      //   cellContent = (cellText || canModify) && (
-      //     <Fragment>
-      //       {cellText}{" "}
-      //       {warning}
-      //       {
-      //         canModify &&
-      //         <span className="float-right">
-      //           <FontAwesomeIcon
-      //             icon={faPen}
-      //             className="icon-button"
-      //             onClick={this.onClickConstructor(f.id)}
-      //           />
-      //         </span>
-      //       }
-      //     </Fragment>
-      //   );
-      // }
-
-      return (
+      return (listItems.length > 0 || canModify) && (
         <Col xs={12} md={12/2} key={structureField.id} className="my-2">
           <ListGroup>
             <ListGroup.Item><h4 className="mb-0">{structureField.name}</h4></ListGroup.Item>
             { listItems || <ListGroup.Item></ListGroup.Item> }
-            <ListGroup.Item>
-              <GenericAdder />
-            </ListGroup.Item>
+            {
+              canModify &&
+              <ListGroup.Item>
+                <GenericAdder />
+              </ListGroup.Item>
+            }
           </ListGroup>
         </Col>
       );
@@ -485,7 +409,7 @@ class CompanyDetails extends Component {
     );
 
     const addressFieldCount = company.fields.filter(
-      (field) => StructureAddressField.regex.test(field.regex)
+      ({field}) => StructureAddressField.regex.test(field.regex)
     ).length;
     const markers = this.state.coords.map((coords) =>
       coords.coords.lat && coords.coords.lng &&
