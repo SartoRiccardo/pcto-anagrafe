@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 // HOCs and actions
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {updateName, updateField, addField} from "../../redux/actions/companyAction";
+import {updateName, updateField, addField, deleteField} from "../../redux/actions/companyAction";
 import {selectCompany, resetCompany} from "../../redux/actions/resultAction";
 import {getAtecoDescription, getLocationCoords} from "../../util/requests";
 // Custom components
@@ -208,6 +208,10 @@ class CompanyDetails extends Component {
     }
   }
 
+  deleteField = (id) => {
+    return () => this.props.deleteField(this.props.company.id, id);
+  }
+
   startDelete = (evt) => {
     this.setState({
       deleteStarted: true,
@@ -335,6 +339,11 @@ class CompanyDetails extends Component {
         {
           canModify &&
           <span className="float-right">
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              className="icon-button mr-2"
+              onClick={this.deleteField(companyField.id)}
+            />
             <FontAwesomeIcon
               icon={faPen}
               className="icon-button"
@@ -583,6 +592,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateName(companyId, name));
     },
     addField: (companyId, field) => dispatch(addField(companyId, field)),
+    deleteField: (companyId, fieldId) => dispatch(deleteField(companyId, fieldId)),
   };
 }
 
