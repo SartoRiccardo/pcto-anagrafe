@@ -163,11 +163,13 @@ function generateSearchQuery($search) {
         SELECT c.id AS company
           FROM Company c
           $condition
+          ORDER BY c.id
       ") : ("
         SELECT c.id AS company
           FROM Company c JOIN ($q) prev
             ON c.id = prev.company
           $condition
+          ORDER BY c.id
       ");
     }
     else if($uf["id"] == -1) {  // ID == -1 is search by internships
@@ -182,11 +184,13 @@ function generateSearchQuery($search) {
         SELECT DISTINCT i.company
           FROM Internship i
           $condition
+          ORDER BY i.company
       ") : ("
         SELECT DISTINCT i.company
           FROM Internship c JOIN ($q) prev
             ON i.company = prev.company
           $condition
+          ORDER BY i.company
       ");
     }
     else {
@@ -203,11 +207,13 @@ function generateSearchQuery($search) {
         SELECT DISTINCT c.company
           FROM CompanyField c
           $condition
+          ORDER BY c.company
       ") : ("
         SELECT DISTINCT c.company
           FROM CompanyField c JOIN ($q) prev
             ON c.company = prev.company
           $condition
+          ORDER BY c.company
       ");
     }
   }
