@@ -20,7 +20,7 @@ function getCompanyById($id, $full=false) {
   }
   $name = utf8_encode($res["name"]);
 
-  $q = "SELECT *
+  $q = "SELECT *, cf.id as companyFieldId
           FROM CompanyField cf JOIN Field ft
             ON cf.field = ft.id
           WHERE cf.company = ?";
@@ -30,7 +30,7 @@ function getCompanyById($id, $full=false) {
   $fields = array();
   while($res = $stmt->fetch()) {
     $f = array(
-      "id" => intval($res["id"]),
+      "id" => intval($res["companyFieldId"]),
       "field" => array(
         "id" => intval($res["field"]),
         "name" => $res["name"],
