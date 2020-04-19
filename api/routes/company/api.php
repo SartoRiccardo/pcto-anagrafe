@@ -125,28 +125,28 @@ Flight::route("POST /company/@id:[0-9]+/field", function($companyId) {
   $auth = isset(apache_request_headers()["X-Authorization"])
     ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
-    Flight::stop(401, ["error" => true, "message" => "Privilegi insufficienti."]);
+    Flight::halt(401, json_encode(["error" => true, "message" => "Privilegi insufficienti."]));
     return;
   }
 
   if(!getCompanyById($companyId)) {
-    Flight::stop(422, ["error" => true, "message" => "Non esiste un'azienda con ID $companyId."]);
+    Flight::halt(422, json_encode(["error" => true, "message" => "Non esiste un'azienda con ID $companyId."]));
     return;
   }
 
   if(!fieldExists($data->field)) {
-    Flight::stop(422, ["error" => true, "message" => "Non esiste un campo con ID {$data->field}."]);
+    Flight::halt(422, json_encode(["error" => true, "message" => "Non esiste un campo con ID {$data->field}."]));
     return;
   }
 
   if(!fieldIsValid($data->field, $data->value) || strlen($data->value) === 0) {
-    Flight::stop(422, ["error" => true, "message" => "Valore invalido."]);
+    Flight::halt(422, json_encode(["error" => true, "message" => "Valore invalido."]));
     return;
   }
 
   $res = addCompanyField($companyId, $data->field, $data->value);
   $code = $res["error"] ? 422 : 201;
-  Flight::stop($code, $res);
+  Flight::halt($code, json_encode($res));
 });
 
 // PUT Update Company Name
@@ -158,12 +158,12 @@ Flight::route("PUT /company/@id:[0-9]+", function($id) {
   $auth = isset(apache_request_headers()["X-Authorization"])
     ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
-    Flight::stop(401, ["error" => true, "message" => "Privilegi insufficienti."]);
+    Flight::halt(401, json_encode(["error" => true, "message" => "Privilegi insufficienti."]));
     return;
   }
 
   if(!(isset($req->query["name"]) && strlen($req->query["name"]) > 0)) {
-    Flight::stop(400, ["error" => true, "message" => "Nome assente o invalido."]);
+    Flight::halt(400, json_encode(["error" => true, "message" => "Nome assente o invalido."]));
     return;
   }
   Flight::json(updateCompanyName($id, $req->query["name"]));
@@ -176,17 +176,17 @@ Flight::route("PUT /company/@cId:[0-9]+/field/@fId:[0-9]+", function($companyId,
   $auth = isset(apache_request_headers()["X-Authorization"])
     ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
-    Flight::stop(401, ["error" => true, "message" => "Privilegi insufficienti."]);
+    Flight::halt(401, json_encode(["error" => true, "message" => "Privilegi insufficienti."]));
     return;
   }
 
   if(!(isset($req->query["value"]) && strlen($req->query["value"]) > 0)) {
-    Flight::stop(400, ["error" => true, "message" => "Campo assente o invalido."]);
+    Flight::halt(400, json_encode(["error" => true, "message" => "Campo assente o invalido."]));
     return;
   }
 
   if(!companyHasField($companyId, $fieldId)) {
-    Flight::stop(422, ["error" => true, "message" => "Nulla da modificare."]);
+    Flight::halt(422, json_encode(["error" => true, "message" => "Nulla da modificare."]));
     return;
   }
 
@@ -198,12 +198,12 @@ Flight::route("DELETE /company/@cId:[0-9]+/field/@fId:[0-9]+", function($company
   $auth = isset(apache_request_headers()["X-Authorization"])
     ? apache_request_headers()["X-Authorization"] : null;
   if(!hasPermission($auth, "MANAGE_COMPANY")) {
-    Flight::stop(401, ["error" => true, "message" => "Privilegi insufficienti."]);
+    Flight::halt(401, json_encode(["error" => true, "message" => "Privilegi insufficienti."]));
     return;
   }
 
   if(!companyHasField($companyId, $fieldId)) {
-    Flight::stop(422, ["error" => true, "message" => "Nulla da eliminare."]);
+    Flight::halt(422, json_encode(["error" => true, "message" => "Nulla da eliminare."]));
     return;
   }
 

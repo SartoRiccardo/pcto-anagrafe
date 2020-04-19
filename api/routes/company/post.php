@@ -162,6 +162,6 @@ function addCompanyField($companyId, $fieldId, $value) {
   return [
     "error" => false,
     "message" => "",
-    "id" => $stmt->fetch()["id"],
+    "id" => (int) $stmt->fetch()["id"],
   ];
 }
