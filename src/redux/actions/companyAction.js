@@ -93,10 +93,7 @@ export function updateName(company, name) {
         dispatch(selectCompany(company));
         dispatch({
           type: "SAVEDR_UPDATE",
-          company: {
-            id: company,
-            name,
-          },
+          company: { id: company, name },
         });
       });
     }
@@ -126,10 +123,7 @@ export function updateField(company, field) {
         dispatch(selectCompany(company));
         dispatch({
           type: "SAVEDR_UPDATE",
-          company: {
-            id: company,
-            fields: [field],
-          },
+          company: { id: company, field },
         });
       });
     }
@@ -144,7 +138,7 @@ export function updateField(company, field) {
  * @param {Field}  field    The new field.
  */
 export function addField(company, field) {
-  return protectFunction(async (dispatch) => {
+  return protectFunction(async (dispatch, getState) => {
     try {
       const payload = {
         headers: {"X-Authorization": getToken()},
@@ -155,11 +149,23 @@ export function addField(company, field) {
         dispatch({ type: "COMPANYR_RESET" });
         dispatch(resultAction());
         dispatch(selectCompany(company));
+
+        const structureFields = getState().structure.fields;
+        let fieldMatch = null;
+        for(const structureField of structureFields) {
+          if(structureField.id === field.field) {
+            fieldMatch = structureField;
+            break;
+          }
+        }
+        if(fieldMatch === null) {
+          return;
+        }
         dispatch({
           type: "SAVEDR_UPDATE",
           company: {
             id: company,
-            fields: [ field ],
+            field: { id: data.id, field: fieldMatch, value: field.value },
           },
         });
       });
@@ -187,13 +193,10 @@ export function deleteField(company, field) {
         dispatch({ type: "COMPANYR_RESET" });
         dispatch(resultAction());
         dispatch(selectCompany(company));
-        // dispatch({
-        //   type: "SAVEDR_UPDATE",
-        //   company: {
-        //     id: company,
-        //     fields: [ {id: field, value: null} ],
-        //   },
-        // });
+        dispatch({
+          type: "SAVEDR_UPDATE",
+          company: { id: company, field: {id: field, value: null} },
+        });
       });
     }
     catch(e) {}
